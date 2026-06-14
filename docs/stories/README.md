@@ -21,7 +21,7 @@
 
 ## Milestones
 
-- [Niveau 1 — Reverse exploitable](MILESTONE-level-1-reverse-exploitable.md) — Status: `Todo`
+- [Niveau 1 — Reverse exploitable](MILESTONE-level-1-reverse-exploitable.md) — Status: `Done`
 
 ## Tickets
 
@@ -29,7 +29,7 @@
 - [RE-001 — Rendre le workflow Ghidra reproductible](RE-001-ghidra-workflow-reproductible.md) — Status: `Done`
 - [RE-002 — Exporter les fonctions Ghidra et les rapprocher du repo](RE-002-export-fonctions-ghidra-et-mapping-repo.md) — Status: `Done`
 - [RE-003 — Cartographier la progression de décompilation par module](RE-003-cartographie-progression-decompilation.md) — Status: `Done`
-- [RE-004 — Prioriser les fonctions non finalisées](RE-004-priorisation-fonctions-non-finalisees.md) — Status: `Todo`
+- [RE-004 — Prioriser les fonctions non finalisées](RE-004-priorisation-fonctions-non-finalisees.md) — Status: `Done`
 - [RE-005 — Valider le build PSXPC_N avec image disque](RE-005-build-psxpcn-disc-version.md) — Status: `Done`
 - [RE-006 — Extraire et documenter GAMEWAD/CODEWAD/assets](RE-006-assets-gamewad-codewad.md) — Status: `Done`
 - [RE-007 — Mettre en place comparaison binaire/désassemblage](RE-007-comparaison-binaire-disassembly.md) — Status: `Todo`

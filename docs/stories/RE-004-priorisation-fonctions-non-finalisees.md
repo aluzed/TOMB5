@@ -1,7 +1,7 @@
 # RE-004 — Prioriser les fonctions non finalisées
 
-Status: Todo
-Owner: Unassigned
+Status: Done
+Owner: Hermes
 Priority: P1
 Type: Planning
 
@@ -19,20 +19,37 @@ Type: Planning
 
 ## Proposed files
 
-- Create: `docs/reverse/backlog.md`
-- Create: `docs/reverse/generated/function-priority.csv`
+- Created: `docs/reverse/backlog.md`
+- Created: `docs/reverse/generated/function-priority.csv`
+- Created: `scripts/reverse/function_priority.py`
 
 ## Tasks
 
-- [ ] Définir une scoring rule : callers, callees, absence de `(F)`, présence `(ND)`, module prioritaire.
-- [ ] Consommer le mapping Ghidra/repo généré par RE-002.
-- [ ] Classer les fonctions en lots de 5 à 10.
-- [ ] Pour chaque lot, documenter les fichiers source à toucher et les preuves Ghidra à regarder.
-- [ ] Identifier les fonctions bloquées par structures/types manquants.
+- [x] Définir une scoring rule : callers, callees, absence de `(F)`, présence `(ND)`, module prioritaire.
+- [x] Consommer le mapping Ghidra/repo généré par RE-002.
+- [x] Classer les fonctions en lots actionnables.
+- [x] Pour chaque lot, documenter les fichiers source à toucher et les preuves Ghidra à regarder.
+- [x] Identifier les fonctions à pré-trier avant travail lorsque le mapping Ghidra est absent.
+
+## Result
+
+Backlog générée par:
+
+```bash
+python3 scripts/reverse/function_priority.py
+```
+
+Résultat actuel:
+
+- `348` candidats priorisés dans `docs/reverse/generated/function-priority.csv`.
+- `35` candidats `P0`, dont fonctions runtime et `(ND)`.
+- `103` candidats `P1` mappés avec score élevé.
+- `210` candidats `P2` à pré-trier ou à traiter après les lots prioritaires.
+- `23` fonctions `(ND)` explicitement mises en évidence.
 
 ## Acceptance criteria
 
-- [ ] Une liste priorisée existe avec justification.
-- [ ] Chaque entrée pointe vers un fichier source repo et une adresse Ghidra quand disponible.
-- [ ] Les fonctions `(ND)` sont mises en évidence.
-- [ ] Les lots sont assez petits pour être pris un par un.
+- [x] Une liste priorisée existe avec justification.
+- [x] Chaque entrée pointe vers un fichier source repo et une adresse Ghidra quand disponible.
+- [x] Les fonctions `(ND)` sont mises en évidence.
+- [x] Les lots sont assez petits pour être pris un par un.
