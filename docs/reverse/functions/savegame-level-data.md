@@ -184,4 +184,13 @@ RE-015 reconstructed the active item count gaps in source:
 - item count model status: `counts-representable-needs-proof`
 - unrepresented item groups by count: `none`
 
-Suggested next story: prove branch/control-flow equivalence for the now-representable item groups before considering `(F)`, and keep `RestoreLevelData` reconstruction as the required inverse stream before any broader save/restore completeness claim.
+RE-016 compared the original item `WriteSG` groups against exact size sequences derived from safe call metadata:
+
+- `docs/reverse/generated/saveleveldata-item-control-flow-audit.csv`
+- `docs/reverse/functions/saveleveldata-item-control-flow-audit.md`
+- item groups covered: `9`
+- exact size-sequence match groups: `12`
+- mismatch groups: `4, 5, 6, 7, 8, 9, 10, 11`
+- status: `control-flow-gaps-found`
+
+Suggested next story: investigate the size-sequence mismatches before considering `(F)`. In particular, groups with byte-sized original state writes or non-modeled `4`, `20`, and `24` byte writes need source-vs-original field reconciliation, and `RestoreLevelData` remains the required inverse stream before any broader save/restore completeness claim.

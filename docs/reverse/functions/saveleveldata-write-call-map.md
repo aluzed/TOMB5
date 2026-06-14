@@ -63,17 +63,17 @@ The `first/last_call_*` columns are metadata coordinates only. This report does 
 - original call count: `17`
 - call index range: `338` → `441`
 - call address range: `0x80054458` → `0x800545f4`
-- candidate source rows: `17-25`
-- candidate context: `item position block and optional speed/fallspeed writes`
+- candidate source rows: `17-26`
+- candidate context: `item header/position block and optional speed/fallspeed writes`
 - confidence: `low`
-- notes: candidate item save_position branch
+- notes: candidate item save_position branch after RE-015 header insertion
 
 ### Original call group 5
 
 - original call count: `15`
 - call index range: `501` → `600`
 - call address range: `0x800546e4` → `0x80054870`
-- candidate source rows: `17-32`
+- candidate source rows: `17-34`
 - candidate context: `item active/full-save branch variant`
 - confidence: `low`
 - notes: same source rows can compile into several original call regions
@@ -83,27 +83,27 @@ The `first/last_call_*` columns are metadata coordinates only. This report does 
 - original call count: `3`
 - call index range: `635` → `645`
 - call address range: `0x800548fc` → `0x80054924`
-- candidate source rows: `26-32`
-- candidate context: `item animation and hitpoint fields`
+- candidate source rows: `27-34`
+- candidate context: `item animation, hitpoint, and flags fields`
 - confidence: `low`
-- notes: candidate save_anim/save_hitpoints branch
+- notes: candidate save_anim/save_hitpoints/save_flags branch
 
 ### Original call group 7
 
 - original call count: `1`
 - call index range: `698` → `698`
 - call address range: `0x800549f8` → `0x800549f8`
-- candidate source rows: `17-32`
+- candidate source rows: `17-34`
 - candidate context: `item serialization alternate control-flow region`
 - confidence: `low`
-- notes: requires manual MIPS branch audit
+- notes: requires size-sequence/control-flow audit
 
 ### Original call group 8
 
 - original call count: `12`
 - call index range: `750` → `800`
 - call address range: `0x80054ac8` → `0x80054b90`
-- candidate source rows: `17-32`
+- candidate source rows: `17-34`
 - candidate context: `item serialization dense call region`
 - confidence: `low`
 - notes: largest repeated candidate item region
@@ -113,8 +113,8 @@ The `first/last_call_*` columns are metadata coordinates only. This report does 
 - original call count: `1`
 - call index range: `841` → `841`
 - call address range: `0x80054c34` → `0x80054c34`
-- candidate source rows: `29-32`
-- candidate context: `lara/non-lara anim-number and frame/hitpoint tail`
+- candidate source rows: `30-34`
+- candidate context: `lara/non-lara anim-number, frame, hitpoint, flags tail`
 - confidence: `low`
 - notes: tail branch candidate
 
@@ -123,7 +123,7 @@ The `first/last_call_*` columns are metadata coordinates only. This report does 
 - original call count: `7`
 - call index range: `885` → `916`
 - call address range: `0x80054ce4` → `0x80054d60`
-- candidate source rows: `17-32`
+- candidate source rows: `17-34`
 - candidate context: `item serialization second variant`
 - confidence: `low`
 - notes: requires mapping against item/object flags
@@ -133,8 +133,8 @@ The `first/last_call_*` columns are metadata coordinates only. This report does 
 - original call count: `1`
 - call index range: `946` → `946`
 - call address range: `0x80054dd8` → `0x80054dd8`
-- candidate source rows: `31-32`
-- candidate context: `frame number / hit points tail`
+- candidate source rows: `32-34`
+- candidate context: `frame number / hit points / flags tail`
 - confidence: `low`
 - notes: late item tail candidate
 
@@ -143,7 +143,7 @@ The `first/last_call_*` columns are metadata coordinates only. This report does 
 - original call count: `7`
 - call index range: `988` → `1019`
 - call address range: `0x80054e80` → `0x80054efc`
-- candidate source rows: `17-32`
+- candidate source rows: `17-34`
 - candidate context: `item serialization final variant`
 - confidence: `low`
 - notes: final original call group before function return
