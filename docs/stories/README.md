@@ -32,7 +32,7 @@
 - [RE-004 — Prioriser les fonctions non finalisées](RE-004-priorisation-fonctions-non-finalisees.md) — Status: `Done`
 - [RE-005 — Valider le build PSXPC_N avec image disque](RE-005-build-psxpcn-disc-version.md) — Status: `Done`
 - [RE-006 — Extraire et documenter GAMEWAD/CODEWAD/assets](RE-006-assets-gamewad-codewad.md) — Status: `Done`
-- [RE-007 — Mettre en place comparaison binaire/désassemblage](RE-007-comparaison-binaire-disassembly.md) — Status: `Todo`
+- [RE-007 — Mettre en place comparaison binaire/désassemblage](RE-007-comparaison-binaire-disassembly.md) — Status: `Done`
 - [RE-008 — Documenter conventions de reverse PS1/TR5](RE-008-conventions-reverse-ps1-tr5.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
