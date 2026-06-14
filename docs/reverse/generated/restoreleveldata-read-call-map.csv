@@ -1,0 +1,19 @@
+record_kind,restore_group,call_count,first_call_index,last_call_index,first_call_address,last_call_address,size_sequence,save_original_group,save_call_count,save_size_sequence,restore_match_status,restore_match_locations,patch_readiness,notes
+restore-read-group,1,9,14,65,0x80054fa4,0x80055070,"4,4,2,2,4,4,4,136,1",,,,,,,
+restore-read-group,2,1,93,93,0x800550e0,0x800550e0,2,,,,,,,
+restore-read-group,3,6,151,223,0x800551c8,0x800552e8,"1,1,3,2,2,2",,,,,,,
+restore-read-group,4,9,250,321,0x80055354,0x80055470,"2,2,2,1,2,2,2,2,2",,,,,,,
+restore-read-group,5,15,358,477,0x80055504,0x800556e0,"1,1,1,2,1,2,2,4,2,2,2,2,2,2,2",,,,,,,
+restore-read-group,6,8,564,595,0x8005583c,0x800558b8,"24,2,2,2,2,2,20,1",,,,,,,
+restore-read-group,7,2,645,648,0x80055980,0x8005598c,"4,4",,,,,,,
+restore-read-group,8,13,734,830,0x80055ae4,0x80055c64,"1,1,20,2,2,2,2,4,2,2,2,2,2",,,,,,,
+restore-read-group,9,8,856,906,0x80055ccc,0x80055d94,"1,2,2,2,2,2,2,1",,,,,,,
+restore-read-group,10,8,931,981,0x80055df8,0x80055ec0,"1,2,2,2,2,2,2,2",,,,,,,
+save-restore-comparison,,,,,,,,4,17,"2,2,2,2,1,2,2,2,2,2,1,1,1,2,1,2,2",no-exact-restore-size-sequence,none,blocked,No exact contiguous restore ReadSG size subsequence matches this RE-017 item group.
+save-restore-comparison,,,,,,,,5,15,"4,2,2,2,2,2,2,2,24,2,2,2,2,2,20",no-exact-restore-size-sequence,none,blocked,No exact contiguous restore ReadSG size subsequence matches this RE-017 item group.
+save-restore-comparison,,,,,,,,6,3,"1,4,4",no-exact-restore-size-sequence,none,blocked,No exact contiguous restore ReadSG size subsequence matches this RE-017 item group.
+save-restore-comparison,,,,,,,,7,1,1,ambiguous-single-byte-restore-matches,restore_group=1:call_ordinal=9; restore_group=3:call_ordinal=1; restore_group=3:call_ordinal=2; restore_group=4:call_ordinal=4; restore_group=5:call_ordinal=1; restore_group=5:call_ordinal=2; restore_group=5:call_ordinal=3; restore_group=5:call_ordinal=5; restore_group=6:call_ordinal=8; restore_group=8:call_ordinal=1; restore_group=8:call_ordinal=2; restore_group=9:call_ordinal=1; restore_group=9:call_ordinal=8; restore_group=10:call_ordinal=1,blocked,Single-byte groups match many restore locations and do not identify a field or branch by themselves.
+save-restore-comparison,,,,,,,,8,12,"1,20,2,2,2,4,2,2,2,2,2,2",no-exact-restore-size-sequence,none,blocked,No exact contiguous restore ReadSG size subsequence matches this RE-017 item group.
+save-restore-comparison,,,,,,,,9,1,1,ambiguous-single-byte-restore-matches,restore_group=1:call_ordinal=9; restore_group=3:call_ordinal=1; restore_group=3:call_ordinal=2; restore_group=4:call_ordinal=4; restore_group=5:call_ordinal=1; restore_group=5:call_ordinal=2; restore_group=5:call_ordinal=3; restore_group=5:call_ordinal=5; restore_group=6:call_ordinal=8; restore_group=8:call_ordinal=1; restore_group=8:call_ordinal=2; restore_group=9:call_ordinal=1; restore_group=9:call_ordinal=8; restore_group=10:call_ordinal=1,blocked,Single-byte groups match many restore locations and do not identify a field or branch by themselves.
+save-restore-comparison,,,,,,,,10,7,"2,2,2,2,2,2,1",exact-restore-size-subsequence-match,restore_group=9:call_ordinal=2,blocked,"Size sequence exists on restore side, but this is not field/predicate proof and does not unlock a patch alone."
+save-restore-comparison,,,,,,,,11,1,1,ambiguous-single-byte-restore-matches,restore_group=1:call_ordinal=9; restore_group=3:call_ordinal=1; restore_group=3:call_ordinal=2; restore_group=4:call_ordinal=4; restore_group=5:call_ordinal=1; restore_group=5:call_ordinal=2; restore_group=5:call_ordinal=3; restore_group=5:call_ordinal=5; restore_group=6:call_ordinal=8; restore_group=8:call_ordinal=1; restore_group=8:call_ordinal=2; restore_group=9:call_ordinal=1; restore_group=9:call_ordinal=8; restore_group=10:call_ordinal=1,blocked,Single-byte groups match many restore locations and do not identify a field or branch by themselves.

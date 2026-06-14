@@ -216,4 +216,15 @@ RE-018 checked those hypotheses against current restore-side source support:
 - patch-ready hypotheses: `0`
 - status: `restore-side-proof-missing`
 
-Suggested next story: extract or reconstruct a metadata-only original `RestoreLevelData` read-call map, then compare restore read sizes/order against the RE-017 hypotheses before patching source serialization. Current source-side restore evidence is insufficient for `(F)`, `(D)`, or `(**)` markers.
+RE-019 extracted a metadata-only original `RestoreLevelData` `ReadSG` call map and compared the RE-017 item groups against restore read size sequences:
+
+- `docs/reverse/generated/restoreleveldata-read-call-map.csv`
+- `docs/reverse/functions/restoreleveldata-read-call-map.md`
+- original `ReadSG` calls: `79`
+- restore read groups: `10`
+- RE-017 item groups compared: `8`
+- groups with size-only restore match: `4`
+- patch-ready groups: `0`
+- status: `restore-size-proof-partial`
+
+Suggested next story: derive stronger restore-side field/control-flow proof for the matched and mismatched regions, especially branch predicates around item groups 4, 5, 8, and 10. Current restore-size evidence is insufficient for serializer patching or `(F)`, `(D)`, or `(**)` markers.

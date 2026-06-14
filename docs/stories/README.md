@@ -44,6 +44,7 @@
 - [RE-016 — Prouver le contrôle-flow item de SaveLevelData](RE-016-saveleveldata-item-control-flow-proof.md) — Status: `Done`
 - [RE-017 — Réconcilier les champs/largeurs item SaveLevelData](RE-017-saveleveldata-item-field-width-reconciliation.md) — Status: `Done`
 - [RE-018 — Vérifier les hypothèses item SaveLevelData côté RestoreLevelData](RE-018-saveleveldata-restore-side-field-proof.md) — Status: `Done`
+- [RE-019 — Mapper les appels ReadSG originaux de RestoreLevelData](RE-019-restoreleveldata-read-call-map.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
