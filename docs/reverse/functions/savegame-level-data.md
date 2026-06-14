@@ -147,4 +147,10 @@ Create an implementation ticket for the PSX save/restore stream:
 5. Add a non-versioned comparison checklist under `build/reverse/re007/` for every reconstruction attempt.
 6. Only then consider adding `(F)`; reserve `(**)` until a rebuilt binary/object comparison exists.
 
-Suggested story id: `RE-010 — Reconstruct PSX SaveLevelData/RestoreLevelData`.
+RE-010 produced the first versionable stream schema from the current PC `SaveLevelData` branch:
+
+- `scripts/reverse/savegame_schema.py`
+- `docs/reverse/generated/savegame-level-data-schema.csv`
+- `docs/reverse/generated/savegame-level-data-schema.md`
+
+Suggested next story id: `RE-011 — Implement PSX SaveLevelData from the stream schema`.

@@ -35,6 +35,7 @@
 - [RE-007 — Mettre en place comparaison binaire/désassemblage](RE-007-comparaison-binaire-disassembly.md) — Status: `Done`
 - [RE-008 — Documenter conventions de reverse PS1/TR5](RE-008-conventions-reverse-ps1-tr5.md) — Status: `Done`
 - [RE-009 — Auditer SaveLevelData / RestoreLevelData](RE-009-savegame-level-data-audit.md) — Status: `Done`
+- [RE-010 — Préparer le schéma de reconstruction SaveLevelData / RestoreLevelData](RE-010-savegame-stream-schema.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
