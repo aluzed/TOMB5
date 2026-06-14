@@ -46,17 +46,15 @@ def _context_from_stack(stack: list[str]) -> str:
 
 
 def parse_save_level_data_writes(source: Path) -> list[WriteRow]:
-    """Return the ordered source-level `Write(expr, size)` calls in the PC branch.
+    """Return ordered source-level `Write(expr, size)` calls in `SaveLevelData`.
 
-    The current PSX branch is unimplemented, so the PC branch is used as the best
-    available field-order hypothesis for reconstruction. Loops and conditionals
-    are intentionally preserved as context instead of expanded, because many
-    counts depend on runtime values such as `number_rooms` and `level_items`.
+    Loops and conditionals are intentionally preserved as context instead of
+    expanded, because many counts depend on runtime values such as
+    `number_rooms` and `level_items`.
     """
 
     lines = source.read_text(encoding="utf-8").splitlines()
     in_func = False
-    in_pc_branch = False
     brace_depth = 0
     context_stack: list[str] = []
     pending_context: str | None = None
@@ -72,46 +70,44 @@ def parse_save_level_data_writes(source: Path) -> list[WriteRow]:
                 brace_depth += line.count("{") - line.count("}")
             continue
 
-        if stripped.startswith("#if PC_VERSION"):
-            in_pc_branch = True
-            continue
-        if in_pc_branch and stripped.startswith("#else"):
+        if stripped.startswith("#else"):
+            # Ignore non-selected fallback sections in historical versions where
+            # SaveLevelData was still behind a PC-only preprocessor guard.
             break
 
-        if in_pc_branch:
-            # The source uses a simple K&R-ish style: control line, then a brace
-            # on the next line. Maintain a best-effort source context without
-            # expanding runtime-dependent loops.
-            leading_closes = len(stripped) - len(stripped.lstrip("}"))
-            for _ in range(leading_closes):
-                if context_stack:
-                    context_stack.pop()
+        # The source uses a simple K&R-ish style: control line, then a brace
+        # on the next line. Maintain a best-effort source context without
+        # expanding runtime-dependent loops.
+        leading_closes = len(stripped) - len(stripped.lstrip("}"))
+        for _ in range(leading_closes):
+            if context_stack:
+                context_stack.pop()
 
-            if stripped == "{" and pending_context:
+        if stripped == "{" and pending_context:
+            context_stack.append(pending_context)
+            pending_context = None
+        elif "{" in stripped and pending_context:
+            context_stack.append(pending_context)
+            pending_context = None
+
+        match = write_re.search(stripped)
+        if match:
+            split = _split_args(match.group(1))
+            if split:
+                expression, size = split
+                rows.append(WriteRow(
+                    index=len(rows) + 1,
+                    line=lineno,
+                    expression=expression,
+                    size=size,
+                    context=_context_from_stack(context_stack),
+                ))
+
+        if stripped.startswith(("for", "if", "else if", "else")):
+            pending_context = stripped.rstrip("{").strip()
+            if "{" in stripped:
                 context_stack.append(pending_context)
                 pending_context = None
-            elif "{" in stripped and pending_context:
-                context_stack.append(pending_context)
-                pending_context = None
-
-            match = write_re.search(stripped)
-            if match:
-                split = _split_args(match.group(1))
-                if split:
-                    expression, size = split
-                    rows.append(WriteRow(
-                        index=len(rows) + 1,
-                        line=lineno,
-                        expression=expression,
-                        size=size,
-                        context=_context_from_stack(context_stack),
-                    ))
-
-            if stripped.startswith(("for", "if", "else if", "else")):
-                pending_context = stripped.rstrip("{").strip()
-                if "{" in stripped:
-                    context_stack.append(pending_context)
-                    pending_context = None
 
         brace_depth += line.count("{") - line.count("}")
         if in_func and brace_depth <= 0:
@@ -143,12 +139,12 @@ def write_markdown(rows: list[WriteRow], path: Path, source: Path, csv_path: Pat
         "# SaveLevelData source-level stream schema",
         "",
         "Status: Generated",
-        "Story: `docs/stories/RE-010-savegame-stream-schema.md`",
+        "Story: `docs/stories/RE-010-savegame-stream-schema.md`; updated by `docs/stories/RE-011-saveleveldata-psx-implementation.md`",
         "",
         "## Purpose",
         "",
-        "This file captures the ordered `Write(expr, size)` calls from the current `PC_VERSION` branch of `SaveLevelData`.",
-        "The PSX branch is still unimplemented, so this is a reconstruction aid, not proof of PSX equivalence.",
+        "This file captures the ordered `Write(expr, size)` calls from the current `SaveLevelData` implementation.",
+        "It is a reconstruction aid for PSX save/restore work, not proof of binary or functional equivalence.",
         "",
         "## Inputs and outputs",
         "",

@@ -99,7 +99,6 @@ void WriteSG(char* pointer, int size)//536A0, 53B04 (F)
 
 void SaveLevelData(int FullSave)//53AAC, 53F10
 {
-#if PC_VERSION
 	int i;
 	short word = 0;
 	unsigned char byte = 0;
@@ -281,10 +280,6 @@ void SaveLevelData(int FullSave)//53AAC, 53F10
 
 	}
 
-#else
-	// todo check for psx
-	UNIMPLEMENTED();
-#endif
 }
 
 void RestoreLaraData(int FullSave)//538D0(<), 53D34(<) (F)

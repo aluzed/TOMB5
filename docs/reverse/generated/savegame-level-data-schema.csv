@@ -1,33 +1,33 @@
 index,line,expression,size,context
-1,107,&FmvSceneTriggered,4,top-level
-2,108,&GLOBAL_lastinvitem,4,top-level
-3,115,&word,2,top-level
-4,120,&word,2,for(i = 0; i < 10; i++)
-5,123,&flipeffect,4,top-level
-6,124,&fliptimer,4,top-level
-7,125,&flip_status,4,top-level
-8,126,cd_flags,136,top-level
-9,127,&CurrentAtmosphere,1,top-level
-10,144,&word,2,for(i = 0; i < number_rooms; i++) / for (j = 0; j < room[i].num_meshes; j++) / if (room[i].mesh[j].static_number >= 50 && room[i].mesh[j].static_number <= 59) / if (k == 16)
-11,153,&word,2,if (number_rooms > 0)
-12,156,&CurrentSequence,1,top-level
-13,163,&byte,1,top-level
-14,167,&camera.fixed[i].flags,2,for (i = 0; i < number_cameras; i++)
-15,172,&SpotCam[i].flags,2,for(i = 0; i < number_spotcams; i++)
-16,183,&word,2,"for(i = 0; i < level_items; i++, item++) / if (item->flags & IFLAG_KILLED)"
-17,234,&packed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
-18,236,&packed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
-19,238,&packed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
-20,240,&item->room_number,1,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
-21,242,&item->pos.y_rot,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
-22,245,&item->pos.x_rot,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
-23,247,&item->pos.z_rot,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
-24,249,&item->speed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
-25,251,&item->fallspeed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
-26,256,&item->current_anim_state,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)"
-27,257,&item->goal_anim_state,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)"
-28,258,&item->required_anim_state,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)"
-29,262,&item->anim_number,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim) / if (item->object_number == LARA)"
-30,267,&byte,1,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim) / else"
-31,270,&item->frame_number,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)"
-32,274,&item->hit_points,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)"
+1,106,&FmvSceneTriggered,4,top-level
+2,107,&GLOBAL_lastinvitem,4,top-level
+3,114,&word,2,top-level
+4,119,&word,2,for(i = 0; i < 10; i++)
+5,122,&flipeffect,4,top-level
+6,123,&fliptimer,4,top-level
+7,124,&flip_status,4,top-level
+8,125,cd_flags,136,top-level
+9,126,&CurrentAtmosphere,1,top-level
+10,143,&word,2,for(i = 0; i < number_rooms; i++) / for (j = 0; j < room[i].num_meshes; j++) / if (room[i].mesh[j].static_number >= 50 && room[i].mesh[j].static_number <= 59) / if (k == 16)
+11,152,&word,2,if (number_rooms > 0)
+12,155,&CurrentSequence,1,top-level
+13,162,&byte,1,top-level
+14,166,&camera.fixed[i].flags,2,for (i = 0; i < number_cameras; i++)
+15,171,&SpotCam[i].flags,2,for(i = 0; i < number_spotcams; i++)
+16,182,&word,2,"for(i = 0; i < level_items; i++, item++) / if (item->flags & IFLAG_KILLED)"
+17,233,&packed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
+18,235,&packed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
+19,237,&packed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
+20,239,&item->room_number,1,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
+21,241,&item->pos.y_rot,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
+22,244,&item->pos.x_rot,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
+23,246,&item->pos.z_rot,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
+24,248,&item->speed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
+25,250,&item->fallspeed,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)"
+26,255,&item->current_anim_state,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)"
+27,256,&item->goal_anim_state,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)"
+28,257,&item->required_anim_state,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)"
+29,261,&item->anim_number,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim) / if (item->object_number == LARA)"
+30,266,&byte,1,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim) / else"
+31,269,&item->frame_number,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)"
+32,273,&item->hit_points,2,"for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)"
