@@ -57,7 +57,7 @@ def test_build_call_group_map_preserves_total_counts_and_candidate_source_rows()
     )
 
     assert mapping.total_original_calls == 81
-    assert mapping.total_source_sites == 32
+    assert mapping.total_source_sites == 34
     assert mapping.status == "candidate-map-needs-manual-audit"
     assert len(mapping.rows) >= 8
     assert any(row.candidate_source_rows == "1-9" for row in mapping.rows)
@@ -88,4 +88,4 @@ def test_call_map_outputs_are_versionable_and_have_progress_tracker(tmp_path):
     assert "## Progress tracker" in md_text
     assert "- [x] Group original `WriteSG` calls" in md_text
     assert "original `WriteSG` calls: `81`" in md_text
-    assert "source `Write(...)` sites: `32`" in md_text
+    assert "source `Write(...)` sites: `34`" in md_text

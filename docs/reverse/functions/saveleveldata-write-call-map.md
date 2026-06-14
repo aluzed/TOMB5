@@ -21,7 +21,7 @@ Story: `docs/stories/RE-013-saveleveldata-write-call-map.md`
 
 - original `WriteSG` calls: `81`
 - original call groups: `12`
-- source `Write(...)` sites: `32`
+- source `Write(...)` sites: `34`
 - status: `candidate-map-needs-manual-audit`
 
 ## Candidate map

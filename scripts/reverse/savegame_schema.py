@@ -139,7 +139,7 @@ def write_markdown(rows: list[WriteRow], path: Path, source: Path, csv_path: Pat
         "# SaveLevelData source-level stream schema",
         "",
         "Status: Generated",
-        "Story: `docs/stories/RE-010-savegame-stream-schema.md`; updated by `docs/stories/RE-011-saveleveldata-psx-implementation.md`",
+        "Story: `docs/stories/RE-010-savegame-stream-schema.md`; updated by `docs/stories/RE-011-saveleveldata-psx-implementation.md`, `docs/stories/RE-015-saveleveldata-active-item-serialization.md`",
         "",
         "## Purpose",
         "",

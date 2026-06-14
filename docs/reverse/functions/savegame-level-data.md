@@ -157,7 +157,7 @@ RE-010 produced the first versionable stream schema from the current PC `SaveLev
 RE-012 produced a versionable original-dump metadata audit in `docs/reverse/functions/saveleveldata-original-audit.md`:
 
 - original `WriteSG` calls in `SaveLevelData`: `81`
-- source-level static `Write(...)` sites: `32`
+- source-level static `Write(...)` sites: `34`
 - current verdict: `needs-control-flow-audit`
 
 RE-013 then generated the first versionable call-group map:
@@ -167,14 +167,21 @@ RE-013 then generated the first versionable call-group map:
 - original call groups: `12`
 - status: `candidate-map-needs-manual-audit`
 
-RE-014 audited the item-serialization groups against the current source flag model:
+RE-014 audited the item-serialization groups against the then-current source flag model:
 
 - `docs/reverse/generated/saveleveldata-item-flag-audit.csv`
 - `docs/reverse/functions/saveleveldata-item-flag-audit.md`
 - item candidate groups: `9`
 - original item-group `WriteSG` calls: `64`
-- unrepresented original groups: `4, 6`
-- source gaps: active branch control word is assembled but not written; `obj->save_flags` has no `Write(...)` sites
-- status: `source-gaps-found`
+- original groups `4` and `6` were not representable before RE-015
+- source gaps found by RE-014: active branch control word assembled but not written; `obj->save_flags` had no `Write(...)` sites
 
-Suggested next story: reconstruct or explain the active item control word / `save_flags` serialization against finer control-flow evidence, then rerun RE-014 before considering `(F)`.
+RE-015 reconstructed the active item count gaps in source:
+
+- active/full-save item branch now writes the `word` control header before optional payload fields
+- `obj->save_flags` now writes one packed 32-bit flags word
+- source-level static `Write(...)` sites: `34`
+- item count model status: `counts-representable-needs-proof`
+- unrepresented item groups by count: `none`
+
+Suggested next story: prove branch/control-flow equivalence for the now-representable item groups before considering `(F)`, and keep `RestoreLevelData` reconstruction as the required inverse stream before any broader save/restore completeness claim.

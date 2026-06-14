@@ -118,18 +118,23 @@ def count_save_flags_write_sites(source: Path) -> int:
     return len(re.findall(r"\bWrite\s*\(", region))
 
 
-def possible_active_branch_counts() -> tuple[int, ...]:
-    # Current source model:
+def possible_active_branch_counts(active_control_word_sites: int = 0, save_flags_write_sites: int = 0) -> tuple[int, ...]:
+    # Source model:
+    # - active_header: one control word write when the active/full-save branch serializes `word`.
     # - save_position: absent or five required writes plus four optional low-bit/speed writes.
     # - save_anim: absent or five writes (states, anim number/byte, frame).
     # - save_hitpoints: absent or one write.
-    # - save_flags: currently has no Write(...) sites.
+    # - save_flags: absent or the current number of Write(...) sites in the save_flags block.
+    active_header_counts = [active_control_word_sites]
     position_counts = [0, 5, 6, 7, 8, 9]
     anim_counts = [0, 5]
     hitpoint_counts = [0, 1]
     save_flags_counts = [0]
+    if save_flags_write_sites:
+        save_flags_counts.append(save_flags_write_sites)
     counts = {
-        p + a + h + f
+        header + p + a + h + f
+        for header in active_header_counts
         for p in position_counts
         for a in anim_counts
         for h in hitpoint_counts
@@ -138,23 +143,31 @@ def possible_active_branch_counts() -> tuple[int, ...]:
     return tuple(sorted(counts))
 
 
-def _matching_cases(call_count: int) -> str:
+def _matching_cases(call_count: int, active_control_word_sites: int = 0, save_flags_write_sites: int = 0) -> str:
     cases: list[str] = []
+    save_flags_counts = [0]
+    if save_flags_write_sites:
+        save_flags_counts.append(save_flags_write_sites)
     for position in [0, 5, 6, 7, 8, 9]:
         for anim in [0, 5]:
             for hitpoints in [0, 1]:
-                total = position + anim + hitpoints
-                if total == call_count:
-                    parts = []
-                    if position:
-                        parts.append(f"save_position={position}")
-                    if anim:
-                        parts.append("save_anim=5")
-                    if hitpoints:
-                        parts.append("save_hitpoints=1")
-                    if not parts:
-                        parts.append("no optional source writes")
-                    cases.append(" + ".join(parts))
+                for save_flags in save_flags_counts:
+                    total = active_control_word_sites + position + anim + hitpoints + save_flags
+                    if total == call_count:
+                        parts = []
+                        if active_control_word_sites:
+                            parts.append(f"active_header={active_control_word_sites}")
+                        if position:
+                            parts.append(f"save_position={position}")
+                        if anim:
+                            parts.append("save_anim=5")
+                        if hitpoints:
+                            parts.append("save_hitpoints=1")
+                        if save_flags:
+                            parts.append(f"save_flags={save_flags}")
+                        if not parts:
+                            parts.append("no optional source writes")
+                        cases.append(" + ".join(parts))
     return "; ".join(cases) if cases else "none"
 
 
@@ -166,9 +179,13 @@ def _read_item_group_rows(call_map_csv: Path) -> list[dict[str, str]]:
 
 
 def build_item_flag_audit(repo: Path, call_map_csv: Path, source: Path) -> ItemFlagAudit:
-    source_counts = possible_active_branch_counts()
     has_active_header = active_control_word_written(source)
     save_flags_writes = count_save_flags_write_sites(source)
+    active_header_writes = 1 if has_active_header else 0
+    source_counts = possible_active_branch_counts(
+        active_control_word_sites=active_header_writes,
+        save_flags_write_sites=save_flags_writes,
+    )
     rows: list[ItemGroupRow] = []
     unrepresented: list[int] = []
     for raw in _read_item_group_rows(call_map_csv):
@@ -195,7 +212,11 @@ def build_item_flag_audit(repo: Path, call_map_csv: Path, source: Path) -> ItemF
             candidate_source_rows=raw["candidate_source_rows"],
             candidate_context=raw["candidate_context"],
             count_status=status,
-            matching_source_cases=_matching_cases(call_count),
+            matching_source_cases=_matching_cases(
+                call_count,
+                active_control_word_sites=active_header_writes,
+                save_flags_write_sites=save_flags_writes,
+            ),
             notes=notes,
         ))
     status = "source-gaps-found" if unrepresented or not has_active_header or save_flags_writes == 0 else "counts-representable-needs-proof"
@@ -234,7 +255,7 @@ def write_markdown(audit: ItemFlagAudit, path: Path) -> None:
         "# SaveLevelData item flag audit",
         "",
         "Status: Generated",
-        "Story: `docs/stories/RE-014-saveleveldata-item-flag-audit.md`",
+        "Story: `docs/stories/RE-015-saveleveldata-active-item-serialization.md`",
         "",
         "## Progress tracker",
         "",
@@ -260,13 +281,13 @@ def write_markdown(audit: ItemFlagAudit, path: Path) -> None:
         "",
         "## Source count model",
         "",
-        "Current source rows 17-32 model the active/full-save item branch as:",
+        "The active/full-save item branch is modeled as:",
         "",
         "- `save_position`: absent, or 5 required writes plus up to 4 optional writes (`x_rot`, `z_rot`, `speed`, `fallspeed`).",
         "- `save_anim`: absent, or 5 writes (`current`, `goal`, `required`, anim number/byte, frame).",
         "- `save_hitpoints`: absent, or 1 write.",
-        "- `save_flags`: currently 0 writes; the branch is a TODO/comment-only body.",
-        "- active branch control word: currently not written after `word = 0x8000` is assembled.",
+        "- `save_flags`: absent, or one packed 32-bit write (`flags` plus active/status bitfield low 15 bits).",
+        "- active branch control word: written once after `word` is assembled and before optional payload fields.",
         "",
         "## Item group comparison",
         "",
@@ -288,7 +309,7 @@ def write_markdown(audit: ItemFlagAudit, path: Path) -> None:
     lines.extend([
         "## Verdict",
         "",
-        "RE-014 finds source-level gaps in the item serializer model. In particular, the active item branch assembles `word = 0x8000` but does not currently write that control word, and `obj->save_flags` has no serialized writes. Groups whose counts are representable still require branch/control-flow proof; groups whose counts are not representable need source-vs-original reconciliation before any `(F)`, `(D)`, or `(**)` marker.",
+        "RE-015 resolves the source-level count gaps that RE-014 identified: the active item branch now writes the control word, and `obj->save_flags` now serializes one packed 32-bit flags word. The original item groups are therefore representable by source write counts, including groups `4` and `6`; this is still a count-level result, not a control-flow equivalence proof, so no `(F)`, `(D)`, or `(**)` marker is justified yet.",
     ])
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

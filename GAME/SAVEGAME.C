@@ -227,6 +227,8 @@ void SaveLevelData(int FullSave)//53AAC, 53F10
 			if (obj->save_hitpoints)
 				word |= 0x4000;
 
+			Write(&word, 2);
+
 			if (obj->save_position)
 			{
 				short packed = item->pos.x_pos >> 1;
@@ -274,7 +276,17 @@ void SaveLevelData(int FullSave)//53AAC, 53F10
 
 			if (obj->save_flags)
 			{
-				//int x = item->flags | ((*(unsigned long*)&item->active & 0x7FFF) << 16);
+				int flags = (unsigned short)item->flags | ((item->active
+					| (item->status << 1)
+					| (item->gravity_status << 3)
+					| (item->hit_status << 4)
+					| (item->collidable << 5)
+					| (item->looked_at << 6)
+					| (item->dynamic_light << 7)
+					| (item->poisoned << 8)
+					| (item->ai_bits << 9)
+					| (item->really_active << 14)) << 16);
+				Write(&flags, 4);
 			}
 		}
 

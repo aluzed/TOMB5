@@ -1,7 +1,7 @@
 # SaveLevelData item flag audit
 
 Status: Generated
-Story: `docs/stories/RE-014-saveleveldata-item-flag-audit.md`
+Story: `docs/stories/RE-015-saveleveldata-active-item-serialization.md`
 
 ## Progress tracker
 
@@ -19,21 +19,21 @@ Story: `docs/stories/RE-014-saveleveldata-item-flag-audit.md`
 
 - item candidate groups: `9`
 - original item-group `WriteSG` calls: `64`
-- possible current-source active branch counts: `0, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15`
-- active control word written: `no`
-- save_flags write sites: `0`
-- unrepresented original item groups: `4, 6`
-- status: `source-gaps-found`
+- possible current-source active branch counts: `1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17`
+- active control word written: `yes`
+- save_flags write sites: `1`
+- unrepresented original item groups: `none`
+- status: `counts-representable-needs-proof`
 
 ## Source count model
 
-Current source rows 17-32 model the active/full-save item branch as:
+The active/full-save item branch is modeled as:
 
 - `save_position`: absent, or 5 required writes plus up to 4 optional writes (`x_rot`, `z_rot`, `speed`, `fallspeed`).
 - `save_anim`: absent, or 5 writes (`current`, `goal`, `required`, anim number/byte, frame).
 - `save_hitpoints`: absent, or 1 write.
-- `save_flags`: currently 0 writes; the branch is a TODO/comment-only body.
-- active branch control word: currently not written after `word = 0x8000` is assembled.
+- `save_flags`: absent, or one packed 32-bit write (`flags` plus active/status bitfield low 15 bits).
+- active branch control word: written once after `word` is assembled and before optional payload fields.
 
 ## Item group comparison
 
@@ -44,9 +44,9 @@ Current source rows 17-32 model the active/full-save item branch as:
 - call address range: `0x80054458` → `0x800545f4`
 - candidate source rows: `17-25`
 - candidate context: `item position block and optional speed/fallspeed writes`
-- count status: `not-representable-by-current-source-count-model`
-- matching source cases: `none`
-- notes: Count exceeds current source maximum; likely missing active control word and/or save_flags writes.
+- count status: `representable-count-needs-control-flow-proof`
+- matching source cases: `active_header=1 + save_position=9 + save_anim=5 + save_hitpoints=1 + save_flags=1`
+- notes: Count can be produced by current source write-count model; branch conditions still need manual proof.
 
 ### Original item group 5
 
@@ -56,7 +56,7 @@ Current source rows 17-32 model the active/full-save item branch as:
 - candidate source rows: `17-32`
 - candidate context: `item active/full-save branch variant`
 - count status: `representable-count-needs-control-flow-proof`
-- matching source cases: `save_position=9 + save_anim=5 + save_hitpoints=1`
+- matching source cases: `active_header=1 + save_position=7 + save_anim=5 + save_hitpoints=1 + save_flags=1; active_header=1 + save_position=8 + save_anim=5 + save_flags=1; active_header=1 + save_position=8 + save_anim=5 + save_hitpoints=1; active_header=1 + save_position=9 + save_anim=5`
 - notes: Count can be produced by current source write-count model; branch conditions still need manual proof.
 
 ### Original item group 6
@@ -66,9 +66,9 @@ Current source rows 17-32 model the active/full-save item branch as:
 - call address range: `0x800548fc` → `0x80054924`
 - candidate source rows: `26-32`
 - candidate context: `item animation and hitpoint fields`
-- count status: `not-representable-by-current-source-count-model`
-- matching source cases: `none`
-- notes: Count falls into a gap in current optional flag combinations; audit original branch boundaries.
+- count status: `representable-count-needs-control-flow-proof`
+- matching source cases: `active_header=1 + save_hitpoints=1 + save_flags=1`
+- notes: Count can be produced by current source write-count model; branch conditions still need manual proof.
 
 ### Original item group 7
 
@@ -78,7 +78,7 @@ Current source rows 17-32 model the active/full-save item branch as:
 - candidate source rows: `17-32`
 - candidate context: `item serialization alternate control-flow region`
 - count status: `representable-count-needs-control-flow-proof`
-- matching source cases: `save_hitpoints=1`
+- matching source cases: `active_header=1`
 - notes: Count can be produced by current source write-count model; branch conditions still need manual proof.
 
 ### Original item group 8
@@ -89,7 +89,7 @@ Current source rows 17-32 model the active/full-save item branch as:
 - candidate source rows: `17-32`
 - candidate context: `item serialization dense call region`
 - count status: `representable-count-needs-control-flow-proof`
-- matching source cases: `save_position=6 + save_anim=5 + save_hitpoints=1; save_position=7 + save_anim=5`
+- matching source cases: `active_header=1 + save_position=5 + save_anim=5 + save_flags=1; active_header=1 + save_position=5 + save_anim=5 + save_hitpoints=1; active_header=1 + save_position=6 + save_anim=5; active_header=1 + save_position=9 + save_hitpoints=1 + save_flags=1`
 - notes: Count can be produced by current source write-count model; branch conditions still need manual proof.
 
 ### Original item group 9
@@ -100,7 +100,7 @@ Current source rows 17-32 model the active/full-save item branch as:
 - candidate source rows: `29-32`
 - candidate context: `lara/non-lara anim-number and frame/hitpoint tail`
 - count status: `representable-count-needs-control-flow-proof`
-- matching source cases: `save_hitpoints=1`
+- matching source cases: `active_header=1`
 - notes: Count can be produced by current source write-count model; branch conditions still need manual proof.
 
 ### Original item group 10
@@ -111,7 +111,7 @@ Current source rows 17-32 model the active/full-save item branch as:
 - candidate source rows: `17-32`
 - candidate context: `item serialization second variant`
 - count status: `representable-count-needs-control-flow-proof`
-- matching source cases: `save_position=6 + save_hitpoints=1; save_position=7`
+- matching source cases: `active_header=1 + save_anim=5 + save_flags=1; active_header=1 + save_anim=5 + save_hitpoints=1; active_header=1 + save_position=5 + save_flags=1; active_header=1 + save_position=5 + save_hitpoints=1; active_header=1 + save_position=6`
 - notes: Count can be produced by current source write-count model; branch conditions still need manual proof.
 
 ### Original item group 11
@@ -122,7 +122,7 @@ Current source rows 17-32 model the active/full-save item branch as:
 - candidate source rows: `31-32`
 - candidate context: `frame number / hit points tail`
 - count status: `representable-count-needs-control-flow-proof`
-- matching source cases: `save_hitpoints=1`
+- matching source cases: `active_header=1`
 - notes: Count can be produced by current source write-count model; branch conditions still need manual proof.
 
 ### Original item group 12
@@ -133,9 +133,9 @@ Current source rows 17-32 model the active/full-save item branch as:
 - candidate source rows: `17-32`
 - candidate context: `item serialization final variant`
 - count status: `representable-count-needs-control-flow-proof`
-- matching source cases: `save_position=6 + save_hitpoints=1; save_position=7`
+- matching source cases: `active_header=1 + save_anim=5 + save_flags=1; active_header=1 + save_anim=5 + save_hitpoints=1; active_header=1 + save_position=5 + save_flags=1; active_header=1 + save_position=5 + save_hitpoints=1; active_header=1 + save_position=6`
 - notes: Count can be produced by current source write-count model; branch conditions still need manual proof.
 
 ## Verdict
 
-RE-014 finds source-level gaps in the item serializer model. In particular, the active item branch assembles `word = 0x8000` but does not currently write that control word, and `obj->save_flags` has no serialized writes. Groups whose counts are representable still require branch/control-flow proof; groups whose counts are not representable need source-vs-original reconciliation before any `(F)`, `(D)`, or `(**)` marker.
+RE-015 resolves the source-level count gaps that RE-014 identified: the active item branch now writes the control word, and `obj->save_flags` now serializes one packed 32-bit flags word. The original item groups are therefore representable by source write counts, including groups `4` and `6`; this is still a count-level result, not a control-flow equivalence proof, so no `(F)`, `(D)`, or `(**)` marker is justified yet.

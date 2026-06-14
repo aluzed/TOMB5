@@ -32,3 +32,22 @@ def test_save_level_data_is_not_hidden_behind_pc_version_only():
 
     assert "#if PC_VERSION" not in body
     assert "#else" not in body
+
+
+def test_save_level_data_active_item_writes_control_word_before_payload():
+    body = _function_body("SaveLevelData")
+    active = body.index("word = 0x8000;")
+    header_write = body.index("Write(&word, 2);", active)
+    position_payload = body.index("if (obj->save_position)", active)
+
+    assert active < header_write < position_payload
+
+
+def test_save_level_data_save_flags_writes_packed_low_flags_and_active_bits():
+    body = _function_body("SaveLevelData")
+    save_flags_block = body[body.index("if (obj->save_flags)"):]
+
+    assert "int flags = (unsigned short)item->flags" in save_flags_block
+    assert "(item->ai_bits << 9)" in save_flags_block
+    assert "(item->really_active << 14)" in save_flags_block
+    assert "Write(&flags, 4);" in save_flags_block
