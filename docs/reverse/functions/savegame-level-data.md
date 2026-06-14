@@ -167,4 +167,14 @@ RE-013 then generated the first versionable call-group map:
 - original call groups: `12`
 - status: `candidate-map-needs-manual-audit`
 
-Suggested next story: manually audit the repeated item-serialization groups against object flags and `FullSave`, then replace low-confidence candidate spans with controlled source-to-original correspondences before considering `(F)`.
+RE-014 audited the item-serialization groups against the current source flag model:
+
+- `docs/reverse/generated/saveleveldata-item-flag-audit.csv`
+- `docs/reverse/functions/saveleveldata-item-flag-audit.md`
+- item candidate groups: `9`
+- original item-group `WriteSG` calls: `64`
+- unrepresented original groups: `4, 6`
+- source gaps: active branch control word is assembled but not written; `obj->save_flags` has no `Write(...)` sites
+- status: `source-gaps-found`
+
+Suggested next story: reconstruct or explain the active item control word / `save_flags` serialization against finer control-flow evidence, then rerun RE-014 before considering `(F)`.

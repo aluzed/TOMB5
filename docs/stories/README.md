@@ -39,6 +39,7 @@
 - [RE-011 — Implémenter la branche PSX SaveLevelData depuis le schéma](RE-011-saveleveldata-psx-implementation.md) — Status: `Done`
 - [RE-012 — Auditer SaveLevelData contre le dump original](RE-012-saveleveldata-original-audit.md) — Status: `Done`
 - [RE-013 — Mapper les groupes d'appels WriteSG de SaveLevelData](RE-013-saveleveldata-write-call-map.md) — Status: `Done`
+- [RE-014 — Auditer les flags item de SaveLevelData](RE-014-saveleveldata-item-flag-audit.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
