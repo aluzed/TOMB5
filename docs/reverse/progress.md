@@ -1,0 +1,254 @@
+# TOMB5 reverse progress
+
+Generated: `2026-06-14T18:53:10.981663+00:00`
+
+## Status definitions
+
+- `unknown`: No final/decompile/debug marker and no useful mapping/name signal.
+- `named`: Mapped/named, but not marked final/decompiled/debugged.
+- `decompiled`: Named repo function without final/debug marker.
+- `final`: Contains `(F)`.
+- `debugged`: Contains `(D)`; stronger than `(F)` for tracking.
+- `binary_matched`: Contains `(**)`.
+
+## Overall
+
+- Repo functions in mapping
+  - total: `1250`
+  - mapped: `866` (`69.28%`)
+  - final/debug/binary-matched: `925` (`74.0%`)
+  - F: `842`; D: `83`; binary-matched: `0`; decompiled: `324`; named: `0`; unknown: `1`; ND: `23`
+
+## Modules
+
+- GAME
+  - total: `811`
+  - mapped: `620` (`76.45%`)
+  - final/debug/binary-matched: `672` (`82.86%`)
+  - F: `667`; D: `5`; binary-matched: `0`; decompiled: `139`; named: `0`; unknown: `0`; ND: `4`
+- SPEC_PSXPC_N
+  - total: `212`
+  - mapped: `102` (`48.11%`)
+  - final/debug/binary-matched: `119` (`56.13%`)
+  - F: `78`; D: `41`; binary-matched: `0`; decompiled: `92`; named: `0`; unknown: `1`; ND: `12`
+- SPEC_PSXPC
+  - total: `144`
+  - mapped: `88` (`61.11%`)
+  - final/debug/binary-matched: `66` (`45.83%`)
+  - F: `66`; D: `0`; binary-matched: `0`; decompiled: `78`; named: `0`; unknown: `0`; ND: `0`
+- SPEC_PSX
+  - total: `79`
+  - mapped: `55` (`69.62%`)
+  - final/debug/binary-matched: `67` (`84.81%`)
+  - F: `30`; D: `37`; binary-matched: `0`; decompiled: `12`; named: `0`; unknown: `0`; ND: `7`
+- SPEC_PC_N
+  - total: `4`
+  - mapped: `1` (`25.0%`)
+  - final/debug/binary-matched: `1` (`25.0%`)
+  - F: `1`; D: `0`; binary-matched: `0`; decompiled: `3`; named: `0`; unknown: `0`; ND: `0`
+
+## Files with most non-final functions
+
+- `SPEC_PSXPC_N/ANIMITEM.C`
+  - non-final: `24` / `25`
+  - mapped non-final: `2`
+  - final/debug/binary-matched: `4.0%`
+- `SPEC_PSXPC_N/MATHS.C`
+  - non-final: `19` / `40`
+  - mapped non-final: `4`
+  - final/debug/binary-matched: `52.5%`
+- `SPEC_PSXPC/MATHS.C`
+  - non-final: `18` / `27`
+  - mapped non-final: `4`
+  - final/debug/binary-matched: `33.33%`
+- `GAME/SWITCH.C`
+  - non-final: `15` / `21`
+  - mapped non-final: `15`
+  - final/debug/binary-matched: `28.57%`
+- `GAME/TRAPS.C`
+  - non-final: `15` / `30`
+  - mapped non-final: `15`
+  - final/debug/binary-matched: `50.0%`
+- `GAME/SETUP.C`
+  - non-final: `12` / `25`
+  - mapped non-final: `0`
+  - final/debug/binary-matched: `52.0%`
+- `GAME/LARAFIRE.C`
+  - non-final: `10` / `16`
+  - mapped non-final: `7`
+  - final/debug/binary-matched: `37.5%`
+- `SPEC_PSXPC/MISC.C`
+  - non-final: `9` / `17`
+  - mapped non-final: `6`
+  - final/debug/binary-matched: `47.06%`
+- `SPEC_PSXPC_N/MISC.C`
+  - non-final: `9` / `18`
+  - mapped non-final: `6`
+  - final/debug/binary-matched: `50.0%`
+- `GAME/DOOR.C`
+  - non-final: `8` / `10`
+  - mapped non-final: `8`
+  - final/debug/binary-matched: `20.0%`
+- `GAME/PICKUP.C`
+  - non-final: `7` / `14`
+  - mapped non-final: `7`
+  - final/debug/binary-matched: `50.0%`
+- `SPEC_PSXPC/SFX.C`
+  - non-final: `7` / `13`
+  - mapped non-final: `4`
+  - final/debug/binary-matched: `46.15%`
+- `SPEC_PSXPC/PROFILE.C`
+  - non-final: `7` / `7`
+  - mapped non-final: `0`
+  - final/debug/binary-matched: `0.0%`
+- `GAME/LARA.C`
+  - non-final: `6` / `177`
+  - mapped non-final: `6`
+  - final/debug/binary-matched: `96.61%`
+- `GAME/COLLIDE.C`
+  - non-final: `5` / `11`
+  - mapped non-final: `5`
+  - final/debug/binary-matched: `54.55%`
+- `GAME/LARAFLAR.C`
+  - non-final: `5` / `11`
+  - mapped non-final: `5`
+  - final/debug/binary-matched: `54.55%`
+- `GAME/DELTAPAK.C`
+  - non-final: `5` / `159`
+  - mapped non-final: `4`
+  - final/debug/binary-matched: `96.86%`
+- `SPEC_PSXPC_N/DRAWOBJ.C`
+  - non-final: `5` / `8`
+  - mapped non-final: `1`
+  - final/debug/binary-matched: `37.5%`
+- `GAME/EFFECT2.C`
+  - non-final: `4` / `9`
+  - mapped non-final: `4`
+  - final/debug/binary-matched: `55.56%`
+- `GAME/EFFECTS.C`
+  - non-final: `4` / `41`
+  - mapped non-final: `4`
+  - final/debug/binary-matched: `90.24%`
+- `GAME/NEWINV2.C`
+  - non-final: `4` / `65`
+  - mapped non-final: `4`
+  - final/debug/binary-matched: `93.85%`
+- `SPEC_PSXPC/SPECIFIC.C`
+  - non-final: `4` / `8`
+  - mapped non-final: `4`
+  - final/debug/binary-matched: `50.0%`
+- `GAME/LARACLMB.C`
+  - non-final: `4` / `21`
+  - mapped non-final: `3`
+  - final/debug/binary-matched: `80.95%`
+- `SPEC_PSXPC/MEMCARD.C`
+  - non-final: `4` / `5`
+  - mapped non-final: `1`
+  - final/debug/binary-matched: `20.0%`
+- `SPEC_PSXPC_N/CALCLARA.C`
+  - non-final: `4` / `6`
+  - mapped non-final: `1`
+  - final/debug/binary-matched: `33.33%`
+- `GAME/FLMTORCH.C`
+  - non-final: `3` / `5`
+  - mapped non-final: `3`
+  - final/debug/binary-matched: `40.0%`
+- `GAME/LARASWIM.C`
+  - non-final: `3` / `21`
+  - mapped non-final: `3`
+  - final/debug/binary-matched: `85.71%`
+- `GAME/OBJLIGHT.C`
+  - non-final: `3` / `6`
+  - mapped non-final: `3`
+  - final/debug/binary-matched: `50.0%`
+- `GAME/SAVEGAME.C`
+  - non-final: `3` / `9`
+  - mapped non-final: `3`
+  - final/debug/binary-matched: `66.67%`
+- `SPEC_PSX/LOADSAVE.C`
+  - non-final: `3` / `3`
+  - mapped non-final: `3`
+  - final/debug/binary-matched: `0.0%`
+
+## Next candidates
+
+- `0x800937c4` `SoundEffect` — score `7544`
+  - file: `GAME/EFFECTS.C:625`
+  - status: `decompiled`; markers: `none`
+  - body_size: `1404`; callers: `75`; callees: `7`
+- `0x800937c4` `SoundEffect` — score `7544`
+  - file: `GAME/EFFECTS.C:633`
+  - status: `decompiled`; markers: `none`
+  - body_size: `1404`; callers: `75`; callees: `7`
+- `0x800937c4` `SoundEffect` — score `7544`
+  - file: `GAME/EFFECTS.C:891`
+  - status: `decompiled`; markers: `none`
+  - body_size: `1404`; callers: `75`; callees: `7`
+- `0x800383d0` `CalculateSpotCams` — score `5140`
+  - file: `GAME/SPOTCAM.C:429`
+  - status: `decompiled`; markers: `none`
+  - body_size: `4800`; callers: `1`; callees: `13`
+- `0x80054f6c` `RestoreLevelData` — score `4400`
+  - file: `GAME/SAVEGAME.C:82`
+  - status: `decompiled`; markers: `none`
+  - body_size: `4080`; callers: `1`; callees: `12`
+- `0x80053f10` `SaveLevelData` — score `4288`
+  - file: `GAME/SAVEGAME.C:100`
+  - status: `decompiled`; markers: `none`
+  - body_size: `4188`; callers: `1`; callees: `1`
+- `0x80048de8` `DoProperDetection` — score `3528`
+  - file: `GAME/LARAFIRE.C:99`
+  - status: `decompiled`; markers: `none`
+  - body_size: `3288`; callers: `2`; callees: `4`
+- `0x8007d254` `GetCollisionInfo` — score `3508`
+  - file: `SPEC_PSXPC_N/COLLIDE_S.C:475`
+  - status: `decompiled`; markers: `none`
+  - body_size: `1848`; callers: `19`; callees: `7`
+- `0x80036f3c` `ShatterObject` — score `3364`
+  - file: `GAME/DEBRIS.C:54`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2684`; callers: `7`; callees: `6`
+- `0x8003d7a4` `draw_current_object_list` — score `3256`
+  - file: `GAME/NEWINV2.C:1890`
+  - status: `decompiled`; markers: `none`
+  - body_size: `3016`; callers: `1`; callees: `8`
+- `0x8003bc04` `S_CallInventory2` — score `3064`
+  - file: `GAME/NEWINV2.C:3153`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2164`; callers: `2`; callees: `37`
+- `0x8006038c` `S_UpdateInput` — score `2952`
+  - file: `SPEC_PSX/PSXINPUT.C:89`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2452`; callers: `5`; callees: `5`
+- `0x8006038c` `S_UpdateInput` — score `2952`
+  - file: `SPEC_PSXPC/PSXPCINPUT.C:60`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2452`; callers: `5`; callees: `5`
+- `0x8006038c` `S_UpdateInput` — score `2952`
+  - file: `SPEC_PSXPC_N/PSXINPUT.C:91`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2452`; callers: `5`; callees: `5`
+- `0x80027fac` `CalculateCamera` — score `2724`
+  - file: `GAME/CAMERA.C:1167`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2204`; callers: `3`; callees: `14`
+- `0x80033db8` `ControlSmokeEmitter` — score `2684`
+  - file: `GAME/EFFECT2.C:51`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2584`; callers: `0`; callees: `5`
+- `0x8004ac9c` `LaraControl` — score `2560`
+  - file: `GAME/LARAMISC.C:163`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2220`; callers: `1`; callees: `13`
+- `0x8005b284` `ControlRollingBall` — score `2536`
+  - file: `GAME/TRAPS.C:476`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2376`; callers: `0`; callees: `8`
+- `0x80063df4` `Requester` — score `2308`
+  - file: `SPEC_PSXPC/REQUEST.C:12`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2028`; callers: `1`; callees: `10`
+- `0x800347d0` `ControlEnemyMissile` — score `2260`
+  - file: `GAME/EFFECT2.C:46`
+  - status: `decompiled`; markers: `none`
+  - body_size: `1980`; callers: `0`; callees: `14`

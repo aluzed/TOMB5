@@ -1829,7 +1829,7 @@ void ObjectObjects()//?, B84F0
 		ori     $v0, 4
 		sw      $v0, 0xD0($v1)
 
-		loc_1BA4:                                # CODE XREF : ROM:00001A94↑j
+		loc_1BA4:                                # CODE XREF : ROM:00001A94j
 		addiu   $t0, 0x180
 		lw      $v0, 0x30($t0)
 		nop
@@ -1853,7 +1853,7 @@ void ObjectObjects()//?, B84F0
 		nop
 		sh      $v0, 0x26($t0)
 
-		loc_1BFC:                                # CODE XREF : ROM:00001BE8↑j
+		loc_1BFC:                                # CODE XREF : ROM:00001BE8j
 		ori     $a0, 0xFFFF
 		li      $v0, 0x29E10
 		sw      $v0, 0x20($t0)
@@ -1938,7 +1938,7 @@ void ObjectObjects()//?, B84F0
 		sw      $a0, 0x6C($v1)
 		sh      $v0, 0x24($t0)
 
-		loc_1D50:                                # CODE XREF : ROM:00001BB4↑j
+		loc_1D50:                                # CODE XREF : ROM:00001BB4j
 		lui     $v0, 0x1F
 		addiu   $t0, $v0, 0x2CC0
 		lw      $v1, 0x30($t0)
@@ -2039,7 +2039,7 @@ void ObjectObjects()//?, B84F0
 		sw      $a0, 0x6C($v1)
 		sh      $v0, 0x24($t0)
 
-		loc_1EE4:                                # CODE XREF : ROM:00001D64↑j
+		loc_1EE4:                                # CODE XREF : ROM:00001D64j
 		addiu   $t0, 0x80
 		lw      $v0, 0x30($t0)
 		nop
@@ -2064,10 +2064,10 @@ void ObjectObjects()//?, B84F0
 		sh      $v0, 0x26($t0)
 # ---------------------------------------------------------------------------
 
-		loc_1F3C:                                # CODE XREF : ROM:00001F28↑j
+		loc_1F3C:                                # CODE XREF : ROM:00001F28j
 		lhu     $v0, 0x966($v1)
 
-		loc_1F40 : # CODE XREF : ROM:00001F34↑j
+		loc_1F40 : # CODE XREF : ROM:00001F34j
 		nop
 		sh      $v0, 0x26($t0)
 		li      $a1, 0xF3FFFFFF
@@ -2156,7 +2156,7 @@ void ObjectObjects()//?, B84F0
 		sw      $a0, 0x6C($v1)
 		sh      $v0, 0x24($t0)
 
-		loc_20A4:                                # CODE XREF : ROM:00001EF4↑j
+		loc_20A4:                                # CODE XREF : ROM:00001EF4j
 		lui     $v1, 0x1F
 		addiu   $t0, $v1, 0x30C0
 		lw      $v0, 0x30($t0)
@@ -2182,10 +2182,10 @@ void ObjectObjects()//?, B84F0
 		sh      $v0, 0x26($t0)
 # ---------------------------------------------------------------------------
 
-		loc_2100:                                # CODE XREF : ROM:000020EC↑j
+		loc_2100:                                # CODE XREF : ROM:000020ECj
 		lhu     $v0, 0x966($v1)
 
-		loc_2104 : # CODE XREF : ROM:000020F8↑j
+		loc_2104 : # CODE XREF : ROM:000020F8j
 		nop
 		sh      $v0, 0x26($t0)
 		li      $a0, 0xF3FFFFFF
@@ -2276,7 +2276,7 @@ void ObjectObjects()//?, B84F0
 		sw      $a0, 0x6C($v1)
 		sh      $v0, 0x24($t0)
 
-		loc_2270:                                # CODE XREF : ROM:000020B8↑j
+		loc_2270:                                # CODE XREF : ROM:000020B8j
 		lui     $v1, 0x1F
 		addiu   $t0, $v1, 0x35C0
 		lw      $v0, 0x30($t0)
@@ -2302,10 +2302,10 @@ void ObjectObjects()//?, B84F0
 		sh      $v0, 0x26($t0)
 # ---------------------------------------------------------------------------
 
-		loc_22CC:                                # CODE XREF : ROM:000022B8↑j
+		loc_22CC:                                # CODE XREF : ROM:000022B8j
 		lhu     $v0, 0x966($v1)
 
-		loc_22D0 : # CODE XREF : ROM:000022C4↑j
+		loc_22D0 : # CODE XREF : ROM:000022C4j
 		nop
 		sh      $v0, 0x26($t0)
 		li      $a1, 0xF3FFFFFF
@@ -2391,7 +2391,7 @@ void ObjectObjects()//?, B84F0
 		sw      $a0, 0x6C($v1)
 		sh      $v0, 0x24($t0)
 
-		loc_2428:                                # CODE XREF : ROM:00002284↑j
+		loc_2428:                                # CODE XREF : ROM:00002284j
 		lui     $v1, 0x1F
 		addiu   $t0, $v1, 0x3240
 		lw      $v0, 0x30($t0)
@@ -2417,10 +2417,10 @@ void ObjectObjects()//?, B84F0
 		sh      $v0, 0x26($t0)
 # ---------------------------------------------------------------------------
 
-		loc_2484:                                # CODE XREF : ROM:00002470↑j
+		loc_2484:                                # CODE XREF : ROM:00002470j
 		lhu     $v0, 0x966($v1)
 
-		loc_2488 : # CODE XREF : ROM:0000247C↑j
+		loc_2488 : # CODE XREF : ROM:0000247Cj
 		nop
 		sh      $v0, 0x26($t0)
 		li      $a0, 0xF3FFFFFF
@@ -2512,7 +2512,7 @@ void ObjectObjects()//?, B84F0
 		sw      $a0, 0x6C($v1)
 		sh      $v0, 0x24($t0)
 
-		loc_25F8:                                # CODE XREF : ROM:0000243C↑j
+		loc_25F8:                                # CODE XREF : ROM:0000243Cj
 		lui     $v1, 0x1F
 		addiu   $t0, $v1, 0x3280
 		li      $v0, 0x4F154
@@ -2639,10 +2639,10 @@ void ObjectObjects()//?, B84F0
 		sh      $v0, 0x26($t0)
 # ---------------------------------------------------------------------------
 
-		loc_27EC:                                # CODE XREF : ROM:000027D8↑j
+		loc_27EC:                                # CODE XREF : ROM:000027D8j
 		lhu     $v0, 0x966($a2)
 
-		loc_27F0 : # CODE XREF : ROM:000027E4↑j
+		loc_27F0 : # CODE XREF : ROM:000027E4j
 		nop
 		sh      $v0, 0x26($t0)
 		li      $a1, 0xF3FFFFFF
@@ -2709,7 +2709,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0xD0($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_28FC:                                # CODE XREF : ROM:000027A4↑j
+		loc_28FC:                                # CODE XREF : ROM:000027A4j
 		lui     $v0, 0x1F
 		addiu   $t0, $v0, 0x38C0
 		lw      $a3, 0x30($t0)
@@ -2774,7 +2774,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x10($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_29FC:                                # CODE XREF : ROM:00002910↑j
+		loc_29FC:                                # CODE XREF : ROM:00002910j
 		addiu   $t0, -0x600
 		lw      $v1, 0x30($t0)
 		nop
@@ -2836,7 +2836,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x130($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_2AF0:                                # CODE XREF : ROM:00002A0C↑j
+		loc_2AF0:                                # CODE XREF : ROM:00002A0Cj
 		addiu   $t0, -0x400
 		lw      $v1, 0x30($t0)
 		nop
@@ -2890,7 +2890,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x130($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_2BC4:                                # CODE XREF : ROM:00002B00↑j
+		loc_2BC4:                                # CODE XREF : ROM:00002B00j
 		addiu   $t0, 0xB00
 		lw      $v1, 0x30($t0)
 		nop
@@ -2944,7 +2944,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x130($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_2C98:                                # CODE XREF : ROM:00002BD4↑j
+		loc_2C98:                                # CODE XREF : ROM:00002BD4j
 		addiu   $t0, -0xA80
 		lw      $v1, 0x30($t0)
 		nop
@@ -2998,7 +2998,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x130($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_2D6C:                                # CODE XREF : ROM:00002CA8↑j
+		loc_2D6C:                                # CODE XREF : ROM:00002CA8j
 		addiu   $t0, 0x800
 		lw      $v1, 0x30($t0)
 		nop
@@ -3046,7 +3046,7 @@ void ObjectObjects()//?, B84F0
 		sw      $a2, 0x10($t0)
 		sw      $v0, 0x30($t0)
 
-		loc_2E28:                                # CODE XREF : ROM:00002D7C↑j
+		loc_2E28:                                # CODE XREF : ROM:00002D7Cj
 		addiu   $t0, -0x600
 		lw      $v1, 0x30($t0)
 		nop
@@ -3156,7 +3156,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v1, 0x6C($a0)
 		sh      $v0, 0x24($t0)
 
-		loc_2FE0:                                # CODE XREF : ROM:00002E38↑j
+		loc_2FE0:                                # CODE XREF : ROM:00002E38j
 		addiu   $t0, -0x100
 		lw      $v1, 0x30($t0)
 		nop
@@ -3237,7 +3237,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x70($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_3124:                                # CODE XREF : ROM:00002FF0↑j
+		loc_3124:                                # CODE XREF : ROM:00002FF0j
 		addiu   $t0, -0x80
 		lw      $v1, 0x30($t0)
 		nop
@@ -3318,7 +3318,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x70($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_3268:                                # CODE XREF : ROM:00003134↑j
+		loc_3268:                                # CODE XREF : ROM:00003134j
 		addiu   $t0, 0x580
 		lui     $t4, 0x1F
 		lui     $t5, 0x1F
@@ -3400,7 +3400,7 @@ void ObjectObjects()//?, B84F0
 		ori     $v0, 4
 		sw      $v0, 0xD0($a0)
 
-		loc_33B0:                                # CODE XREF : ROM:000033E8↓j
+		loc_33B0:                                # CODE XREF : ROM:000033E8j
 		move    $v0, $t1
 		addu    $t1, $t2
 		sll     $a1, $a3, 3
@@ -3420,7 +3420,7 @@ void ObjectObjects()//?, B84F0
 		li      $v0, 0x1400
 		sh      $v0, 0x24($t0)
 
-		loc_33F8:                                # CODE XREF : ROM:00003280↑j
+		loc_33F8:                                # CODE XREF : ROM:00003280j
 		addiu   $t0, $t4, 0x3940
 		lw      $v1, 0x30($t0)
 		lui     $v0, 1
@@ -3503,7 +3503,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0xD0($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_3544:                                # CODE XREF : ROM:00003408↑j
+		loc_3544:                                # CODE XREF : ROM:00003408j
 		addiu   $t0, 0x100
 		lw      $v1, 0x30($t0)
 		lui     $v0, 1
@@ -3581,7 +3581,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0xD0($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_3678:                                # CODE XREF : ROM:00003554↑j
+		loc_3678:                                # CODE XREF : ROM:00003554j
 		addiu   $t0, -0xC00
 		lw      $a3, 0x30($t0)
 		lui     $v0, 1
@@ -3671,7 +3671,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v1, 0x54($a0)
 		sh      $v0, 0x24($t0)
 
-		loc_37DC:                                # CODE XREF : ROM:00003688↑j
+		loc_37DC:                                # CODE XREF : ROM:00003688j
 		addiu   $t0, 0x600
 		lw      $a3, 0x30($t0)
 		lui     $t1, 1
@@ -3750,7 +3750,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x80($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_3914:                                # CODE XREF : ROM:000037EC↑j
+		loc_3914:                                # CODE XREF : ROM:000037ECj
 		addiu   $t0, 0x680
 		lw      $v1, 0x30($t0)
 		nop
@@ -3840,7 +3840,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v1, 0x54($a0)
 		sh      $v0, 0x24($t0)
 
-		loc_3A78:                                # CODE XREF : ROM:00003924↑j
+		loc_3A78:                                # CODE XREF : ROM:00003924j
 		addiu   $t0, -0x480
 		lw      $v1, 0x30($t0)
 		nop
@@ -3918,7 +3918,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x90($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_3BB0:                                # CODE XREF : ROM:00003A88↑j
+		loc_3BB0:                                # CODE XREF : ROM:00003A88j
 		addiu   $t0, 0x180
 		lw      $v1, 0x30($t0)
 		nop
@@ -3997,7 +3997,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x90($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_3CE8:                                # CODE XREF : ROM:00003BC0↑j
+		loc_3CE8:                                # CODE XREF : ROM:00003BC0j
 		addiu   $t0, 0x80
 		lw      $v1, 0x30($t0)
 		nop
@@ -4077,7 +4077,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x90($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_3E24:                                # CODE XREF : ROM:00003CF8↑j
+		loc_3E24:                                # CODE XREF : ROM:00003CF8j
 		addiu   $t0, -0x180
 		lw      $v1, 0x30($t0)
 		nop
@@ -4155,7 +4155,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x80($v1)
 		sh      $a0, 0x24($t0)
 
-		loc_3F58:                                # CODE XREF : ROM:00003E34↑j
+		loc_3F58:                                # CODE XREF : ROM:00003E34j
 		addiu   $t0, 0x540
 		lw      $v1, 0x30($t0)
 		nop
@@ -4178,7 +4178,7 @@ void ObjectObjects()//?, B84F0
 		nop
 		sw      $a0, 0x10($t0)
 
-		loc_3FB0:                                # CODE XREF : ROM:00003F68↑j
+		loc_3FB0:                                # CODE XREF : ROM:00003F68j
 		addiu   $t0, -0x40
 		lw      $v1, 0x30($t0)
 		nop
@@ -4201,7 +4201,7 @@ void ObjectObjects()//?, B84F0
 		nop
 		sw      $a0, 0x10($t0)
 
-		loc_4008:                                # CODE XREF : ROM:00003FC0↑j
+		loc_4008:                                # CODE XREF : ROM:00003FC0j
 		addiu   $t0, 0x80
 		lw      $a0, 0x30($t0)
 		nop
@@ -4221,7 +4221,7 @@ void ObjectObjects()//?, B84F0
 		nop
 		sw      $a0, 0x10($t0)
 
-		loc_4054:                                # CODE XREF : ROM:00004018↑j
+		loc_4054:                                # CODE XREF : ROM:00004018j
 		addiu   $t0, -0x900
 		lw      $v1, 0x30($t0)
 		nop
@@ -4298,7 +4298,7 @@ void ObjectObjects()//?, B84F0
 		ori     $v0, 4
 		sw      $v0, 0xD0($a0)
 
-		loc_4184:                                # CODE XREF : ROM:000041BC↓j
+		loc_4184:                                # CODE XREF : ROM:000041BCj
 		move    $v0, $t1
 		addu    $t1, $t2
 		sll     $a1, $a3, 3
@@ -4318,7 +4318,7 @@ void ObjectObjects()//?, B84F0
 		li      $v0, 0x1400
 		sh      $v0, 0x24($t0)
 
-		loc_41CC:                                # CODE XREF : ROM:00004064↑j
+		loc_41CC:                                # CODE XREF : ROM:00004064j
 		addiu   $t0, $t5, 0x33C0
 		lw      $v1, 0x30($t0)
 		lui     $v0, 1
@@ -4395,7 +4395,7 @@ void ObjectObjects()//?, B84F0
 		ori     $v0, 4
 		sw      $v0, 0xD0($a0)
 
-		loc_42FC:                                # CODE XREF : ROM:00004334↓j
+		loc_42FC:                                # CODE XREF : ROM:00004334j
 		move    $v0, $t1
 		addu    $t1, $t2
 		sll     $a1, $a3, 3
@@ -4415,7 +4415,7 @@ void ObjectObjects()//?, B84F0
 		li      $v0, 0x1400
 		sh      $v0, 0x24($t0)
 
-		loc_4344:                                # CODE XREF : ROM:000041DC↑j
+		loc_4344:                                # CODE XREF : ROM:000041DCj
 		addiu   $t0, $t6, 0x34C0
 		lw      $a3, 0x30($t0)
 		lui     $t1, 1
@@ -4448,7 +4448,7 @@ void ObjectObjects()//?, B84F0
 		sw      $v0, 0x30($t0)
 		sw      $a2, 0x10($t0)
 
-		loc_43C4:                                # CODE XREF : ROM:00004354↑j
+		loc_43C4:                                # CODE XREF : ROM:00004354j
 		addiu   $t0, 0x800
 		lw      $v1, 0x30($t0)
 		nop
@@ -4496,7 +4496,7 @@ void ObjectObjects()//?, B84F0
 		ori     $v0, 8
 		sw      $v0, 0x80($a0)
 
-		loc_447C:                                # CODE XREF : ROM:000043D4↑j
+		loc_447C:                                # CODE XREF : ROM:000043D4j
 		addiu   $t0, -0x180
 		lw      $v1, 0x30($t0)
 		nop

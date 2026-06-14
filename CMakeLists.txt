@@ -3,7 +3,10 @@ cmake_minimum_required (VERSION 3.0)
 project (TOMB5)
 
 macro(OPTIONAL_DEFINE DEFNAME DESCRIPTION VALUE)
-	set(${DEFNAME} ${VALUE})
+	if(NOT DEFINED ${DEFNAME})
+		set(${DEFNAME} ${VALUE})
+	endif()
+	set(${DEFNAME} ${${DEFNAME}} CACHE BOOL ${DESCRIPTION} FORCE)
 	list(APPEND OPT_DEFINITIONS ${DEFNAME})
 endmacro()
 

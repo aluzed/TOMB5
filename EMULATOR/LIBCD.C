@@ -410,7 +410,7 @@ int ParseCueSheet()
 		while (isspace(string[0]))
 			string++;
 
-		assert(!strncmp(string, "MODE1", 5));
+		assert(!strncmp(string, "MODE1", 5) || !strncmp(string, "MODE2", 5));
 		string += 5;
 
 		assert(string[0] == '/');

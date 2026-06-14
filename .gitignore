@@ -47,3 +47,10 @@
 /GAME/*.MOD
 /GAME/*.O
 /EMSCRIPTEN/*
+
+# Local disc images and reverse-engineering generated artifacts
+/TOMB5.BIN
+/TOMB5.CUE
+/build/reverse/*
+__pycache__/
+*.pyc

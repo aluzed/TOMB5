@@ -1,5 +1,5 @@
-#ifndef	_SYS_TYPES_H
-#define	_SYS_TYPES_H
+#ifndef	TOMB5_EMULATOR_TYPES_H
+#define	TOMB5_EMULATOR_TYPES_H
 
 #if !defined(__APPLE__)
 /* major part of a device */
@@ -44,7 +44,7 @@ typedef	unsigned long	ulong;		/* sys V compat */
 #endif
 #endif /* ! __psx__ */
 
-#if !__APPLE__
+#if !defined(__APPLE__) && (defined(__psx__) || defined(PSX_COMPAT_TYPES))
 typedef	struct	_physadr { int r[1]; } *physadr;
 typedef	struct	label_t	{
 	int	val[12];

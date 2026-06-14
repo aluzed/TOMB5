@@ -1172,7 +1172,7 @@ void titseq_special3_control()
 		sw      $v0, 0x24($sp)
 		addiu   $v0, $s3, -0x262
 
-		loc_1888:                                # CODE XREF : ROM:loc_181C↑j
+		loc_1888:                                # CODE XREF : ROM:loc_181Cj
 		sltiu   $v0, 0x21  # '!'
 		beqz    $v0, loc_1AAC
 		li      $a0, 1
@@ -1309,7 +1309,7 @@ void titseq_special3_control()
 		sb      $a1, 0x1A($s0)
 		sb      $s3, 0x19($s0)
 
-		loc_1AAC:                                # CODE XREF : ROM:0000188C↑j
+		loc_1AAC:                                # CODE XREF : ROM:0000188Cj
 		lw      $ra, 0x50($sp)
 		lw      $s3, 0x4C($sp)
 		lw      $s2, 0x48($sp)

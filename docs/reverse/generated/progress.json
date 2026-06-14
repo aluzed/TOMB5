@@ -1,0 +1,3188 @@
+{
+  "files": {
+    "GAME/BOX.C": {
+      "finalish": 14,
+      "finalish_percent": 93.33,
+      "mapped": 3,
+      "mapped_percent": 20.0,
+      "nd": 0,
+      "repo_only": 12,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 14,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 15
+    },
+    "GAME/CAMERA.C": {
+      "finalish": 7,
+      "finalish_percent": 70.0,
+      "mapped": 8,
+      "mapped_percent": 80.0,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 1,
+        "decompiled": 3,
+        "final": 6,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 10
+    },
+    "GAME/COLLIDE.C": {
+      "finalish": 6,
+      "finalish_percent": 54.55,
+      "mapped": 10,
+      "mapped_percent": 90.91,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 5,
+        "final": 6,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 11
+    },
+    "GAME/CONTROL.C": {
+      "finalish": 24,
+      "finalish_percent": 96.0,
+      "mapped": 22,
+      "mapped_percent": 88.0,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 24,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 25
+    },
+    "GAME/DEBRIS.C": {
+      "finalish": 1,
+      "finalish_percent": 33.33,
+      "mapped": 3,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "GAME/DELSTUFF.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "GAME/DELTAPAK.C": {
+      "finalish": 154,
+      "finalish_percent": 96.86,
+      "mapped": 137,
+      "mapped_percent": 86.16,
+      "nd": 0,
+      "repo_only": 22,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 5,
+        "final": 154,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 159
+    },
+    "GAME/DOOR.C": {
+      "finalish": 2,
+      "finalish_percent": 20.0,
+      "mapped": 10,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 8,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 10
+    },
+    "GAME/DRAW.C": {
+      "finalish": 1,
+      "finalish_percent": 25.0,
+      "mapped": 1,
+      "mapped_percent": 25.0,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "GAME/EFFECT2.C": {
+      "finalish": 5,
+      "finalish_percent": 55.56,
+      "mapped": 8,
+      "mapped_percent": 88.89,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 4,
+        "final": 5,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 9
+    },
+    "GAME/EFFECTS.C": {
+      "finalish": 37,
+      "finalish_percent": 90.24,
+      "mapped": 27,
+      "mapped_percent": 65.85,
+      "nd": 0,
+      "repo_only": 14,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 4,
+        "final": 37,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 41
+    },
+    "GAME/FLMTORCH.C": {
+      "finalish": 2,
+      "finalish_percent": 40.0,
+      "mapped": 5,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 5
+    },
+    "GAME/GAMEFLOW.C": {
+      "finalish": 4,
+      "finalish_percent": 80.0,
+      "mapped": 5,
+      "mapped_percent": 100.0,
+      "nd": 2,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 2,
+        "decompiled": 1,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 5
+    },
+    "GAME/HAIR.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "GAME/HEALTH.C": {
+      "finalish": 3,
+      "finalish_percent": 60.0,
+      "mapped": 3,
+      "mapped_percent": 60.0,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 3,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 5
+    },
+    "GAME/ITEMS.C": {
+      "finalish": 12,
+      "finalish_percent": 100.0,
+      "mapped": 11,
+      "mapped_percent": 91.67,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 12,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 12
+    },
+    "GAME/LARA.C": {
+      "finalish": 171,
+      "finalish_percent": 96.61,
+      "mapped": 127,
+      "mapped_percent": 71.75,
+      "nd": 0,
+      "repo_only": 50,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 6,
+        "final": 171,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 177
+    },
+    "GAME/LARA1GUN.C": {
+      "finalish": 9,
+      "finalish_percent": 100.0,
+      "mapped": 7,
+      "mapped_percent": 77.78,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 9,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 9
+    },
+    "GAME/LARA2GUN.C": {
+      "finalish": 4,
+      "finalish_percent": 80.0,
+      "mapped": 4,
+      "mapped_percent": 80.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 5
+    },
+    "GAME/LARACLMB.C": {
+      "finalish": 17,
+      "finalish_percent": 80.95,
+      "mapped": 14,
+      "mapped_percent": 66.67,
+      "nd": 0,
+      "repo_only": 7,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 4,
+        "final": 17,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 21
+    },
+    "GAME/LARAFIRE.C": {
+      "finalish": 6,
+      "finalish_percent": 37.5,
+      "mapped": 12,
+      "mapped_percent": 75.0,
+      "nd": 0,
+      "repo_only": 4,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 10,
+        "final": 6,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 16
+    },
+    "GAME/LARAFLAR.C": {
+      "finalish": 6,
+      "finalish_percent": 54.55,
+      "mapped": 11,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 5,
+        "final": 6,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 11
+    },
+    "GAME/LARAMISC.C": {
+      "finalish": 5,
+      "finalish_percent": 71.43,
+      "mapped": 5,
+      "mapped_percent": 71.43,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 5,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 7
+    },
+    "GAME/LARASURF.C": {
+      "finalish": 13,
+      "finalish_percent": 92.86,
+      "mapped": 10,
+      "mapped_percent": 71.43,
+      "nd": 0,
+      "repo_only": 4,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 13,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 14
+    },
+    "GAME/LARASWIM.C": {
+      "finalish": 18,
+      "finalish_percent": 85.71,
+      "mapped": 18,
+      "mapped_percent": 85.71,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 18,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 21
+    },
+    "GAME/LOT.C": {
+      "finalish": 4,
+      "finalish_percent": 80.0,
+      "mapped": 5,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 5
+    },
+    "GAME/MISSILE.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "GAME/NEWINV2.C": {
+      "finalish": 61,
+      "finalish_percent": 93.85,
+      "mapped": 42,
+      "mapped_percent": 64.62,
+      "nd": 0,
+      "repo_only": 23,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 4,
+        "final": 61,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 65
+    },
+    "GAME/OBJECTS.C": {
+      "finalish": 11,
+      "finalish_percent": 91.67,
+      "mapped": 8,
+      "mapped_percent": 66.67,
+      "nd": 0,
+      "repo_only": 4,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 11,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 12
+    },
+    "GAME/OBJLIGHT.C": {
+      "finalish": 3,
+      "finalish_percent": 50.0,
+      "mapped": 6,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 3,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 6
+    },
+    "GAME/PEOPLE.C": {
+      "finalish": 5,
+      "finalish_percent": 83.33,
+      "mapped": 6,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 5,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 6
+    },
+    "GAME/PICKUP.C": {
+      "finalish": 7,
+      "finalish_percent": 50.0,
+      "mapped": 13,
+      "mapped_percent": 92.86,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 7,
+        "final": 7,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 14
+    },
+    "GAME/SAVEGAME.C": {
+      "finalish": 6,
+      "finalish_percent": 66.67,
+      "mapped": 8,
+      "mapped_percent": 88.89,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 6,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 9
+    },
+    "GAME/SETUP.C": {
+      "finalish": 13,
+      "finalish_percent": 52.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 25,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 12,
+        "final": 13,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 25
+    },
+    "GAME/SOUND.C": {
+      "finalish": 3,
+      "finalish_percent": 100.0,
+      "mapped": 3,
+      "mapped_percent": 100.0,
+      "nd": 1,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 1,
+        "decompiled": 0,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "GAME/SPHERE.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "GAME/SPOTCAM.C": {
+      "finalish": 3,
+      "finalish_percent": 75.0,
+      "mapped": 4,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 3,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "GAME/SWITCH.C": {
+      "finalish": 6,
+      "finalish_percent": 28.57,
+      "mapped": 21,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 15,
+        "final": 6,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 21
+    },
+    "GAME/TEXT.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 1,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 1,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "GAME/TOMB4FX.C": {
+      "finalish": 9,
+      "finalish_percent": 90.0,
+      "mapped": 9,
+      "mapped_percent": 90.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 9,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 10
+    },
+    "GAME/TRAPS.C": {
+      "finalish": 15,
+      "finalish_percent": 50.0,
+      "mapped": 28,
+      "mapped_percent": 93.33,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 15,
+        "final": 15,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 30
+    },
+    "SPEC_PC_N/CALCLARA.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PC_N/SPECIFIC.CPP": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "SPEC_PSX/3D_GEN.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSX/3D_OBJ.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 1,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSX/CD.C": {
+      "finalish": 15,
+      "finalish_percent": 100.0,
+      "mapped": 12,
+      "mapped_percent": 80.0,
+      "nd": 1,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 12,
+        "decompiled": 0,
+        "final": 3,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 15
+    },
+    "SPEC_PSX/DRAWPHAS.C": {
+      "finalish": 4,
+      "finalish_percent": 100.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSX/DRAWSPKS.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSX/FILE.C": {
+      "finalish": 4,
+      "finalish_percent": 100.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 3,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSX/GPU.C": {
+      "finalish": 4,
+      "finalish_percent": 66.67,
+      "mapped": 3,
+      "mapped_percent": 50.0,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 6
+    },
+    "SPEC_PSX/LOADSAVE.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 3,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "SPEC_PSX/LOAD_LEV.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 2,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSX/MALLOC.C": {
+      "finalish": 4,
+      "finalish_percent": 100.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 4,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 4,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSX/MEMCARD.C": {
+      "finalish": 5,
+      "finalish_percent": 100.0,
+      "mapped": 5,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 3,
+        "decompiled": 0,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 5
+    },
+    "SPEC_PSX/MOVIE.C": {
+      "finalish": 1,
+      "finalish_percent": 50.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSX/PROFILE.C": {
+      "finalish": 6,
+      "finalish_percent": 85.71,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 7,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 5,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 7
+    },
+    "SPEC_PSX/PSOUTPUT.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 2,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSX/PSXINPUT.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSX/PSXMAIN.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 50.0,
+      "nd": 2,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 2,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSX/REQUEST.C": {
+      "finalish": 1,
+      "finalish_percent": 33.33,
+      "mapped": 1,
+      "mapped_percent": 33.33,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "SPEC_PSX/ROOMLOAD.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 2,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSX/SPECIFIC.C": {
+      "finalish": 8,
+      "finalish_percent": 88.89,
+      "mapped": 8,
+      "mapped_percent": 88.89,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 8,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 9
+    },
+    "SPEC_PSX/SPUSOUND.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 1,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSX/TITSEQ.C": {
+      "finalish": 3,
+      "finalish_percent": 100.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 3,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "SPEC_PSXPC/3D_GEN.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/3D_OBJ.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/BUBBLES.C": {
+      "finalish": 1,
+      "finalish_percent": 50.0,
+      "mapped": 1,
+      "mapped_percent": 50.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC/CALCLARA.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/CD.C": {
+      "finalish": 12,
+      "finalish_percent": 80.0,
+      "mapped": 12,
+      "mapped_percent": 80.0,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 12,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 15
+    },
+    "SPEC_PSXPC/COLLIDE_S.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/DELTAPAK_S.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/DRAWOBJ.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/DRAWPHAS.C": {
+      "finalish": 2,
+      "finalish_percent": 50.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSXPC/DRAWSPKS.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/FILE.C": {
+      "finalish": 4,
+      "finalish_percent": 100.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSXPC/FXTRIG.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/GPU.C": {
+      "finalish": 2,
+      "finalish_percent": 40.0,
+      "mapped": 3,
+      "mapped_percent": 60.0,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 5
+    },
+    "SPEC_PSXPC/LOADSAVE.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 3,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "SPEC_PSXPC/LOAD_LEV.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC/MALLOC.C": {
+      "finalish": 4,
+      "finalish_percent": 100.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSXPC/MATHS.C": {
+      "finalish": 9,
+      "finalish_percent": 33.33,
+      "mapped": 9,
+      "mapped_percent": 33.33,
+      "nd": 0,
+      "repo_only": 18,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 18,
+        "final": 9,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 27
+    },
+    "SPEC_PSXPC/MEMCARD.C": {
+      "finalish": 1,
+      "finalish_percent": 20.0,
+      "mapped": 2,
+      "mapped_percent": 40.0,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 4,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 5
+    },
+    "SPEC_PSXPC/MISC.C": {
+      "finalish": 8,
+      "finalish_percent": 47.06,
+      "mapped": 11,
+      "mapped_percent": 64.71,
+      "nd": 0,
+      "repo_only": 6,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 9,
+        "final": 8,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 17
+    },
+    "SPEC_PSXPC/MOVIE.C": {
+      "finalish": 1,
+      "finalish_percent": 50.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC/PRINTOBJ.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/PROFILE.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 7,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 7,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 7
+    },
+    "SPEC_PSXPC/PSOUTPUT.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC/PSXPCINPUT.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/PSXPCMAIN.C": {
+      "finalish": 1,
+      "finalish_percent": 50.0,
+      "mapped": 1,
+      "mapped_percent": 50.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC/REQUEST.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 33.33,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "SPEC_PSXPC/ROOMLETB.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC/ROOMLOAD.C": {
+      "finalish": 1,
+      "finalish_percent": 50.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC/SFX.C": {
+      "finalish": 6,
+      "finalish_percent": 46.15,
+      "mapped": 9,
+      "mapped_percent": 69.23,
+      "nd": 0,
+      "repo_only": 4,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 7,
+        "final": 6,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 13
+    },
+    "SPEC_PSXPC/SHADOWS.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC/SPECIFIC.C": {
+      "finalish": 4,
+      "finalish_percent": 50.0,
+      "mapped": 7,
+      "mapped_percent": 87.5,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 4,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 8
+    },
+    "SPEC_PSXPC/SPUSOUND.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC/TEXT_S.C": {
+      "finalish": 1,
+      "finalish_percent": 50.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/3D_GEN.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/3D_OBJ.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 1,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/ANIMITEM.C": {
+      "finalish": 1,
+      "finalish_percent": 4.0,
+      "mapped": 2,
+      "mapped_percent": 8.0,
+      "nd": 0,
+      "repo_only": 23,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 24,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 25
+    },
+    "SPEC_PSXPC_N/BUBBLES.C": {
+      "finalish": 1,
+      "finalish_percent": 50.0,
+      "mapped": 1,
+      "mapped_percent": 50.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/CALCHAIR.C": {
+      "finalish": 1,
+      "finalish_percent": 50.0,
+      "mapped": 1,
+      "mapped_percent": 50.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/CALCLARA.C": {
+      "finalish": 2,
+      "finalish_percent": 33.33,
+      "mapped": 2,
+      "mapped_percent": 33.33,
+      "nd": 0,
+      "repo_only": 4,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 4,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 6
+    },
+    "SPEC_PSXPC_N/CD.C": {
+      "finalish": 15,
+      "finalish_percent": 100.0,
+      "mapped": 12,
+      "mapped_percent": 80.0,
+      "nd": 1,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 11,
+        "decompiled": 0,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 15
+    },
+    "SPEC_PSXPC_N/COLLIDE_S.C": {
+      "finalish": 1,
+      "finalish_percent": 25.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSXPC_N/CONTROL_S.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/DELTAPAK_S.C": {
+      "finalish": 1,
+      "finalish_percent": 25.0,
+      "mapped": 2,
+      "mapped_percent": 50.0,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSXPC_N/DRAWOBJ.C": {
+      "finalish": 3,
+      "finalish_percent": 37.5,
+      "mapped": 1,
+      "mapped_percent": 12.5,
+      "nd": 0,
+      "repo_only": 7,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 5,
+        "final": 3,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 8
+    },
+    "SPEC_PSXPC_N/DRAWPHAS.C": {
+      "finalish": 4,
+      "finalish_percent": 100.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSXPC_N/DRAWSKY.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/DRAWSPKS.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/FILE.C": {
+      "finalish": 4,
+      "finalish_percent": 100.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 4,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSXPC_N/GETSTUFF.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/GPU.C": {
+      "finalish": 5,
+      "finalish_percent": 83.33,
+      "mapped": 3,
+      "mapped_percent": 50.0,
+      "nd": 1,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 1,
+        "decompiled": 1,
+        "final": 4,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 6
+    },
+    "SPEC_PSXPC_N/LARA4.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/LIGHT.C": {
+      "finalish": 2,
+      "finalish_percent": 66.67,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "SPEC_PSXPC_N/LOADSAVE.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 3,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "SPEC_PSXPC_N/LOAD_LEV.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 2,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/MALLOC.C": {
+      "finalish": 4,
+      "finalish_percent": 100.0,
+      "mapped": 3,
+      "mapped_percent": 75.0,
+      "nd": 3,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 3,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSXPC_N/MATHS.C": {
+      "finalish": 21,
+      "finalish_percent": 52.5,
+      "mapped": 11,
+      "mapped_percent": 27.5,
+      "nd": 0,
+      "repo_only": 29,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 19,
+        "final": 21,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 40
+    },
+    "SPEC_PSXPC_N/MEMCARD.C": {
+      "finalish": 5,
+      "finalish_percent": 100.0,
+      "mapped": 5,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 3,
+        "decompiled": 0,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 5
+    },
+    "SPEC_PSXPC_N/MISC.C": {
+      "finalish": 9,
+      "finalish_percent": 50.0,
+      "mapped": 11,
+      "mapped_percent": 61.11,
+      "nd": 4,
+      "repo_only": 7,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 4,
+        "decompiled": 9,
+        "final": 5,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 18
+    },
+    "SPEC_PSXPC_N/MOVIE.C": {
+      "finalish": 1,
+      "finalish_percent": 50.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/PRINTOBJ.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/PROFILE.C": {
+      "finalish": 6,
+      "finalish_percent": 85.71,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 7,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 5,
+        "decompiled": 1,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 7
+    },
+    "SPEC_PSXPC_N/PSOUTPUT.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 2,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/PSXINPUT.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/PSXMAIN.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 50.0,
+      "nd": 2,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 2,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/REQUEST.C": {
+      "finalish": 1,
+      "finalish_percent": 33.33,
+      "mapped": 1,
+      "mapped_percent": 33.33,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 3
+    },
+    "SPEC_PSXPC_N/ROOMLETB.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 2,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/ROOMLOAD.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 1,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 2,
+        "decompiled": 0,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/SFX.C": {
+      "finalish": 3,
+      "finalish_percent": 50.0,
+      "mapped": 5,
+      "mapped_percent": 83.33,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 3,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 6
+    },
+    "SPEC_PSXPC_N/SHADOWS.C": {
+      "finalish": 0,
+      "finalish_percent": 0.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 0,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/SPECIFIC.C": {
+      "finalish": 8,
+      "finalish_percent": 88.89,
+      "mapped": 8,
+      "mapped_percent": 88.89,
+      "nd": 0,
+      "repo_only": 1,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 1,
+        "final": 8,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 9
+    },
+    "SPEC_PSXPC_N/SPHERES.C": {
+      "finalish": 1,
+      "finalish_percent": 100.0,
+      "mapped": 1,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 1
+    },
+    "SPEC_PSXPC_N/SPUSOUND.C": {
+      "finalish": 2,
+      "finalish_percent": 100.0,
+      "mapped": 2,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 1,
+        "decompiled": 0,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 2
+    },
+    "SPEC_PSXPC_N/TEXT_S.C": {
+      "finalish": 2,
+      "finalish_percent": 50.0,
+      "mapped": 4,
+      "mapped_percent": 100.0,
+      "nd": 0,
+      "repo_only": 0,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 2,
+        "final": 2,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSXPC_N/TITSEQ.C": {
+      "finalish": 3,
+      "finalish_percent": 75.0,
+      "mapped": 0,
+      "mapped_percent": 0.0,
+      "nd": 0,
+      "repo_only": 4,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 0,
+        "final": 3,
+        "named": 0,
+        "unknown": 1
+      },
+      "total": 4
+    }
+  },
+  "generated_at": "2026-06-14T18:53:10.981663+00:00",
+  "hot_files": [
+    {
+      "file": "SPEC_PSXPC_N/ANIMITEM.C",
+      "finalish_percent": 4.0,
+      "mapped_non_final": 2,
+      "module": "SPEC_PSXPC_N",
+      "non_final": 24,
+      "total": 25
+    },
+    {
+      "file": "SPEC_PSXPC_N/MATHS.C",
+      "finalish_percent": 52.5,
+      "mapped_non_final": 4,
+      "module": "SPEC_PSXPC_N",
+      "non_final": 19,
+      "total": 40
+    },
+    {
+      "file": "SPEC_PSXPC/MATHS.C",
+      "finalish_percent": 33.33,
+      "mapped_non_final": 4,
+      "module": "SPEC_PSXPC",
+      "non_final": 18,
+      "total": 27
+    },
+    {
+      "file": "GAME/SWITCH.C",
+      "finalish_percent": 28.57,
+      "mapped_non_final": 15,
+      "module": "GAME",
+      "non_final": 15,
+      "total": 21
+    },
+    {
+      "file": "GAME/TRAPS.C",
+      "finalish_percent": 50.0,
+      "mapped_non_final": 15,
+      "module": "GAME",
+      "non_final": 15,
+      "total": 30
+    },
+    {
+      "file": "GAME/SETUP.C",
+      "finalish_percent": 52.0,
+      "mapped_non_final": 0,
+      "module": "GAME",
+      "non_final": 12,
+      "total": 25
+    },
+    {
+      "file": "GAME/LARAFIRE.C",
+      "finalish_percent": 37.5,
+      "mapped_non_final": 7,
+      "module": "GAME",
+      "non_final": 10,
+      "total": 16
+    },
+    {
+      "file": "SPEC_PSXPC/MISC.C",
+      "finalish_percent": 47.06,
+      "mapped_non_final": 6,
+      "module": "SPEC_PSXPC",
+      "non_final": 9,
+      "total": 17
+    },
+    {
+      "file": "SPEC_PSXPC_N/MISC.C",
+      "finalish_percent": 50.0,
+      "mapped_non_final": 6,
+      "module": "SPEC_PSXPC_N",
+      "non_final": 9,
+      "total": 18
+    },
+    {
+      "file": "GAME/DOOR.C",
+      "finalish_percent": 20.0,
+      "mapped_non_final": 8,
+      "module": "GAME",
+      "non_final": 8,
+      "total": 10
+    },
+    {
+      "file": "GAME/PICKUP.C",
+      "finalish_percent": 50.0,
+      "mapped_non_final": 7,
+      "module": "GAME",
+      "non_final": 7,
+      "total": 14
+    },
+    {
+      "file": "SPEC_PSXPC/SFX.C",
+      "finalish_percent": 46.15,
+      "mapped_non_final": 4,
+      "module": "SPEC_PSXPC",
+      "non_final": 7,
+      "total": 13
+    },
+    {
+      "file": "SPEC_PSXPC/PROFILE.C",
+      "finalish_percent": 0.0,
+      "mapped_non_final": 0,
+      "module": "SPEC_PSXPC",
+      "non_final": 7,
+      "total": 7
+    },
+    {
+      "file": "GAME/LARA.C",
+      "finalish_percent": 96.61,
+      "mapped_non_final": 6,
+      "module": "GAME",
+      "non_final": 6,
+      "total": 177
+    },
+    {
+      "file": "GAME/COLLIDE.C",
+      "finalish_percent": 54.55,
+      "mapped_non_final": 5,
+      "module": "GAME",
+      "non_final": 5,
+      "total": 11
+    },
+    {
+      "file": "GAME/LARAFLAR.C",
+      "finalish_percent": 54.55,
+      "mapped_non_final": 5,
+      "module": "GAME",
+      "non_final": 5,
+      "total": 11
+    },
+    {
+      "file": "GAME/DELTAPAK.C",
+      "finalish_percent": 96.86,
+      "mapped_non_final": 4,
+      "module": "GAME",
+      "non_final": 5,
+      "total": 159
+    },
+    {
+      "file": "SPEC_PSXPC_N/DRAWOBJ.C",
+      "finalish_percent": 37.5,
+      "mapped_non_final": 1,
+      "module": "SPEC_PSXPC_N",
+      "non_final": 5,
+      "total": 8
+    },
+    {
+      "file": "GAME/EFFECT2.C",
+      "finalish_percent": 55.56,
+      "mapped_non_final": 4,
+      "module": "GAME",
+      "non_final": 4,
+      "total": 9
+    },
+    {
+      "file": "GAME/EFFECTS.C",
+      "finalish_percent": 90.24,
+      "mapped_non_final": 4,
+      "module": "GAME",
+      "non_final": 4,
+      "total": 41
+    },
+    {
+      "file": "GAME/NEWINV2.C",
+      "finalish_percent": 93.85,
+      "mapped_non_final": 4,
+      "module": "GAME",
+      "non_final": 4,
+      "total": 65
+    },
+    {
+      "file": "SPEC_PSXPC/SPECIFIC.C",
+      "finalish_percent": 50.0,
+      "mapped_non_final": 4,
+      "module": "SPEC_PSXPC",
+      "non_final": 4,
+      "total": 8
+    },
+    {
+      "file": "GAME/LARACLMB.C",
+      "finalish_percent": 80.95,
+      "mapped_non_final": 3,
+      "module": "GAME",
+      "non_final": 4,
+      "total": 21
+    },
+    {
+      "file": "SPEC_PSXPC/MEMCARD.C",
+      "finalish_percent": 20.0,
+      "mapped_non_final": 1,
+      "module": "SPEC_PSXPC",
+      "non_final": 4,
+      "total": 5
+    },
+    {
+      "file": "SPEC_PSXPC_N/CALCLARA.C",
+      "finalish_percent": 33.33,
+      "mapped_non_final": 1,
+      "module": "SPEC_PSXPC_N",
+      "non_final": 4,
+      "total": 6
+    },
+    {
+      "file": "GAME/FLMTORCH.C",
+      "finalish_percent": 40.0,
+      "mapped_non_final": 3,
+      "module": "GAME",
+      "non_final": 3,
+      "total": 5
+    },
+    {
+      "file": "GAME/LARASWIM.C",
+      "finalish_percent": 85.71,
+      "mapped_non_final": 3,
+      "module": "GAME",
+      "non_final": 3,
+      "total": 21
+    },
+    {
+      "file": "GAME/OBJLIGHT.C",
+      "finalish_percent": 50.0,
+      "mapped_non_final": 3,
+      "module": "GAME",
+      "non_final": 3,
+      "total": 6
+    },
+    {
+      "file": "GAME/SAVEGAME.C",
+      "finalish_percent": 66.67,
+      "mapped_non_final": 3,
+      "module": "GAME",
+      "non_final": 3,
+      "total": 9
+    },
+    {
+      "file": "SPEC_PSX/LOADSAVE.C",
+      "finalish_percent": 0.0,
+      "mapped_non_final": 3,
+      "module": "SPEC_PSX",
+      "non_final": 3,
+      "total": 3
+    }
+  ],
+  "modules": {
+    "GAME": {
+      "finalish": 672,
+      "finalish_percent": 82.86,
+      "mapped": 620,
+      "mapped_percent": 76.45,
+      "nd": 4,
+      "repo_only": 191,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 5,
+        "decompiled": 139,
+        "final": 667,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 811
+    },
+    "SPEC_PC_N": {
+      "finalish": 1,
+      "finalish_percent": 25.0,
+      "mapped": 1,
+      "mapped_percent": 25.0,
+      "nd": 0,
+      "repo_only": 3,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 3,
+        "final": 1,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 4
+    },
+    "SPEC_PSX": {
+      "finalish": 67,
+      "finalish_percent": 84.81,
+      "mapped": 55,
+      "mapped_percent": 69.62,
+      "nd": 7,
+      "repo_only": 24,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 37,
+        "decompiled": 12,
+        "final": 30,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 79
+    },
+    "SPEC_PSXPC": {
+      "finalish": 66,
+      "finalish_percent": 45.83,
+      "mapped": 88,
+      "mapped_percent": 61.11,
+      "nd": 0,
+      "repo_only": 56,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 0,
+        "decompiled": 78,
+        "final": 66,
+        "named": 0,
+        "unknown": 0
+      },
+      "total": 144
+    },
+    "SPEC_PSXPC_N": {
+      "finalish": 119,
+      "finalish_percent": 56.13,
+      "mapped": 102,
+      "mapped_percent": 48.11,
+      "nd": 12,
+      "repo_only": 110,
+      "statuses": {
+        "binary_matched": 0,
+        "debugged": 41,
+        "decompiled": 92,
+        "final": 78,
+        "named": 0,
+        "unknown": 1
+      },
+      "total": 212
+    }
+  },
+  "next_candidates": [
+    {
+      "address": "0x800937c4",
+      "body_size": 1404,
+      "callees": 7,
+      "callers": 75,
+      "file": "GAME/EFFECTS.C",
+      "function": "SoundEffect",
+      "line": 625,
+      "markers": [],
+      "score": 7544,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x800937c4",
+      "body_size": 1404,
+      "callees": 7,
+      "callers": 75,
+      "file": "GAME/EFFECTS.C",
+      "function": "SoundEffect",
+      "line": 633,
+      "markers": [],
+      "score": 7544,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x800937c4",
+      "body_size": 1404,
+      "callees": 7,
+      "callers": 75,
+      "file": "GAME/EFFECTS.C",
+      "function": "SoundEffect",
+      "line": 891,
+      "markers": [],
+      "score": 7544,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x800383d0",
+      "body_size": 4800,
+      "callees": 13,
+      "callers": 1,
+      "file": "GAME/SPOTCAM.C",
+      "function": "CalculateSpotCams",
+      "line": 429,
+      "markers": [],
+      "score": 5140,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80054f6c",
+      "body_size": 4080,
+      "callees": 12,
+      "callers": 1,
+      "file": "GAME/SAVEGAME.C",
+      "function": "RestoreLevelData",
+      "line": 82,
+      "markers": [],
+      "score": 4400,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80053f10",
+      "body_size": 4188,
+      "callees": 1,
+      "callers": 1,
+      "file": "GAME/SAVEGAME.C",
+      "function": "SaveLevelData",
+      "line": 100,
+      "markers": [],
+      "score": 4288,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80048de8",
+      "body_size": 3288,
+      "callees": 4,
+      "callers": 2,
+      "file": "GAME/LARAFIRE.C",
+      "function": "DoProperDetection",
+      "line": 99,
+      "markers": [],
+      "score": 3528,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8007d254",
+      "body_size": 1848,
+      "callees": 7,
+      "callers": 19,
+      "file": "SPEC_PSXPC_N/COLLIDE_S.C",
+      "function": "GetCollisionInfo",
+      "line": 475,
+      "markers": [],
+      "score": 3508,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80036f3c",
+      "body_size": 2684,
+      "callees": 6,
+      "callers": 7,
+      "file": "GAME/DEBRIS.C",
+      "function": "ShatterObject",
+      "line": 54,
+      "markers": [],
+      "score": 3364,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8003d7a4",
+      "body_size": 3016,
+      "callees": 8,
+      "callers": 1,
+      "file": "GAME/NEWINV2.C",
+      "function": "draw_current_object_list",
+      "line": 1890,
+      "markers": [],
+      "score": 3256,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8003bc04",
+      "body_size": 2164,
+      "callees": 37,
+      "callers": 2,
+      "file": "GAME/NEWINV2.C",
+      "function": "S_CallInventory2",
+      "line": 3153,
+      "markers": [],
+      "score": 3064,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8006038c",
+      "body_size": 2452,
+      "callees": 5,
+      "callers": 5,
+      "file": "SPEC_PSX/PSXINPUT.C",
+      "function": "S_UpdateInput",
+      "line": 89,
+      "markers": [],
+      "score": 2952,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8006038c",
+      "body_size": 2452,
+      "callees": 5,
+      "callers": 5,
+      "file": "SPEC_PSXPC/PSXPCINPUT.C",
+      "function": "S_UpdateInput",
+      "line": 60,
+      "markers": [],
+      "score": 2952,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8006038c",
+      "body_size": 2452,
+      "callees": 5,
+      "callers": 5,
+      "file": "SPEC_PSXPC_N/PSXINPUT.C",
+      "function": "S_UpdateInput",
+      "line": 91,
+      "markers": [],
+      "score": 2952,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80027fac",
+      "body_size": 2204,
+      "callees": 14,
+      "callers": 3,
+      "file": "GAME/CAMERA.C",
+      "function": "CalculateCamera",
+      "line": 1167,
+      "markers": [],
+      "score": 2724,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80033db8",
+      "body_size": 2584,
+      "callees": 5,
+      "callers": 0,
+      "file": "GAME/EFFECT2.C",
+      "function": "ControlSmokeEmitter",
+      "line": 51,
+      "markers": [],
+      "score": 2684,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8004ac9c",
+      "body_size": 2220,
+      "callees": 13,
+      "callers": 1,
+      "file": "GAME/LARAMISC.C",
+      "function": "LaraControl",
+      "line": 163,
+      "markers": [],
+      "score": 2560,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8005b284",
+      "body_size": 2376,
+      "callees": 8,
+      "callers": 0,
+      "file": "GAME/TRAPS.C",
+      "function": "ControlRollingBall",
+      "line": 476,
+      "markers": [],
+      "score": 2536,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80063df4",
+      "body_size": 2028,
+      "callees": 10,
+      "callers": 1,
+      "file": "SPEC_PSXPC/REQUEST.C",
+      "function": "Requester",
+      "line": 12,
+      "markers": [],
+      "score": 2308,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x800347d0",
+      "body_size": 1980,
+      "callees": 14,
+      "callers": 0,
+      "file": "GAME/EFFECT2.C",
+      "function": "ControlEnemyMissile",
+      "line": 46,
+      "markers": [],
+      "score": 2260,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80051b2c",
+      "body_size": 2100,
+      "callees": 8,
+      "callers": 0,
+      "file": "GAME/PICKUP.C",
+      "function": "PickUpCollision",
+      "line": 235,
+      "markers": [],
+      "score": 2260,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8005cd38",
+      "body_size": 1884,
+      "callees": 17,
+      "callers": 0,
+      "file": "GAME/TRAPS.C",
+      "function": "ControlExplosion",
+      "line": 654,
+      "markers": [],
+      "score": 2224,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8008fb90",
+      "body_size": 580,
+      "callees": 3,
+      "callers": 19,
+      "file": "SPEC_PSXPC/FXTRIG.C",
+      "function": "PrintString",
+      "line": 7,
+      "markers": [],
+      "score": 2160,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8008fb90",
+      "body_size": 580,
+      "callees": 3,
+      "callers": 19,
+      "file": "SPEC_PSXPC_N/TEXT_S.C",
+      "function": "PrintString",
+      "line": 196,
+      "markers": [],
+      "score": 2160,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80052984",
+      "body_size": 1780,
+      "callees": 13,
+      "callers": 0,
+      "file": "GAME/PICKUP.C",
+      "function": "PuzzleHoleCollision",
+      "line": 217,
+      "markers": [],
+      "score": 2040,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80061340",
+      "body_size": 1832,
+      "callees": 4,
+      "callers": 1,
+      "file": "SPEC_PSXPC/SPECIFIC.C",
+      "function": "DisplayConfig",
+      "line": 119,
+      "markers": [],
+      "score": 1992,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8005a808",
+      "body_size": 1760,
+      "callees": 9,
+      "callers": 0,
+      "file": "GAME/TRAPS.C",
+      "function": "FlameEmitter3Control",
+      "line": 377,
+      "markers": [],
+      "score": 1940,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x800645e0",
+      "body_size": 1340,
+      "callees": 19,
+      "callers": 2,
+      "file": "SPEC_PSXPC/DRAWPHAS.C",
+      "function": "DrawPhaseGame",
+      "line": 49,
+      "markers": [],
+      "score": 1880,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8004ba6c",
+      "body_size": 1260,
+      "callees": 6,
+      "callers": 6,
+      "file": "GAME/LARASWIM.C",
+      "function": "LaraSwimCollision",
+      "line": 753,
+      "markers": [],
+      "score": 1860,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80011a48",
+      "body_size": 468,
+      "callees": 1,
+      "callers": 17,
+      "file": "GAME/LARA.C",
+      "function": "TestLaraSlide",
+      "line": 6517,
+      "markers": [],
+      "score": 1848,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80047f8c",
+      "body_size": 1576,
+      "callees": 4,
+      "callers": 2,
+      "file": "GAME/LARAFIRE.C",
+      "function": "LaraGetNewTarget",
+      "line": 201,
+      "markers": [],
+      "score": 1816,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80040fa8",
+      "body_size": 1648,
+      "callees": 4,
+      "callers": 1,
+      "file": "GAME/NEWINV2.C",
+      "function": "do_keypad_mode",
+      "line": 546,
+      "markers": [],
+      "score": 1808,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8005e7a0",
+      "body_size": 1088,
+      "callees": 24,
+      "callers": 3,
+      "file": "SPEC_PSX/MOVIE.C",
+      "function": "S_PlayFMV",
+      "line": 6,
+      "markers": [],
+      "score": 1808,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8005e7a0",
+      "body_size": 1088,
+      "callees": 24,
+      "callers": 3,
+      "file": "SPEC_PSXPC/MOVIE.C",
+      "function": "S_PlayFMV",
+      "line": 5,
+      "markers": [],
+      "score": 1808,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8005e7a0",
+      "body_size": 1088,
+      "callees": 24,
+      "callers": 3,
+      "file": "SPEC_PSXPC_N/MOVIE.C",
+      "function": "S_PlayFMV",
+      "line": 6,
+      "markers": [],
+      "score": 1808,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8008793c",
+      "body_size": 116,
+      "callees": 1,
+      "callers": 19,
+      "file": "SPEC_PSXPC/CALCLARA.C",
+      "function": "GetBoundsAccurate",
+      "line": 20,
+      "markers": [],
+      "score": 1656,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8008793c",
+      "body_size": 116,
+      "callees": 1,
+      "callers": 19,
+      "file": "SPEC_PSXPC_N/CALCLARA.C",
+      "function": "GetBoundsAccurate",
+      "line": 1909,
+      "markers": [],
+      "score": 1656,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80012170",
+      "body_size": 1168,
+      "callees": 4,
+      "callers": 5,
+      "file": "GAME/LARA.C",
+      "function": "TestLaraVault",
+      "line": 5974,
+      "markers": [],
+      "score": 1648,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x80026a48",
+      "body_size": 1380,
+      "callees": 7,
+      "callers": 1,
+      "file": "GAME/CAMERA.C",
+      "function": "CombatCamera",
+      "line": 1601,
+      "markers": [],
+      "score": 1600,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8005c47c",
+      "body_size": 1388,
+      "callees": 8,
+      "callers": 0,
+      "file": "GAME/TRAPS.C",
+      "function": "ControlScaledSpike",
+      "line": 642,
+      "markers": [],
+      "score": 1548,
+      "status": "decompiled"
+    }
+  ],
+  "overall": {
+    "finalish": 925,
+    "finalish_percent": 74.0,
+    "mapped": 866,
+    "mapped_percent": 69.28,
+    "nd": 23,
+    "repo_only": 384,
+    "statuses": {
+      "binary_matched": 0,
+      "debugged": 83,
+      "decompiled": 324,
+      "final": 842,
+      "named": 0,
+      "unknown": 1
+    },
+    "total": 1250
+  },
+  "source_rows": 1250,
+  "status_definitions": {
+    "binary_matched": "Contains `(**)`.",
+    "debugged": "Contains `(D)`; stronger than `(F)` for tracking.",
+    "decompiled": "Named repo function without final/debug marker.",
+    "final": "Contains `(F)`.",
+    "named": "Mapped/named, but not marked final/decompiled/debugged.",
+    "unknown": "No final/decompile/debug marker and no useful mapping/name signal."
+  }
+}

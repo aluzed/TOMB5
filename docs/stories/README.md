@@ -1,0 +1,73 @@
+# Reverse engineering stories — Tomb Raider Chronicles / TOMB5
+
+> Créé le 2026-06-14. Chaque story/ticket a obligatoirement un champ `Status` et une section de progression.
+
+## Baseline vérifiée
+
+- Repo : `/var/www/projects/TOMB5`
+- Image disque préparée dans le repo : `TOMB5.BIN` + `TOMB5.CUE`
+- Version de référence attendue par le repo : `PSX NTSC v1.0 SLUS_013.11`
+- MD5 attendu repo pour `SLUS_013.11` : `4EF523E708D7A7D6571F39C6E47784F9`
+- MD5 vérifié de l'exécutable extrait : `4ef523e708d7a7d6571f39c6e47784f9`
+- `SYSTEM.CNF` vérifié : `BOOT=cdrom:\SLUS_013.11;1`
+- Ghidra headless : import direct PS-X EXE non supporté ici, import du payload brut MIPS LE OK à `0x80010000`.
+
+## Statuts utilisés
+
+- `Todo` : pas commencé.
+- `In progress` : travail commencé, livrable incomplet.
+- `Blocked` : dépend d'un outil, d'une décision ou d'une info manquante.
+- `Done` : terminé et vérifié.
+
+## Milestones
+
+- [Niveau 1 — Reverse exploitable](MILESTONE-level-1-reverse-exploitable.md) — Status: `Todo`
+
+## Tickets
+
+- [RE-000 — Baseline disque, Ghidra et repo](RE-000-baseline-disque-ghidra-repo.md) — Status: `Done`
+- [RE-001 — Rendre le workflow Ghidra reproductible](RE-001-ghidra-workflow-reproductible.md) — Status: `Done`
+- [RE-002 — Exporter les fonctions Ghidra et les rapprocher du repo](RE-002-export-fonctions-ghidra-et-mapping-repo.md) — Status: `Done`
+- [RE-003 — Cartographier la progression de décompilation par module](RE-003-cartographie-progression-decompilation.md) — Status: `Done`
+- [RE-004 — Prioriser les fonctions non finalisées](RE-004-priorisation-fonctions-non-finalisees.md) — Status: `Todo`
+- [RE-005 — Valider le build PSXPC_N avec image disque](RE-005-build-psxpcn-disc-version.md) — Status: `Todo`
+- [RE-006 — Extraire et documenter GAMEWAD/CODEWAD/assets](RE-006-assets-gamewad-codewad.md) — Status: `Todo`
+- [RE-007 — Mettre en place comparaison binaire/désassemblage](RE-007-comparaison-binaire-disassembly.md) — Status: `Todo`
+- [RE-008 — Documenter conventions de reverse PS1/TR5](RE-008-conventions-reverse-ps1-tr5.md) — Status: `Todo`
+
+## Snapshot de progression généré
+
+Source : `docs/reverse/progress.md` et `docs/reverse/generated/progress.json`, générés par :
+
+```bash
+python3 scripts/reverse/progress_report.py
+```
+
+Résumé actuel depuis le mapping Ghidra ↔ repo :
+
+- fonctions repo suivies : `1250`
+- modules : `5`
+- fichiers : `138`
+- mappées Ghidra : `866` (`69.28%`)
+- final/debug/binary-matched : `925` (`74.0%`)
+- `(ND)` : `23`
+
+## Snapshot de progression repo
+
+Analyse rapide des commentaires de fonctions dans `GAME`, `SPEC_PSX`, `SPEC_PSXPC_N`, `EMULATOR`, `TOOLS` :
+
+- fonctions/commentaires détectés : `1869`
+- marquées `(F)` : `1082`
+- marquées `(D)` : `83`
+- marquées `(ND)` : `23`
+
+Par dossier :
+
+- `GAME` : total `1149`, `(F)` `736`, `(D)` `5`, `(ND)` `4`
+- `SPEC_PSXPC_N` : total `313`, `(F)` `189`, `(D)` `41`, `(ND)` `12`
+- `SPEC_PSX` : total `95`, `(F)` `68`, `(D)` `37`, `(ND)` `7`
+- `EMULATOR` : total `97`, `(F)` `21`
+- `SPEC_PSXPC` : total `213`, `(F)` `68`
+- `TOOLS` : total `2`
+
+Note : ce snapshot est un indicateur heuristique basé sur les marqueurs du repo, pas une preuve d'équivalence binaire.

@@ -370,7 +370,7 @@ void SetDrawMove(DR_MOVE* p, RECT16* rect, int x, int y)
 	}
 	p->code[0] = 0x1000000;
 	p->code[1] = 0x80000000;
-	*(char *)((int)&p->tag + 3) = uVar1;
+	*((char *)&p->tag + 3) = uVar1;
 	uVar2 = *(ulong *)rect;
 	p->code[3] = y << 0x10 | x & 0xffffU;
 	p->code[2] = uVar2;

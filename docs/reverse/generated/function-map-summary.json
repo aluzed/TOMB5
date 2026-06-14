@@ -1,0 +1,9 @@
+{
+  "generated_at": "2026-06-14T18:48:34.977942+00:00",
+  "ghidra_functions": 1440,
+  "ghidra_only_functions": 723,
+  "mapped_functions": 866,
+  "rename_candidates": 866,
+  "repo_functions": 1250,
+  "repo_only_functions": 384
+}
