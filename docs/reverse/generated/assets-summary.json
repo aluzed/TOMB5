@@ -1,0 +1,39 @@
+{
+  "copyright_safety": "Large extracted assets are under build/reverse/re006 and are not intended for git.",
+  "disc": {
+    "categories": {
+      "boot_executable": 1,
+      "fmv_stream": 8,
+      "gamewad_container": 1,
+      "runtime_metadata": 3,
+      "xa_audio": 17
+    },
+    "file_count": 30,
+    "iso": "/var/www/projects/TOMB5/build/reverse/re006/tomb501.iso",
+    "source_bin": "/var/www/projects/TOMB5/TOMB5.BIN",
+    "source_cue": "/var/www/projects/TOMB5/TOMB5.CUE",
+    "total_listed_size": 567511833
+  },
+  "gamewad": {
+    "categories": {
+      "cutscene_index_or_blob": 1,
+      "extras_storyboard_raw": 3,
+      "legal_screen_raw": 8,
+      "level_entry_with_loading_assets_and_embedded_codewad": 15,
+      "logo_raw": 2,
+      "reserved_empty": 21,
+      "setup_module": 1
+    },
+    "empty_entries": 21,
+    "entries_with_embedded_codewad": 15,
+    "entry_count": 51,
+    "nonempty_entries": 30,
+    "path": "/var/www/projects/TOMB5/build/reverse/re006/iso_extract/GAMEWAD.OBJ",
+    "size": 55355392
+  },
+  "generated": {
+    "assets_summary": "docs/reverse/generated/assets-summary.json",
+    "disc_files": "docs/reverse/generated/disc-files.txt",
+    "gamewad_files": "docs/reverse/generated/gamewad-files.txt"
+  }
+}

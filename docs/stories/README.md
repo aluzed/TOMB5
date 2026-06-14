@@ -31,9 +31,25 @@
 - [RE-003 — Cartographier la progression de décompilation par module](RE-003-cartographie-progression-decompilation.md) — Status: `Done`
 - [RE-004 — Prioriser les fonctions non finalisées](RE-004-priorisation-fonctions-non-finalisees.md) — Status: `Todo`
 - [RE-005 — Valider le build PSXPC_N avec image disque](RE-005-build-psxpcn-disc-version.md) — Status: `Todo`
-- [RE-006 — Extraire et documenter GAMEWAD/CODEWAD/assets](RE-006-assets-gamewad-codewad.md) — Status: `Todo`
+- [RE-006 — Extraire et documenter GAMEWAD/CODEWAD/assets](RE-006-assets-gamewad-codewad.md) — Status: `Done`
 - [RE-007 — Mettre en place comparaison binaire/désassemblage](RE-007-comparaison-binaire-disassembly.md) — Status: `Todo`
 - [RE-008 — Documenter conventions de reverse PS1/TR5](RE-008-conventions-reverse-ps1-tr5.md) — Status: `Todo`
+
+## Snapshot assets disque / GAMEWAD
+
+Source : `docs/reverse/assets-inventory.md`, `docs/reverse/generated/disc-files.txt`, `docs/reverse/generated/gamewad-files.txt`, générés par :
+
+```bash
+python3 scripts/reverse/assets_inventory.py
+```
+
+Résumé actuel :
+
+- fichiers disque listés : `30`
+- `GAMEWAD.OBJ` : `55355392` octets
+- entrées GAMEWAD : `51` (`30` non vides, `21` réservées vides)
+- entrées niveau avec segment `CODE.WAD` embarqué détecté : `15`
+- assets lourds extraits uniquement sous `build/reverse/re006/` (non versionné)
 
 ## Snapshot de progression généré
 

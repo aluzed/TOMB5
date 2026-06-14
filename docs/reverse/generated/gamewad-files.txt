@@ -1,0 +1,52 @@
+index	name	offset	size	aligned_2048	category	embedded_level_payload_size	embedded_codewad_offset	embedded_codewad_size
+0	SETUP.MOD	0	42012	true	setup_module			
+1	CUTSEQ.JIZ	2048	3299328	true	cutscene_index_or_blob			
+2	TITLE.PSX	3301376	2168860	true	level_entry_with_loading_assets_and_embedded_codewad	1425000	5040128	430108
+3	ANDREA1.PSX	34584576	2742300	true	level_entry_with_loading_assets_and_embedded_codewad	1998440	36896768	430108
+4	ANDREA2.PSX	37328896	2809884	true	level_entry_with_loading_assets_and_embedded_codewad	2066024	39708672	430108
+5	ANDREA3.PSX	40140800	2711580	true	level_entry_with_loading_assets_and_embedded_codewad	1967720	42422272	430108
+6	JOBY2.PSX	15773696	2807836	true	level_entry_with_loading_assets_and_embedded_codewad	2063976	18151424	430108
+7	JOBY3.PSX	18583552	2725916	true	level_entry_with_loading_assets_and_embedded_codewad	1982056	20879360	430108
+8	JOBY4.PSX	21311488	2285596	true	level_entry_with_loading_assets_and_embedded_codewad	1541736	23166976	430108
+9	JOBY5.PSX	23599104	2748444	true	level_entry_with_loading_assets_and_embedded_codewad	2004584	25917440	430108
+10	ANDY1.PSX	26349568	2711580	true	level_entry_with_loading_assets_and_embedded_codewad	1967720	28631040	430108
+11	ANDY2.PSX	29063168	2770972	true	level_entry_with_loading_assets_and_embedded_codewad	2027112	31404032	430108
+12	ANDY3.PSX	31836160	2746396	true	level_entry_with_loading_assets_and_embedded_codewad	2002536	34152448	430108
+13	RICH1.PSX	5472256	2762780	true	level_entry_with_loading_assets_and_embedded_codewad	2018920	7804928	430108
+14	RICH2.PSX	8237056	2756636	true	level_entry_with_loading_assets_and_embedded_codewad	2012776	10563584	430108
+15	RICHCUT2.PSX	10995712	2019356	true	level_entry_with_loading_assets_and_embedded_codewad	1275496	12584960	430108
+16	RICH3.PSX	13017088	2754588	true	level_entry_with_loading_assets_and_embedded_codewad	2010728	15341568	430108
+17	RESERVED_17	0	0	true	reserved_empty			
+18	RESERVED_18	0	0	true	reserved_empty			
+19	RESERVED_19	0	0	true	reserved_empty			
+20	RESERVED_20	0	0	true	reserved_empty			
+21	RESERVED_21	0	0	true	reserved_empty			
+22	RESERVED_22	0	0	true	reserved_empty			
+23	RESERVED_23	0	0	true	reserved_empty			
+24	RESERVED_24	0	0	true	reserved_empty			
+25	RESERVED_25	0	0	true	reserved_empty			
+26	RESERVED_26	0	0	true	reserved_empty			
+27	RESERVED_27	0	0	true	reserved_empty			
+28	RESERVED_28	0	0	true	reserved_empty			
+29	RESERVED_29	0	0	true	reserved_empty			
+30	EXTRAS1.RAW	42854400	3194880	true	extras_storyboard_raw			
+31	EXTRAS2.RAW	46049280	3932160	true	extras_storyboard_raw			
+32	EXTRAS3.RAW	49981440	3194880	true	extras_storyboard_raw			
+33	RESERVED_33	0	0	true	reserved_empty			
+34	RESERVED_34	0	0	true	reserved_empty			
+35	RESERVED_35	0	0	true	reserved_empty			
+36	RESERVED_36	0	0	true	reserved_empty			
+37	RESERVED_37	0	0	true	reserved_empty			
+38	RESERVED_38	0	0	true	reserved_empty			
+39	RESERVED_39	0	0	true	reserved_empty			
+40	RESERVED_40	0	0	true	reserved_empty			
+41	TR5LEGAL_EN.RAW	53176320	270336	true	legal_screen_raw			
+42	TR4LEGAL_FR.RAW	53446656	270336	true	legal_screen_raw			
+43	TR4LEGAL_US.RAW	53716992	270336	true	legal_screen_raw			
+44	TR4LEGAL_EN.RAW	53987328	270336	true	legal_screen_raw			
+45	TR4LEGAL_EN.RAW	54257664	270336	true	legal_screen_raw			
+46	TR5LEGAL_EN.RAW	54528000	270336	true	legal_screen_raw			
+47	TR4LEGAL_US.RAW	54798336	270336	true	legal_screen_raw			
+48	TR4LEGAL_EN.RAW	55068672	270336	true	legal_screen_raw			
+49	TR4LOGO_FR.RAW	55339008	7296	true	logo_raw			
+50	TR4LOGO_EN.RAW	55347200	7296	true	logo_raw			
