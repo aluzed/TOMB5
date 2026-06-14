@@ -1,6 +1,6 @@
 # RE-005 — Valider le build PSXPC_N avec image disque
 
-Status: Blocked — build OK, runtime 64-bit plante dans `RelocateModule()`
+Status: Done — build OK, runtime non jouable mais blocage documenté précisément
 Owner: Hermes
 Priority: P0
 Type: Build/Runtime
@@ -16,7 +16,11 @@ Type: Build/Runtime
 - [x] Runtime sous Xvfb testé: SDL/OpenGL démarre.
 - [x] `TOMB5.BIN/TOMB5.CUE` présents; `TOMB5.CUE` est `MODE2/2352`.
 - [x] Parseur `.CUE` corrigé pour accepter `MODE2/2352` en plus de `MODE1/2352`.
-- [x] Blocage runtime documenté avec backtrace Debug.
+- [x] Blocage runtime initial documenté avec backtrace Debug dans `RelocateModule()`.
+- [x] Crash `RelocateModule()` expliqué/reproduit: `RELOC=0` effectif, mais `S_LoadLevelFile()` appelait quand même la relocation du `SETUP.MOD` PSX.
+- [x] Correctif minimal appliqué: ne relocaliser `SETUP.MOD` que si `RELOC=1`, comme le chemin `SPEC_PSX`.
+- [x] Runtime sous Xvfb progresse au-delà de `RelocateModule()` jusqu'à `LoadLevel()`.
+- [x] Blocage runtime restant documenté avec backtrace Debug dans `LoadLevel()`.
 - [ ] Runtime jouable validé.
 - [ ] Build 32-bit validé; tentative bloquée car `libglew-dev:i386` / `libglew2.2:i386` indisponibles sur les dépôts configurés.
 
@@ -32,7 +36,9 @@ Compiler et lancer le chemin `PSXPC_N` avec `DISC_VERSION=1` pour vérifier que 
 
 Le build est validé, avec `DISC_VERSION=1` confirmé dans `flags.make`.
 
-Le runtime progresse sous Xvfb après correction du parseur `.CUE` pour accepter le `MODE2/2352` réel de `TOMB5.CUE`, puis plante en x86_64 dans:
+Le runtime progresse sous Xvfb après correction du parseur `.CUE` pour accepter le `MODE2/2352` réel de `TOMB5.CUE`.
+
+Le premier crash x86_64 était dans:
 
 ```text
 RelocateModule(unsigned long, unsigned long*) at SPEC_PSXPC_N/FILE.C:115
@@ -42,7 +48,19 @@ DoGameflow() at GAME/GAMEFLOW.C:261
 main(int, char**) at SPEC_PSXPC_N/PSXMAIN.C:121
 ```
 
-Diagnostic probable: code `PSXPC_N` fortement 32-bit, avec nombreux casts pointeur ↔ `int`/`unsigned int`; le binaire Linux 64-bit tronque/reconstruit des adresses pendant la relocation.
+Diagnostic confirmé: `RELOC=0` est effectif pour `PSXPC_N`, mais `S_LoadLevelFile()` appelait quand même `RelocateModule()` sur des données PSX. Ce chemin est maintenant gardé par `#if RELOC`, comme `SPEC_PSX/ROOMLOAD.C`.
+
+Après ce correctif, le runtime va plus loin et plante dans:
+
+```text
+LoadLevel() at GAME/SETUP.C:1204
+S_LoadLevelFile(int) at SPEC_PSXPC_N/ROOMLOAD.C:108
+DoTitle(unsigned char, unsigned char) at GAME/GAMEFLOW.C:971
+DoGameflow() at GAME/GAMEFLOW.C:261
+main(int, char**) at SPEC_PSXPC_N/PSXMAIN.C:121
+```
+
+Blocage restant: le chargement lit des structures disque PSX contenant des pointeurs/offsets 32-bit dans des types C hôtes (`short*`, `long`, etc.) dont la taille/alignment change en Linux x86_64. Exemple observé: `room[i].data` devient un pointeur invalide lors de la relocation locale des rooms dans `LoadLevel()`.
 
 ## Documentation
 
@@ -58,6 +76,7 @@ Détails, commandes et logs résumés dans:
 - Modified: `EMULATOR/LIBCD.C`
 - Modified: `GAME/SETUP.C`
 - Modified: `SPEC_PSXPC_N/TITSEQ.C`
+- Modified: `SPEC_PSXPC_N/ROOMLOAD.C`
 - Created: `docs/reverse/build-psxpcn-disc-version.md`
 
 ## Original acceptance criteria
