@@ -1,0 +1,517 @@
+# SaveLevelData restore-side field proof audit
+
+Status: Generated
+Story: `docs/stories/RE-018-saveleveldata-restore-side-field-proof.md`
+
+## Progress tracker
+
+- [x] Load RE-017 field/width hypotheses.
+- [x] Inspect current source RestoreLevelData implementation status.
+- [x] Classify each hypothesis against restore-side proof availability.
+- [x] Keep outputs metadata-only.
+- [x] Preserve marker verdict limits.
+
+## Inputs
+
+- Source: `GAME/SAVEGAME.C`
+- RE-017 field-width CSV: `docs/reverse/generated/saveleveldata-item-field-width-audit.csv`
+
+## Summary
+
+- RestoreLevelData source status: `source-unimplemented`
+- hypotheses audited: `57`
+- priority hypotheses: `34`
+- patch-ready hypotheses: `0`
+- status: `restore-side-proof-missing`
+
+### Restore-side status counts
+
+- `needs-original-restore-proof`: `14`
+- `restore-layout-unverifiable`: `3`
+- `restore-source-absent`: `37`
+- `restore-width-unverifiable`: `3`
+
+## Findings
+
+Current source `RestoreLevelData` is unimplemented, so RE-017 hypotheses cannot be promoted to serializer patches from source evidence alone. Byte/word, layout, separate payload, and object-specific block hypotheses all require restore-side proof first.
+
+## Hypothesis matrix
+
+### Original item group 4
+
+- call 1 @ `0x80054458`
+  - call index: `338`
+  - original size: `2`
+  - probable source field: `active control header`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 2 @ `0x80054484`
+  - call index: `349`
+  - original size: `2`
+  - probable source field: `item->pos.x_pos packed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 3 @ `0x8005449c`
+  - call index: `355`
+  - original size: `2`
+  - probable source field: `item->pos.y_pos packed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 4 @ `0x800544b4`
+  - call index: `361`
+  - original size: `2`
+  - probable source field: `item->pos.z_pos packed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 5 @ `0x800544c8`
+  - call index: `366`
+  - original size: `1`
+  - probable source field: `item->room_number`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 6 @ `0x800544d4`
+  - call index: `369`
+  - original size: `2`
+  - probable source field: `item->pos.y_rot`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 7 @ `0x800544f0`
+  - call index: `376`
+  - original size: `2`
+  - probable source field: `item->pos.x_rot`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 8 @ `0x8005450c`
+  - call index: `383`
+  - original size: `2`
+  - probable source field: `item->pos.z_rot`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 9 @ `0x80054528`
+  - call index: `390`
+  - original size: `2`
+  - probable source field: `item->speed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 10 @ `0x80054544`
+  - call index: `397`
+  - original size: `2`
+  - probable source field: `item->fallspeed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 11 @ `0x80054568`
+  - call index: `406`
+  - original size: `1`
+  - probable source field: `item->current_anim_state`
+  - RE-017 save gap status: `source-width-mismatch`
+  - restore-side status: `restore-width-unverifiable`
+  - patch readiness: `blocked`
+  - next action: derive original RestoreLevelData read width before changing source
+- call 12 @ `0x8005457c`
+  - call index: `411`
+  - original size: `1`
+  - probable source field: `item->goal_anim_state`
+  - RE-017 save gap status: `source-width-mismatch`
+  - restore-side status: `restore-width-unverifiable`
+  - patch readiness: `blocked`
+  - next action: derive original RestoreLevelData read width before changing source
+- call 13 @ `0x80054590`
+  - call index: `416`
+  - original size: `1`
+  - probable source field: `item->required_anim_state`
+  - RE-017 save gap status: `source-width-mismatch`
+  - restore-side status: `restore-width-unverifiable`
+  - patch readiness: `blocked`
+  - next action: derive original RestoreLevelData read width before changing source
+- call 14 @ `0x800545ac`
+  - call index: `423`
+  - original size: `2`
+  - probable source field: `item->anim_number`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 15 @ `0x800545cc`
+  - call index: `431`
+  - original size: `1`
+  - probable source field: `item->anim_number - obj->anim_index`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 16 @ `0x800545d8`
+  - call index: `434`
+  - original size: `2`
+  - probable source field: `item->frame_number`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 17 @ `0x800545f4`
+  - call index: `441`
+  - original size: `2`
+  - probable source field: `item->hit_points`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+### Original item group 5
+
+- call 1 @ `0x800546e4`
+  - call index: `501`
+  - original size: `4`
+  - probable source field: `packed active/status flags`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 2 @ `0x80054700`
+  - call index: `508`
+  - original size: `2`
+  - probable source field: `item->item_flags[0] payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 3 @ `0x8005471c`
+  - call index: `515`
+  - original size: `2`
+  - probable source field: `item->item_flags[1] payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 4 @ `0x80054738`
+  - call index: `522`
+  - original size: `2`
+  - probable source field: `item->item_flags[2] payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 5 @ `0x80054754`
+  - call index: `529`
+  - original size: `2`
+  - probable source field: `item->item_flags[3] payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 6 @ `0x80054770`
+  - call index: `536`
+  - original size: `2`
+  - probable source field: `item->timer payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 7 @ `0x8005478c`
+  - call index: `543`
+  - original size: `2`
+  - probable source field: `item->trigger_flags payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 8 @ `0x800547c0`
+  - call index: `556`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+- call 9 @ `0x800547f8`
+  - call index: `570`
+  - original size: `24`
+  - probable source field: `object-specific payload block`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+- call 10 @ `0x80054820`
+  - call index: `580`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+- call 11 @ `0x80054830`
+  - call index: `584`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+- call 12 @ `0x80054840`
+  - call index: `588`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+- call 13 @ `0x80054850`
+  - call index: `592`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+- call 14 @ `0x80054860`
+  - call index: `596`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+- call 15 @ `0x80054870`
+  - call index: `600`
+  - original size: `20`
+  - probable source field: `object-specific payload block`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+### Original item group 6
+
+- call 1 @ `0x800548fc`
+  - call index: `635`
+  - original size: `1`
+  - probable source field: `packed byte status/control payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 2 @ `0x80054918`
+  - call index: `642`
+  - original size: `4`
+  - probable source field: `item flag/data word payload`
+  - RE-017 save gap status: `source-layout-mismatch`
+  - restore-side status: `restore-layout-unverifiable`
+  - patch readiness: `blocked`
+  - next action: derive restore-side ordering/layout before changing source
+- call 3 @ `0x80054924`
+  - call index: `645`
+  - original size: `4`
+  - probable source field: `item auxiliary word payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+### Original item group 7
+
+- call 1 @ `0x800549f8`
+  - call index: `698`
+  - original size: `1`
+  - probable source field: `item loop sentinel/control byte`
+  - RE-017 save gap status: `branch-boundary-or-sentinel`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: locate matching original RestoreLevelData control byte before source changes
+### Original item group 8
+
+- call 1 @ `0x80054ac8`
+  - call index: `750`
+  - original size: `1`
+  - probable source field: `item branch subtype byte`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 2 @ `0x80054ad4`
+  - call index: `753`
+  - original size: `20`
+  - probable source field: `position vector/block payload`
+  - RE-017 save gap status: `source-layout-mismatch`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this layout block before changing source
+- call 3 @ `0x80054ae0`
+  - call index: `756`
+  - original size: `2`
+  - probable source field: `room/rotation payload`
+  - RE-017 save gap status: `source-layout-mismatch`
+  - restore-side status: `restore-layout-unverifiable`
+  - patch readiness: `blocked`
+  - next action: derive restore-side ordering/layout before changing source
+- call 4 @ `0x80054aec`
+  - call index: `759`
+  - original size: `2`
+  - probable source field: `item->speed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 5 @ `0x80054af8`
+  - call index: `762`
+  - original size: `2`
+  - probable source field: `item->fallspeed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 6 @ `0x80054b18`
+  - call index: `770`
+  - original size: `4`
+  - probable source field: `item data pointer/word payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: prove original restore consumes this payload block before implementing writes
+- call 7 @ `0x80054b34`
+  - call index: `777`
+  - original size: `2`
+  - probable source field: `item->item_flags[3] payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 8 @ `0x80054b54`
+  - call index: `785`
+  - original size: `2`
+  - probable source field: `item->item_flags[0] payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 9 @ `0x80054b60`
+  - call index: `788`
+  - original size: `2`
+  - probable source field: `item->item_flags[1] payload`
+  - RE-017 save gap status: `source-missing-field`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; add read-side design/proof before serializer patch
+- call 10 @ `0x80054b78`
+  - call index: `794`
+  - original size: `2`
+  - probable source field: `item->current_anim_state`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 11 @ `0x80054b84`
+  - call index: `797`
+  - original size: `2`
+  - probable source field: `item->goal_anim_state`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 12 @ `0x80054b90`
+  - call index: `800`
+  - original size: `2`
+  - probable source field: `item->required_anim_state`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+### Original item group 9
+
+- call 1 @ `0x80054c34`
+  - call index: `841`
+  - original size: `1`
+  - probable source field: `item list/sentinel byte`
+  - RE-017 save gap status: `branch-boundary-or-sentinel`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: locate matching original RestoreLevelData control byte before source changes
+### Original item group 10
+
+- call 1 @ `0x80054ce4`
+  - call index: `885`
+  - original size: `2`
+  - probable source field: `active control header`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 2 @ `0x80054cfc`
+  - call index: `891`
+  - original size: `2`
+  - probable source field: `item->pos.x_pos packed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 3 @ `0x80054d14`
+  - call index: `897`
+  - original size: `2`
+  - probable source field: `item->pos.y_pos packed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 4 @ `0x80054d2c`
+  - call index: `903`
+  - original size: `2`
+  - probable source field: `item->pos.z_pos packed`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 5 @ `0x80054d38`
+  - call index: `906`
+  - original size: `2`
+  - probable source field: `item->pos.y_rot`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 6 @ `0x80054d54`
+  - call index: `913`
+  - original size: `2`
+  - probable source field: `item->pos.x_rot`
+  - RE-017 save gap status: `exact-field-width-match`
+  - restore-side status: `restore-source-absent`
+  - patch readiness: `blocked`
+  - next action: RestoreLevelData is unimplemented; exact save-side width alone is insufficient
+- call 7 @ `0x80054d60`
+  - call index: `916`
+  - original size: `1`
+  - probable source field: `item->room_number`
+  - RE-017 save gap status: `source-layout-mismatch`
+  - restore-side status: `restore-layout-unverifiable`
+  - patch readiness: `blocked`
+  - next action: derive restore-side ordering/layout before changing source
+### Original item group 11
+
+- call 1 @ `0x80054dd8`
+  - call index: `946`
+  - original size: `1`
+  - probable source field: `item list/sentinel byte`
+  - RE-017 save gap status: `branch-boundary-or-sentinel`
+  - restore-side status: `needs-original-restore-proof`
+  - patch readiness: `blocked`
+  - next action: locate matching original RestoreLevelData control byte before source changes
+
+## Verdict
+
+RE-018 blocks serializer patching from RE-017 alone: current source `RestoreLevelData` is unimplemented and no restore-side source read sequence can support the field/width hypotheses yet. Do not add `(F)`, `(D)`, or `(**)` markers.
+
+Next step: extract or reconstruct a metadata-only original `RestoreLevelData` read-call map, then compare restore read sizes/order against the RE-017 hypotheses before patching source serialization.

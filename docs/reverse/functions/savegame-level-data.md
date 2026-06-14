@@ -206,4 +206,14 @@ RE-017 reconciled the mismatched item groups into a source-vs-original field/wid
 - branch/sentinel groups: `3`
 - status: `field-width-gaps-found`
 
-Suggested next story: reconcile the RE-017 field hypotheses against restore-side behavior before patching. Highest priorities are byte-sized anim-state writes in group `4`, separate `item_flags`/timer/trigger payloads, and object-specific `4`, `20`, `24` byte payloads. `RestoreLevelData` remains the required inverse stream before any broader save/restore completeness claim.
+RE-018 checked those hypotheses against current restore-side source support:
+
+- `docs/reverse/generated/saveleveldata-restore-side-audit.csv`
+- `docs/reverse/functions/saveleveldata-restore-side-audit.md`
+- `RestoreLevelData` source status: `source-unimplemented`
+- hypotheses audited: `57`
+- priority hypotheses: `34`
+- patch-ready hypotheses: `0`
+- status: `restore-side-proof-missing`
+
+Suggested next story: extract or reconstruct a metadata-only original `RestoreLevelData` read-call map, then compare restore read sizes/order against the RE-017 hypotheses before patching source serialization. Current source-side restore evidence is insufficient for `(F)`, `(D)`, or `(**)` markers.

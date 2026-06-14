@@ -43,6 +43,7 @@
 - [RE-015 — Reconstruire la sérialisation active item de SaveLevelData](RE-015-saveleveldata-active-item-serialization.md) — Status: `Done`
 - [RE-016 — Prouver le contrôle-flow item de SaveLevelData](RE-016-saveleveldata-item-control-flow-proof.md) — Status: `Done`
 - [RE-017 — Réconcilier les champs/largeurs item SaveLevelData](RE-017-saveleveldata-item-field-width-reconciliation.md) — Status: `Done`
+- [RE-018 — Vérifier les hypothèses item SaveLevelData côté RestoreLevelData](RE-018-saveleveldata-restore-side-field-proof.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
