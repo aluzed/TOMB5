@@ -1,0 +1,13 @@
+original_group,original_call_count,first_call_index,last_call_index,first_call_address,last_call_address,candidate_source_rows,candidate_context,confidence,notes
+1,9,13,71,0x80053f44,0x8005402c,1-9,"global state, flipmap loop, flip status, cd flags, atmosphere",medium,front-loaded top-level serializer fields
+2,7,106,179,0x800540b8,0x800541dc,10-15,"room static flags, sequence byte, camera flags, spotcam flags",low,contains runtime-count loops; verify control-flow boundaries
+3,1,218,218,0x80054278,0x80054278,16,level item killed marker,low,single killed-item branch candidate
+4,17,338,441,0x80054458,0x800545f4,17-25,item position block and optional speed/fallspeed writes,low,candidate item save_position branch
+5,15,501,600,0x800546e4,0x80054870,17-32,item active/full-save branch variant,low,same source rows can compile into several original call regions
+6,3,635,645,0x800548fc,0x80054924,26-32,item animation and hitpoint fields,low,candidate save_anim/save_hitpoints branch
+7,1,698,698,0x800549f8,0x800549f8,17-32,item serialization alternate control-flow region,low,requires manual MIPS branch audit
+8,12,750,800,0x80054ac8,0x80054b90,17-32,item serialization dense call region,low,largest repeated candidate item region
+9,1,841,841,0x80054c34,0x80054c34,29-32,lara/non-lara anim-number and frame/hitpoint tail,low,tail branch candidate
+10,7,885,916,0x80054ce4,0x80054d60,17-32,item serialization second variant,low,requires mapping against item/object flags
+11,1,946,946,0x80054dd8,0x80054dd8,31-32,frame number / hit points tail,low,late item tail candidate
+12,7,988,1019,0x80054e80,0x80054efc,17-32,item serialization final variant,low,final original call group before function return

@@ -160,4 +160,11 @@ RE-012 produced a versionable original-dump metadata audit in `docs/reverse/func
 - source-level static `Write(...)` sites: `32`
 - current verdict: `needs-control-flow-audit`
 
-Suggested next story: map original `WriteSG` call groups to source `Write(...)` sites and loop/conditional contexts before considering `(F)`.
+RE-013 then generated the first versionable call-group map:
+
+- `docs/reverse/generated/saveleveldata-write-call-map.csv`
+- `docs/reverse/functions/saveleveldata-write-call-map.md`
+- original call groups: `12`
+- status: `candidate-map-needs-manual-audit`
+
+Suggested next story: manually audit the repeated item-serialization groups against object flags and `FullSave`, then replace low-confidence candidate spans with controlled source-to-original correspondences before considering `(F)`.
