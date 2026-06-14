@@ -1,0 +1,464 @@
+# SaveLevelData item field/width reconciliation
+
+Status: Generated
+Story: `docs/stories/RE-017-saveleveldata-item-field-width-reconciliation.md`
+
+## Progress tracker
+
+- [x] Load RE-016 mismatch groups.
+- [x] Derive call-size metadata for the mismatch groups.
+- [x] Assign conservative probable source fields and gap statuses.
+- [x] Keep raw original rows, binary words, and payload coordinates out of versioned outputs.
+- [x] Preserve marker verdict limits.
+
+## Inputs
+
+- Original dump CSV: `build/reverse/re007/original/SaveLevelData_80053f10.csv` (ignored; not versioned)
+- RE-016 control-flow CSV: `docs/reverse/generated/saveleveldata-item-control-flow-audit.csv`
+- WriteSG final PSX address: `0x80053b04`
+
+## Summary
+
+- mismatch groups covered: `4, 5, 6, 7, 8, 9, 10, 11`
+- original calls classified: `57`
+- status: `field-width-gaps-found`
+
+### Gap counts
+
+- `branch-boundary-or-sentinel`: `3`
+- `exact-field-width-match`: `26`
+- `source-layout-mismatch`: `4`
+- `source-missing-field`: `21`
+- `source-width-mismatch`: `3`
+
+### Priority findings
+
+- anim-state-byte-width: 3 writes in groups 4 are byte-sized original metadata vs 2-byte current source
+- unmodeled-large-payloads: original sizes 4, 20, 24 require source field reconciliation
+- separate-item-flag-payloads: 7 probable item_flags payload writes are not modeled as source writes
+
+## Field/width table
+
+The table below is a field hypothesis matrix. It is not an equivalence proof and does not justify `(F)`, `(D)`, or `(**)` markers.
+
+### Original item group 4
+
+- call 1 @ `0x80054458`
+  - call index: `338`
+  - original size: `2`
+  - probable source field: `active control header`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: header coordinate matches current source
+- call 2 @ `0x80054484`
+  - call index: `349`
+  - original size: `2`
+  - probable source field: `item->pos.x_pos packed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: position payload width matches
+- call 3 @ `0x8005449c`
+  - call index: `355`
+  - original size: `2`
+  - probable source field: `item->pos.y_pos packed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: position payload width matches
+- call 4 @ `0x800544b4`
+  - call index: `361`
+  - original size: `2`
+  - probable source field: `item->pos.z_pos packed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: position payload width matches
+- call 5 @ `0x800544c8`
+  - call index: `366`
+  - original size: `1`
+  - probable source field: `item->room_number`
+  - source size: `1`
+  - gap status: `exact-field-width-match`
+  - evidence: room byte width matches
+- call 6 @ `0x800544d4`
+  - call index: `369`
+  - original size: `2`
+  - probable source field: `item->pos.y_rot`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: rotation width matches
+- call 7 @ `0x800544f0`
+  - call index: `376`
+  - original size: `2`
+  - probable source field: `item->pos.x_rot`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: optional rotation width matches
+- call 8 @ `0x8005450c`
+  - call index: `383`
+  - original size: `2`
+  - probable source field: `item->pos.z_rot`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: optional rotation width matches
+- call 9 @ `0x80054528`
+  - call index: `390`
+  - original size: `2`
+  - probable source field: `item->speed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: optional speed width matches
+- call 10 @ `0x80054544`
+  - call index: `397`
+  - original size: `2`
+  - probable source field: `item->fallspeed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: optional fallspeed width matches
+- call 11 @ `0x80054568`
+  - call index: `406`
+  - original size: `1`
+  - probable source field: `item->current_anim_state`
+  - source size: `2`
+  - gap status: `source-width-mismatch`
+  - evidence: original metadata has byte write where current source writes 2
+- call 12 @ `0x8005457c`
+  - call index: `411`
+  - original size: `1`
+  - probable source field: `item->goal_anim_state`
+  - source size: `2`
+  - gap status: `source-width-mismatch`
+  - evidence: original metadata has byte write where current source writes 2
+- call 13 @ `0x80054590`
+  - call index: `416`
+  - original size: `1`
+  - probable source field: `item->required_anim_state`
+  - source size: `2`
+  - gap status: `source-width-mismatch`
+  - evidence: original metadata has byte write where current source writes 2
+- call 14 @ `0x800545ac`
+  - call index: `423`
+  - original size: `2`
+  - probable source field: `item->anim_number`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: Lara anim-number variant width matches
+- call 15 @ `0x800545cc`
+  - call index: `431`
+  - original size: `1`
+  - probable source field: `item->anim_number - obj->anim_index`
+  - source size: `1`
+  - gap status: `exact-field-width-match`
+  - evidence: non-Lara anim-number variant width matches
+- call 16 @ `0x800545d8`
+  - call index: `434`
+  - original size: `2`
+  - probable source field: `item->frame_number`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: frame width matches
+- call 17 @ `0x800545f4`
+  - call index: `441`
+  - original size: `2`
+  - probable source field: `item->hit_points`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: hitpoint width matches
+### Original item group 5
+
+- call 1 @ `0x800546e4`
+  - call index: `501`
+  - original size: `4`
+  - probable source field: `packed active/status flags`
+  - source size: `4`
+  - gap status: `exact-field-width-match`
+  - evidence: packed flag payload width matches RE-015 source addition
+- call 2 @ `0x80054700`
+  - call index: `508`
+  - original size: `2`
+  - probable source field: `item->item_flags[0] payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: current source sets a header bit but has no separate payload write
+- call 3 @ `0x8005471c`
+  - call index: `515`
+  - original size: `2`
+  - probable source field: `item->item_flags[1] payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: current source sets a header bit but has no separate payload write
+- call 4 @ `0x80054738`
+  - call index: `522`
+  - original size: `2`
+  - probable source field: `item->item_flags[2] payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: current source sets a header bit but has no separate payload write
+- call 5 @ `0x80054754`
+  - call index: `529`
+  - original size: `2`
+  - probable source field: `item->item_flags[3] payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: current source sets a header bit but has no separate payload write
+- call 6 @ `0x80054770`
+  - call index: `536`
+  - original size: `2`
+  - probable source field: `item->timer payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: current source sets a header bit but has no separate payload write
+- call 7 @ `0x8005478c`
+  - call index: `543`
+  - original size: `2`
+  - probable source field: `item->trigger_flags payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: current source sets a header bit but has no separate payload write
+- call 8 @ `0x800547c0`
+  - call index: `556`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: probable object extension not represented by source branch
+- call 9 @ `0x800547f8`
+  - call index: `570`
+  - original size: `24`
+  - probable source field: `object-specific payload block`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: 24-byte original metadata block has no current source equivalent
+- call 10 @ `0x80054820`
+  - call index: `580`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: probable object extension not represented by source branch
+- call 11 @ `0x80054830`
+  - call index: `584`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: probable object extension not represented by source branch
+- call 12 @ `0x80054840`
+  - call index: `588`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: probable object extension not represented by source branch
+- call 13 @ `0x80054850`
+  - call index: `592`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: probable object extension not represented by source branch
+- call 14 @ `0x80054860`
+  - call index: `596`
+  - original size: `2`
+  - probable source field: `object-specific short payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: probable object extension not represented by source branch
+- call 15 @ `0x80054870`
+  - call index: `600`
+  - original size: `20`
+  - probable source field: `object-specific payload block`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: 20-byte original metadata block has no current source equivalent
+### Original item group 6
+
+- call 1 @ `0x800548fc`
+  - call index: `635`
+  - original size: `1`
+  - probable source field: `packed byte status/control payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: byte payload is not modeled by current source
+- call 2 @ `0x80054918`
+  - call index: `642`
+  - original size: `4`
+  - probable source field: `item flag/data word payload`
+  - source size: `4`
+  - gap status: `source-layout-mismatch`
+  - evidence: 4-byte original payload is separate from current packed source flags
+- call 3 @ `0x80054924`
+  - call index: `645`
+  - original size: `4`
+  - probable source field: `item auxiliary word payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: 4-byte original payload has no current source equivalent
+### Original item group 7
+
+- call 1 @ `0x800549f8`
+  - call index: `698`
+  - original size: `1`
+  - probable source field: `item loop sentinel/control byte`
+  - source size: `None`
+  - gap status: `branch-boundary-or-sentinel`
+  - evidence: single byte group likely marks branch/loop boundary, not current source header
+### Original item group 8
+
+- call 1 @ `0x80054ac8`
+  - call index: `750`
+  - original size: `1`
+  - probable source field: `item branch subtype byte`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: byte subtype payload is not represented by current source
+- call 2 @ `0x80054ad4`
+  - call index: `753`
+  - original size: `20`
+  - probable source field: `position vector/block payload`
+  - source size: `None`
+  - gap status: `source-layout-mismatch`
+  - evidence: 20-byte original block conflicts with current split position writes
+- call 3 @ `0x80054ae0`
+  - call index: `756`
+  - original size: `2`
+  - probable source field: `room/rotation payload`
+  - source size: `None`
+  - gap status: `source-layout-mismatch`
+  - evidence: 2-byte original payload does not align with current room byte ordering
+- call 4 @ `0x80054aec`
+  - call index: `759`
+  - original size: `2`
+  - probable source field: `item->speed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: speed width matches
+- call 5 @ `0x80054af8`
+  - call index: `762`
+  - original size: `2`
+  - probable source field: `item->fallspeed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: fallspeed width matches
+- call 6 @ `0x80054b18`
+  - call index: `770`
+  - original size: `4`
+  - probable source field: `item data pointer/word payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: 4-byte original payload has no current source equivalent
+- call 7 @ `0x80054b34`
+  - call index: `777`
+  - original size: `2`
+  - probable source field: `item->item_flags[3] payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: separate item flag payload not modeled
+- call 8 @ `0x80054b54`
+  - call index: `785`
+  - original size: `2`
+  - probable source field: `item->item_flags[0] payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: separate item flag payload not modeled
+- call 9 @ `0x80054b60`
+  - call index: `788`
+  - original size: `2`
+  - probable source field: `item->item_flags[1] payload`
+  - source size: `None`
+  - gap status: `source-missing-field`
+  - evidence: separate item flag payload not modeled
+- call 10 @ `0x80054b78`
+  - call index: `794`
+  - original size: `2`
+  - probable source field: `item->current_anim_state`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: anim state width matches in this branch
+- call 11 @ `0x80054b84`
+  - call index: `797`
+  - original size: `2`
+  - probable source field: `item->goal_anim_state`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: anim state width matches in this branch
+- call 12 @ `0x80054b90`
+  - call index: `800`
+  - original size: `2`
+  - probable source field: `item->required_anim_state`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: anim state width matches in this branch
+### Original item group 9
+
+- call 1 @ `0x80054c34`
+  - call index: `841`
+  - original size: `1`
+  - probable source field: `item list/sentinel byte`
+  - source size: `None`
+  - gap status: `branch-boundary-or-sentinel`
+  - evidence: single byte group likely marks branch/loop boundary
+### Original item group 10
+
+- call 1 @ `0x80054ce4`
+  - call index: `885`
+  - original size: `2`
+  - probable source field: `active control header`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: header width matches
+- call 2 @ `0x80054cfc`
+  - call index: `891`
+  - original size: `2`
+  - probable source field: `item->pos.x_pos packed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: position payload width matches
+- call 3 @ `0x80054d14`
+  - call index: `897`
+  - original size: `2`
+  - probable source field: `item->pos.y_pos packed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: position payload width matches
+- call 4 @ `0x80054d2c`
+  - call index: `903`
+  - original size: `2`
+  - probable source field: `item->pos.z_pos packed`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: position payload width matches
+- call 5 @ `0x80054d38`
+  - call index: `906`
+  - original size: `2`
+  - probable source field: `item->pos.y_rot`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: rotation width matches
+- call 6 @ `0x80054d54`
+  - call index: `913`
+  - original size: `2`
+  - probable source field: `item->pos.x_rot`
+  - source size: `2`
+  - gap status: `exact-field-width-match`
+  - evidence: optional rotation width matches
+- call 7 @ `0x80054d60`
+  - call index: `916`
+  - original size: `1`
+  - probable source field: `item->room_number`
+  - source size: `1`
+  - gap status: `source-layout-mismatch`
+  - evidence: room byte appears after position/rotation in original metadata but earlier in current source
+### Original item group 11
+
+- call 1 @ `0x80054dd8`
+  - call index: `946`
+  - original size: `1`
+  - probable source field: `item list/sentinel byte`
+  - source size: `None`
+  - gap status: `branch-boundary-or-sentinel`
+  - evidence: single byte group likely marks branch/loop boundary
+
+## Verdict
+
+RE-017 identifies concrete field/width gaps rather than a serializer patch. The highest-priority gap is that the original metadata shows byte-sized anim-state writes in group `4` while the current source writes those states as 2-byte fields. Additional gaps include separate item flag/timer/trigger payloads and object-specific payload blocks of sizes `4`, `20`, and `24` that are not represented by the current source branch.
+
+Do not add `(F)`, `(D)`, or `(**)` markers until these field hypotheses are reconciled against restore-side behavior and source changes are proven with tests.

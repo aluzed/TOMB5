@@ -1,0 +1,58 @@
+original_group,call_ordinal,call_index,call_address,original_size,probable_source_field,source_size,gap_status,evidence
+4,1,338,0x80054458,2,active control header,2,exact-field-width-match,header coordinate matches current source
+4,2,349,0x80054484,2,item->pos.x_pos packed,2,exact-field-width-match,position payload width matches
+4,3,355,0x8005449c,2,item->pos.y_pos packed,2,exact-field-width-match,position payload width matches
+4,4,361,0x800544b4,2,item->pos.z_pos packed,2,exact-field-width-match,position payload width matches
+4,5,366,0x800544c8,1,item->room_number,1,exact-field-width-match,room byte width matches
+4,6,369,0x800544d4,2,item->pos.y_rot,2,exact-field-width-match,rotation width matches
+4,7,376,0x800544f0,2,item->pos.x_rot,2,exact-field-width-match,optional rotation width matches
+4,8,383,0x8005450c,2,item->pos.z_rot,2,exact-field-width-match,optional rotation width matches
+4,9,390,0x80054528,2,item->speed,2,exact-field-width-match,optional speed width matches
+4,10,397,0x80054544,2,item->fallspeed,2,exact-field-width-match,optional fallspeed width matches
+4,11,406,0x80054568,1,item->current_anim_state,2,source-width-mismatch,original metadata has byte write where current source writes 2
+4,12,411,0x8005457c,1,item->goal_anim_state,2,source-width-mismatch,original metadata has byte write where current source writes 2
+4,13,416,0x80054590,1,item->required_anim_state,2,source-width-mismatch,original metadata has byte write where current source writes 2
+4,14,423,0x800545ac,2,item->anim_number,2,exact-field-width-match,Lara anim-number variant width matches
+4,15,431,0x800545cc,1,item->anim_number - obj->anim_index,1,exact-field-width-match,non-Lara anim-number variant width matches
+4,16,434,0x800545d8,2,item->frame_number,2,exact-field-width-match,frame width matches
+4,17,441,0x800545f4,2,item->hit_points,2,exact-field-width-match,hitpoint width matches
+5,1,501,0x800546e4,4,packed active/status flags,4,exact-field-width-match,packed flag payload width matches RE-015 source addition
+5,2,508,0x80054700,2,item->item_flags[0] payload,,source-missing-field,current source sets a header bit but has no separate payload write
+5,3,515,0x8005471c,2,item->item_flags[1] payload,,source-missing-field,current source sets a header bit but has no separate payload write
+5,4,522,0x80054738,2,item->item_flags[2] payload,,source-missing-field,current source sets a header bit but has no separate payload write
+5,5,529,0x80054754,2,item->item_flags[3] payload,,source-missing-field,current source sets a header bit but has no separate payload write
+5,6,536,0x80054770,2,item->timer payload,,source-missing-field,current source sets a header bit but has no separate payload write
+5,7,543,0x8005478c,2,item->trigger_flags payload,,source-missing-field,current source sets a header bit but has no separate payload write
+5,8,556,0x800547c0,2,object-specific short payload,,source-missing-field,probable object extension not represented by source branch
+5,9,570,0x800547f8,24,object-specific payload block,,source-missing-field,24-byte original metadata block has no current source equivalent
+5,10,580,0x80054820,2,object-specific short payload,,source-missing-field,probable object extension not represented by source branch
+5,11,584,0x80054830,2,object-specific short payload,,source-missing-field,probable object extension not represented by source branch
+5,12,588,0x80054840,2,object-specific short payload,,source-missing-field,probable object extension not represented by source branch
+5,13,592,0x80054850,2,object-specific short payload,,source-missing-field,probable object extension not represented by source branch
+5,14,596,0x80054860,2,object-specific short payload,,source-missing-field,probable object extension not represented by source branch
+5,15,600,0x80054870,20,object-specific payload block,,source-missing-field,20-byte original metadata block has no current source equivalent
+6,1,635,0x800548fc,1,packed byte status/control payload,,source-missing-field,byte payload is not modeled by current source
+6,2,642,0x80054918,4,item flag/data word payload,4,source-layout-mismatch,4-byte original payload is separate from current packed source flags
+6,3,645,0x80054924,4,item auxiliary word payload,,source-missing-field,4-byte original payload has no current source equivalent
+7,1,698,0x800549f8,1,item loop sentinel/control byte,,branch-boundary-or-sentinel,"single byte group likely marks branch/loop boundary, not current source header"
+8,1,750,0x80054ac8,1,item branch subtype byte,,source-missing-field,byte subtype payload is not represented by current source
+8,2,753,0x80054ad4,20,position vector/block payload,,source-layout-mismatch,20-byte original block conflicts with current split position writes
+8,3,756,0x80054ae0,2,room/rotation payload,,source-layout-mismatch,2-byte original payload does not align with current room byte ordering
+8,4,759,0x80054aec,2,item->speed,2,exact-field-width-match,speed width matches
+8,5,762,0x80054af8,2,item->fallspeed,2,exact-field-width-match,fallspeed width matches
+8,6,770,0x80054b18,4,item data pointer/word payload,,source-missing-field,4-byte original payload has no current source equivalent
+8,7,777,0x80054b34,2,item->item_flags[3] payload,,source-missing-field,separate item flag payload not modeled
+8,8,785,0x80054b54,2,item->item_flags[0] payload,,source-missing-field,separate item flag payload not modeled
+8,9,788,0x80054b60,2,item->item_flags[1] payload,,source-missing-field,separate item flag payload not modeled
+8,10,794,0x80054b78,2,item->current_anim_state,2,exact-field-width-match,anim state width matches in this branch
+8,11,797,0x80054b84,2,item->goal_anim_state,2,exact-field-width-match,anim state width matches in this branch
+8,12,800,0x80054b90,2,item->required_anim_state,2,exact-field-width-match,anim state width matches in this branch
+9,1,841,0x80054c34,1,item list/sentinel byte,,branch-boundary-or-sentinel,single byte group likely marks branch/loop boundary
+10,1,885,0x80054ce4,2,active control header,2,exact-field-width-match,header width matches
+10,2,891,0x80054cfc,2,item->pos.x_pos packed,2,exact-field-width-match,position payload width matches
+10,3,897,0x80054d14,2,item->pos.y_pos packed,2,exact-field-width-match,position payload width matches
+10,4,903,0x80054d2c,2,item->pos.z_pos packed,2,exact-field-width-match,position payload width matches
+10,5,906,0x80054d38,2,item->pos.y_rot,2,exact-field-width-match,rotation width matches
+10,6,913,0x80054d54,2,item->pos.x_rot,2,exact-field-width-match,optional rotation width matches
+10,7,916,0x80054d60,1,item->room_number,1,source-layout-mismatch,room byte appears after position/rotation in original metadata but earlier in current source
+11,1,946,0x80054dd8,1,item list/sentinel byte,,branch-boundary-or-sentinel,single byte group likely marks branch/loop boundary

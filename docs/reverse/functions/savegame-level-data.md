@@ -193,4 +193,17 @@ RE-016 compared the original item `WriteSG` groups against exact size sequences 
 - mismatch groups: `4, 5, 6, 7, 8, 9, 10, 11`
 - status: `control-flow-gaps-found`
 
-Suggested next story: investigate the size-sequence mismatches before considering `(F)`. In particular, groups with byte-sized original state writes or non-modeled `4`, `20`, and `24` byte writes need source-vs-original field reconciliation, and `RestoreLevelData` remains the required inverse stream before any broader save/restore completeness claim.
+RE-017 reconciled the mismatched item groups into a source-vs-original field/width hypothesis table:
+
+- `docs/reverse/generated/saveleveldata-item-field-width-audit.csv`
+- `docs/reverse/functions/saveleveldata-item-field-width-audit.md`
+- mismatch groups covered: `4, 5, 6, 7, 8, 9, 10, 11`
+- original calls classified: `57`
+- exact field-width matches: `26`
+- source width mismatches: `3`
+- source missing fields: `21`
+- source layout mismatches: `4`
+- branch/sentinel groups: `3`
+- status: `field-width-gaps-found`
+
+Suggested next story: reconcile the RE-017 field hypotheses against restore-side behavior before patching. Highest priorities are byte-sized anim-state writes in group `4`, separate `item_flags`/timer/trigger payloads, and object-specific `4`, `20`, `24` byte payloads. `RestoreLevelData` remains the required inverse stream before any broader save/restore completeness claim.
