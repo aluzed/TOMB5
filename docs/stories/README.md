@@ -37,6 +37,7 @@
 - [RE-009 — Auditer SaveLevelData / RestoreLevelData](RE-009-savegame-level-data-audit.md) — Status: `Done`
 - [RE-010 — Préparer le schéma de reconstruction SaveLevelData / RestoreLevelData](RE-010-savegame-stream-schema.md) — Status: `Done`
 - [RE-011 — Implémenter la branche PSX SaveLevelData depuis le schéma](RE-011-saveleveldata-psx-implementation.md) — Status: `Done`
+- [RE-012 — Auditer SaveLevelData contre le dump original](RE-012-saveleveldata-original-audit.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 

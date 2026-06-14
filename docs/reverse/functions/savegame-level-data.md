@@ -154,4 +154,10 @@ RE-010 produced the first versionable stream schema from the current PC `SaveLev
 - `docs/reverse/generated/savegame-level-data-schema.md`
 - `tests/reverse/test_savegame_source.py`
 
-Suggested next story id: `RE-012 — Audit SaveLevelData against the original dump`.
+RE-012 produced a versionable original-dump metadata audit in `docs/reverse/functions/saveleveldata-original-audit.md`:
+
+- original `WriteSG` calls in `SaveLevelData`: `81`
+- source-level static `Write(...)` sites: `32`
+- current verdict: `needs-control-flow-audit`
+
+Suggested next story: map original `WriteSG` call groups to source `Write(...)` sites and loop/conditional contexts before considering `(F)`.
