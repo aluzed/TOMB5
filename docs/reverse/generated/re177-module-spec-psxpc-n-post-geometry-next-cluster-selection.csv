@@ -1,0 +1,6 @@
+rank,cluster,top_function,selection_decision,next_ticket,next_topic,blocker,code_change_readiness
+1,frontend-sequence,S_PlayFMV,selected-next-proof-chain,RE-178,frontend-sequence-proof-first-audit,cluster needs source-level state contract and non-raw binary equivalence proof,blocked
+2,frontend-loadsave,SaveGame,deferred-after-selected-cluster,TBD,deferred,cluster needs source-level state contract and non-raw binary equivalence proof,blocked
+3,platform-gpu-display,clear_a_rect,deferred-after-selected-cluster,TBD,deferred,ND marker rows require a dedicated post-geometry behavior audit after non-ND proof clusters,blocked
+4,platform-memory,game_malloc,deferred-after-selected-cluster,TBD,deferred,ND marker rows require a dedicated post-geometry behavior audit after non-ND proof clusters,blocked
+5,platform-main-lifecycle,main,deferred-after-selected-cluster,TBD,deferred,ND marker rows require a dedicated post-geometry behavior audit after non-ND proof clusters,blocked

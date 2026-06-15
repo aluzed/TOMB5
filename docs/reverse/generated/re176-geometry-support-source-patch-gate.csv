@@ -1,0 +1,8 @@
+function,source_patch_allowed,marker_change_allowed,decision,dependency,blocker
+GetBoundsAccurate,no,no,deny-source-and-marker-change,RE-175 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+CalcClipWindow_ONGTE,no,no,deny-source-and-marker-change,RE-175 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+InterpolateMatrix_CL,no,no,deny-source-and-marker-change,RE-175 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+GetFrames_CL,no,no,deny-source-and-marker-change,RE-175 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+GetBestFrame,no,no,deny-source-and-marker-change,RE-175 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+GetChange,no,no,deny-source-and-marker-change,RE-175 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+DecodeTrack,no,no,deny-source-and-marker-change,RE-175 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof

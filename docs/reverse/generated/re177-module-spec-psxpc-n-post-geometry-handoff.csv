@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_cluster,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-178,frontend-sequence-proof-first-audit,frontend-sequence,S_PlayFMV,geometry-support-proof-blocked-next-cluster-selected,geometry-support reached a documentation-only terminal blocker; frontend-sequence is the next non-ND proof cluster in the RE-169 ordering,RE-177 post-geometry next-cluster selection,blocked,frontend-sequence proof-first audit emitted

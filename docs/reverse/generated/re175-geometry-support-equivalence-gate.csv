@@ -1,0 +1,8 @@
+function,contract_id,source_evidence,binary_evidence,equivalence_status,code_change_ready,marker_ready,blocker
+GetBoundsAccurate,contract-geometry-support-bounds-item,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+CalcClipWindow_ONGTE,contract-geometry-support-clip-window,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+InterpolateMatrix_CL,contract-geometry-support-matrix-interpolation,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+GetFrames_CL,contract-geometry-support-frame-pair,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+GetBestFrame,contract-geometry-support-best-frame,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+GetChange,contract-geometry-support-animation-change,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+DecodeTrack,contract-geometry-support-track-decode,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof

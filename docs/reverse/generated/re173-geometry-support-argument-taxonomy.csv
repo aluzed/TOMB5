@@ -1,0 +1,8 @@
+function,argument_family,argument_kinds,state_fields,source_contract,proof_status,code_change_ready,marker_ready,blocker
+GetBoundsAccurate,bounds-item,ITEM_INFO pointer,interpolated-bounds-buffer;frame-pair;animation-frame-number,returns frame-accurate bounds pointer,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+CalcClipWindow_ONGTE,clip-window,screen clip window inputs,clip-window-edges;gte-projected-extents,computes on-screen clipping window,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+InterpolateMatrix_CL,matrix-interpolation,matrix source and output pointers,gte-matrix-registers;interpolated-matrix-buffer,interpolates transform matrix rows,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+GetFrames_CL,frame-pair,ITEM_INFO plus frame output slots,animation-table;frame-pointer-pair;interpolation-count,selects frame pair and interpolation remainder,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+GetBestFrame,best-frame,ITEM_INFO pointer,animation-frame;bounds-selection;frame-pointer,selects best available frame metadata,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+GetChange,animation-change,ITEM_INFO and ANIM_STRUCT pointers,change-table;range-table;goal-state,applies animation change when range matches,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+DecodeTrack,track-decode,packed track and RTDECODE pointers,decode-counter;decode-type;track-offset,decodes packed track stream state,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof

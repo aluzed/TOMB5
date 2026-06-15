@@ -1,0 +1,8 @@
+function,file,line,role,source_status,proof_status,code_change_ready,marker_ready,blocker
+GetBoundsAccurate,SPEC_PSXPC_N/CALCLARA.C,1909,pivot,decompiled,source-scope-inventory-only,no,no,missing-geometry-support-caller-state-and-non-raw-equivalence-proof
+CalcClipWindow_ONGTE,SPEC_PSXPC_N/BUBBLES.C,45,supporting-candidate,decompiled,source-scope-inventory-only,no,no,missing-geometry-support-caller-state-and-non-raw-equivalence-proof
+InterpolateMatrix_CL,SPEC_PSXPC_N/CALCLARA.C,1208,supporting-candidate,decompiled,source-scope-inventory-only,no,no,missing-geometry-support-caller-state-and-non-raw-equivalence-proof
+GetFrames_CL,SPEC_PSXPC_N/CALCLARA.C,1874,supporting-candidate,decompiled,source-scope-inventory-only,no,no,missing-geometry-support-caller-state-and-non-raw-equivalence-proof
+GetBestFrame,SPEC_PSXPC_N/CALCLARA.C,2167,supporting-candidate,decompiled,source-scope-inventory-only,no,no,missing-geometry-support-caller-state-and-non-raw-equivalence-proof
+GetChange,SPEC_PSXPC_N/CONTROL_S.C,30,supporting-candidate,decompiled,source-scope-inventory-only,no,no,missing-geometry-support-caller-state-and-non-raw-equivalence-proof
+DecodeTrack,SPEC_PSXPC_N/DELTAPAK_S.C,310,supporting-candidate,decompiled,source-scope-inventory-only,no,no,missing-geometry-support-caller-state-and-non-raw-equivalence-proof

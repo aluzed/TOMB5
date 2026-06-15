@@ -1,0 +1,8 @@
+function,contract_id,required_source_state,required_binary_metadata,contract_status,code_change_ready,marker_ready,blocker
+GetBoundsAccurate,contract-geometry-support-bounds-item,interpolated-bounds-buffer;frame-pair;animation-frame-number,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+CalcClipWindow_ONGTE,contract-geometry-support-clip-window,clip-window-edges;gte-projected-extents,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+InterpolateMatrix_CL,contract-geometry-support-matrix-interpolation,gte-matrix-registers;interpolated-matrix-buffer,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+GetFrames_CL,contract-geometry-support-frame-pair,animation-table;frame-pointer-pair;interpolation-count,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+GetBestFrame,contract-geometry-support-best-frame,animation-frame;bounds-selection;frame-pointer,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+GetChange,contract-geometry-support-animation-change,change-table;range-table;goal-state,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+DecodeTrack,contract-geometry-support-track-decode,decode-counter;decode-type;track-offset,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
