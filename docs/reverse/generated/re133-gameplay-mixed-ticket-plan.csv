@@ -1,0 +1,8 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-134,gameplay-mixed-caller-side-effect-map,"Map gameplay-mixed callers, callees, cutscene/zone/setup state, and side-effect surfaces.",gameplay-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-135,gameplay-mixed-argument-state-taxonomy,"Classify gameplay-mixed argument shapes, global gameplay state, cutscene state, level/setup state, and zone side effects.",gameplay-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-136,gameplay-mixed-comparison-gate,Decide if gameplay-mixed has enough non-raw equivalence proof for any source or marker change.,gameplay-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-137,gameplay-mixed-reconstruction-plan,Publish a source reconstruction plan if the proof gate remains blocked.,gameplay-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-138,gameplay-mixed-source-patch-gate,Keep source patch denied unless the comparison gate produces a symbolic equivalence proof.,gameplay-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-139,gameplay-mixed-validation-regression,Validate generated gameplay-mixed metadata and forbidden-evidence guards.,gameplay-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-140,gameplay-mixed-closure-or-handoff,Close gameplay-mixed or hand off to object-interaction with a refreshed plan.,gameplay-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded

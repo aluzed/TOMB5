@@ -1,0 +1,2 @@
+cluster,candidate_count,top_function,representative_functions,object_family,readiness,blocker,recommended_next_ticket
+gameplay-mixed,11,Load_and_Init_Cutseq,Load_and_Init_Cutseq;CreateZone;special4_init;init_water_table;InitialiseSqrtTable;InitTarget;InitBinoculars;InitialiseFootPrints;LoadLevel;EscapeBox;InitPackNodes,gameplay-state,best-next-module-game-cluster,Gameplay mixed state contract and symbolic equivalence proof missing,RE-134

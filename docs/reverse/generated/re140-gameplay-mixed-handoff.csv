@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,reason,code_change_readiness,blocker
+RE-141,object-interaction,object-interaction,gameplay-mixed closed with proof blocker; next RE-061 module-game cluster is object-interaction with FindPlinth pivot,blocked,Gameplay mixed lacks state contract and symbolic equivalence proof for safe source or marker changes
