@@ -325,4 +325,22 @@ RE-025 findings:
 - `item_flags[0..3]`, `timer`, and `trigger_flags` have visible header-bit predicates, but their separate payload bodies and restore assignments remain unproved.
 - object-extension payloads total `8` rows / `56` bytes with rare blocks `24,20`, but no source predicate or field identity is proven.
 
-Current next story: RE-026. Prove object subtype/layout fanout and extra restore bytes for save group `8`; do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` from RE-025 evidence alone.
+RE-026 then narrowed save group `8` into a metadata-only layout/fanout predicate matrix:
+
+- `docs/reverse/generated/restoreleveldata-group8-layout-fanout-proof.csv`
+- `docs/reverse/functions/restoreleveldata-group8-layout-fanout-proof.md`
+- target save group: `8`
+- restore group: `8`
+- fanout rows: `7`
+- code-change-ready fanout families: `0`
+- status: `restoreleveldata-group8-layout-fanout-proof-blocked`
+
+RE-026 findings:
+
+- subtype byte and extra restore byte candidate remain without source predicate identity.
+- layout block `20` and room/rotation ordering still conflict with the current split source representation.
+- speed/fallspeed and anim-state widths are source-visible, but still blocked by the enclosing fanout/layout predicate.
+- item data word has no source field identity.
+- item flag payload bodies inherit the RE-025 `group5-item-flag-payloads-blocked` dependency.
+
+Current next story: RE-027. Refresh the `RestoreLevelData` implementation readiness plan from RE-024, RE-025, and RE-026 before any source patch or `(F)`, `(D)`, `(**)` marker change.

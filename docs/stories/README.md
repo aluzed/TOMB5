@@ -51,6 +51,7 @@
 - [RE-023 — Planifier l'implémentation RestoreLevelData depuis les blockers RE-022](RE-023-restoreleveldata-implementation-plan.md) — Status: `Done`
 - [RE-024 — Prouver les prédicats RestoreLevelData room/split](RE-024-restoreleveldata-room-split-predicate-proof.md) — Status: `Done`
 - [RE-025 — Prouver les payload predicates RestoreLevelData du save group 5](RE-025-restoreleveldata-group5-payload-predicate-proof.md) — Status: `Done`
+- [RE-026 — Prouver le fanout subtype/layout RestoreLevelData du save group 8](RE-026-restoreleveldata-group8-layout-fanout-proof.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
