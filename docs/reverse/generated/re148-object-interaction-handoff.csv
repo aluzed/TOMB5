@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,reason,code_change_readiness,blocker
+RE-149,item-lighting-interaction,item-lighting-interaction,object-interaction closed with proof blocker; next RE-061 module-game cluster is item-lighting-interaction with DoFlameTorch pivot,blocked,Object interaction lacks state contract and symbolic equivalence proof for safe source or marker changes

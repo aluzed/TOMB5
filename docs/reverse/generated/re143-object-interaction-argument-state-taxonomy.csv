@@ -1,0 +1,4 @@
+shape_id,site_count,argument_kinds,state_fields,write_surfaces,source_backed,patch_ready,blocker
+shape-object-interaction-1-arg,4,object-interaction-dispatch,baddy-state;item-state;object-interaction-state;object-setup-state;trap-state,object-interaction-symbolic-surface;object-setup-write-surface,yes,no,missing-symbolic-equivalence-proof
+shape-object-interaction-void-setup,4,void-or-dispatch,baddy-state;item-state;object-interaction-state;object-setup-state;trap-state,object-interaction-symbolic-surface;object-setup-write-surface,yes,no,missing-symbolic-equivalence-proof
+shape-object-interaction-item-pointer,2,object-interaction-dispatch,item-state;object-interaction-state;pickup-state,item-array-surface;item-write-surface;object-interaction-symbolic-surface;pickup-write-surface,yes,no,missing-symbolic-equivalence-proof

@@ -1,0 +1,8 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-142,object-interaction-caller-side-effect-map,"Map object-interaction callers, pickup/object setup state, and side-effect surfaces.",object-interaction,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-143,object-interaction-argument-state-taxonomy,"Classify object-interaction argument shapes, item/object state, setup tables, and trap/baddy side effects.",object-interaction,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-144,object-interaction-comparison-gate,Decide if object-interaction has enough non-raw equivalence proof for any source or marker change.,object-interaction,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-145,object-interaction-reconstruction-plan,Publish a source reconstruction plan if the proof gate remains blocked.,object-interaction,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-146,object-interaction-source-patch-gate,Keep source patch denied unless the comparison gate produces a symbolic equivalence proof.,object-interaction,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-147,object-interaction-validation-regression,Validate generated object-interaction metadata and forbidden-evidence guards.,object-interaction,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-148,object-interaction-closure-or-handoff,Close object-interaction or hand off to item-lighting-interaction with a refreshed plan.,object-interaction,blocked-until-proof,artifact published or terminal proof blocker recorded

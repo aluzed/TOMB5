@@ -1,0 +1,2 @@
+cluster,candidate_count,top_function,representative_functions,object_family,readiness,blocker,recommended_next_ticket
+object-interaction,6,FindPlinth,FindPlinth;CollectCarriedItems;BaddyObjects;InitialiseObjects;TrapObjects;ObjectObjects,object-interaction-state,best-next-module-game-cluster,Object interaction state contract and symbolic equivalence proof missing,RE-142
