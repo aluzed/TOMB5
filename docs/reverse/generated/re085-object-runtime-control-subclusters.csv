@@ -1,0 +1,4 @@
+subcluster,candidate_count,top_function,representative_functions,object_family,readiness,blocker,recommended_next_ticket
+torch-and-flare-control,2,FlameTorchControl,FlameTorchControl;FlareControl,fire-and-flare-object-state,best-initial-proof-subcluster,"FlameTorchControl/FlareControl need object state, caller, and equivalence proof before source or marker changes",RE-086
+pickup-search-control,1,SearchObjectControl,SearchObjectControl,pickup-query-object-state,proof-needed,object control subcluster needs source state contract and equivalence proof,defer
+dynamic-light-control,2,ControlElectricalLight,ControlElectricalLight;ControlStrobeLight,dynamic-light-object-state,proof-needed,object control subcluster needs source state contract and equivalence proof,defer
