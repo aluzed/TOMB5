@@ -1,0 +1,2 @@
+function,file,line,implementation_status,object_family,subcluster,role,readiness,code_change_ready,marker_ready,blocker,next_probe
+LaraControl,GAME/LARAMISC.C,163,implemented-source,lara-runtime-state,lara-runtime-control,pivot-lara-runtime-control,proof-first-audit-needed,no,no,Lara runtime state contract and symbolic equivalence proof missing,RE-118 Lara runtime caller and side-effect map

@@ -1,0 +1,8 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-118,lara-runtime-caller-side-effect-map,"Map LaraControl callers, callees, Lara globals, item state, water/movement state, and side-effect surfaces.",lara-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-119,lara-runtime-argument-state-taxonomy,"Classify LaraControl argument shape, Lara state, item state, room/water state, and animation side effects.",lara-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-120,lara-runtime-comparison-gate,Define symbolic comparison requirements without raw binary evidence.,lara-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-121,lara-runtime-reconstruction-plan,Convert ready rows into a minimal reconstruction plan or keep documentation-only blocker.,lara-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-122,lara-runtime-source-patch-gate,Apply safe patch only if rows are proof-ready; otherwise publish denial gate.,lara-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-123,lara-runtime-validation-regression,"Record tests, metadata guards, and regression validation.",lara-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-124,lara-runtime-closure-or-handoff,Close lara-runtime-control or hand off to the next gameflow runtime subcluster.,lara-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded

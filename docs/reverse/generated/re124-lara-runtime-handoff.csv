@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,reason,code_change_readiness,blocker
+RE-125,gameflow-runtime-control,runtime-support-mixed,lara-runtime control closed with proof blocker; next RE-077 gameflow subcluster pivots on ResetGuards,blocked,Lara runtime control lacks state contract and symbolic equivalence proof for safe source or marker changes

@@ -1,0 +1,2 @@
+shape_id,site_count,argument_kinds,state_fields,write_surfaces,source_backed,patch_ready,blocker
+shape-lara-runtime-control-item-number,3,lara-item-number;object-dispatch-item-number,animation-state;control-gate-state;dash-timer-state;lara-item-state;lara-state;room-water-state;water-depth-query;water-height-query;water-status-state,animation-write-surface;control-gate-read-surface;dash-timer-write-surface;lara-item-write-surface;lara-state-write-surface;water-state-write-surface,yes,no,missing-symbolic-equivalence-proof

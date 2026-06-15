@@ -1,0 +1,2 @@
+subcluster,candidate_count,top_function,representative_functions,object_family,readiness,blocker,recommended_next_ticket
+lara-runtime-control,1,LaraControl,LaraControl,lara-runtime-state,best-initial-proof-subcluster,Lara runtime state contract and symbolic equivalence proof missing,RE-118
