@@ -430,4 +430,23 @@ RE-031..RE-037 findings:
 - group `8` remains blocked by subtype/layout/fanout and the group `5` item flag dependency.
 - no partial `RestoreLevelData` source patch is currently ready.
 
-Current next story: RE-038. Attempt a source patch only after a later proof row becomes code-change-ready; otherwise continue proof-first blocker reduction. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` from the current backlog.
+Current terminal state: RE-038 through RE-043 closed the current `RestoreLevelData` source reconstruction chain:
+
+- `docs/reverse/generated/restoreleveldata-terminal-closure-re038-re043.csv`
+- `docs/reverse/functions/restoreleveldata-terminal-closure-re038-re043.md`
+- story files: `docs/stories/RE-038-*` through `docs/stories/RE-043-*`
+- tickets covered: `6`
+- code-change-ready tickets: `0`
+- final decision: `stop-restoreleveldata-source-reconstruction-chain`
+- next ticket: `none`
+
+RE-038..RE-043 terminal findings:
+
+- source patch gate is denied because no proof row is code-change-ready.
+- group `10` is terminal-blocked without new non-raw room placement evidence.
+- group `4` is terminal-blocked without new non-raw active-item split and anim-width evidence.
+- group `5` remains terminal-excluded because assignment identities are absent.
+- group `8` is terminal-blocked by subtype/layout/fanout and group `5` dependency.
+- no safe remaining `RestoreLevelData` source work exists in this chain.
+
+Current next story: none for `RestoreLevelData` source reconstruction. Resume only if new non-raw evidence becomes available, or switch to a different reverse-engineering domain. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` from the current chain.

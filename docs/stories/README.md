@@ -63,6 +63,12 @@
 - [RE-035 — RestoreLevelData group 5 safe assignment identity retry](RE-035-group5-safe-assignment-identity-retry.md) — Status: `Done`
 - [RE-036 — RestoreLevelData group 8 subtype/layout/fanout readiness](RE-036-group8-subtype-layout-fanout-readiness.md) — Status: `Done`
 - [RE-037 — RestoreLevelData partial patch readiness matrix](RE-037-partial-patch-readiness-matrix.md) — Status: `Done`
+- [RE-038 — RestoreLevelData source patch gate](RE-038-source-patch-gate.md) — Status: `Done`
+- [RE-039 — RestoreLevelData group 10 terminal blocker](RE-039-group10-terminal-blocker.md) — Status: `Done`
+- [RE-040 — RestoreLevelData group 4 terminal blocker](RE-040-group4-terminal-blocker.md) — Status: `Done`
+- [RE-041 — RestoreLevelData group 5 terminal blocker](RE-041-group5-terminal-blocker.md) — Status: `Done`
+- [RE-042 — RestoreLevelData group 8 terminal blocker](RE-042-group8-terminal-blocker.md) — Status: `Done`
+- [RE-043 — RestoreLevelData final stop report](RE-043-restoreleveldata-final-stop-report.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
