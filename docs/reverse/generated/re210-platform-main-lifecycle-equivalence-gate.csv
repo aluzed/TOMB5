@@ -1,0 +1,4 @@
+function,contract_id,source_evidence,binary_evidence,equivalence_status,code_change_ready,marker_ready,blocker
+main,contract-platform-main-lifecycle-program-entrypoint,source-contract-and-lifecycle-surface-metadata,not-versioned-non-raw-nd-equivalence-proof-missing,blocked-missing-non-raw-nd-lifecycle-equivalence-proof,no,no,missing-non-raw-nd-lifecycle-equivalence-proof
+InitNewCDSystem,contract-platform-main-lifecycle-disc-system-initialization,source-contract-and-lifecycle-surface-metadata,not-versioned-non-raw-nd-equivalence-proof-missing,blocked-missing-non-raw-nd-lifecycle-equivalence-proof,no,no,missing-non-raw-nd-lifecycle-equivalence-proof
+VSyncFunc,contract-platform-main-lifecycle-vertical-sync-callback,source-contract-and-lifecycle-surface-metadata,not-versioned-non-raw-nd-equivalence-proof-missing,blocked-missing-non-raw-nd-lifecycle-equivalence-proof,no,no,missing-non-raw-nd-lifecycle-equivalence-proof

@@ -1,0 +1,4 @@
+function,source_patch_allowed,marker_change_allowed,decision,dependency,blocker
+main,no,no,deny-source-and-marker-change,RE-210 equivalence gate reported zero ready rows,missing-non-raw-nd-lifecycle-equivalence-proof
+InitNewCDSystem,no,no,deny-source-and-marker-change,RE-210 equivalence gate reported zero ready rows,missing-non-raw-nd-lifecycle-equivalence-proof
+VSyncFunc,no,no,deny-source-and-marker-change,RE-210 equivalence gate reported zero ready rows,missing-non-raw-nd-lifecycle-equivalence-proof

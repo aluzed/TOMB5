@@ -1,0 +1,4 @@
+function,file,line,role,source_status,prior_code_ready,prior_marker_ready,proof_status,code_change_ready,marker_ready,blocker
+main,SPEC_PSXPC_N/PSXMAIN.C,42,pivot,debugged,no,no,source-scope-inventory-only,no,no,missing-platform-main-lifecycle-source-surface-and-non-raw-nd-equivalence-proof
+InitNewCDSystem,SPEC_PSXPC_N/CD.C,354,lifecycle-context,debugged,no,no,source-scope-inventory-only,no,no,missing-platform-main-lifecycle-source-surface-and-non-raw-nd-equivalence-proof
+VSyncFunc,SPEC_PSXPC_N/PSXMAIN.C,26,lifecycle-context,debugged,no,no,source-scope-inventory-only,no,no,missing-platform-main-lifecycle-source-surface-and-non-raw-nd-equivalence-proof

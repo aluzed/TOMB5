@@ -1,0 +1,4 @@
+function,contract_id,required_source_state,required_binary_metadata,contract_status,code_change_ready,marker_ready,blocker
+main,contract-platform-main-lifecycle-program-entrypoint,startup-sequence;gpu-init;input-init;audio-init;gameflow-dispatch;shutdown,non-raw-nd-lifecycle-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-nd-lifecycle-equivalence-proof
+InitNewCDSystem,contract-platform-main-lifecycle-disc-system-initialization,disc-index;gamewad-header;xa-track-list;xa-request-state,non-raw-nd-lifecycle-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-nd-lifecycle-equivalence-proof
+VSyncFunc,contract-platform-main-lifecycle-vertical-sync-callback,frame-counters;loading-bar-callback;vsync-callback,non-raw-nd-lifecycle-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-nd-lifecycle-equivalence-proof

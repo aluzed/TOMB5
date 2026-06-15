@@ -1,0 +1,4 @@
+function,argument_family,argument_kinds,state_fields,source_contract,proof_status,code_change_ready,marker_ready,blocker
+main,program-entrypoint,argc;argv;boot-sequence,startup-sequence;gpu-init;input-init;audio-init;gameflow-dispatch;shutdown,"coordinates emulator, platform, gameflow, and shutdown lifecycle state",taxonomy-source-backed-only,no,no,missing-non-raw-nd-lifecycle-equivalence-proof
+InitNewCDSystem,disc-system-initialization,disc-mode;wad-header;xa-track-index,disc-index;gamewad-header;xa-track-list;xa-request-state,initializes disc lookup and XA playback lifecycle state,taxonomy-source-backed-only,no,no,missing-non-raw-nd-lifecycle-equivalence-proof
+VSyncFunc,vertical-sync-callback,callback-frame-state;loading-bar-state,frame-counters;loading-bar-callback;vsync-callback,updates platform frame counters and optional loading callback state,taxonomy-source-backed-only,no,no,missing-non-raw-nd-lifecycle-equivalence-proof
