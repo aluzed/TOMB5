@@ -1,0 +1,93 @@
+# RE-061 — Module-game proof-first audit
+
+Domain: `module-game`
+Pivot: `ShatterObject`
+Status: `module-game-proof-first-audit-published`
+Decision: `module-game-domain-scoped-for-proof-chain`
+Code-change readiness: `blocked`
+Recommended next ticket: `RE-062`
+
+## Progress tracker
+
+- [x] RE-060 handoff loaded.
+- [x] RE-044 module-game row consumed.
+- [x] Module-game candidates classified.
+- [x] Proof-first blockers recorded.
+- [x] Forbidden raw evidence excluded.
+
+## Summary
+
+- candidates: `52`
+- mapped candidates: `52`
+- ND candidates: `3`
+- runtime-focus candidates: `14`
+- clusters: `7`
+- Selected initial cluster: `debris-object-breakage`
+- code-change-ready candidates: `0`
+- marker-ready candidates: `0`
+
+## Cluster shortlist
+
+- `debris-object-breakage`
+  - candidates: `2`; mapped: `2`; ND: `0`; runtime: `0`
+  - top: `ShatterObject`
+  - representative functions: `ShatterObject; TriggerDebris`
+  - readiness: `best-initial-proof-cluster`
+  - blocker: ShatterObject/TriggerDebris side effects and callers need metadata-only proof before source or marker changes
+  - recommended next ticket: `RE-062`
+- `lara-movement-support`
+  - candidates: `18`; mapped: `18`; ND: `0`; runtime: `1`
+  - top: `TestLaraSlide`
+  - representative functions: `TestLaraSlide; TestLaraVault; CreateFlare; LaraHangRightCornerTest; LaraHangLeftCornerTest`
+  - readiness: `proof-needed`
+  - blocker: cluster needs source-level contract and non-raw binary equivalence proof
+  - recommended next ticket: `defer`
+- `gameflow-runtime-control`
+  - candidates: `12`; mapped: `12`; ND: `2`; runtime: `3`
+  - top: `DoTitle`
+  - representative functions: `DoTitle; LaraControl; QuickControlPhase; DoGameflow; FlameTorchControl`
+  - readiness: `nd-marker-audit-later`
+  - blocker: ND marker rows require dedicated behavior proof after the initial module-game cluster
+  - recommended next ticket: `after-RE-062`
+- `gameplay-mixed`
+  - candidates: `11`; mapped: `11`; ND: `0`; runtime: `6`
+  - top: `Load_and_Init_Cutseq`
+  - representative functions: `Load_and_Init_Cutseq; CreateZone; special4_init; init_water_table; InitialiseSqrtTable`
+  - readiness: `proof-needed`
+  - blocker: cluster needs source-level contract and non-raw binary equivalence proof
+  - recommended next ticket: `defer`
+- `object-interaction`
+  - candidates: `6`; mapped: `6`; ND: `0`; runtime: `4`
+  - top: `FindPlinth`
+  - representative functions: `FindPlinth; CollectCarriedItems; BaddyObjects; InitialiseObjects; TrapObjects`
+  - readiness: `proof-needed`
+  - blocker: cluster needs source-level contract and non-raw binary equivalence proof
+  - recommended next ticket: `defer`
+- `item-lighting-interaction`
+  - candidates: `2`; mapped: `2`; ND: `0`; runtime: `0`
+  - top: `DoFlameTorch`
+  - representative functions: `DoFlameTorch; TriggerAlertLight`
+  - readiness: `proof-needed`
+  - blocker: cluster needs source-level contract and non-raw binary equivalence proof
+  - recommended next ticket: `defer`
+- `ui-text-support`
+  - candidates: `1`; mapped: `1`; ND: `1`; runtime: `0`
+  - top: `InitFont`
+  - representative functions: `InitFont`
+  - readiness: `nd-marker-audit-later`
+  - blocker: ND marker rows require dedicated behavior proof after the initial module-game cluster
+  - recommended next ticket: `after-RE-062`
+
+## Readiness decision
+
+RE-061 is a proof-first audit gate. It selects `debris-object-breakage` as the first module-game cluster because `ShatterObject` is the RE-044 top module-game candidate and `TriggerDebris` gives a compact adjacent support row. No source patch or completion-marker change is safe until a caller/side-effect map and non-raw equivalence proof exist.
+
+## Generated artifacts
+
+- `docs/reverse/generated/re061-module-game-proof-first-audit.csv`
+- `docs/reverse/generated/re061-module-game-clusters.csv`
+- `docs/reverse/functions/re061-module-game-proof-first-audit.md`
+
+## Next step
+
+RE-062: build the debris/object-breakage caller and side-effect map for `ShatterObject`/`TriggerDebris` before any source reconstruction or marker update.

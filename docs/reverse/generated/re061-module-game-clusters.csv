@@ -1,0 +1,8 @@
+cluster,candidate_count,mapped_count,nd_count,runtime_count,top_function,representative_functions,readiness,blocker,recommended_next_ticket
+debris-object-breakage,2,2,0,0,ShatterObject,ShatterObject;TriggerDebris,best-initial-proof-cluster,ShatterObject/TriggerDebris side effects and callers need metadata-only proof before source or marker changes,RE-062
+lara-movement-support,18,18,0,1,TestLaraSlide,TestLaraSlide;TestLaraVault;CreateFlare;LaraHangRightCornerTest;LaraHangLeftCornerTest,proof-needed,cluster needs source-level contract and non-raw binary equivalence proof,defer
+gameflow-runtime-control,12,12,2,3,DoTitle,DoTitle;LaraControl;QuickControlPhase;DoGameflow;FlameTorchControl,nd-marker-audit-later,ND marker rows require dedicated behavior proof after the initial module-game cluster,after-RE-062
+gameplay-mixed,11,11,0,6,Load_and_Init_Cutseq,Load_and_Init_Cutseq;CreateZone;special4_init;init_water_table;InitialiseSqrtTable,proof-needed,cluster needs source-level contract and non-raw binary equivalence proof,defer
+object-interaction,6,6,0,4,FindPlinth,FindPlinth;CollectCarriedItems;BaddyObjects;InitialiseObjects;TrapObjects,proof-needed,cluster needs source-level contract and non-raw binary equivalence proof,defer
+item-lighting-interaction,2,2,0,0,DoFlameTorch,DoFlameTorch;TriggerAlertLight,proof-needed,cluster needs source-level contract and non-raw binary equivalence proof,defer
+ui-text-support,1,1,1,0,InitFont,InitFont,nd-marker-audit-later,ND marker rows require dedicated behavior proof after the initial module-game cluster,after-RE-062

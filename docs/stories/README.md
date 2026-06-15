@@ -86,6 +86,7 @@
 - [RE-058 — Collision marker/source patch gate](RE-058-collision-marker-source-patch-gate.md) — Status: `Done`
 - [RE-059 — Collision terminal blocker](RE-059-collision-terminal-blocker.md) — Status: `Done`
 - [RE-060 — Collision closure and next-domain handoff](RE-060-collision-closure-next-domain-handoff.md) — Status: `Done`
+- [RE-061 — Module-game proof-first audit](RE-061-module-game-proof-first-audit.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
