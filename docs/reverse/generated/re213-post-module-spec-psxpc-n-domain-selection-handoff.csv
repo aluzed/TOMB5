@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-214,maths-render-support-proof-first-audit,maths-render-support,mTranslateXYZ,post-module-spec-psxpc-n-next-domain-selected,module-spec_psxpc_n is exhausted; maths-render-support is the next ranked remaining domain from the RE-162 shortlist,RE-213 post-module-spec_psxpc_n domain selection,blocked,maths-render-support proof-first audit emitted
