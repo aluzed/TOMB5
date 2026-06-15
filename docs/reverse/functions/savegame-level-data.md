@@ -259,4 +259,20 @@ RE-021 findings:
 - restore group `8` links to save group `8`; object/layout payload anchors sit inside branch fanout with extra restore bytes and unresolved field identity.
 - restore group `9` links to save group `10`; exact read-size window still lacks field predicate identity.
 
-Suggested next story: reconcile branch-region hypotheses with source field identities and optional payload predicates before serializer source modification. Current restore branch/predicate evidence is insufficient for serializer patching or `(F)`, `(D)`, or `(**)` markers.
+RE-022 then reconciled the RE-020/RE-021 restore candidates with source field identities and optional predicate families:
+
+- `docs/reverse/generated/restoreleveldata-field-predicate-reconciliation.csv`
+- `docs/reverse/functions/restoreleveldata-field-predicate-reconciliation.md`
+- save groups covered: `4, 5, 8, 10`
+- proof rows: `4`
+- patch-ready groups: `0`
+- status: `restore-field-predicate-reconciliation-partial`
+
+RE-022 findings:
+
+- save group `4`: `14` matched fields and `3` unresolved width mismatches; split restore groups `4;5` still block predicate identity.
+- save group `5`: only the packed flags word is source-backed; `14` separate flag/timer/trigger/object payload fields remain unresolved.
+- save group `8`: `5` matched fields and `7` unresolved layout/payload fields; extra restore bytes and item flag predicates still block equivalence.
+- save group `10`: `6` matched fields and `1` room/layout mismatch; exact size window remains weaker than predicate proof.
+
+Suggested next story: build a restore implementation plan only after missing payload predicates and layout blockers have source-level proof. Current field/predicate reconciliation is insufficient for serializer patching or `(F)`, `(D)`, or `(**)` markers.

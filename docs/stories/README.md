@@ -47,6 +47,7 @@
 - [RE-019 — Mapper les appels ReadSG originaux de RestoreLevelData](RE-019-restoreleveldata-read-call-map.md) — Status: `Done`
 - [RE-020 — Dériver une preuve RestoreLevelData field/control-flow](RE-020-restoreleveldata-field-control-flow-proof.md) — Status: `Done`
 - [RE-021 — Mapper les prédicats/branches RestoreLevelData](RE-021-restoreleveldata-branch-predicate-map.md) — Status: `Done`
+- [RE-022 — Réconcilier champs et prédicats RestoreLevelData](RE-022-restoreleveldata-field-predicate-reconciliation.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
