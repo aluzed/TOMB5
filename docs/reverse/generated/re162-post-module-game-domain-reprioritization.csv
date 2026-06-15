@@ -1,0 +1,10 @@
+rank,domain_id,status,score,candidate_count,mapped_count,nd_count,runtime_count,top_function,top_file,rationale,next_action,next_ticket,code_change_readiness
+1,module-spec_psxpc_n,candidate,25956,27,27,7,5,PrintString,SPEC_PSXPC_N/TEXT_S.C,next-ranked domain after module-game exhaustion; remaining mapped non-final domain after savegame closure,open RE-163 module-spec_psxpc_n proof-first audit,RE-163,blocked
+2,maths-render-support,candidate,22930,92,92,4,0,mTranslateXYZ,SPEC_PSXPC_N/MATHS.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked post-module-game domain is selected,TBD,blocked
+3,traps-switches-doors,candidate,22786,20,20,0,0,ControlRollingBall,GAME/TRAPS.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked post-module-game domain is selected,TBD,blocked
+4,module-spec_psxpc,candidate,22609,28,28,0,4,PrintString,SPEC_PSXPC/FXTRIG.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked post-module-game domain is selected,TBD,blocked
+5,module-spec_psx,candidate,20480,12,12,7,4,main,SPEC_PSX/PSXMAIN.C,contains ND markers that can be audited without source reconstruction,defer until higher-ranked post-module-game domain is selected,TBD,blocked
+6,lara-combat,candidate,19048,10,10,0,0,DoProperDetection,GAME/LARAFIRE.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked post-module-game domain is selected,TBD,blocked
+7,inventory,candidate,18517,11,11,0,0,S_CallInventory2,GAME/NEWINV2.C,inventory/frontend routines form an isolatable UI-domain proof chain,defer until higher-ranked post-module-game domain is selected,TBD,blocked
+8,input,candidate,13906,3,3,0,2,S_UpdateInput,SPEC_PSXPC_N/PSXINPUT.C,"runtime input is high-priority but cross-platform, so scope must be narrow",defer until higher-ranked post-module-game domain is selected,TBD,blocked
+9,camera,candidate,13674,4,4,0,0,CalculateSpotCams,GAME/SPOTCAM.C,camera/spotcam routines are large but domain-local enough for a focused audit,defer until higher-ranked post-module-game domain is selected,TBD,blocked
