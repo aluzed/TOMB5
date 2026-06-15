@@ -294,3 +294,19 @@ RE-023 recommended proof-first follow-ups:
 - RE-026: prove object subtype/layout fanout and extra restore bytes for save group `8`.
 
 Current next story: RE-024. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` until one of the readiness rows becomes code-change-ready.
+
+RE-024 narrowed the first proof target into a metadata-only room/split predicate matrix:
+
+- `docs/reverse/generated/restoreleveldata-room-split-predicate-proof.csv`
+- `docs/reverse/functions/restoreleveldata-room-split-predicate-proof.md`
+- target save groups: `10, 4`
+- proof rows: `2`
+- code-change-ready groups: `0`
+- status: `restoreleveldata-room-split-proof-partial`
+
+RE-024 findings:
+
+- save group `10`: exact-size window remains useful but room byte order/layout predicate is still unproved.
+- save group `4`: split restore groups `4;5` and anim-state byte-vs-word predicates remain unproved.
+
+Current next story: RE-025. Prove payload predicates for save group `5` before any `RestoreLevelData` source patch.
