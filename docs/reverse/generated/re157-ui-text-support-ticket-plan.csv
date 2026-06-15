@@ -1,0 +1,5 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-158,ui-text-support-caller-side-effect-map,"Map InitFont callers, marker status, and text/font state surfaces.",ui-text-support,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-159,ui-text-support-argument-state-taxonomy,"Classify InitFont arguments, global font shade state, and marker proof needs.",ui-text-support,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-160,ui-text-support-comparison-gate,Decide whether InitFont has enough non-raw equivalence proof for marker or source changes.,ui-text-support,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-161,ui-text-support-closure-or-handoff,Close ui-text-support or hand off to the next module-game backlog domain.,ui-text-support,blocked-until-proof,artifact published or terminal proof blocker recorded

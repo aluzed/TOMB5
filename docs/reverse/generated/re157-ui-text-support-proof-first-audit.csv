@@ -1,0 +1,2 @@
+function,file,line,implementation_status,marker_status,text_family,cluster,role,readiness,code_change_ready,marker_ready,blocker,next_probe
+InitFont,GAME/TEXT.C,97,implemented-source,D;F;ND,font-shade-initialization,ui-text-support,pivot-ui-text-support,nd-marker-proof-needed,no,no,InitFont ND marker needs behavior proof before marker or source changes,RE-158 UI text caller and side-effect map

@@ -1,0 +1,2 @@
+cluster,candidate_count,top_function,representative_functions,text_family,readiness,blocker,recommended_next_ticket
+ui-text-support,1,InitFont,InitFont,font-shade-initialization,nd-marker-proof-needed,InitFont ND marker needs behavior proof before marker or source changes,RE-158
