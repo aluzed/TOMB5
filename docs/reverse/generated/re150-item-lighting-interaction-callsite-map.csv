@@ -1,0 +1,3 @@
+caller,callee,caller_file,callee_file,line,shape_id,arg_count,argument_kinds,state_fields,side_effects,proof_status,patch_ready,blocker
+LaraGun,DoFlameTorch,GAME/LARAFIRE.C,GAME/FLMTORCH.C,292,shape-item-lighting-void-torch-update,0,void,torch-item-state,lara-torch-state;left-arm-state;item-flame-state;torch-particle-state,source-callsite-mapped-only,no,missing-symbolic-equivalence-proof
+ControlStrobeLight,TriggerAlertLight,GAME/OBJLIGHT.C,GAME/OBJLIGHT.C,49,shape-item-lighting-alert-light-parameters,9,item-derived-arguments,alert-light-state,alert-light-state;dynamic-light-state;room-light-state,source-callsite-mapped-only,no,missing-symbolic-equivalence-proof

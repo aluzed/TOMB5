@@ -1,0 +1,3 @@
+function,file,role,implementation_status,interaction_family,side_effect_surface,source_contract,proof_status,patch_ready,blocker
+DoFlameTorch,GAME/FLMTORCH.C,pivot-item-lighting-interaction,unimplemented-stub,torch-item-state,lara-torch-state;left-arm-state;item-flame-state;torch-particle-state,Torch-in-hand update from Lara gun state to flame/light side effects,source-body-missing,no,missing-item-lighting-state-contract-and-symbolic-equivalence-proof
+TriggerAlertLight,GAME/OBJLIGHT.C,item-lighting-support,unimplemented-stub,alert-light-state,alert-light-state;dynamic-light-state;room-light-state,Alert-light emission from position/color/angle/room parameters,source-body-missing,no,missing-item-lighting-state-contract-and-symbolic-equivalence-proof
