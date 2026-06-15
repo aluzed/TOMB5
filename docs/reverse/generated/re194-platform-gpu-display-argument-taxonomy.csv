@@ -1,0 +1,5 @@
+function,argument_family,argument_kinds,state_fields,source_contract,proof_status,code_change_ready,marker_ready,blocker
+clear_a_rect,vram-rect-clear,RECT16 pointer and VRAM clear request,rect-position;rect-size;draw-sync;vram-clear-command,clears a platform display rectangle,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+S_control_screen_position,screen-position-control,global screen offset and display bounds,screen-x-offset;screen-y-offset;camera-window;display-bounds,updates screen position control state,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+OptimiseOTagR,ordering-table-optimization,ordering table pointer and size,ot-pointer;ot-size;primitive-link-state;reverse-order-walk,optimizes ordering-table linkage before draw submission,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+S_CalculateStaticMeshLight,static-mesh-lighting,floor/touch/mesh/anim lighting inputs,static-mesh-floor;touch-bits;mesh-bits;anim-state;dynamic-light-count,calculates platform static mesh light state,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof

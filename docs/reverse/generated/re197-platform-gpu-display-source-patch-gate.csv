@@ -1,0 +1,5 @@
+function,source_patch_allowed,marker_change_allowed,decision,dependency,blocker
+clear_a_rect,no,no,deny-source-and-marker-change,RE-196 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+S_control_screen_position,no,no,deny-source-and-marker-change,RE-196 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+OptimiseOTagR,no,no,deny-source-and-marker-change,RE-196 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+S_CalculateStaticMeshLight,no,no,deny-source-and-marker-change,RE-196 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof

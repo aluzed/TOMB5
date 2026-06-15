@@ -1,0 +1,5 @@
+function,file,line,role,source_status,prior_code_ready,prior_marker_ready,proof_status,code_change_ready,marker_ready,blocker
+clear_a_rect,SPEC_PSXPC_N/MISC.C,352,pivot,debugged,no,no,source-scope-inventory-only,no,no,missing-platform-gpu-display-caller-state-and-non-raw-equivalence-proof
+S_control_screen_position,SPEC_PSXPC_N/SPECIFIC.C,61,runtime-context,decompiled,no,no,source-scope-inventory-only,no,no,missing-platform-gpu-display-caller-state-and-non-raw-equivalence-proof
+OptimiseOTagR,SPEC_PSXPC_N/SHADOWS.C,75,runtime-context,decompiled,no,no,source-scope-inventory-only,no,no,missing-platform-gpu-display-caller-state-and-non-raw-equivalence-proof
+S_CalculateStaticMeshLight,SPEC_PSXPC_N/LIGHT.C,115,runtime-context,decompiled,no,no,source-scope-inventory-only,no,no,missing-platform-gpu-display-caller-state-and-non-raw-equivalence-proof

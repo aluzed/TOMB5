@@ -1,0 +1,5 @@
+function,contract_id,source_evidence,binary_evidence,equivalence_status,code_change_ready,marker_ready,blocker
+clear_a_rect,contract-platform-gpu-display-vram-rect-clear,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+S_control_screen_position,contract-platform-gpu-display-screen-position-control,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+OptimiseOTagR,contract-platform-gpu-display-ordering-table-optimization,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+S_CalculateStaticMeshLight,contract-platform-gpu-display-static-mesh-lighting,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof

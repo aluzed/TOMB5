@@ -1,0 +1,3 @@
+rank,cluster,top_function,selection_decision,next_ticket,next_topic,blocker,code_change_readiness
+1,platform-memory,game_malloc,selected-next-proof-chain,RE-199,platform-memory-proof-first-audit,ND marker rows require a dedicated post-platform-gpu-display behavior audit after non-ND proof clusters,blocked
+2,platform-main-lifecycle,main,deferred-after-selected-cluster,TBD,deferred,ND marker rows require a dedicated post-platform-gpu-display behavior audit after non-ND proof clusters,blocked

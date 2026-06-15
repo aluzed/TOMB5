@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_cluster,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-199,platform-memory-proof-first-audit,platform-memory,game_malloc,platform-gpu-display-proof-blocked-next-cluster-selected,platform-gpu-display reached a documentation-only terminal blocker; platform-memory is the next available SPEC_PSXPC_N cluster in the current ordering,RE-198 post-platform-gpu-display next-cluster selection,blocked,platform-memory proof-first audit emitted

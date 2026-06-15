@@ -1,0 +1,5 @@
+function,contract_id,required_source_state,required_binary_metadata,contract_status,code_change_ready,marker_ready,blocker
+clear_a_rect,contract-platform-gpu-display-vram-rect-clear,rect-position;rect-size;draw-sync;vram-clear-command,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+S_control_screen_position,contract-platform-gpu-display-screen-position-control,screen-x-offset;screen-y-offset;camera-window;display-bounds,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+OptimiseOTagR,contract-platform-gpu-display-ordering-table-optimization,ot-pointer;ot-size;primitive-link-state;reverse-order-walk,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+S_CalculateStaticMeshLight,contract-platform-gpu-display-static-mesh-lighting,static-mesh-floor;touch-bits;mesh-bits;anim-state;dynamic-light-count,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
