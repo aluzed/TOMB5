@@ -243,4 +243,20 @@ RE-020 findings:
 - group `8`: rare payload anchors `20,4` exist in restore group `8`, but extra restore bytes and layout mismatches still block field equivalence.
 - group `10`: exact size window exists in restore group `9`, but exact size is still not predicate proof.
 
-Suggested next story: derive branch-predicate metadata around candidate restore regions before serializer source modification. Current restore field/control-flow evidence is insufficient for serializer patching or `(F)`, `(D)`, or `(**)` markers.
+RE-021 then mapped metadata-only branch/predicate shapes around the candidate restore regions:
+
+- `docs/reverse/generated/restoreleveldata-branch-predicate-map.csv`
+- `docs/reverse/functions/restoreleveldata-branch-predicate-map.md`
+- restore groups covered: `4, 5, 6, 8, 9`
+- proof rows: `5`
+- patch-ready groups: `0`
+- status: `restore-branch-predicate-map-partial`
+
+RE-021 findings:
+
+- restore groups `4` and `5` link to save group `4`; both are branch-rich split candidates, not field identity proof.
+- restore group `6` links to save group `5`; rare payload anchors sit in a compact branch envelope, but optional payload predicates remain unknown.
+- restore group `8` links to save group `8`; object/layout payload anchors sit inside branch fanout with extra restore bytes and unresolved field identity.
+- restore group `9` links to save group `10`; exact read-size window still lacks field predicate identity.
+
+Suggested next story: reconcile branch-region hypotheses with source field identities and optional payload predicates before serializer source modification. Current restore branch/predicate evidence is insufficient for serializer patching or `(F)`, `(D)`, or `(**)` markers.

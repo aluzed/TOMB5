@@ -46,6 +46,7 @@
 - [RE-018 — Vérifier les hypothèses item SaveLevelData côté RestoreLevelData](RE-018-saveleveldata-restore-side-field-proof.md) — Status: `Done`
 - [RE-019 — Mapper les appels ReadSG originaux de RestoreLevelData](RE-019-restoreleveldata-read-call-map.md) — Status: `Done`
 - [RE-020 — Dériver une preuve RestoreLevelData field/control-flow](RE-020-restoreleveldata-field-control-flow-proof.md) — Status: `Done`
+- [RE-021 — Mapper les prédicats/branches RestoreLevelData](RE-021-restoreleveldata-branch-predicate-map.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
