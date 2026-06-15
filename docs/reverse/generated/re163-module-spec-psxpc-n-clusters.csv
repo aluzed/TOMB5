@@ -1,0 +1,8 @@
+cluster,candidate_count,mapped_count,nd_count,runtime_count,top_function,representative_functions,readiness,blocker,recommended_next_ticket
+ui-text-rendering,2,2,0,0,PrintString,PrintString;GetStringLength,best-initial-proof-cluster,"PrintString callers, text buffer state, font flags, and draw side effects need metadata-only proof before source or marker changes",RE-164
+geometry-support,7,7,0,0,GetBoundsAccurate,GetBoundsAccurate;CalcClipWindow_ONGTE;InterpolateMatrix_CL;GetFrames_CL;GetBestFrame,proof-needed,cluster needs source-level state contract and non-raw binary equivalence proof,defer
+platform-gpu-display,4,4,1,0,clear_a_rect,clear_a_rect;S_control_screen_position;OptimiseOTagR;S_CalculateStaticMeshLight,nd-marker-audit-later,ND marker rows require dedicated behavior proof after the initial ui text rendering cluster,after-RE-164
+frontend-loadsave,3,3,0,1,SaveGame,SaveGame;DisplayFiles;LoadGame,proof-needed,cluster needs source-level state contract and non-raw binary equivalence proof,defer
+platform-main-lifecycle,3,3,3,3,main,main;InitNewCDSystem;VSyncFunc,nd-marker-audit-later,ND marker rows require dedicated behavior proof after the initial ui text rendering cluster,after-RE-164
+platform-memory,3,3,3,0,game_malloc,game_malloc;init_game_malloc;game_free,nd-marker-audit-later,ND marker rows require dedicated behavior proof after the initial ui text rendering cluster,after-RE-164
+frontend-sequence,2,1,0,1,S_PlayFMV,S_PlayFMV;sub_1054,proof-needed,cluster needs source-level state contract and non-raw binary equivalence proof,defer
