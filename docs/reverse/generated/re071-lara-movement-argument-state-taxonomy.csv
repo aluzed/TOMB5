@@ -1,0 +1,3 @@
+shape_id,site_count,arg1_kind,arg2_kind,state_fields,source_backed,patch_ready,blocker
+shape-item-coll-predicate,39,item-pointer,collision-info-pointer,collision-info;item-animation;item-current-state;item-goal-state;item-position;lara-global-state;source-state-not-classified,yes,no,missing-non-raw-binary-equivalence
+shape-movement-predicate,2,item-pointer,collision-info-pointer,lara-global-state,yes,no,missing-non-raw-binary-equivalence

@@ -1,0 +1,2 @@
+next_ticket,next_cluster,reason,code_change_readiness,blocker
+RE-077,gameflow-runtime-control,initial-subcluster-terminal-blocker,blocked,lara movement subcluster lacks non-raw binary equivalence proof for safe patching
