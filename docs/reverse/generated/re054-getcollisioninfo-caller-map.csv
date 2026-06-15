@@ -1,0 +1,3 @@
+cluster,function_count,caller_count,representative_functions,readiness,blocker
+lara-movement-collision,18,18,GetLaraCollisionInfo;lara_col_ducklr;lara_col_duck;lara_col_all4s;lara_col_crawl,best-initial-cluster,movement collision side effects still need non-raw equivalence proof
+gameplay-mixed,1,1,mapped-caller,proof-needed,caller intent and collision side effects are not proven against binary evidence

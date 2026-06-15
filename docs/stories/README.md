@@ -78,6 +78,14 @@
 - [RE-050 — Audio/effects marker/source patch gate](RE-050-audio-effects-marker-source-patch-gate.md) — Status: `Done`
 - [RE-051 — Audio/effects terminal blocker](RE-051-audio-effects-terminal-blocker.md) — Status: `Done`
 - [RE-052 — Audio/effects closure and next-domain handoff](RE-052-audio-effects-closure-next-domain-handoff.md) — Status: `Done`
+- [RE-053 — Collision domain scope](RE-053-collision-domain-scope.md) — Status: `Done`
+- [RE-054 — GetCollisionInfo caller map](RE-054-getcollisioninfo-caller-map.md) — Status: `Done`
+- [RE-055 — Collision argument/data taxonomy](RE-055-collision-argument-data-taxonomy.md) — Status: `Done`
+- [RE-056 — Collision source-vs-binary comparison gate](RE-056-collision-comparison-gate.md) — Status: `Done`
+- [RE-057 — Collision proof cluster](RE-057-collision-proof-cluster.md) — Status: `Done`
+- [RE-058 — Collision marker/source patch gate](RE-058-collision-marker-source-patch-gate.md) — Status: `Done`
+- [RE-059 — Collision terminal blocker](RE-059-collision-terminal-blocker.md) — Status: `Done`
+- [RE-060 — Collision closure and next-domain handoff](RE-060-collision-closure-next-domain-handoff.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 

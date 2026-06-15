@@ -1,0 +1,9 @@
+story_id,topic,status,decision,code_change_readiness,safe_next_action,next_ticket
+RE-053,collision-domain-scope,Done,getcollisioninfo-selected-as-pivot,blocked,advance to GetCollisionInfo caller map,RE-054
+RE-054,getcollisioninfo-caller-map,Done,caller-clusters-published,blocked,advance to collision argument/data taxonomy,RE-055
+RE-055,collision-argument-data-taxonomy,Done,argument-and-data-shapes-published,blocked,advance to comparison gate,RE-056
+RE-056,collision-comparison-gate,Done,blocked-by-missing-non-raw-binary-equivalence-proof,blocked,do not patch; reduce proof to selected collision cluster,RE-057
+RE-057,collision-proof-cluster,Done,selected-cluster-remains-proof-needed,blocked,publish patch/marker gate,RE-058
+RE-058,collision-marker-source-patch-gate,Done,no-safe-marker-or-source-patch,blocked,publish terminal blocker instead of source changes,RE-059
+RE-059,collision-terminal-blocker,Done,terminal-blocked-without-new-non-raw-equivalence-proof,blocked,close collision and hand off to next domain,RE-060
+RE-060,collision-closure-next-domain-handoff,Done,handoff-to-module-game-domain,blocked,open RE-061 module-game proof-first audit,RE-061
