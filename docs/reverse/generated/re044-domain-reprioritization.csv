@@ -1,0 +1,13 @@
+domain_id,rank,status,score,candidate_count,mapped_count,nd_count,runtime_count,top_function,top_file,rationale,next_action
+audio-effects,1,candidate,49533,19,19,1,0,SoundEffect,GAME/EFFECTS.C,high fan-in effects/audio hub; good impact and separated from closed savegame work,create RE-045 for audio-effects proof-first audit
+module-game,2,candidate,29309,54,54,3,14,ShatterObject,GAME/DEBRIS.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked domain is selected
+collision,3,candidate,26055,32,32,0,0,GetCollisionInfo,SPEC_PSXPC_N/COLLIDE_S.C,gameplay collision queries have many callers and clear validation boundaries,defer until higher-ranked domain is selected
+module-spec_psxpc_n,4,candidate,25956,27,27,7,5,PrintString,SPEC_PSXPC_N/TEXT_S.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked domain is selected
+maths-render-support,5,candidate,22930,92,92,4,0,mTranslateXYZ,SPEC_PSXPC_N/MATHS.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked domain is selected
+traps-switches-doors,6,candidate,22786,20,20,0,0,ControlRollingBall,GAME/TRAPS.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked domain is selected
+module-spec_psxpc,7,candidate,22609,28,28,0,4,PrintString,SPEC_PSXPC/FXTRIG.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked domain is selected
+module-spec_psx,8,candidate,20480,12,12,7,4,main,SPEC_PSX/PSXMAIN.C,contains ND markers that can be audited without source reconstruction,defer until higher-ranked domain is selected
+lara-combat,9,candidate,19048,10,10,0,0,DoProperDetection,GAME/LARAFIRE.C,remaining mapped non-final domain after savegame closure,defer until higher-ranked domain is selected
+inventory,10,candidate,18517,11,11,0,0,S_CallInventory2,GAME/NEWINV2.C,inventory/frontend routines form an isolatable UI-domain proof chain,defer until higher-ranked domain is selected
+input,11,candidate,13906,3,3,0,2,S_UpdateInput,SPEC_PSXPC_N/PSXINPUT.C,"runtime input is high-priority but cross-platform, so scope must be narrow",defer until higher-ranked domain is selected
+camera,12,candidate,13674,4,4,0,0,CalculateSpotCams,GAME/SPOTCAM.C,camera/spotcam routines are large but domain-local enough for a focused audit,defer until higher-ranked domain is selected

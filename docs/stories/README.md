@@ -69,6 +69,7 @@
 - [RE-041 — RestoreLevelData group 5 terminal blocker](RE-041-group5-terminal-blocker.md) — Status: `Done`
 - [RE-042 — RestoreLevelData group 8 terminal blocker](RE-042-group8-terminal-blocker.md) — Status: `Done`
 - [RE-043 — RestoreLevelData final stop report](RE-043-restoreleveldata-final-stop-report.md) — Status: `Done`
+- [RE-044 — Post-RestoreLevelData domain reprioritization](RE-044-post-restoreleveldata-domain-reprioritization.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
