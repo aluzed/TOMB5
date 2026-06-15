@@ -1,0 +1,37 @@
+# RE-221 — post-maths-render-support-domain-selection
+
+Status: Done
+
+## Goal
+
+Advance `post-maths-render-support-domain-selection` within the maths-render-support epic using metadata-only proof artifacts.
+
+## Scope
+
+- scope: `remaining RE-162 domain shortlist after maths-render-support`
+- candidates: `0`
+- source contract: generated metadata only; no source or marker edit
+
+## Progress tracker
+
+- [x] Upstream RE-214 audit consumed.
+- [x] Story outcome generated deterministically.
+- [x] Readiness and blocker recorded.
+- [x] No production source or marker change is authorized.
+
+## Readiness
+
+Readiness: `blocked`
+Source patch ready: `no`
+Marker ready: `no`
+Blocker: `maths-render-support-terminal-blocker-published`
+
+## Validation
+
+- `python3 -m pytest tests/reverse/test_re215_re221_maths_render_support_epic.py -q`
+- `python3 -m pytest tests/reverse -q`
+- metadata-only guard over RE-215..RE-221 outputs
+
+## Next step
+
+Epic handoff: `RE-222` / `traps-switches-doors-proof-first-audit`.

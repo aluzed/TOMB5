@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-222,traps-switches-doors-proof-first-audit,traps-switches-doors,ControlRollingBall,maths-render-support-closed-next-domain-selected,maths-render-support closed as a documentation-only terminal blocker; next ranked remaining RE-213 domain selected,RE-215..RE-221 maths-render-support epic,blocked,traps-switches-doors proof-first audit emitted

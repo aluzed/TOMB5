@@ -1,0 +1,5 @@
+subcluster,rank,candidate_count,mapped_count,nd_count,runtime_count,top_function,outcome,code_change_ready,marker_ready,blocker,closed_by_story
+matrix-transform-core,1,37,37,0,0,mTranslateXYZ,blocked-no-patch,no,no,missing-maths-render-source-contract-and-non-raw-equivalence-proof,RE-215
+gpu-scene-support,2,17,17,4,0,GPU_UseOrderingTables,blocked-no-patch,no,no,missing-maths-render-source-contract-and-non-raw-equivalence-proof,RE-216
+object-draw-support,3,36,36,0,0,DrawGameInfo,blocked-no-patch,no,no,missing-maths-render-source-contract-and-non-raw-equivalence-proof,RE-217
+draw-phase-support,4,2,2,0,0,DrawPhaseGame,blocked-no-patch,no,no,missing-maths-render-source-contract-and-non-raw-equivalence-proof,RE-218
