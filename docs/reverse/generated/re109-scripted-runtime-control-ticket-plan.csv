@@ -1,0 +1,8 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-110,scripted-runtime-caller-side-effect-map,"Map andrea2_control/special3_control callers, callees, cutscene globals, title sequence dispatch, and side-effect surfaces.",scripted-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-111,scripted-runtime-argument-state-taxonomy,"Classify cutscene frame, title sequence, Lara state, RelocPtr dispatch, and platform-guard dependencies.",scripted-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-112,scripted-runtime-comparison-gate,Decide whether symbolic source/binary evidence admits source or marker changes.,scripted-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-113,scripted-runtime-reconstruction-plan,Convert ready rows into a minimal reconstruction plan or keep documentation-only blocker.,scripted-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-114,scripted-runtime-source-patch-gate,Apply safe patch only if rows are proof-ready; otherwise publish denial gate.,scripted-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-115,scripted-runtime-validation-regression,"Record tests, metadata guards, and regression validation.",scripted-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-116,scripted-runtime-closure-or-handoff,Close scripted-runtime-control or hand off to the next gameflow runtime subcluster.,scripted-runtime-control,blocked-until-proof,artifact published or terminal proof blocker recorded

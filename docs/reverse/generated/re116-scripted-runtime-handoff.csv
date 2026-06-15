@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,reason,code_change_readiness,blocker
+RE-117,gameflow-runtime-control,lara-runtime-control,scripted-runtime control closed with proof blocker; next RE-077 gameflow subcluster pivots on LaraControl,blocked,scripted runtime control lacks cutscene/runtime state contract and symbolic equivalence proof for safe source or marker changes
