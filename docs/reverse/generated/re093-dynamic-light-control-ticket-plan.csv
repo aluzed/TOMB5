@@ -1,0 +1,8 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-094,dynamic-light-caller-side-effect-map,"Map ControlElectricalLight/ControlStrobeLight callers, callees, light globals, and side-effect surfaces.",dynamic-light-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-095,dynamic-light-argument-state-taxonomy,"Classify item, trigger flag, light color, room, and dynamic-light write dependencies.",dynamic-light-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-096,dynamic-light-comparison-gate,Decide whether symbolic source/binary evidence admits source or marker changes.,dynamic-light-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-097,dynamic-light-reconstruction-plan,Convert ready rows into a minimal reconstruction plan or keep documentation-only blocker.,dynamic-light-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-098,dynamic-light-source-patch-gate,Apply safe patch only if rows are proof-ready; otherwise publish denial gate.,dynamic-light-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-099,dynamic-light-validation-regression,"Record tests, metadata guards, and regression validation.",dynamic-light-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-100,dynamic-light-closure-or-handoff,Close dynamic-light-control or hand off to the next object runtime subcluster.,dynamic-light-control,blocked-until-proof,artifact published or terminal proof blocker recorded

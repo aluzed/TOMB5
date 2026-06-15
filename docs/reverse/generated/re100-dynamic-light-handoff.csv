@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,reason,code_change_readiness,blocker
+RE-101,gameflow-runtime-control,pickup-search-control,dynamic-light control closed with proof blocker; next object runtime subcluster pivots on SearchObjectControl,blocked,dynamic light control lacks complete light state contract and symbolic equivalence proof for safe source or marker changes

@@ -1,0 +1,2 @@
+subcluster,candidate_count,top_function,representative_functions,object_family,readiness,blocker,recommended_next_ticket
+dynamic-light-control,2,ControlElectricalLight,ControlElectricalLight;ControlStrobeLight,dynamic-light-object-state,best-initial-proof-subcluster,dynamic light object state contract and symbolic equivalence proof missing,RE-094

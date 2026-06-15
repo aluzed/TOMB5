@@ -1,0 +1,3 @@
+function,file,line,implementation_status,object_family,subcluster,role,readiness,code_change_ready,marker_ready,blocker,next_probe
+ControlElectricalLight,GAME/OBJLIGHT.C,104,unimplemented-stub,dynamic-light-object-state,dynamic-light-control,pivot-dynamic-light-control,proof-first-audit-needed,no,no,dynamic light object state contract and symbolic equivalence proof missing,RE-094 dynamic light caller and side-effect map
+ControlStrobeLight,GAME/OBJLIGHT.C,22,implemented-source,dynamic-light-object-state,dynamic-light-control,strobe-light-control-support,proof-first-audit-needed,no,no,dynamic light object state contract and symbolic equivalence proof missing,RE-094 dynamic light caller and side-effect map
