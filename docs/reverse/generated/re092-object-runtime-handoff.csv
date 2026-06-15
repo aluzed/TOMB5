@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,reason,code_change_readiness,blocker
+RE-093,gameflow-runtime-control,dynamic-light-control,torch/flare control closed with proof blocker; next object runtime subcluster pivots on ControlElectricalLight,blocked,torch/flare control lacks object state source body proof and symbolic equivalence proof for safe source or marker changes

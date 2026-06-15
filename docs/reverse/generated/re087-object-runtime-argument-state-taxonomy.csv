@@ -1,0 +1,3 @@
+shape_id,site_count,argument_kinds,state_fields,write_surfaces,source_backed,patch_ready,blocker
+shape-flare-control-item-number,1,object-dispatch-item-number,source-body-missing,source-body-missing,partial,no,missing-object-state-source-body-and-symbolic-equivalence-proof
+shape-torch-control-item-number,1,object-dispatch-item-number,source-body-missing,source-body-missing,partial,no,missing-object-state-source-body-and-symbolic-equivalence-proof
