@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_cluster,selected_pivot,outcome,reason,dependency,stop_condition
+RE-170,module-spec-psxpc-n-closure-or-handoff,geometry-support,GetBoundsAccurate,next-cluster-selected-source-patch-blocked,ui-text-rendering source patch denied; geometry-support is the next non-ND proof-needed SPEC_PSXPC_N cluster,RE-169 next-cluster selection,module SPEC_PSXPC_N closure or handoff emitted
