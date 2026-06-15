@@ -1,0 +1,2 @@
+caller,callee,caller_file,callee_file,line,shape_id,arg_count,argument_kinds,state_fields,side_effects,proof_status,patch_ready,blocker
+pickup-search-dispatch-table,SearchObjectControl,GAME/OBJECTS.H,GAME/PICKUP.C,0,shape-pickup-search-control-item-number,1,object-dispatch-item-number,source-body-missing,item-state;pickup-query-state;carried-item-state;pickup-search-dispatch,symbolic-dispatch-metadata-only,no,missing-object-state-source-body-and-symbolic-equivalence-proof

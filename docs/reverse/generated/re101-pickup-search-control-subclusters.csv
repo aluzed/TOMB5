@@ -1,0 +1,2 @@
+subcluster,candidate_count,top_function,representative_functions,object_family,readiness,blocker,recommended_next_ticket
+pickup-search-control,1,SearchObjectControl,SearchObjectControl,pickup-query-object-state,best-initial-proof-subcluster,pickup search object state contract and symbolic equivalence proof missing,RE-102

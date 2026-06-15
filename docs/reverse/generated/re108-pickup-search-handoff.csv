@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,reason,code_change_readiness,blocker
+TBD,gameflow-runtime-control,object-runtime-control-exhausted,pickup-search control closed with proof blocker; RE-085 object-runtime subclusters are exhausted,blocked,pickup search control lacks pickup object state contract and symbolic equivalence proof for safe source or marker changes

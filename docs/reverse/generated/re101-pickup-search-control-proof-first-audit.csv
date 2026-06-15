@@ -1,0 +1,2 @@
+function,file,line,implementation_status,object_family,subcluster,role,readiness,code_change_ready,marker_ready,blocker,next_probe
+SearchObjectControl,GAME/PICKUP.C,175,unimplemented-stub,pickup-query-object-state,pickup-search-control,pivot-pickup-search-control,proof-first-audit-needed,no,no,pickup search object state contract and symbolic equivalence proof missing,RE-102 pickup search caller and side-effect map

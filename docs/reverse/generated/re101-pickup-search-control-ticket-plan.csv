@@ -1,0 +1,8 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-102,pickup-search-caller-side-effect-map,"Map SearchObjectControl callers, callees, pickup globals, carried item links, and side-effect surfaces.",pickup-search-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-103,pickup-search-argument-state-taxonomy,"Classify item, carried-item, pickup query, trigger, and object state dependencies.",pickup-search-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-104,pickup-search-comparison-gate,Decide whether symbolic source/binary evidence admits source or marker changes.,pickup-search-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-105,pickup-search-reconstruction-plan,Convert ready rows into a minimal reconstruction plan or keep documentation-only blocker.,pickup-search-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-106,pickup-search-source-patch-gate,Apply safe patch only if rows are proof-ready; otherwise publish denial gate.,pickup-search-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-107,pickup-search-validation-regression,"Record tests, metadata guards, and regression validation.",pickup-search-control,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-108,pickup-search-closure-or-handoff,Close pickup-search-control or hand off to the next object runtime subcluster.,pickup-search-control,blocked-until-proof,artifact published or terminal proof blocker recorded

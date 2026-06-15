@@ -1,0 +1,2 @@
+function,file,role,implementation_status,object_family,side_effect_surface,source_contract,proof_status,patch_ready,blocker
+SearchObjectControl,GAME/PICKUP.C,pivot-pickup-search-control,unimplemented-stub,pickup-query-object-state,item-state;pickup-query-state;carried-item-state;pickup-search-dispatch,"pickup search runtime control, carried item query state, and pickup object interaction",source-body-missing,no,missing-object-state-source-body-and-symbolic-equivalence-proof
