@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,reason,code_change_readiness,blocker
+TBD,gameflow-runtime-control,gameflow-runtime-control-exhausted,runtime-support-mixed closed with proof blocker; all RE-077 gameflow runtime subclusters are closed,blocked,Runtime support mixed lacks state contract and symbolic equivalence proof for safe source or marker changes

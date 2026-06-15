@@ -1,0 +1,2 @@
+function,file,role,implementation_status,object_family,side_effect_surface,source_contract,proof_status,patch_ready,blocker
+ResetGuards,GAME/CONTROL.C,pivot-runtime-support-mixed,unimplemented-stub,runtime-support-state,active-item-state;item-array-state;object-intelligence-state;guard-status-state;guard-ai-state,"Runtime support reset of active intelligent guard items, item visibility, active list, and guard AI state",source-body-missing,no,missing-runtime-support-state-contract-and-symbolic-equivalence-proof

@@ -1,0 +1,2 @@
+function,file,line,implementation_status,object_family,subcluster,role,readiness,code_change_ready,marker_ready,blocker,next_probe
+ResetGuards,GAME/CONTROL.C,2065,unimplemented-stub,runtime-support-state,runtime-support-mixed,pivot-runtime-support-mixed,proof-first-audit-needed,no,no,Runtime support state contract and symbolic equivalence proof missing,RE-126 Runtime support caller and side-effect map

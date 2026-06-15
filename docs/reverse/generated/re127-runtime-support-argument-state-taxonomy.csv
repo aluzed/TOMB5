@@ -1,0 +1,2 @@
+shape_id,site_count,argument_kinds,state_fields,write_surfaces,source_backed,patch_ready,blocker
+shape-runtime-support-reset-guards-void,2,runtime-support-dispatch;void-or-dispatch,active-item-list-state;active-item-state;guard-ai-state;guard-status-state;item-array-state;object-intelligence-state;room-link-state;target-item-state,active-item-state-write-surface;guard-ai-state-write-surface;guard-status-state-write-surface;item-array-state-read-surface;object-intelligence-read-surface;target-item-write-surface,yes,no,missing-symbolic-equivalence-proof

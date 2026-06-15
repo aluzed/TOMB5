@@ -1,0 +1,2 @@
+subcluster,candidate_count,top_function,representative_functions,object_family,readiness,blocker,recommended_next_ticket
+runtime-support-mixed,1,ResetGuards,ResetGuards,runtime-support-state,best-initial-proof-subcluster,Runtime support state contract and symbolic equivalence proof missing,RE-126

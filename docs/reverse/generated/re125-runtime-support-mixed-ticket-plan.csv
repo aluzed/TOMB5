@@ -1,0 +1,8 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-126,runtime-support-caller-side-effect-map,"Map ResetGuards callers, callees, active item traversal, guard AI reset state, and side-effect surfaces.",runtime-support-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-127,runtime-support-argument-state-taxonomy,"Classify ResetGuards void/dispatch shape, item/room/object state, and guard AI side-effect surfaces.",runtime-support-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-128,runtime-support-comparison-gate,Decide if runtime-support-mixed has enough non-raw equivalence proof for any source or marker change.,runtime-support-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-129,runtime-support-reconstruction-plan,Publish a source reconstruction plan if the proof gate remains blocked.,runtime-support-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-130,runtime-support-source-patch-gate,Keep source patch denied unless the comparison gate produces a symbolic equivalence proof.,runtime-support-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-131,runtime-support-validation-regression,Validate generated runtime-support metadata and forbidden-evidence guards.,runtime-support-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
+RE-132,runtime-support-closure-or-handoff,Close runtime-support-mixed or exhaust the gameflow runtime subclusters.,runtime-support-mixed,blocked-until-proof,artifact published or terminal proof blocker recorded
