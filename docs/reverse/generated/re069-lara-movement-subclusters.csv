@@ -1,0 +1,5 @@
+subcluster,candidate_count,source_backed_count,runtime_count,top_function,representative_functions,readiness,blocker,recommended_next_ticket
+ledge-and-vault-tests,9,9,0,TestLaraSlide,TestLaraSlide;TestLaraVault;LaraHangRightCornerTest;LaraHangLeftCornerTest;LaraClimbLeftCornerTest,best-initial-proof-subcluster,TestLaraSlide/TestLaraVault/ledge predicates need caller/state/equivalence map before source or marker changes,RE-070
+lara-control-context,5,5,1,UpdateRopeSwing,UpdateRopeSwing;ShotLara;CalcLaraMatrices;DelAlignLaraToRope;InitialiseLaraCarriedItems,proof-needed,subcluster needs source-level contract and non-raw binary equivalence proof,defer
+flare-movement-support,2,2,0,CreateFlare,CreateFlare;DoFlareInHand,proof-needed,subcluster needs source-level contract and non-raw binary equivalence proof,defer
+water-movement-support,2,2,0,LaraWaterCurrent,LaraWaterCurrent;GetWaterDepth,proof-needed,subcluster needs source-level contract and non-raw binary equivalence proof,defer
