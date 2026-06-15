@@ -1,0 +1,6 @@
+subcluster,candidate_count,nd_count,runtime_count,top_function,representative_functions,readiness,blocker,recommended_next_ticket
+title-and-control-phase,3,2,3,DoTitle,DoTitle;QuickControlPhase;DoGameflow,best-initial-proof-subcluster,DoTitle/QuickControlPhase/DoGameflow need caller/state/equivalence proof before source or marker changes,RE-078
+object-runtime-control,5,0,0,FlameTorchControl,FlameTorchControl;SearchObjectControl;ControlElectricalLight;FlareControl;ControlStrobeLight,proof-needed,subcluster needs runtime state contract and non-raw binary equivalence proof,defer
+scripted-runtime-control,2,0,0,andrea2_control,andrea2_control;special3_control,proof-needed,subcluster needs runtime state contract and non-raw binary equivalence proof,defer
+lara-runtime-control,1,0,0,LaraControl,LaraControl,proof-needed,subcluster needs runtime state contract and non-raw binary equivalence proof,defer
+runtime-support-mixed,1,0,0,ResetGuards,ResetGuards,proof-needed,subcluster needs runtime state contract and non-raw binary equivalence proof,defer
