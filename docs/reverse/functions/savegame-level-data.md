@@ -411,4 +411,23 @@ RE-030 findings:
 - current source has no `RestoreLevelData` body to inspect for target assignments.
 - group `5` should be deferred/excluded from source reconstruction unless a future non-raw proof can name restore target fields safely.
 
-Current next story: RE-031. Define a limited `RestoreLevelData` reconstruction scope that explicitly excludes group `5`, or produce a non-raw assignment extraction method that can unlock group `5`. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` until a proof row becomes code-change-ready.
+RE-031 through RE-037 then converted the remaining RestoreLevelData work into a metadata-only backlog and readiness matrix:
+
+- `docs/reverse/generated/restoreleveldata-reconstruction-backlog-re031-re037.csv`
+- `docs/reverse/functions/restoreleveldata-reconstruction-backlog-re031-re037.md`
+- story files: `docs/stories/RE-031-*` through `docs/stories/RE-037-*`
+- tickets covered: `7`
+- code-change-ready tickets: `0`
+- patch scope decision: `documentation-only-no-source-patch`
+- status: `restoreleveldata-reconstruction-backlog-blocked`
+
+RE-031..RE-037 findings:
+
+- scope is explicitly documentation/proof-only until at least one row becomes code-change-ready.
+- group `10` remains blocked by room byte order/layout predicate.
+- group `4` remains blocked by split restore groups and anim-state byte-vs-word predicate.
+- group `5` remains excluded unless a non-raw assignment identity method can name restore target fields safely.
+- group `8` remains blocked by subtype/layout/fanout and the group `5` item flag dependency.
+- no partial `RestoreLevelData` source patch is currently ready.
+
+Current next story: RE-038. Attempt a source patch only after a later proof row becomes code-change-ready; otherwise continue proof-first blocker reduction. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` from the current backlog.

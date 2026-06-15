@@ -56,6 +56,13 @@
 - [RE-028 — Checklist source-field identity RestoreLevelData group 5](RE-028-restoreleveldata-group5-source-field-identity-checklist.md) — Status: `Done`
 - [RE-029 — Prouver item_flags[0..3] payload-body RestoreLevelData group 5](RE-029-restoreleveldata-group5-item-flags-body-proof.md) — Status: `Done`
 - [RE-030 — Restore assignment identity map RestoreLevelData group 5](RE-030-restoreleveldata-group5-restore-assignment-identity-map.md) — Status: `Done`
+- [RE-031 — Limited RestoreLevelData reconstruction scope](RE-031-limited-restoreleveldata-reconstruction-scope.md) — Status: `Done`
+- [RE-032 — RestoreLevelData group 10 room byte order/layout predicate](RE-032-group10-room-byte-order-layout-predicate.md) — Status: `Done`
+- [RE-033 — RestoreLevelData group 4 active-item split restore predicates](RE-033-group4-active-item-split-restore-predicates.md) — Status: `Done`
+- [RE-034 — Non-raw RestoreLevelData assignment identity method](RE-034-non-raw-restore-assignment-identity-method.md) — Status: `Done`
+- [RE-035 — RestoreLevelData group 5 safe assignment identity retry](RE-035-group5-safe-assignment-identity-retry.md) — Status: `Done`
+- [RE-036 — RestoreLevelData group 8 subtype/layout/fanout readiness](RE-036-group8-subtype-layout-fanout-readiness.md) — Status: `Done`
+- [RE-037 — RestoreLevelData partial patch readiness matrix](RE-037-partial-patch-readiness-matrix.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
