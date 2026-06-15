@@ -1,0 +1,5 @@
+caller,callee,caller_file,callee_file,line,shape_id,room_source,bits_source,side_effects,proof_status,patch_ready,blocker
+ExplodeItemNode,ShatterObject,GAME/CONTROL.C,GAME/DEBRIS.C,2328,shape-item-derived-room-and-bits,item-room,item-node-mask,debris-allocation;mesh-bit-updates;room-scoped-spawn,source-callsite-mapped-only,no,missing-non-raw-binary-equivalence
+ExplodeFX,ShatterObject,GAME/MISSILE.C,GAME/DEBRIS.C,149,shape-fx-derived-room-and-bits,fx-room,fx-bits-input,debris-allocation;mesh-bit-updates;room-scoped-spawn,source-callsite-mapped-only,no,missing-non-raw-binary-equivalence
+ControlXRayMachine,ShatterObject,GAME/OBJECTS.C,GAME/DEBRIS.C,356,shape-static-mesh-room-and-fixed-bits,static-mesh-room,fixed-or-mesh-bits,debris-allocation;mesh-bit-updates;room-scoped-spawn,source-callsite-mapped-only,no,missing-non-raw-binary-equivalence
+ControlPhase,UpdateDebris,GAME/CONTROL.C,GAME/CONTROL.C,799,shape-runtime-tick-no-args,runtime-room-context,not-applicable,runtime-debris-update-loop,source-callsite-mapped-only,no,missing-non-raw-binary-equivalence

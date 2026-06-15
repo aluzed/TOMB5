@@ -1,0 +1,2 @@
+next_ticket,next_cluster,reason,code_change_readiness,blocker
+RE-069,lara-movement-support,initial-cluster-terminal-blocker,blocked,debris/object-breakage has source stubs and no non-raw binary equivalence proof for safe patching

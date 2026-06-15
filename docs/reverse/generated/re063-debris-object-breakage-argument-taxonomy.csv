@@ -1,0 +1,4 @@
+shape_id,site_count,arg1_kind,arg2_kind,arg3_kind,arg4_kind,arg5_kind,source_backed,patch_ready,blocker
+shape-fx-derived-room-and-bits,1,shatter-item-global,null-or-zero,fx-bits-input,fx-room,xz-velocity-policy,yes,no,missing-non-raw-binary-equivalence;stubbed-pivot-body
+shape-item-derived-room-and-bits,1,shatter-item-global,null-or-zero,item-node-mask,item-room,xz-velocity-policy,yes,no,missing-non-raw-binary-equivalence;stubbed-pivot-body
+shape-static-mesh-room-and-fixed-bits,1,null-or-zero,static-mesh,fixed-or-mesh-bits,static-mesh-room,zero-policy,yes,no,missing-non-raw-binary-equivalence;stubbed-pivot-body

@@ -1,0 +1,7 @@
+function,file,caller_or_callee_role,implementation_status,side_effect_surface,source_contract,proof_status,blocker
+ShatterObject,GAME/DEBRIS.C,pivot,unimplemented-stub,debris-allocation;mesh-bit-updates;room-scoped-spawn,item-or-static-mesh plus mesh-bits room and xz-velocity policy,source-stub-no-behavior-body,implementation body absent and non-raw binary equivalence not available
+TriggerDebris,GAME/DEBRIS.C,callee-or-helper,unimplemented-stub,debris-slot-write;velocity-rgb-texture-inputs,position texture offsets velocity vector and rgb inputs,source-stub-no-behavior-body,implementation body absent and non-raw binary equivalence not available
+GetFreeDebris,GAME/DEBRIS.C,callee-or-helper,implemented-source,debris-ring-selection;next-debris-write,debris pool scan and reusable slot selection,source-contract-visible,missing-non-raw-binary-equivalence
+UpdateDebris,GAME/CONTROL.C,runtime-updater,unimplemented-stub,runtime-debris-update-loop,runtime debris integration,source-stub-no-behavior-body,implementation body absent and non-raw binary equivalence not available
+ExplodeItemNode,GAME/CONTROL.C,caller,implemented-source,item-mesh-bit-clear;shatter-item-global-setup,item node to shatter-item conversion,source-contract-visible,missing-non-raw-binary-equivalence
+ExplodeFX,GAME/MISSILE.C,caller,implemented-source,fx-derived-shatter-item;debris-flags-temporary-write,effect instance to shatter-item conversion,source-contract-visible,missing-non-raw-binary-equivalence
