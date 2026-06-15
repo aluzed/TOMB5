@@ -276,3 +276,21 @@ RE-022 findings:
 - save group `10`: `6` matched fields and `1` room/layout mismatch; exact size window remains weaker than predicate proof.
 
 Suggested next story: build a restore implementation plan only after missing payload predicates and layout blockers have source-level proof. Current field/predicate reconciliation is insufficient for serializer patching or `(F)`, `(D)`, or `(**)` markers.
+
+RE-023 converted the RE-022 blockers into a metadata-only implementation readiness plan:
+
+- `docs/reverse/generated/restoreleveldata-implementation-plan.csv`
+- `docs/reverse/functions/restoreleveldata-implementation-plan.md`
+- save groups covered: `4, 5, 8, 10`
+- plan rows: `4`
+- patch-ready groups: `0`
+- code-change-ready groups: `0`
+- status: `restoreleveldata-implementation-plan-blocked`
+
+RE-023 recommended proof-first follow-ups:
+
+- RE-024: prove the room/layout predicate window for save group `10` and the split active item predicate path for save group `4`.
+- RE-025: prove item flag, timer, trigger, and object extension payload predicates for save group `5`.
+- RE-026: prove object subtype/layout fanout and extra restore bytes for save group `8`.
+
+Current next story: RE-024. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` until one of the readiness rows becomes code-change-ready.

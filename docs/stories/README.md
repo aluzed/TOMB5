@@ -48,6 +48,7 @@
 - [RE-020 — Dériver une preuve RestoreLevelData field/control-flow](RE-020-restoreleveldata-field-control-flow-proof.md) — Status: `Done`
 - [RE-021 — Mapper les prédicats/branches RestoreLevelData](RE-021-restoreleveldata-branch-predicate-map.md) — Status: `Done`
 - [RE-022 — Réconcilier champs et prédicats RestoreLevelData](RE-022-restoreleveldata-field-predicate-reconciliation.md) — Status: `Done`
+- [RE-023 — Planifier l'implémentation RestoreLevelData depuis les blockers RE-022](RE-023-restoreleveldata-implementation-plan.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
