@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-229,module-spec-psxpc-proof-first-audit,module-spec_psxpc,PrintString,traps-switches-doors-closed-next-domain-selected,traps-switches-doors closed as a documentation-only terminal blocker; next ranked remaining domain selected,RE-222..RE-228 traps-switches-doors epic,blocked,module-spec_psxpc proof-first audit emitted

@@ -1,0 +1,4 @@
+gate,story_id,input_scope,ready_count,blocked_count,decision,reason
+equivalence,RE-226,all traps-switches-doors rows,0,20,deny,missing-traps-switches-doors-source-contract-and-non-raw-equivalence-proof
+source-patch,RE-227,ready traps-switches-doors rows,0,20,deny,zero rows passed the equivalence gate
+marker,RE-227,ready traps-switches-doors rows,0,20,deny,zero rows passed the source-patch gate

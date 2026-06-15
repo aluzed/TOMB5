@@ -1,0 +1,4 @@
+subcluster,rank,candidate_count,mapped_count,nd_count,runtime_count,top_function,outcome,code_change_ready,marker_ready,blocker,closed_by_story
+trap-hazard-control,1,11,11,0,0,ControlRollingBall,blocked-no-patch,no,no,missing-traps-switches-doors-source-contract-and-non-raw-equivalence-proof,RE-223
+door-control,2,4,4,0,0,DoorControl,blocked-no-patch,no,no,missing-traps-switches-doors-source-contract-and-non-raw-equivalence-proof,RE-224
+switch-control,3,5,5,0,0,TurnSwitchControl,blocked-no-patch,no,no,missing-traps-switches-doors-source-contract-and-non-raw-equivalence-proof,RE-225
