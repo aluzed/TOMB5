@@ -1,0 +1,3 @@
+shape_id,site_count,argument_kinds,state_fields,write_surfaces,source_backed,patch_ready,blocker
+shape-control-phase-no-arg,3,none,control-phase-state;gameflow-bytecode-state,assignment,yes,no,missing-symbolic-equivalence-proof
+shape-title-entry-two-byte,1,gameflow-byte,audio-state;camera-state;control-phase-state;gameflow-bytecode-state;gameflow-global-state;input-state;lara-state;level-selection-state;render-state,assignment;audio-call;draw-call;increment,yes,no,missing-symbolic-equivalence-proof

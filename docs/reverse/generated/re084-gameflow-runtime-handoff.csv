@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,reason,code_change_readiness,blocker
+RE-085,object-runtime-control,object-runtime-control,title/control phase closed with proof blocker; next runtime support subcluster pivots on FlameTorchControl,blocked,title/control phase lacks symbolic equivalence proof for safe source or marker changes

@@ -1,0 +1,4 @@
+function,file,role,implementation_status,marker_status,side_effect_surface,source_contract,proof_status,blocker
+DoTitle,GAME/GAMEFLOW.C,pivot-title-runtime,implemented-source,nd-marker-present,frontend-state;gameflow-state;audio-state;level-transition;control-phase-call,"title loop, frontend selection, load-game transition, and control phase orchestration",source-contract-visible,missing-symbolic-equivalence-proof
+QuickControlPhase,GAME/GAMEFLOW.C,control-phase-loop,implemented-source,nd-marker-present,input-state;camera-state;object-control;audio-state;render-state,"per-frame title/control phase input, camera, object, audio, and draw orchestration",source-contract-visible,missing-symbolic-equivalence-proof
+DoGameflow,GAME/GAMEFLOW.C,gameflow-dispatch-context,implemented-source,no-nd-marker,script-state;gameflow-state;title-call;level-transition,gameflow script dispatch and title/level transition context,source-contract-visible,missing-symbolic-equivalence-proof
