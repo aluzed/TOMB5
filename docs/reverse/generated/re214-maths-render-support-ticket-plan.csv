@@ -1,0 +1,8 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-215,maths-render-support-matrix-transform-chain,Batch matrix transform helpers beginning at mTranslateXYZ.,matrix-transform-core source-backed candidate rows,blocked-until-proof,Matrix transform proof chain emits state/equivalence/patch gates
+RE-216,maths-render-support-gpu-scene-chain,Batch GPU scene/order-table support helpers after matrix transform closure.,gpu-scene-support candidate rows,blocked-until-proof,GPU scene proof chain emits readiness and no-patch/patch gate
+RE-217,maths-render-support-object-draw-chain,Batch object draw support helpers after GPU scene closure.,object-draw-support candidate rows,blocked-until-proof,Object draw proof chain emits readiness and no-patch/patch gate
+RE-218,maths-render-support-draw-phase-chain,Batch draw phase support helpers after object draw closure.,draw-phase-support candidate rows,blocked-until-proof,Draw phase proof chain emits readiness and no-patch/patch gate
+RE-219,maths-render-support-cross-platform-reconciliation,"Reconcile duplicated platform maths/render rows across SPEC_PSXPC_N, SPEC_PSXPC, and SPEC_PSX.",cross-platform duplicate rows,blocked-until-proof,Duplicate handling is documented before source or marker changes
+RE-220,maths-render-support-source-patch-gate,Authorize source/marker edits only for rows made ready by prior proof gates.,ready maths-render-support rows only,blocked-until-proof,Patch/build/tests pass or no-patch blocker is published
+RE-221,post-maths-render-support-domain-selection,Select the next proof domain after maths-render-support closes or blocks.,remaining RE-162 domain shortlist after maths-render-support,blocked-until-proof,Next domain handoff artifact names the next objective

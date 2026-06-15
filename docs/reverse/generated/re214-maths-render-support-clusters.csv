@@ -1,0 +1,5 @@
+subcluster,rank,candidate_count,mapped_count,nd_count,runtime_count,top_function,top_file,readiness,blocker,next_ticket
+matrix-transform-core,1,37,37,0,0,mTranslateXYZ,SPEC_PSXPC_N/MATHS.C,proof-needed,cluster needs source-level state contract and non-raw binary equivalence proof,RE-215
+gpu-scene-support,2,17,17,4,0,GPU_UseOrderingTables,SPEC_PSXPC_N/GPU.C,proof-needed,cluster needs source-level state contract and non-raw binary equivalence proof,TBD
+object-draw-support,3,36,36,0,0,DrawGameInfo,GAME/HEALTH.C,proof-needed,cluster needs source-level state contract and non-raw binary equivalence proof,TBD
+draw-phase-support,4,2,2,0,0,DrawPhaseGame,SPEC_PSXPC/DRAWPHAS.C,proof-needed,cluster needs source-level state contract and non-raw binary equivalence proof,TBD

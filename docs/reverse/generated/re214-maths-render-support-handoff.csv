@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_subcluster,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-215,maths-render-support-matrix-transform-chain,maths-render-support,matrix-transform-core,mTranslateXYZ,maths-render-support-opened-with-proof-blocker,matrix-transform-core is the first bounded subcluster for the maths-render-support proof chain,RE-214 maths-render-support proof-first audit,blocked,matrix-transform chain emitted
