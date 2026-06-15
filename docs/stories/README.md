@@ -55,6 +55,7 @@
 - [RE-027 — Rafraîchir le plan de readiness RestoreLevelData](RE-027-restoreleveldata-readiness-refresh.md) — Status: `Done`
 - [RE-028 — Checklist source-field identity RestoreLevelData group 5](RE-028-restoreleveldata-group5-source-field-identity-checklist.md) — Status: `Done`
 - [RE-029 — Prouver item_flags[0..3] payload-body RestoreLevelData group 5](RE-029-restoreleveldata-group5-item-flags-body-proof.md) — Status: `Done`
+- [RE-030 — Restore assignment identity map RestoreLevelData group 5](RE-030-restoreleveldata-group5-restore-assignment-identity-map.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 

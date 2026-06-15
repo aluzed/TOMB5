@@ -392,4 +392,23 @@ RE-029 findings:
 - no separate source `Write` body exists for any `item_flags` payload.
 - restore group `6` remains candidate-width-only; no versioned restore assignment identity exists.
 
-Current next story: RE-030. Recover a versionable restore assignment identity map for group `5` payload bodies, or explicitly defer group `5` from any source reconstruction scope. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` until a checklist/proof row becomes code-change-ready.
+RE-030 then attempted to turn the group `5` payload bodies into a versionable restore assignment identity map:
+
+- `docs/reverse/generated/restoreleveldata-group5-restore-assignment-identity-map.csv`
+- `docs/reverse/functions/restoreleveldata-group5-restore-assignment-identity-map.md`
+- source inputs: `RE-019, RE-022, RE-025, RE-028, RE-029, GAME/SAVEGAME.C`
+- restore source state: `RestoreLevelData source body is UNIMPLEMENTED`
+- map rows: `5`
+- assignment-identity-ready rows: `0`
+- patch-ready rows: `0`
+- group 5 decision: `defer-group5-from-source-reconstruction`
+- status: `restoreleveldata-group5-restore-assignment-identity-map-blocked`
+
+RE-030 findings:
+
+- restore group `6` remains a candidate payload cluster only.
+- no versioned restore assignment identity exists for packed status flags, `item_flags[0..3]`, `timer`, `trigger_flags`, or object-extension payloads.
+- current source has no `RestoreLevelData` body to inspect for target assignments.
+- group `5` should be deferred/excluded from source reconstruction unless a future non-raw proof can name restore target fields safely.
+
+Current next story: RE-031. Define a limited `RestoreLevelData` reconstruction scope that explicitly excludes group `5`, or produce a non-raw assignment extraction method that can unlock group `5`. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` until a proof row becomes code-change-ready.
