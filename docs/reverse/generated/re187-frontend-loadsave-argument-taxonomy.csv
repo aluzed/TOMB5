@@ -1,0 +1,4 @@
+function,argument_family,argument_kinds,state_fields,source_contract,proof_status,code_change_ready,marker_ready,blocker
+SaveGame,savegame-menu-write,slot cursor and save request state,save-slot-cursor;memory-card-state;requester-state;save-confirmation-text,drives save slot selection and save request flow,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+DisplayFiles,savegame-file-list,cursor and file-count presentation,file-list-cursor;memory-card-file-count;rendered-slot-text;selection-highlight,renders memory-card save/load file list,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+LoadGame,savegame-menu-read,slot cursor and load request state,load-slot-cursor;memory-card-state;requester-state;load-confirmation-text,drives load slot selection and load request flow,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof

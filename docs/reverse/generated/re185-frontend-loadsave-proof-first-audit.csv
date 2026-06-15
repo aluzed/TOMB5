@@ -1,0 +1,4 @@
+function,file,line,role,source_status,prior_code_ready,prior_marker_ready,proof_status,code_change_ready,marker_ready,blocker
+SaveGame,SPEC_PSXPC_N/LOADSAVE.C,335,pivot,decompiled,no,no,source-scope-inventory-only,no,no,missing-frontend-loadsave-caller-state-and-non-raw-equivalence-proof
+DisplayFiles,SPEC_PSXPC_N/LOADSAVE.C,44,runtime-context,decompiled,no,no,source-scope-inventory-only,no,no,missing-frontend-loadsave-caller-state-and-non-raw-equivalence-proof
+LoadGame,SPEC_PSXPC_N/LOADSAVE.C,119,runtime-context,decompiled,no,no,source-scope-inventory-only,no,no,missing-frontend-loadsave-caller-state-and-non-raw-equivalence-proof

@@ -1,0 +1,4 @@
+function,source_patch_allowed,marker_change_allowed,decision,dependency,blocker
+SaveGame,no,no,deny-source-and-marker-change,RE-189 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+DisplayFiles,no,no,deny-source-and-marker-change,RE-189 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof
+LoadGame,no,no,deny-source-and-marker-change,RE-189 equivalence gate reported zero ready rows,missing-non-raw-binary-equivalence-proof

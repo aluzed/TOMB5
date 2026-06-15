@@ -1,0 +1,4 @@
+function,contract_id,required_source_state,required_binary_metadata,contract_status,code_change_ready,marker_ready,blocker
+SaveGame,contract-frontend-loadsave-savegame-menu-write,save-slot-cursor;memory-card-state;requester-state;save-confirmation-text,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+DisplayFiles,contract-frontend-loadsave-savegame-file-list,file-list-cursor;memory-card-file-count;rendered-slot-text;selection-highlight,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+LoadGame,contract-frontend-loadsave-savegame-menu-read,load-slot-cursor;memory-card-state;requester-state;load-confirmation-text,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof

@@ -1,0 +1,7 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-186,frontend-loadsave-caller-state-map,Map source-backed frontend loadsave callers and state surfaces.,"SaveGame, DisplayFiles, and LoadGame source-backed caller/state surfaces",blocked-until-proof,Caller/state map published with no synthetic edges
+RE-187,frontend-loadsave-argument-taxonomy,"Classify save, list-display, and load argument/state families.",frontend-loadsave argument families,blocked-until-proof,Taxonomy separates source-backed shapes from unproven runtime assumptions
+RE-188,frontend-loadsave-state-contract,Document frontend loadsave state contracts required before reconstruction or marker updates.,frontend-loadsave source state and helper contract rows,blocked-until-proof,State contract records exact blockers
+RE-189,frontend-loadsave-equivalence-gate,Compare source-level contracts against non-raw binary metadata without versioning raw evidence.,frontend-loadsave contract rows,blocked-until-proof,Readiness matrix names ready rows or remains blocked
+RE-190,frontend-loadsave-source-patch-gate,Apply a minimal patch only if RE-189 marks rows ready; otherwise emit a no-patch gate.,patch-ready frontend-loadsave rows only,blocked-until-proof,Patch/build/tests pass or no-patch blocker is published
+RE-191,module-spec-psxpc-n-post-frontend-loadsave-next-cluster-selection,Select the next SPEC_PSXPC_N cluster after frontend-loadsave closes or blocks.,remaining SPEC_PSXPC_N clusters after frontend-loadsave,blocked-until-proof,Next cluster handoff artifact names the next objective

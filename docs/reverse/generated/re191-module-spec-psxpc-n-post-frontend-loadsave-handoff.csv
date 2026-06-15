@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_cluster,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-192,platform-gpu-display-proof-first-audit,platform-gpu-display,clear_a_rect,frontend-loadsave-proof-blocked-next-cluster-selected,frontend-loadsave reached a documentation-only terminal blocker; platform-gpu-display is the next available SPEC_PSXPC_N cluster in the current ordering,RE-191 post-frontend-loadsave next-cluster selection,blocked,platform-gpu-display proof-first audit emitted
