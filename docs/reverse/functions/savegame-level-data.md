@@ -309,4 +309,20 @@ RE-024 findings:
 - save group `10`: exact-size window remains useful but room byte order/layout predicate is still unproved.
 - save group `4`: split restore groups `4;5` and anim-state byte-vs-word predicates remain unproved.
 
-Current next story: RE-025. Prove payload predicates for save group `5` before any `RestoreLevelData` source patch.
+RE-025 then narrowed save group `5` into a metadata-only payload predicate matrix:
+
+- `docs/reverse/generated/restoreleveldata-group5-payload-predicate-proof.csv`
+- `docs/reverse/functions/restoreleveldata-group5-payload-predicate-proof.md`
+- target save group: `5`
+- restore group: `6`
+- payload rows: `5`
+- code-change-ready payload families: `0`
+- status: `restoreleveldata-group5-payload-proof-blocked`
+
+RE-025 findings:
+
+- packed status flags are source-backed only as a group anchor.
+- `item_flags[0..3]`, `timer`, and `trigger_flags` have visible header-bit predicates, but their separate payload bodies and restore assignments remain unproved.
+- object-extension payloads total `8` rows / `56` bytes with rare blocks `24,20`, but no source predicate or field identity is proven.
+
+Current next story: RE-026. Prove object subtype/layout fanout and extra restore bytes for save group `8`; do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` from RE-025 evidence alone.

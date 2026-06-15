@@ -50,6 +50,7 @@
 - [RE-022 — Réconcilier champs et prédicats RestoreLevelData](RE-022-restoreleveldata-field-predicate-reconciliation.md) — Status: `Done`
 - [RE-023 — Planifier l'implémentation RestoreLevelData depuis les blockers RE-022](RE-023-restoreleveldata-implementation-plan.md) — Status: `Done`
 - [RE-024 — Prouver les prédicats RestoreLevelData room/split](RE-024-restoreleveldata-room-split-predicate-proof.md) — Status: `Done`
+- [RE-025 — Prouver les payload predicates RestoreLevelData du save group 5](RE-025-restoreleveldata-group5-payload-predicate-proof.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
