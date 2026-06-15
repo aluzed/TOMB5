@@ -52,6 +52,7 @@
 - [RE-024 — Prouver les prédicats RestoreLevelData room/split](RE-024-restoreleveldata-room-split-predicate-proof.md) — Status: `Done`
 - [RE-025 — Prouver les payload predicates RestoreLevelData du save group 5](RE-025-restoreleveldata-group5-payload-predicate-proof.md) — Status: `Done`
 - [RE-026 — Prouver le fanout subtype/layout RestoreLevelData du save group 8](RE-026-restoreleveldata-group8-layout-fanout-proof.md) — Status: `Done`
+- [RE-027 — Rafraîchir le plan de readiness RestoreLevelData](RE-027-restoreleveldata-readiness-refresh.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 

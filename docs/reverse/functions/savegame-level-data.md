@@ -343,4 +343,21 @@ RE-026 findings:
 - item data word has no source field identity.
 - item flag payload bodies inherit the RE-025 `group5-item-flag-payloads-blocked` dependency.
 
-Current next story: RE-027. Refresh the `RestoreLevelData` implementation readiness plan from RE-024, RE-025, and RE-026 before any source patch or `(F)`, `(D)`, `(**)` marker change.
+RE-027 then refreshed the global `RestoreLevelData` readiness matrix from RE-024, RE-025, and RE-026:
+
+- `docs/reverse/generated/restoreleveldata-readiness-refresh.csv`
+- `docs/reverse/functions/restoreleveldata-readiness-refresh.md`
+- source proof inputs: `RE-024, RE-025, RE-026`
+- target save groups: `4, 5, 8, 10`
+- readiness rows: `4`
+- code-change-ready groups: `0`
+- status: `restoreleveldata-readiness-refresh-blocked`
+
+RE-027 findings:
+
+- save group `4`: split restore groups and anim-state byte-vs-word predicate remain blocked.
+- save group `5`: item_flags/timer/trigger payload bodies and object-extension field identity remain blocked.
+- save group `8`: subtype/extra byte, layout block `20`, room/rotation ordering, item data word, and item flag payload bodies remain blocked.
+- save group `10`: room byte order/layout predicate remains blocked.
+
+Current next story: RE-028. Build a source-field identity checklist for the highest-value blocked family, or define a deliberately limited reconstruction scope that excludes every blocked predicate before any source patch or marker change.
