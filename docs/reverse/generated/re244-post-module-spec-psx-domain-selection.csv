@@ -1,0 +1,5 @@
+rank,domain_id,status,score,candidate_count,mapped_count,nd_count,runtime_count,top_function,top_file,next_ticket,next_action,code_change_readiness
+1,lara-combat,candidate,19048,10,10,0,0,DoProperDetection,GAME/LARAFIRE.C,RE-245,open RE-245 lara-combat proof-first audit,blocked
+2,inventory,candidate,18517,11,11,0,0,S_CallInventory2,GAME/NEWINV2.C,TBD,defer until higher-ranked post-module-spec_psx domain is selected,blocked
+3,input,candidate,13906,3,3,0,2,S_UpdateInput,SPEC_PSXPC_N/PSXINPUT.C,TBD,defer until higher-ranked post-module-spec_psx domain is selected,blocked
+4,camera,candidate,13674,4,4,0,0,CalculateSpotCams,GAME/SPOTCAM.C,TBD,defer until higher-ranked post-module-spec_psx domain is selected,blocked

@@ -1,0 +1,13 @@
+rank,domain_id,subcluster,function,file,line,status,mapped,runtime_focus,nd,caller_count,callee_count,readiness,source_patch_ready,marker_ready,blocker
+1,module-spec_psx,platform-main-lifecycle,main,SPEC_PSX/PSXMAIN.C,39,debugged,yes,yes,yes,0,31,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+2,module-spec_psx,frontend-loadsave-flow,S_PlayFMV,SPEC_PSX/MOVIE.C,6,decompiled,yes,no,no,3,24,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+3,module-spec_psx,platform-main-lifecycle,InitNewCDSystem,SPEC_PSX/CD.C,346,debugged,yes,yes,yes,1,10,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+4,module-spec_psx,frontend-loadsave-flow,SaveGame,SPEC_PSX/LOADSAVE.C,335,decompiled,yes,yes,no,1,5,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+5,module-spec_psx,platform-memory,game_malloc,SPEC_PSX/MALLOC.C,44,debugged,yes,no,yes,5,0,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+6,module-spec_psx,platform-memory,init_game_malloc,SPEC_PSX/MALLOC.C,25,debugged,yes,no,yes,3,1,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+7,module-spec_psx,frontend-loadsave-flow,DisplayFiles,SPEC_PSX/LOADSAVE.C,44,decompiled,yes,no,no,0,7,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+8,module-spec_psx,platform-memory,game_free,SPEC_PSX/MALLOC.C,82,debugged,yes,no,yes,1,0,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+9,module-spec_psx,frontend-loadsave-flow,LoadGame,SPEC_PSX/LOADSAVE.C,119,decompiled,yes,no,no,2,4,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+10,module-spec_psx,platform-main-lifecycle,VSyncFunc,SPEC_PSX/PSXMAIN.C,23,debugged,no,yes,yes,0,0,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+11,module-spec_psx,frontend-loadsave-flow,S_control_screen_position,SPEC_PSX/SPECIFIC.C,61,decompiled,yes,no,no,0,1,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof
+12,module-spec_psx,platform-memory,show_game_malloc_totals,SPEC_PSX/MALLOC.C,96,debugged,no,no,yes,0,0,blocked,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof

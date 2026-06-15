@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-245,lara-combat-proof-first-audit,lara-combat,DoProperDetection,module-spec_psx-closed-next-domain-selected,module-spec_psx closed as a documentation-only terminal blocker; next ranked remaining domain selected,RE-237..RE-244 module-spec_psx epic,blocked,lara-combat proof-first audit emitted

@@ -1,0 +1,4 @@
+subcluster,rank,candidate_count,mapped_count,nd_count,runtime_count,top_function,outcome,code_change_ready,marker_ready,blocker,closed_by_story
+platform-main-lifecycle,1,3,2,3,3,main,blocked-no-patch,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof,RE-238
+frontend-loadsave-flow,2,5,5,0,1,S_PlayFMV,blocked-no-patch,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof,RE-239
+platform-memory,3,4,3,4,0,game_malloc,blocked-no-patch,no,no,missing-module-spec-psx-source-contract-and-non-raw-equivalence-proof,RE-240
