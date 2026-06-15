@@ -1,0 +1,5 @@
+subcluster,rank,candidate_count,mapped_count,nd_count,runtime_count,top_function,outcome,code_change_ready,marker_ready,blocker,closed_by_story
+text-debug-rendering,1,2,2,0,0,PrintString,blocked-no-patch,no,no,missing-module-spec-psxpc-source-contract-and-non-raw-equivalence-proof,RE-230
+render-geometry-support,2,4,3,0,0,GetBoundsAccurate,blocked-no-patch,no,no,missing-module-spec-psxpc-source-contract-and-non-raw-equivalence-proof,RE-231
+frontend-flow,3,9,9,0,1,S_PlayFMV,blocked-no-patch,no,no,missing-module-spec-psxpc-source-contract-and-non-raw-equivalence-proof,RE-232
+platform-services,4,13,3,0,3,CDDA_SetVolume,blocked-no-patch,no,no,missing-module-spec-psxpc-source-contract-and-non-raw-equivalence-proof,RE-233

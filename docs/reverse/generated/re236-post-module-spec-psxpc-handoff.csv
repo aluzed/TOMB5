@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-237,module-spec-psx-proof-first-audit,module-spec_psx,main,module-spec_psxpc-closed-next-domain-selected,module-spec_psxpc closed as a documentation-only terminal blocker; next ranked remaining domain selected,RE-229..RE-236 module-spec_psxpc epic,blocked,module-spec_psx proof-first audit emitted

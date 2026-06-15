@@ -1,0 +1,4 @@
+gate,story_id,input_scope,ready_count,blocked_count,decision,reason
+equivalence,RE-234,all module-spec_psxpc rows,0,28,deny,missing-module-spec-psxpc-source-contract-and-non-raw-equivalence-proof
+source-patch,RE-235,ready module-spec_psxpc rows,0,28,deny,zero rows passed the equivalence gate
+marker,RE-235,ready module-spec_psxpc rows,0,28,deny,zero rows passed the source-patch gate
