@@ -26,6 +26,7 @@ Open the module-game reconstruction chain after the collision handoff by scoping
 
 - `docs/reverse/generated/re061-module-game-proof-first-audit.csv`
 - `docs/reverse/generated/re061-module-game-clusters.csv`
+- `docs/reverse/generated/re061-module-game-ticket-plan.csv`
 - `docs/reverse/functions/re061-module-game-proof-first-audit.md`
 
 ## Findings
@@ -35,6 +36,44 @@ Open the module-game reconstruction chain after the collision handoff by scoping
 - pivot function: `ShatterObject`
 - code-change-ready candidates: `0`
 - marker-ready candidates: `0`
+
+## Multi-ticket plan
+
+- `RE-062` `debris-object-breakage-caller-side-effect-map`
+  - goal: Map ShatterObject/TriggerDebris callers, callees, globals, and side-effect surfaces as metadata only.
+  - scope: `debris-object-breakage initial cluster`
+  - readiness: `blocked-until-proof`
+  - exit: caller/side-effect matrix published or terminal proof blocker recorded
+- `RE-063` `debris-object-breakage-argument-data-taxonomy`
+  - goal: Classify source-level argument shapes, structure fields, object/item dependencies, and write targets for the selected cluster.
+  - scope: `ShatterObject/TriggerDebris source contract`
+  - readiness: `blocked-until-proof`
+  - exit: taxonomy distinguishes source-backed fields from candidate-only fields
+- `RE-064` `debris-object-breakage-comparison-gate`
+  - goal: Decide whether non-raw binary/source equivalence evidence is sufficient for any source or marker change.
+  - scope: `comparison readiness gate`
+  - readiness: `blocked-until-proof`
+  - exit: patch-ready rows identified or explicit no-patch blocker published
+- `RE-065` `debris-object-breakage-reconstruction-plan`
+  - goal: Convert any ready rows into a minimal reconstruction plan with tests, guards, and rollback boundaries.
+  - scope: `only rows admitted by RE-064`
+  - readiness: `blocked-until-proof`
+  - exit: source patch plan exists or chain remains documentation-only
+- `RE-066` `debris-object-breakage-source-patch-gate`
+  - goal: Apply the smallest safe source/marker patch only if RE-064/RE-065 made rows patch-ready; otherwise publish the denial gate.
+  - scope: `conditional source patch gate`
+  - readiness: `blocked-until-proof`
+  - exit: patch validated or no-source-change decision recorded
+- `RE-067` `debris-object-breakage-validation-regression`
+  - goal: Run build/tests/guards for the selected cluster and record exact validation status.
+  - scope: `validation and regression evidence`
+  - readiness: `blocked-until-proof`
+  - exit: validation log published with pass/fail and remaining blockers
+- `RE-068` `module-game-closure-or-next-cluster-handoff`
+  - goal: Close the initial module-game cluster or hand off to the next best module-game cluster with a refreshed plan.
+  - scope: `closure and reprioritization`
+  - readiness: `blocked-until-proof`
+  - exit: domain closure, next-cluster handoff, or terminal blocker recorded
 
 ## Readiness decision
 

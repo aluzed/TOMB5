@@ -21,6 +21,18 @@ def test_re061_builds_module_game_proof_first_audit_from_re044_handoff():
     assert audit.decision == "module-game-domain-scoped-for-proof-chain"
     assert audit.code_change_readiness == "blocked"
     assert audit.next_ticket == "RE-062"
+    assert tuple(ticket.story_id for ticket in audit.ticket_plan) == (
+        "RE-062",
+        "RE-063",
+        "RE-064",
+        "RE-065",
+        "RE-066",
+        "RE-067",
+        "RE-068",
+    )
+    assert audit.ticket_plan[0].topic == "debris-object-breakage-caller-side-effect-map"
+    assert audit.ticket_plan[-1].topic == "module-game-closure-or-next-cluster-handoff"
+    assert {ticket.code_change_readiness for ticket in audit.ticket_plan} == {"blocked-until-proof"}
 
     assert audit.summary.candidate_count >= 50
     assert audit.summary.mapped_count >= 50
@@ -59,11 +71,13 @@ def test_re061_outputs_metadata_only_story_report_and_csv(tmp_path):
 
     assert written["audit_csv"].name == "re061-module-game-proof-first-audit.csv"
     assert written["cluster_csv"].name == "re061-module-game-clusters.csv"
+    assert written["plan_csv"].name == "re061-module-game-ticket-plan.csv"
     assert written["md"].name == "re061-module-game-proof-first-audit.md"
     assert written["story"].name == "RE-061-module-game-proof-first-audit.md"
 
     audit_csv = written["audit_csv"].read_text(encoding="utf-8")
     cluster_csv = written["cluster_csv"].read_text(encoding="utf-8")
+    plan_csv = written["plan_csv"].read_text(encoding="utf-8")
     md_text = written["md"].read_text(encoding="utf-8")
     story_text = written["story"].read_text(encoding="utf-8")
 
@@ -71,7 +85,14 @@ def test_re061_outputs_metadata_only_story_report_and_csv(tmp_path):
     assert "ShatterObject,GAME/DEBRIS.C" in audit_csv
     assert "cluster,candidate_count,mapped_count" in cluster_csv
     assert "debris-object-breakage" in cluster_csv
+    assert "story_id,topic,goal,scope,code_change_readiness,exit_condition" in plan_csv
+    assert "RE-062,debris-object-breakage-caller-side-effect-map" in plan_csv
+    assert "RE-068,module-game-closure-or-next-cluster-handoff" in plan_csv
     assert "# RE-061 — Module-game proof-first audit" in md_text
+    assert "## Multi-ticket plan" in md_text
+    for story_id in ("RE-062", "RE-063", "RE-064", "RE-065", "RE-066", "RE-067", "RE-068"):
+        assert f"`{story_id}`" in md_text
+        assert f"`{story_id}`" in story_text
     assert "Selected initial cluster: `debris-object-breakage`" in md_text
     assert "code-change-ready candidates: `0`" in md_text
     assert "marker-ready candidates: `0`" in md_text
@@ -91,6 +112,6 @@ def test_re061_outputs_metadata_only_story_report_and_csv(tmp_path):
         "call_" + "address",
         "0x" + "800",
     )
-    for text in (audit_csv, cluster_csv, md_text, story_text):
+    for text in (audit_csv, cluster_csv, plan_csv, md_text, story_text):
         for token in forbidden:
             assert token not in text

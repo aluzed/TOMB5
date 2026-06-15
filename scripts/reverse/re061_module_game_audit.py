@@ -21,6 +21,7 @@ RE044_CSV = "docs/reverse/generated/re044-domain-reprioritization.csv"
 RE060_CSV = "docs/reverse/generated/re053-re060-collision-chain.csv"
 AUDIT_CSV = "docs/reverse/generated/re061-module-game-proof-first-audit.csv"
 CLUSTER_CSV = "docs/reverse/generated/re061-module-game-clusters.csv"
+PLAN_CSV = "docs/reverse/generated/re061-module-game-ticket-plan.csv"
 MD_OUTPUT = "docs/reverse/functions/re061-module-game-proof-first-audit.md"
 STORY_OUTPUT = "docs/stories/RE-061-module-game-proof-first-audit.md"
 
@@ -90,6 +91,16 @@ class ModuleGameCluster:
 
 
 @dataclass(frozen=True)
+class TicketPlanItem:
+    story_id: str
+    topic: str
+    goal: str
+    scope: str
+    code_change_readiness: str
+    exit_condition: str
+
+
+@dataclass(frozen=True)
 class ModuleGameAudit:
     story_id: str
     domain_id: str
@@ -106,6 +117,7 @@ class ModuleGameAudit:
     summary: AuditSummary
     candidates: tuple[ModuleGameCandidate, ...]
     clusters: tuple[ModuleGameCluster, ...]
+    ticket_plan: tuple[TicketPlanItem, ...]
 
 
 def parse_int(text: str | None) -> int:
@@ -261,6 +273,68 @@ def build_clusters(candidates: list[ModuleGameCandidate]) -> list[ModuleGameClus
     return clusters
 
 
+def build_ticket_plan() -> tuple[TicketPlanItem, ...]:
+    specs = (
+        (
+            "RE-062",
+            "debris-object-breakage-caller-side-effect-map",
+            "Map ShatterObject/TriggerDebris callers, callees, globals, and side-effect surfaces as metadata only.",
+            "debris-object-breakage initial cluster",
+            "blocked-until-proof",
+            "caller/side-effect matrix published or terminal proof blocker recorded",
+        ),
+        (
+            "RE-063",
+            "debris-object-breakage-argument-data-taxonomy",
+            "Classify source-level argument shapes, structure fields, object/item dependencies, and write targets for the selected cluster.",
+            "ShatterObject/TriggerDebris source contract",
+            "blocked-until-proof",
+            "taxonomy distinguishes source-backed fields from candidate-only fields",
+        ),
+        (
+            "RE-064",
+            "debris-object-breakage-comparison-gate",
+            "Decide whether non-raw binary/source equivalence evidence is sufficient for any source or marker change.",
+            "comparison readiness gate",
+            "blocked-until-proof",
+            "patch-ready rows identified or explicit no-patch blocker published",
+        ),
+        (
+            "RE-065",
+            "debris-object-breakage-reconstruction-plan",
+            "Convert any ready rows into a minimal reconstruction plan with tests, guards, and rollback boundaries.",
+            "only rows admitted by RE-064",
+            "blocked-until-proof",
+            "source patch plan exists or chain remains documentation-only",
+        ),
+        (
+            "RE-066",
+            "debris-object-breakage-source-patch-gate",
+            "Apply the smallest safe source/marker patch only if RE-064/RE-065 made rows patch-ready; otherwise publish the denial gate.",
+            "conditional source patch gate",
+            "blocked-until-proof",
+            "patch validated or no-source-change decision recorded",
+        ),
+        (
+            "RE-067",
+            "debris-object-breakage-validation-regression",
+            "Run build/tests/guards for the selected cluster and record exact validation status.",
+            "validation and regression evidence",
+            "blocked-until-proof",
+            "validation log published with pass/fail and remaining blockers",
+        ),
+        (
+            "RE-068",
+            "module-game-closure-or-next-cluster-handoff",
+            "Close the initial module-game cluster or hand off to the next best module-game cluster with a refreshed plan.",
+            "closure and reprioritization",
+            "blocked-until-proof",
+            "domain closure, next-cluster handoff, or terminal blocker recorded",
+        ),
+    )
+    return tuple(TicketPlanItem(*spec) for spec in specs)
+
+
 def verify_upstream_handoff(repo: Path) -> dict[str, str]:
     re044_rows = read_csv(repo / RE044_CSV)
     module_rows = [row for row in re044_rows if row.get("domain_id") == "module-game"]
@@ -317,6 +391,7 @@ def build_module_game_audit(repo: Path) -> ModuleGameAudit:
         summary=summary,
         candidates=candidates,
         clusters=clusters,
+        ticket_plan=build_ticket_plan(),
     )
 
 
@@ -372,6 +447,11 @@ def write_cluster_csv(path: Path, audit: ModuleGameAudit) -> None:
     write_dict_csv(path, fields, rows)
 
 
+def write_plan_csv(path: Path, audit: ModuleGameAudit) -> None:
+    fields = ["story_id", "topic", "goal", "scope", "code_change_readiness", "exit_condition"]
+    write_dict_csv(path, fields, [ticket.__dict__ for ticket in audit.ticket_plan])
+
+
 def write_markdown(path: Path, audit: ModuleGameAudit) -> None:
     lines = [
         "# RE-061 — Module-game proof-first audit",
@@ -417,6 +497,17 @@ def write_markdown(path: Path, audit: ModuleGameAudit) -> None:
                 f"  - recommended next ticket: `{cluster.recommended_next_ticket}`",
             ]
         )
+    lines.extend(["", "## Multi-ticket plan", ""])
+    for ticket in audit.ticket_plan:
+        lines.extend(
+            [
+                f"- `{ticket.story_id}` `{ticket.topic}`",
+                f"  - goal: {ticket.goal}",
+                f"  - scope: `{ticket.scope}`",
+                f"  - readiness: `{ticket.code_change_readiness}`",
+                f"  - exit: {ticket.exit_condition}",
+            ]
+        )
     lines.extend(
         [
             "",
@@ -428,6 +519,7 @@ def write_markdown(path: Path, audit: ModuleGameAudit) -> None:
             "",
             f"- `{AUDIT_CSV}`",
             f"- `{CLUSTER_CSV}`",
+            f"- `{PLAN_CSV}`",
             f"- `{MD_OUTPUT}`",
             "",
             "## Next step",
@@ -476,6 +568,7 @@ def write_story(path: Path, audit: ModuleGameAudit) -> None:
             "",
             f"- `{AUDIT_CSV}`",
             f"- `{CLUSTER_CSV}`",
+            f"- `{PLAN_CSV}`",
             f"- `{MD_OUTPUT}`",
             "",
             "## Findings",
@@ -485,6 +578,23 @@ def write_story(path: Path, audit: ModuleGameAudit) -> None:
             f"- pivot function: `{audit.pivot_function}`",
             f"- code-change-ready candidates: `{audit.summary.patch_ready_count}`",
             f"- marker-ready candidates: `{audit.summary.marker_ready_count}`",
+            "",
+            "## Multi-ticket plan",
+            "",
+        ]
+    )
+    for ticket in audit.ticket_plan:
+        lines.extend(
+            [
+                f"- `{ticket.story_id}` `{ticket.topic}`",
+                f"  - goal: {ticket.goal}",
+                f"  - scope: `{ticket.scope}`",
+                f"  - readiness: `{ticket.code_change_readiness}`",
+                f"  - exit: {ticket.exit_condition}",
+            ]
+        )
+    lines.extend(
+        [
             "",
             "## Readiness decision",
             "",
@@ -513,13 +623,15 @@ def write_all_artifacts(audit: ModuleGameAudit, repo: Path) -> dict[str, Path]:
     repo = Path(repo)
     audit_csv = repo / AUDIT_CSV
     cluster_csv = repo / CLUSTER_CSV
+    plan_csv = repo / PLAN_CSV
     md = repo / MD_OUTPUT
     story = repo / STORY_OUTPUT
     write_audit_csv(audit_csv, audit)
     write_cluster_csv(cluster_csv, audit)
+    write_plan_csv(plan_csv, audit)
     write_markdown(md, audit)
     write_story(story, audit)
-    return {"audit_csv": audit_csv, "cluster_csv": cluster_csv, "md": md, "story": story}
+    return {"audit_csv": audit_csv, "cluster_csv": cluster_csv, "plan_csv": plan_csv, "md": md, "story": story}
 
 
 def main() -> int:
@@ -531,6 +643,7 @@ def main() -> int:
     written = write_all_artifacts(audit, repo)
     print(f"wrote RE-061 audit to {written['audit_csv']}")
     print(f"wrote RE-061 clusters to {written['cluster_csv']}")
+    print(f"wrote RE-061 ticket plan to {written['plan_csv']}")
     print(f"wrote RE-061 markdown to {written['md']}")
     print(f"wrote RE-061 story to {written['story']}")
     return 0
