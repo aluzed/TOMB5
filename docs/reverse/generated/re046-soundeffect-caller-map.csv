@@ -1,0 +1,8 @@
+cluster,function_count,caller_count,representative_functions,readiness,blocker
+gameplay-mixed,7,27,mapped-caller;ExplodeItemNode;DoFlameTorch;FlameTorchControl;SmashObject,proof-needed,caller intent and argument semantics not proven against binary evidence
+lara-combat,14,14,lara_col_poledown;UpdateRopeSwing;lara_as_fastfall;ControlEnemyMissile;FireShotgun,proof-needed,caller intent and argument semantics not proven against binary evidence
+traps-switches-doors,14,14,DoorControl;TurnSwitchControl;CogSwitchControl;CrowDoveSwitchControl;FallingBlockCollision,proof-needed,caller intent and argument semantics not proven against binary evidence
+inventory-pickup-frontend,9,9,S_CallInventory2;draw_current_object_list;handle_inventry_menu;use_current_item;do_keypad_mode,proof-needed,caller intent and argument semantics not proven against binary evidence
+audio-effects-internal,7,7,ControlSmokeEmitter;SoundEffects;WaterFall;SoundFlipEffect;PoseidonSFX,best-initial-cluster,still needs non-raw equivalence proof before marker/source change
+platform-runtime,3,3,DoPauseMenu;S_Death;DrawRooms,proof-needed,caller intent and argument semantics not proven against binary evidence
+camera,1,1,CalculateCamera,proof-needed,caller intent and argument semantics not proven against binary evidence

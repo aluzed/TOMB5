@@ -1,0 +1,17 @@
+shape_id,arity,site_count,first_arg_kind,second_arg_kind,third_arg_kind,readiness,blocker
+shape-01,3,68,symbolic-identifier,null-or-zero,numeric-literal,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-02,3,21,symbolic-identifier,null-or-zero,symbolic-identifier,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-03,3,17,symbolic-identifier,address-of-source-object,symbolic-identifier,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-04,3,10,compound,null-or-zero,numeric-literal,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-05,3,8,symbolic-identifier,null-or-zero,null-or-zero,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-06,3,4,compound,expression,compound,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-07,3,3,numeric-literal,null-or-zero,null-or-zero,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-08,3,3,symbolic-identifier,address-of-source-object,null-or-zero,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-09,2,2,expression,expression,missing,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-10,3,2,symbolic-identifier,address-of-source-object,compound,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-11,3,2,symbolic-identifier,address-of-source-object,expression,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-12,1,1,expression,missing,missing,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-13,2,1,symbolic-identifier,expression,missing,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-14,3,1,compound,address-of-source-object,symbolic-identifier,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-15,3,1,compound,null-or-zero,compound,taxonomy-only,argument names and side effects require non-raw binary equivalence proof
+shape-16,3,1,symbolic-identifier,symbolic-identifier,symbolic-identifier,taxonomy-only,argument names and side effects require non-raw binary equivalence proof

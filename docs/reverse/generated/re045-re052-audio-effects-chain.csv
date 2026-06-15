@@ -1,0 +1,9 @@
+story_id,topic,status,decision,code_change_readiness,safe_next_action,next_ticket
+RE-045,audio-effects-domain-scope,Done,soundeffect-selected-as-pivot,blocked,advance to SoundEffect caller map,RE-046
+RE-046,soundeffect-caller-map,Done,caller-clusters-published,blocked,advance to argument taxonomy,RE-047
+RE-047,soundeffect-argument-taxonomy,Done,argument-shapes-published,blocked,advance to comparison gate,RE-048
+RE-048,soundeffect-comparison-gate,Done,blocked-by-missing-non-raw-binary-equivalence-proof,blocked,do not patch; reduce proof to internal audio/effects cluster,RE-049
+RE-049,audio-effects-cluster-proof,Done,internal-cluster-remains-proof-needed,blocked,publish patch/marker gate,RE-050
+RE-050,audio-effects-marker-source-patch-gate,Done,no-safe-marker-or-source-patch,blocked,publish terminal blocker instead of source changes,RE-051
+RE-051,audio-effects-terminal-blocker,Done,terminal-blocked-without-new-non-raw-equivalence-proof,blocked,close audio/effects and hand off to next domain,RE-052
+RE-052,audio-effects-closure-next-domain-handoff,Done,handoff-to-collision-domain,blocked,open RE-053 collision proof-first audit,RE-053

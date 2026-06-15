@@ -70,6 +70,14 @@
 - [RE-042 — RestoreLevelData group 8 terminal blocker](RE-042-group8-terminal-blocker.md) — Status: `Done`
 - [RE-043 — RestoreLevelData final stop report](RE-043-restoreleveldata-final-stop-report.md) — Status: `Done`
 - [RE-044 — Post-RestoreLevelData domain reprioritization](RE-044-post-restoreleveldata-domain-reprioritization.md) — Status: `Done`
+- [RE-045 — Audio/effects domain scope](RE-045-audio-effects-domain-scope.md) — Status: `Done`
+- [RE-046 — SoundEffect caller map](RE-046-soundeffect-caller-map.md) — Status: `Done`
+- [RE-047 — SoundEffect argument taxonomy](RE-047-soundeffect-argument-taxonomy.md) — Status: `Done`
+- [RE-048 — SoundEffect source-vs-binary comparison gate](RE-048-soundeffect-comparison-gate.md) — Status: `Done`
+- [RE-049 — Audio/effects cluster proof](RE-049-audio-effects-cluster-proof.md) — Status: `Done`
+- [RE-050 — Audio/effects marker/source patch gate](RE-050-audio-effects-marker-source-patch-gate.md) — Status: `Done`
+- [RE-051 — Audio/effects terminal blocker](RE-051-audio-effects-terminal-blocker.md) — Status: `Done`
+- [RE-052 — Audio/effects closure and next-domain handoff](RE-052-audio-effects-closure-next-domain-handoff.md) — Status: `Done`
 
 ## Snapshot assets disque / GAMEWAD
 
