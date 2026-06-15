@@ -1,0 +1,7 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-179,frontend-sequence-caller-state-map,Map source-backed frontend sequence callers and state surfaces.,S_PlayFMV and sub_1054 source-backed caller/state surfaces,blocked-until-proof,Caller/state map published with no synthetic edges
+RE-180,frontend-sequence-argument-taxonomy,Classify FMV playback and cutscene selector argument/state families.,frontend-sequence argument families,blocked-until-proof,Taxonomy separates source-backed shapes from unproven runtime assumptions
+RE-181,frontend-sequence-state-contract,Document frontend sequence state contracts required before reconstruction or marker updates.,frontend-sequence source state and helper contract rows,blocked-until-proof,State contract records exact blockers
+RE-182,frontend-sequence-equivalence-gate,Compare source-level contracts against non-raw binary metadata without versioning raw evidence.,frontend-sequence contract rows,blocked-until-proof,Readiness matrix names ready rows or remains blocked
+RE-183,frontend-sequence-source-patch-gate,Apply a minimal patch only if RE-182 marks rows ready; otherwise emit a no-patch gate.,patch-ready frontend-sequence rows only,blocked-until-proof,Patch/build/tests pass or no-patch blocker is published
+RE-184,module-spec-psxpc-n-post-frontend-sequence-next-cluster-selection,Select the next SPEC_PSXPC_N cluster after frontend-sequence closes or blocks.,remaining SPEC_PSXPC_N clusters after frontend-sequence,blocked-until-proof,Next cluster handoff artifact names the next objective

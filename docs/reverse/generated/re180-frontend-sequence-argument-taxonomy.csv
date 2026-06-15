@@ -1,0 +1,3 @@
+function,argument_family,argument_kinds,state_fields,source_contract,proof_status,code_change_ready,marker_ready,blocker
+S_PlayFMV,fmv-sequence-playback,sequence id and playback flag,fmv-trigger-mask;vram-reset;display-environment;disc-version-gates,plays or suppresses frontend FMV sequence,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+sub_1054,cutscene-selector-menu,menu navigation state,raw-input-edge;cutscene-selector-flag;selected-cutscene;menu-text-index,updates cutscene selector and launches chosen cutscene state,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof

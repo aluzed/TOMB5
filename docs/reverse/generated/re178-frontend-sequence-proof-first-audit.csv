@@ -1,0 +1,3 @@
+function,file,line,role,source_status,prior_code_ready,prior_marker_ready,proof_status,code_change_ready,marker_ready,blocker
+S_PlayFMV,SPEC_PSXPC_N/MOVIE.C,6,pivot,decompiled,no,no,source-scope-inventory-only,no,no,missing-frontend-sequence-caller-state-and-non-raw-equivalence-proof
+sub_1054,SPEC_PSXPC_N/TITSEQ.C,738,runtime-context,unknown,no,no,source-scope-inventory-only,no,no,missing-frontend-sequence-caller-state-and-non-raw-equivalence-proof
