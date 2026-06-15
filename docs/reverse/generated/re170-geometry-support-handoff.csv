@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_cluster,selected_pivot,outcome,reason,dependency,stop_condition
+RE-171,geometry-support-proof-first-audit,geometry-support,GetBoundsAccurate,geometry-support-proof-chain-opened,module SPEC_PSXPC_N remains open; geometry-support needs caller/state and non-raw equivalence proof before source or marker changes,RE-170 closure-or-handoff gate,geometry-support proof-first audit emitted

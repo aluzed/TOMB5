@@ -1,0 +1,2 @@
+story_id,domain_id,selected_cluster,selected_pivot,domain_decision,code_change_readiness,source_patch_ready_count,marker_ready_count,next_ticket,next_topic,blocker
+RE-170,module-spec_psxpc_n,geometry-support,GetBoundsAccurate,module-spec-psxpc-n-not-closed-geometry-support-proof-chain-opened,documentation-only-handoff-gate,0,0,RE-171,geometry-support-proof-first-audit,geometry-support needs caller/state and non-raw equivalence proof before source or marker changes
