@@ -1,0 +1,2 @@
+next_ticket,next_topic,current_cluster,outcome,reason,dependency,stop_condition
+RE-169,module-spec-psxpc-n-next-cluster-selection,ui-text-rendering,ui-text-rendering-source-patch-denied,RE-167 produced zero source-patch-ready or marker-ready rows,RE-168 no-patch gate,next SPEC_PSXPC_N cluster selected or module handoff emitted
