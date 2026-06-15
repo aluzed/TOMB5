@@ -227,4 +227,20 @@ RE-019 extracted a metadata-only original `RestoreLevelData` `ReadSG` call map a
 - patch-ready groups: `0`
 - status: `restore-size-proof-partial`
 
-Suggested next story: derive stronger restore-side field/control-flow proof for the matched and mismatched regions, especially branch predicates around item groups 4, 5, 8, and 10. Current restore-size evidence is insufficient for serializer patching or `(F)`, `(D)`, or `(**)` markers.
+RE-020 then derived a stronger metadata-only restore-side field/control-flow proof matrix for the priority item groups:
+
+- `docs/reverse/generated/restoreleveldata-field-control-flow-proof.csv`
+- `docs/reverse/functions/restoreleveldata-field-control-flow-proof.md`
+- priority groups covered: `4, 5, 8, 10`
+- proof rows: `4`
+- patch-ready groups: `0`
+- status: `restore-field-control-flow-proof-partial`
+
+RE-020 findings:
+
+- group `4`: candidate restore regions `4;5`, but repeated 2-byte fields and split control-flow still block field/predicate proof.
+- group `5`: rare payload anchors `24,20` exist in restore group `6`, but packed flags and separate item flag/timer/trigger payload predicates remain unproved.
+- group `8`: rare payload anchors `20,4` exist in restore group `8`, but extra restore bytes and layout mismatches still block field equivalence.
+- group `10`: exact size window exists in restore group `9`, but exact size is still not predicate proof.
+
+Suggested next story: derive branch-predicate metadata around candidate restore regions before serializer source modification. Current restore field/control-flow evidence is insufficient for serializer patching or `(F)`, `(D)`, or `(**)` markers.
