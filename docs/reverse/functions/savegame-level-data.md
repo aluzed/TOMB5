@@ -375,4 +375,21 @@ RE-028 findings:
 - `item_flags[0..3]`, `timer`, and `trigger_flags` have header predicates in source but lack separate payload write bodies and restore assignment identity.
 - object-extension payloads remain without named source field identities or object predicate mapping.
 
-Current next story: RE-029. Prove one group `5` payload-body family end-to-end, starting with `item_flags[0..3]` if source identities can be recovered without publishing raw dump payloads. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` until a checklist row becomes code-change-ready.
+RE-029 then narrowed the first group `5` payload-body family, `item_flags[0..3]`, into per-flag proof rows:
+
+- `docs/reverse/generated/restoreleveldata-group5-item-flags-body-proof.csv`
+- `docs/reverse/functions/restoreleveldata-group5-item-flags-body-proof.md`
+- source inputs: `RE-017, RE-021, RE-028, GAME/SAVEGAME.C`
+- payload family: `item_flags[0..3]`
+- proof rows: `4`
+- patch-ready rows: `0`
+- status: `restoreleveldata-group5-item-flags-body-proof-blocked`
+
+RE-029 findings:
+
+- all four `item_flags` header predicates are source-visible as control-word bits.
+- each flag payload has 2-byte save-side metadata and 2-byte restore candidate widths.
+- no separate source `Write` body exists for any `item_flags` payload.
+- restore group `6` remains candidate-width-only; no versioned restore assignment identity exists.
+
+Current next story: RE-030. Recover a versionable restore assignment identity map for group `5` payload bodies, or explicitly defer group `5` from any source reconstruction scope. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` until a checklist/proof row becomes code-change-ready.
