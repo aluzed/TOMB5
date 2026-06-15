@@ -360,4 +360,19 @@ RE-027 findings:
 - save group `8`: subtype/extra byte, layout block `20`, room/rotation ordering, item data word, and item flag payload bodies remain blocked.
 - save group `10`: room byte order/layout predicate remains blocked.
 
-Current next story: RE-028. Build a source-field identity checklist for the highest-value blocked family, or define a deliberately limited reconstruction scope that excludes every blocked predicate before any source patch or marker change.
+RE-028 then selected the highest-value blocked family, save group `5` / restore group `6`, and produced a source-field identity checklist:
+
+- `docs/reverse/generated/restoreleveldata-group5-source-field-identity-checklist.csv`
+- `docs/reverse/functions/restoreleveldata-group5-source-field-identity-checklist.md`
+- source inputs: `RE-017, RE-025, GAME/SAVEGAME.C`
+- checklist rows: `5`
+- patch-ready checklist rows: `0`
+- status: `restoreleveldata-group5-source-field-identity-checklist-blocked`
+
+RE-028 findings:
+
+- packed status flags are source-backed only as a payload-cluster anchor.
+- `item_flags[0..3]`, `timer`, and `trigger_flags` have header predicates in source but lack separate payload write bodies and restore assignment identity.
+- object-extension payloads remain without named source field identities or object predicate mapping.
+
+Current next story: RE-029. Prove one group `5` payload-body family end-to-end, starting with `item_flags[0..3]` if source identities can be recovered without publishing raw dump payloads. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` until a checklist row becomes code-change-ready.
