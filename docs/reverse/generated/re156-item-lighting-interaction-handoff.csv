@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,pivot,reason,code_change_readiness,blocker
+RE-157,ui-text-support,ui-text-support,InitFont,item-lighting-interaction closed with proof blocker; next RE-061 module-game cluster is ui-text-support with InitFont pivot,blocked,Item lighting lacks state contract and symbolic equivalence proof for safe source or marker changes
