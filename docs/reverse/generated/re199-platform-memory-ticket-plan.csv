@@ -1,0 +1,7 @@
+story_id,topic,goal,scope,code_change_readiness,exit_condition
+RE-200,platform-memory-caller-state-map,Map source-backed platform memory callers and arena state surfaces.,"game_malloc, init_game_malloc, and game_free source-backed caller/state surfaces",blocked-until-proof,Caller/state map published with no synthetic edges
+RE-201,platform-memory-argument-taxonomy,"Classify arena init, allocation, and rewind/free argument/state families.",platform-memory argument families,blocked-until-proof,Taxonomy separates source-backed shapes from unproven runtime assumptions
+RE-202,platform-memory-state-contract,Document platform memory state contracts required before reconstruction or marker updates.,platform-memory source state and helper contract rows,blocked-until-proof,State contract records exact blockers
+RE-203,platform-memory-equivalence-gate,Compare source-level contracts against non-raw binary metadata without versioning raw evidence.,platform-memory contract rows,blocked-until-proof,Readiness matrix names ready rows or remains blocked
+RE-204,platform-memory-source-patch-gate,Apply a minimal patch only if RE-203 marks rows ready; otherwise emit a no-patch gate.,patch-ready platform-memory rows only,blocked-until-proof,Patch/build/tests pass or no-patch blocker is published
+RE-205,module-spec-psxpc-n-post-platform-memory-next-cluster-selection,Select the next SPEC_PSXPC_N cluster after platform-memory closes or blocks.,remaining SPEC_PSXPC_N clusters after platform-memory,blocked-until-proof,Next cluster handoff artifact names the next objective

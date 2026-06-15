@@ -1,0 +1,4 @@
+function,argument_family,argument_kinds,state_fields,source_contract,proof_status,code_change_ready,marker_ready,blocker
+game_malloc,arena-allocation,requested allocation size and arena cursor state,request-size;aligned-size;malloc-used;malloc-free;arena-buffer,allocates from the platform memory arena,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+init_game_malloc,arena-initialization,script length and arena counters,script-length;malloc-used;malloc-free;arena-zero-fill,initializes the platform memory arena,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof
+game_free,arena-rewind-free,free size and arena cursor rewind,free-size;aligned-size;malloc-used;malloc-free,rewinds the platform memory arena allocation cursor,taxonomy-source-backed-only,no,no,missing-non-raw-binary-equivalence-proof

@@ -1,0 +1,4 @@
+function,file,line,role,source_status,prior_code_ready,prior_marker_ready,proof_status,code_change_ready,marker_ready,blocker
+game_malloc,SPEC_PSXPC_N/MALLOC.C,44,pivot,debugged,no,no,source-scope-inventory-only,no,no,missing-platform-memory-caller-state-and-non-raw-equivalence-proof
+init_game_malloc,SPEC_PSXPC_N/MALLOC.C,25,runtime-context,debugged,no,no,source-scope-inventory-only,no,no,missing-platform-memory-caller-state-and-non-raw-equivalence-proof
+game_free,SPEC_PSXPC_N/MALLOC.C,82,runtime-context,debugged,no,no,source-scope-inventory-only,no,no,missing-platform-memory-caller-state-and-non-raw-equivalence-proof

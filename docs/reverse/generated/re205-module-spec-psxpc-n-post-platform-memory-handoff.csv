@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_cluster,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-206,platform-main-lifecycle-proof-first-audit,platform-main-lifecycle,main,platform-memory-proof-blocked-next-cluster-selected,platform-memory reached a documentation-only terminal blocker; platform-main-lifecycle is the next available SPEC_PSXPC_N cluster in the current ordering,RE-205 post-platform-memory next-cluster selection,blocked,platform-main-lifecycle proof-first audit emitted

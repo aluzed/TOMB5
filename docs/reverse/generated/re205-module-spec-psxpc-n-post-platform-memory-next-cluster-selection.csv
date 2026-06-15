@@ -1,0 +1,2 @@
+rank,cluster,top_function,selection_decision,next_ticket,next_topic,blocker,code_change_readiness
+1,platform-main-lifecycle,main,selected-next-proof-chain,RE-206,platform-main-lifecycle-proof-first-audit,ND marker rows require a dedicated post-platform-memory behavior audit after non-ND proof clusters,blocked

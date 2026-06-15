@@ -1,0 +1,4 @@
+function,contract_id,required_source_state,required_binary_metadata,contract_status,code_change_ready,marker_ready,blocker
+game_malloc,contract-platform-memory-arena-allocation,request-size;aligned-size;malloc-used;malloc-free;arena-buffer,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+init_game_malloc,contract-platform-memory-arena-initialization,script-length;malloc-used;malloc-free;arena-zero-fill,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof
+game_free,contract-platform-memory-arena-rewind-free,free-size;aligned-size;malloc-used;malloc-free,non-raw-behavior-equivalence-metadata-required,blocked-source-contract-only,no,no,missing-non-raw-binary-equivalence-proof

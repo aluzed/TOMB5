@@ -1,0 +1,4 @@
+function,contract_id,source_evidence,binary_evidence,equivalence_status,code_change_ready,marker_ready,blocker
+game_malloc,contract-platform-memory-arena-allocation,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+init_game_malloc,contract-platform-memory-arena-initialization,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
+game_free,contract-platform-memory-arena-rewind-free,source-contract-and-callsite-metadata,not-versioned-non-raw-equivalence-proof-missing,blocked-missing-non-raw-binary-equivalence-proof,no,no,missing-non-raw-binary-equivalence-proof
