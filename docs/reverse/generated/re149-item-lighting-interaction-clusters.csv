@@ -1,0 +1,2 @@
+cluster,candidate_count,top_function,representative_functions,interaction_family,readiness,blocker,recommended_next_ticket
+item-lighting-interaction,2,DoFlameTorch,DoFlameTorch;TriggerAlertLight,item-lighting-state,best-next-module-game-cluster,Item lighting interaction state contract and symbolic equivalence proof missing,RE-150
