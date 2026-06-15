@@ -1,0 +1,2 @@
+caller,callee,caller_file,callee_file,line,source_line_text,shape_id,arg_count,argument_kinds,state_fields,side_effects,proof_status,patch_ready,blocker
+main,InitFont,SPEC_PSX/PSXMAIN.C,GAME/TEXT.C,117,source-line-contains-callee-call,shape-ui-text-initfont-void-font-shade-init,0,void,font-shade-table;shade-gradient-inputs;per-channel-clamp,font-shade-table-initialization,source-callsite-mapped-only,no,missing-initfont-behavior-equivalence-proof

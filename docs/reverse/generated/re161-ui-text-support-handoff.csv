@@ -1,0 +1,2 @@
+next_ticket,next_cluster,next_subcluster,pivot,reason,code_change_readiness,blocker
+TBD,module-game-exhausted,module-game-exhausted,TBD,all RE-061 module-game clusters have reached metadata-only closure or proof blockers,blocked,InitFont still needs non-raw behavior equivalence proof before source or marker changes

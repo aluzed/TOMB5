@@ -1,0 +1,2 @@
+function,shape_id,source_evidence,binary_evidence,equivalence_status,code_change_ready,marker_ready,source_patch_allowed,marker_change_allowed,blocker,next_action
+InitFont,shape-ui-text-initfont-void-font-shade-init,source-body-and-callsite-only,non-raw-behavior-equivalence-missing,blocked-missing-initfont-behavior-equivalence-proof,no,no,no,no,missing-initfont-behavior-equivalence-proof,close-ui-text-support-and-record-module-game-exhaustion

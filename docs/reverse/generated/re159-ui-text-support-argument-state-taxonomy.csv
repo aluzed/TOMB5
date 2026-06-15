@@ -1,0 +1,2 @@
+function,shape_id,argument_kinds,state_fields,source_contract,source_evidence,proof_status,code_change_ready,marker_ready,blocker
+InitFont,shape-ui-text-initfont-void-font-shade-init,void,font-shade-table;shade-gradient-inputs;per-channel-clamp,initializes font shade lookup table from shade endpoints,source-body-and-callsite-only,taxonomy-needs-equivalence-proof,no,no,missing-initfont-behavior-equivalence-proof
