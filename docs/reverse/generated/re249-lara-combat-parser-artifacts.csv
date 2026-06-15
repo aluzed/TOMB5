@@ -1,0 +1,4 @@
+rank,domain_id,function,file,line,reason,action
+1,lara-combat,if,GAME/LARAFIRE.C,156,"C keyword/parser artifact from source scanner, not a function scope",excluded-from-function-scope
+2,lara-combat,if,GAME/LARAFIRE.C,160,"C keyword/parser artifact from source scanner, not a function scope",excluded-from-function-scope
+3,lara-combat,if,GAME/LARAFIRE.C,165,"C keyword/parser artifact from source scanner, not a function scope",excluded-from-function-scope

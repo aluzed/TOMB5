@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-253,inventory-proof-first-audit,inventory,S_CallInventory2,lara-combat-closed-next-domain-selected,lara-combat closed as a documentation-only terminal blocker after parser artifacts were excluded; next ranked remaining domain selected,RE-245..RE-252 lara-combat epic,blocked,inventory proof-first audit emitted

@@ -1,0 +1,4 @@
+gate,story_id,scope,ready_count,blocked_count,decision,blocker
+equivalence,RE-250,all scoped lara-combat rows,0,7,deny,missing-lara-combat-source-contract-and-non-raw-equivalence-proof
+source-patch,RE-251,ready lara-combat rows,0,7,deny,zero rows passed the equivalence gate
+marker,RE-251,ready lara-combat rows,0,7,deny,zero rows passed the source-patch gate

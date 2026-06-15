@@ -1,0 +1,9 @@
+story_id,topic,scope,candidate_count,readiness,source_patch_ready,marker_ready,blocker,artifact
+RE-245,lara-combat-proof-first-audit,all lara-combat candidates plus parser-artifact suppression,10,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,opening-audit
+RE-246,lara-combat-target-detection-chain,target-detection candidates,2,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,documentation-only
+RE-247,lara-combat-target-acquisition-chain,target-acquisition candidates,3,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,documentation-only
+RE-248,lara-combat-weapon-fire-control-chain,weapon-fire-control candidates,2,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,documentation-only
+RE-249,lara-combat-parser-artifact-reconciliation,parser-artifact rows excluded from function scope,3,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,documentation-only
+RE-250,lara-combat-state-equivalence-gate,all scoped lara-combat rows,7,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,documentation-only
+RE-251,lara-combat-source-patch-gate,ready lara-combat rows,7,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,documentation-only
+RE-252,post-lara-combat-domain-selection,remaining domain backlog after lara-combat,0,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,next-domain-selected

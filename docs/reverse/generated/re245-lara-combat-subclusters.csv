@@ -1,0 +1,4 @@
+subcluster,rank,candidate_count,mapped_count,nd_count,runtime_count,top_function,outcome,code_change_ready,marker_ready,blocker,closed_by_story
+target-detection,1,2,0,0,0,DoProperDetection,blocked-no-patch,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,RE-246
+target-acquisition,2,3,0,0,0,LaraGetNewTarget,blocked-no-patch,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,RE-247
+weapon-fire-control,3,2,0,0,0,FireWeapon,blocked-no-patch,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof,RE-248

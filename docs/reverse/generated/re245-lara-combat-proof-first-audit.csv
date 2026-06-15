@@ -1,0 +1,8 @@
+rank,domain_id,subcluster,function,file,line,status,mapped,runtime_focus,nd,caller_count,callee_count,readiness,source_patch_ready,marker_ready,blocker
+1,lara-combat,target-detection,DoProperDetection,GAME/LARAFIRE.C,99,decompiled,,no,no,2,4,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof
+2,lara-combat,target-acquisition,LaraGetNewTarget,GAME/LARAFIRE.C,201,decompiled,,no,no,2,4,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof
+3,lara-combat,weapon-fire-control,FireWeapon,GAME/LARAFIRE.C,185,decompiled,,no,no,3,9,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof
+4,lara-combat,weapon-fire-control,LaraGun,GAME/LARAFIRE.C,273,decompiled,,no,no,4,4,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof
+5,lara-combat,target-acquisition,LaraTargetInfo,GAME/LARAFIRE.C,206,decompiled,,no,no,3,4,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof
+6,lara-combat,target-detection,find_target_point,GAME/LARAFIRE.C,196,decompiled,,no,no,2,1,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof
+7,lara-combat,target-acquisition,AimWeapon,GAME/LARAFIRE.C,191,decompiled,,no,no,2,0,blocked,no,no,missing-lara-combat-source-contract-and-non-raw-equivalence-proof
