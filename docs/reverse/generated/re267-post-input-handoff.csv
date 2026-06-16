@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+RE-268,camera-proof-first-audit,camera,CalculateSpotCams,input-closed-next-domain-selected,input closed as a documentation-only terminal blocker after cross-platform state proof remained absent; next ranked remaining domain selected,RE-261..RE-267 input epic,blocked,camera proof-first audit emitted

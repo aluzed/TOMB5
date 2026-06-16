@@ -1,0 +1,4 @@
+gate,story_id,scope,ready_count,blocked_count,decision,blocker
+equivalence,RE-265,all input candidates,0,3,deny,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof
+source-patch,RE-266,all input candidates,0,3,deny,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof
+marker,RE-266,all input candidates,0,3,deny,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof

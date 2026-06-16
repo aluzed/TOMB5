@@ -1,0 +1,4 @@
+rank,domain_id,subcluster,function,file,line,status,mapped,runtime_focus,nd,caller_count,callee_count,readiness,source_patch_ready,marker_ready,blocker
+1,input,psxpc-n-runtime,S_UpdateInput,SPEC_PSXPC_N/PSXINPUT.C,91,decompiled,mapped,yes,no,5,5,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof
+2,input,psx-runtime,S_UpdateInput,SPEC_PSX/PSXINPUT.C,89,decompiled,mapped,yes,no,5,5,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof
+3,input,psxpc-service,S_UpdateInput,SPEC_PSXPC/PSXPCINPUT.C,60,decompiled,mapped,no,no,5,5,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof

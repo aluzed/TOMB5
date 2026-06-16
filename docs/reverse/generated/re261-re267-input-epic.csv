@@ -1,0 +1,8 @@
+story_id,topic,scope,candidate_count,readiness,source_patch_ready,marker_ready,blocker,artifact
+RE-261,input-proof-first-audit,input domain scope from RE-260 handoff,3,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re261-input-proof-first-audit.csv
+RE-262,input-psxpc-n-runtime-chain,SPEC_PSXPC_N S_UpdateInput runtime row,1,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re261-input-subclusters.csv
+RE-263,input-psx-runtime-chain,SPEC_PSX S_UpdateInput runtime row,1,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re261-input-subclusters.csv
+RE-264,input-psxpc-service-chain,SPEC_PSXPC S_UpdateInput service row,1,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re261-input-subclusters.csv
+RE-265,input-state-equivalence-gate,cross-platform input state/equivalence proof,3,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re266-input-source-patch-gates.csv
+RE-266,input-source-patch-gate,source patch and marker readiness,3,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re266-input-source-patch-gates.csv
+RE-267,post-input-domain-selection,remaining ranked domains after input closure,0,blocked,no,no,missing-input-cross-platform-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re267-post-input-domain-selection.csv

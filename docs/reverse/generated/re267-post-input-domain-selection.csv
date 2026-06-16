@@ -1,0 +1,2 @@
+rank,domain_id,status,score,candidate_count,mapped_count,nd_count,runtime_count,top_function,top_file,next_ticket,next_action,code_change_readiness
+1,camera,candidate,13674,4,4,0,0,CalculateSpotCams,GAME/SPOTCAM.C,RE-268,open RE-268 camera proof-first audit,blocked
