@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,source_map,current_priority,source_map_rows,current_priority_rows,regenerated_priority_rows,priority_delta_rows,priority_changed,next_ticket,next_topic,selected_domain,selected_pivot,code_change_readiness,stop_condition
+RE-291,function-priority-upstream-refresh-audit,RE-290,docs/reverse/generated/repo-function-map.csv,docs/reverse/generated/function-priority.csv,1250,348,348,0,no,TBD,function-priority-inputs-unchanged,none,none,blocked,provide changed repo-function-map.csv or new non-raw proof evidence before opening another epic
