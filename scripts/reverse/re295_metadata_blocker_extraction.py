@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import re
 from collections import Counter
 from dataclasses import asdict, dataclass, fields
 from pathlib import Path
@@ -171,7 +172,13 @@ def csv_blocker_counter(paths: list[Path], fields_to_try: tuple[str, ...]) -> tu
 
 
 def upstream_generated_files(generated_dir: Path, pattern: str) -> list[Path]:
-    return [p for p in generated_dir.glob(pattern) if not p.name.startswith("re295-metadata-blocker-extraction")]
+    files: list[Path] = []
+    for p in generated_dir.glob(pattern):
+        match = re.match(r"re(\d+)-", p.name)
+        if match and int(match.group(1)) >= 295:
+            continue
+        files.append(p)
+    return files
 
 
 def row_for_text_source(source: dict[str, str], source_id: str, base: Path, blocker_class: str, next_step: str) -> BlockerExtractionRow:
