@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,input_candidate_count,cluster_count,focus_candidate_count,ready_to_reopen_domain_count,source_patch_authorized_count,selected_followup_cluster,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-310,ghidra-bridge-candidate-readiness-gate,RE-309,25,7,7,0,0,collision-switch-door-cluster,none,none,RE-311,ghidra-collision-switch-door-cluster-narrow-export,ready,blocked,generate a narrower source-symbolic export for the selected cluster before reopening proof-domain selection
