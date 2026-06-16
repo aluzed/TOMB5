@@ -1,0 +1,2 @@
+rank,domain_id,function,file,line,classification,reason,disposition
+1,module-spec_pc_n,if,SPEC_PC_N/SPECIFIC.CPP,675,parser-artifact,C keyword captured by source scanner rather than a callable function boundary,exclude-from-source-patch-scope

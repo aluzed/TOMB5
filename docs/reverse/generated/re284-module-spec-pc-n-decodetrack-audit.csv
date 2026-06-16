@@ -1,0 +1,2 @@
+rank,domain_id,function,file,line,status,mapped,runtime_focus,nd,caller_count,callee_count,readiness,source_patch_ready,marker_ready,blocker
+1,module-spec_pc_n,DecodeTrack,SPEC_PC_N/SPECIFIC.CPP,1934,decompiled,repo_only,no,no,0,0,blocked,no,no,missing-module-spec-pc-n-decodetrack-state-contract-and-non-raw-equivalence-proof

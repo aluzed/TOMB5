@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+TBD,post-animation-items-domain-backlog-exhausted,none,none,module-spec-pc-n-closed-domain-backlog-exhausted,module-spec_pc_n parser artifact reconciled and DecodeTrack closed; no remaining ranked domains after the post-animation-items backlog,RE-283..RE-287 module-spec_pc_n epic,blocked,no ranked remaining domain in post-animation-items selection

@@ -1,0 +1,6 @@
+story_id,topic,scope,candidate_count,readiness,source_patch_ready,marker_ready,blocker,artifact
+RE-283,module-spec-pc-n-parser-reconciliation,exclude parser-artifact keyword row and retain DecodeTrack,1,blocked,no,no,missing-module-spec-pc-n-decodetrack-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re283-module-spec-pc-n-parser-artifacts.csv
+RE-284,module-spec-pc-n-decodetrack-audit,SPEC_PC_N DecodeTrack source-backed audit,1,blocked,no,no,missing-module-spec-pc-n-decodetrack-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re284-module-spec-pc-n-decodetrack-audit.csv
+RE-285,module-spec-pc-n-state-equivalence-gate,DecodeTrack state/equivalence proof,1,blocked,no,no,missing-module-spec-pc-n-decodetrack-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re285-re286-module-spec-pc-n-gates.csv
+RE-286,module-spec-pc-n-source-patch-gate,source patch and marker readiness,1,blocked,no,no,missing-module-spec-pc-n-decodetrack-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re285-re286-module-spec-pc-n-gates.csv
+RE-287,post-module-spec-pc-n-exhaustion,remaining domains after module-spec_pc_n closure,0,blocked,no,no,missing-module-spec-pc-n-decodetrack-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re287-post-module-spec-pc-n-handoff.csv
