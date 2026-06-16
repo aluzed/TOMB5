@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,proof_audit_class_count,gate_row_count,ready_to_reopen_domain_count,needs_more_metadata_count,source_patch_authorized_count,raw_or_asset_source_count,next_ticket,next_topic,selected_domain,selected_pivot,metadata_work_readiness,code_change_readiness,stop_condition
+RE-302,proof-audit-blocker-taxonomy-readiness-gate,RE-301,8,8,0,8,0,0,RE-303,source-patch-gate-denial-reduction,none,none,ready,blocked,reduce source-patch gate denials before proof-domain selection can reopen

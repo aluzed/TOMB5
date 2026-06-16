@@ -1,0 +1,9 @@
+normalized_class,evidence_count,proof_csv_file_count,unique_blocker_count,gate_decision,readiness_reason,ready_to_reopen_domain,source_patch_authorized,next_metadata_source,next_ticket,next_topic
+source-contract-and-non-raw-equivalence-missing,164,6,6,needs-source-patch-gate-metadata,dominant proof-audit class still says source contracts and non-raw equivalence are missing,no,no,source-patch-gates,RE-303,source-patch-gate-denial-reduction
+backlog-context-not-selected,82,4,6,needs-source-patch-gate-metadata,proof-audit backlog rows are explicitly context rather than selected proof pivots,no,no,source-patch-gates,RE-303,source-patch-gate-denial-reduction
+proof-evidence-missing,70,12,12,needs-source-patch-gate-metadata,proof-audit rows report missing proof evidence rather than a ready domain,no,no,source-patch-gates,RE-303,source-patch-gate-denial-reduction
+state-contract-and-symbolic-equivalence-missing,30,9,11,needs-source-patch-gate-metadata,state-contract and symbolic equivalence blockers remain unresolved,no,no,source-patch-gates,RE-303,source-patch-gate-denial-reduction
+generic-proof-audit-blocker,23,6,2,needs-source-patch-gate-metadata,proof-audit rows with nonstandard or empty blocker fields need source-patch gate corroboration,no,no,source-patch-gates,RE-303,source-patch-gate-denial-reduction
+marker-behavior-proof-needed,13,4,5,needs-source-patch-gate-metadata,marker readiness remains blocked until behavior proof exists,no,no,source-patch-gates,RE-303,source-patch-gate-denial-reduction
+non-raw-equivalence-proof-missing,1,1,1,needs-source-patch-gate-metadata,non-raw equivalence proof is still missing,no,no,source-patch-gates,RE-303,source-patch-gate-denial-reduction
+symbolic-equivalence-proof-missing,1,1,1,needs-source-patch-gate-metadata,symbolic equivalence proof is still missing,no,no,source-patch-gates,RE-303,source-patch-gate-denial-reduction
