@@ -1,0 +1,7 @@
+vector_rank,vector_id,evidence_class,input_status,actionability,safe_to_inventory,ready_to_reopen_domain,source_patch_authorized,observed_count,next_required_input,stop_condition
+1,changed-upstream-mapping,metadata-only,not-present,needs-new-export,yes,no,no,0,changed repo-function-map or function-priority export,no mapping delta keeps selected domain and pivot none
+2,new-user-supplied-proof-artifact,metadata-only-or-source-symbolic,not-present,missing-input,yes-if-non-raw,no,no,0,user-provided safe proof artifact or pointer,no provided safe artifact keeps code readiness blocked
+3,safe-source-symbolic-export,source-symbolic,available-but-not-new-proof,needs-new-export,yes,no,no,482,new structured source-symbolic export with proof linkage,"source corpus alone is context, not proof-domain readiness"
+4,existing-generated-metadata,metadata-only,available-exhausted,exhausted-metadata,yes,no,no,339,changed generated metadata or newly derived safe evidence,already reduced blocker metadata does not reopen selection
+5,existing-story-and-markdown-taxonomies,metadata-only,available-exhausted,exhausted-metadata,yes,no,no,416,new taxonomy evidence not already gated blocked,existing story and markdown blockers remain non-authorizing
+6,raw-binary-or-asset-evidence,unsafe-input-class,rejected,unsafe-raw-only,no,no,no,0,replace with metadata-only or source-symbolic evidence,unsafe evidence class cannot enter committed artifacts

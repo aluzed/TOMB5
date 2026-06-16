@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,exploration_vector_count,testable_now_count,needs_new_export_count,exhausted_metadata_count,unsafe_raw_only_count,missing_user_input_count,ready_to_reopen_domain_count,source_patch_authorized_count,next_ticket,next_topic,selected_domain,selected_pivot,metadata_work_readiness,code_change_readiness,stop_condition
+RE-308,new-non-raw-proof-evidence-exploration,RE-307,6,0,2,2,1,1,0,0,TBD,await-new-safe-evidence-input,none,none,blocked,blocked,provide changed upstream mapping or a new safe proof artifact before reopening domain selection
