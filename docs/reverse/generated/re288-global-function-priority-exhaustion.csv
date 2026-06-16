@@ -1,0 +1,16 @@
+rank,domain_id,priority_count,parser_artifact_count,remaining_candidates,status,closure_reference
+1,maths-render-support,92,0,0,closed-or-proof-blocked,RE-214..RE-221 maths-render-support epic
+2,module-game,54,2,0,closed-or-proof-blocked,RE-061..RE-161 module-game chain
+3,collision,32,1,0,closed-or-proof-blocked,RE-053..RE-060 collision chain
+4,animation-items,31,0,0,closed-or-proof-blocked,RE-275..RE-282 animation-items epic
+5,module-spec_psxpc,28,0,0,closed-or-proof-blocked,RE-229..RE-236 module-spec_psxpc epic
+6,module-spec_psxpc_n,27,3,0,closed-or-proof-blocked,RE-163..RE-212 module-spec_psxpc_n chain
+7,traps-switches-doors,20,0,0,closed-or-proof-blocked,RE-222..RE-228 traps-switches-doors epic
+8,audio-effects,19,0,0,closed-or-proof-blocked,RE-045..RE-052 audio-effects chain
+9,module-spec_psx,12,0,0,closed-or-proof-blocked,RE-237..RE-244 module-spec_psx epic
+10,inventory,11,6,0,closed-or-proof-blocked,RE-253..RE-260 inventory epic
+11,lara-combat,10,3,0,closed-or-proof-blocked,RE-245..RE-252 lara-combat epic
+12,camera,4,0,0,closed-or-proof-blocked,RE-268..RE-274 camera epic
+13,savegame,3,0,0,closed-or-proof-blocked,RE-001..RE-043 savegame closure chain
+14,input,3,0,0,closed-or-proof-blocked,RE-261..RE-267 input epic
+15,module-spec_pc_n,2,1,0,closed-or-proof-blocked,RE-283..RE-287 module-spec_pc_n epic

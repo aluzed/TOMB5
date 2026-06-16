@@ -1,0 +1,4 @@
+story_id,topic,scope,candidate_count,readiness,source_patch_ready,marker_ready,blocker,artifact
+RE-288,global-function-priority-exhaustion-audit,all function-priority rows and closed domains,348,blocked,no,no,function-priority-backlog-exhausted,docs/reverse/generated/re288-global-function-priority-exhaustion.csv
+RE-289,global-parser-artifact-reconciliation,all parser-artifact keyword rows across closed scopes,16,blocked,no,no,function-priority-backlog-exhausted,docs/reverse/generated/re289-global-parser-artifacts.csv
+RE-290,final-function-priority-handoff,remaining candidate rows after all known closures,0,blocked,no,no,function-priority-backlog-exhausted,docs/reverse/generated/re290-final-function-priority-handoff.csv

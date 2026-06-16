@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+TBD,function-priority-backlog-exhausted,none,none,all-ranked-function-priority-domains-closed-or-proof-blocked,all 348 function-priority rows are covered by closed or proof-blocked RE chains; no remaining ranked domain candidate exists,RE-288..RE-290 global function-priority exhaustion epic,blocked,refresh upstream function-priority inputs or add new non-raw proof evidence before opening another epic

@@ -1,0 +1,17 @@
+rank,domain_id,function,file,line,classification,disposition
+1,module-game,if,GAME/LARACLMB.C,996,parser-artifact,excluded-from-source-patch-scopes
+2,lara-combat,if,GAME/LARAFIRE.C,156,parser-artifact,excluded-from-source-patch-scopes
+3,lara-combat,if,GAME/LARAFIRE.C,160,parser-artifact,excluded-from-source-patch-scopes
+4,lara-combat,if,GAME/LARAFIRE.C,165,parser-artifact,excluded-from-source-patch-scopes
+5,module-game,if,GAME/TOMB4FX.C,713,parser-artifact,excluded-from-source-patch-scopes
+6,module-spec_psxpc_n,if,SPEC_PSXPC_N/CALCHAIR.C,895,parser-artifact,excluded-from-source-patch-scopes
+7,collision,if,SPEC_PSXPC_N/COLLIDE_S.C,671,parser-artifact,excluded-from-source-patch-scopes
+8,module-spec_psxpc_n,if,SPEC_PSXPC_N/LARA4.C,243,parser-artifact,excluded-from-source-patch-scopes
+9,module-spec_psxpc_n,if,SPEC_PSXPC_N/MISC.C,470,parser-artifact,excluded-from-source-patch-scopes
+10,inventory,if,SPEC_PSXPC_N/REQUEST.C,177,parser-artifact,excluded-from-source-patch-scopes
+11,inventory,if,SPEC_PSXPC_N/REQUEST.C,196,parser-artifact,excluded-from-source-patch-scopes
+12,inventory,if,SPEC_PSX/REQUEST.C,177,parser-artifact,excluded-from-source-patch-scopes
+13,inventory,if,SPEC_PSX/REQUEST.C,196,parser-artifact,excluded-from-source-patch-scopes
+14,inventory,if,SPEC_PSXPC/REQUEST.C,184,parser-artifact,excluded-from-source-patch-scopes
+15,inventory,if,SPEC_PSXPC/REQUEST.C,202,parser-artifact,excluded-from-source-patch-scopes
+16,module-spec_pc_n,if,SPEC_PC_N/SPECIFIC.CPP,675,parser-artifact,excluded-from-source-patch-scopes
