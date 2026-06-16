@@ -1,0 +1,2 @@
+rank,candidate_id,previous_candidate_id,source_symbol_context_count,caller_context_count,callee_context_count,direct_repo_symbol_count,candidate_level_proof_count,proof_gate,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,d96359c1d9f3,5e99f39fd8ef,27,23,4,0,0,blocked-unmapped-candidate-identity,no,no,no,RE-317,collision-geometry-helper-next-candidate-callsite-map,next candidate still lacks direct repo symbol proof; build a source-backed callsite map next
