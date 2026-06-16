@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,handoff_stop_condition_class_count,gate_row_count,ready_to_reopen_domain_count,needs_new_evidence_count,source_patch_authorized_count,raw_or_asset_source_count,next_ticket,next_topic,selected_domain,selected_pivot,metadata_work_readiness,code_change_readiness,stop_condition
+RE-306,handoff-stop-condition-readiness-gate,RE-305,5,5,0,5,0,0,RE-307,blocker-reduction-source-exhaustion-audit,none,none,ready,blocked,audit blocker-reduction metadata source exhaustion before selecting another proof domain
