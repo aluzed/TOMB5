@@ -97,12 +97,17 @@ def count_generated(repo: Path, pattern: str) -> int:
     return len(list((repo / GENERATED_DIR).glob(pattern)))
 
 
+def is_re292_or_later_artifact(path: Path) -> bool:
+    name = path.name
+    return name.startswith("re") and name[2:5].isdigit() and int(name[2:5]) >= 292
+
+
 def count_pre_re292_generated_artifacts(repo: Path) -> int:
     return len(
         [
             p
             for p in (repo / GENERATED_DIR).iterdir()
-            if p.is_file() and not p.name.startswith("re292-post-refresh-evidence-")
+            if p.is_file() and not is_re292_or_later_artifact(p)
         ]
     )
 

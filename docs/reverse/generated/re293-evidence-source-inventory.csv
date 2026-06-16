@@ -1,0 +1,16 @@
+source_id,source_type,path_pattern,row_or_file_count,safety_class,progression_status,use_for,current_gap
+argument-taxonomies,generated-csv,docs/reverse/generated/*argument*taxonomy*.csv,22,metadata-only,available,symbolic argument and state grouping,needs cross-ticket gap ranking before reuse
+caller-maps,generated-csv,docs/reverse/generated/*caller-map*.csv,2,metadata-only,available,legacy caller mapping context,needs normalization with newer callsite maps
+callsite-maps,generated-csv,docs/reverse/generated/*callsite*.csv,13,metadata-only,available,source-backed caller/callee context,needs stale-domain coverage comparison
+comparison-gates,generated-csv,docs/reverse/generated/*comparison-gate*.csv,2,metadata-only,available,blocked comparison readiness decisions,needs source-gap ranking
+equivalence-gates,generated-csv,docs/reverse/generated/*equivalence-gate*.csv,7,metadata-only,available,blocked equivalence readiness decisions,needs proof-evidence gap ranking
+function-priority,generated-csv,docs/reverse/generated/function-priority.csv,348,metadata-only,available,closed priority backlog baseline,contains no remaining candidate row
+generated-markdown,generated-md,docs/reverse/**/*.md,94,metadata-only,available,human-readable proof summaries and blockers,needs machine-readable gap extraction
+handoff-csvs,generated-csv,docs/reverse/generated/*handoff*.csv,38,metadata-only,available,ticket-to-ticket readiness and closure state,needs consolidated next-input ranking
+proof-audits,generated-csv,docs/reverse/generated/*proof*.csv,34,metadata-only,available,proof-first domain openings and blockers,needs gap severity ranking
+repo-function-map,generated-csv,docs/reverse/generated/repo-function-map.csv,1250,metadata-only,available,authoritative function/domain mapping input,unchanged after RE-291 refresh
+selection-gates,generated-csv,docs/reverse/generated/*selection*.csv,15,metadata-only,available,previous domain and cluster selection decisions,needs re-run only after a new input changes
+source-corpus,checked-in-source,GAME|SPEC_*|TOOLS source files,482,source-symbolic,available,"function names, files, and source-level control context",insufficient alone for binary equivalence readiness
+source-patch-gates,generated-csv,docs/reverse/generated/*source-patch-gate*.csv,16,metadata-only,available,source and marker patch denials,needs evidence source ranking before any patch gate can reopen
+state-contracts,generated-csv,docs/reverse/generated/*state-contract*.csv,7,metadata-only,available,symbolic state contracts,needs non-raw proof narrowing
+story-tracker,story-md,docs/stories/RE-*.md,304,metadata-only,available,progression history and explicit blockers,needs gap extraction into ranked work items

@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,source_count,metadata_only_sources,source_symbolic_sources,raw_or_asset_sources,candidate_gap_count,next_ticket,next_topic,selected_domain,selected_pivot,code_change_readiness,stop_condition
+RE-293,evidence-source-inventory,RE-292,15,14,1,0,14,RE-294,evidence-source-gap-ranking,none,none,blocked,rank existing safe evidence sources before opening a new proof domain
