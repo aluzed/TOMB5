@@ -1,0 +1,3 @@
+rank,domain_id,status,score,candidate_count,mapped_count,nd_count,runtime_count,top_function,top_file,next_ticket,next_action,code_change_readiness
+1,animation-items,candidate,12431,31,5,1,3,CalcAnimatingItem_ASM,SPEC_PSXPC_N/ANIMITEM.C,RE-276,open RE-276 animation-items proof-first audit,blocked
+2,module-spec_pc_n,candidate,-410,2,0,0,0,if,SPEC_PC_N/SPECIFIC.CPP,TBD,defer until animation-items closure,blocked

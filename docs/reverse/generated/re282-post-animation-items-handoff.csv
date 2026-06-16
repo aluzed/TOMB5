@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+TBD,post-animation-items-domain-selection-needed,module-spec_pc_n,if,animation-items-closed-next-domain-unresolved-parser-artifact,"animation-items is closed; remaining domain is module-spec_pc_n, whose top row requires a parser-artifact reconciliation before opening a source patch epic",RE-275..RE-282 animation-items epic,blocked,open a post-animation-items selection/reconciliation gate before source changes
