@@ -1,0 +1,4 @@
+ticket_id,slug,goal,deliverable,dependency,status
+UNBLOCK-1,ingest-updated-repo-function-map,Provide or generate a changed repo-function-map.csv and rerun the function-priority refresh audit.,Updated mapping diff plus refreshed priority delta report.,new upstream mapping input,blocked-pending-input
+UNBLOCK-2,ingest-non-raw-proof-evidence,Add a metadata-only proof artifact that narrows a previously blocked identity/layout/predicate/equivalence gate.,New proof CSV/Markdown with source-backed symbolic fields only.,new non-raw proof evidence,blocked-pending-input
+UNBLOCK-3,rerun-domain-selection-after-new-evidence,Select the next proof domain only after priority rows or proof readiness changes.,Post-input selection gate naming a real domain and pivot.,UNBLOCK-1 or UNBLOCK-2,blocked-pending-input

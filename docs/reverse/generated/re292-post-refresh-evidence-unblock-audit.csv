@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,priority_changed,source_map_rows,priority_rows,generated_artifact_count,proof_audit_count,callsite_map_count,equivalence_gate_count,new_priority_candidate_count,new_non_raw_proof_evidence,next_ticket,next_topic,selected_domain,selected_pivot,code_change_readiness,stop_condition
+RE-292,post-refresh-evidence-unblock-audit,RE-291,no,1250,348,295,34,13,7,0,no,TBD,await-new-non-raw-proof-evidence,none,none,blocked,add changed upstream mapping or new non-raw proof artifact before selecting another domain
