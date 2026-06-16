@@ -1,0 +1,8 @@
+story_id,topic,scope,candidate_count,readiness,source_patch_ready,marker_ready,blocker,artifact
+RE-268,camera-proof-first-audit,camera domain scope from RE-267 handoff,4,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re268-camera-proof-first-audit.csv
+RE-269,camera-spotcam-chain,CalculateSpotCams,1,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re268-camera-subclusters.csv
+RE-270,camera-core-chain,"CalculateCamera, CombatCamera",2,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re268-camera-subclusters.csv
+RE-271,camera-line-of-sight-chain,mgLOS,1,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re268-camera-subclusters.csv
+RE-272,camera-state-equivalence-gate,camera state/equivalence proof,4,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re273-camera-source-patch-gates.csv
+RE-273,camera-source-patch-gate,source patch and marker readiness,4,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re273-camera-source-patch-gates.csv
+RE-274,post-camera-domain-exhaustion,remaining ranked domains after camera closure,0,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re274-post-camera-domain-exhaustion.csv

@@ -1,0 +1,4 @@
+subcluster,rank,candidate_count,mapped_count,nd_count,runtime_count,top_function,outcome,code_change_ready,marker_ready,blocker,closed_by_story
+spotcam,1,1,1,0,0,CalculateSpotCams,blocked-no-patch,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,RE-269
+camera-core,2,2,2,0,0,CalculateCamera,blocked-no-patch,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,RE-270
+line-of-sight,3,1,0,0,0,mgLOS,blocked-no-patch,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof,RE-271

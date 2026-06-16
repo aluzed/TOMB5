@@ -1,0 +1,5 @@
+rank,domain_id,subcluster,function,file,line,status,mapped,runtime_focus,nd,caller_count,callee_count,readiness,source_patch_ready,marker_ready,blocker
+1,camera,spotcam,CalculateSpotCams,GAME/SPOTCAM.C,429,decompiled,mapped,no,no,1,13,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof
+2,camera,camera-core,CalculateCamera,GAME/CAMERA.C,1167,decompiled,mapped,no,no,3,14,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof
+3,camera,camera-core,CombatCamera,GAME/CAMERA.C,1601,decompiled,mapped,no,no,1,7,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof
+4,camera,line-of-sight,mgLOS,GAME/CAMERA.C,2015,decompiled,repo_only,no,no,0,0,blocked,no,no,missing-camera-state-contract-and-non-raw-equivalence-proof

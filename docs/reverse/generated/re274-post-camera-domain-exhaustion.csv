@@ -1,0 +1,2 @@
+next_ticket,remaining_domain_count,status,reason,dependency
+TBD,0,exhausted,RE-267 ranked selection contained only camera; camera closed with no remaining ranked domain rows,RE-268..RE-274 camera epic

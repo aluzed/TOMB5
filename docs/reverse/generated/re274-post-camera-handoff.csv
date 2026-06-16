@@ -1,0 +1,2 @@
+next_ticket,next_topic,selected_domain,selected_pivot,outcome,reason,dependency,code_change_readiness,stop_condition
+TBD,post-re267-domain-backlog-exhausted,none,none,camera-closed-domain-backlog-exhausted,RE-267 ranked selection contained only camera; camera closed with no remaining ranked domain rows,RE-268..RE-274 camera epic,blocked,no ranked remaining domain in RE-267 selection

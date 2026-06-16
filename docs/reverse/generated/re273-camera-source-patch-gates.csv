@@ -1,0 +1,4 @@
+gate,story_id,scope,ready_count,blocked_count,decision,blocker
+equivalence,RE-272,all camera candidates,0,4,deny,missing-camera-state-contract-and-non-raw-equivalence-proof
+source-patch,RE-273,all camera candidates,0,4,deny,missing-camera-state-contract-and-non-raw-equivalence-proof
+marker,RE-273,all camera candidates,0,4,deny,missing-camera-state-contract-and-non-raw-equivalence-proof
