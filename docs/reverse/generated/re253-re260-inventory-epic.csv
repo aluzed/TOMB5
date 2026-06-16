@@ -1,0 +1,9 @@
+story_id,topic,scope,candidate_count,readiness,source_patch_ready,marker_ready,blocker,artifact
+RE-253,inventory-proof-first-audit,inventory domain scope from RE-252 handoff,5,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re253-inventory-proof-first-audit.csv
+RE-254,inventory-menu-flow-chain,"S_CallInventory2, use_current_item, do_keypad_mode",3,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re253-inventory-subclusters.csv
+RE-255,inventory-object-list-chain,draw_current_object_list,1,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re253-inventory-subclusters.csv
+RE-256,inventory-requester-chain,Requester,1,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re253-inventory-subclusters.csv
+RE-257,inventory-parser-artifact-reconciliation,excluded C keyword parser artifacts,6,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re257-inventory-parser-artifacts.csv
+RE-258,inventory-state-equivalence-gate,inventory state/equivalence proof,5,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re259-inventory-source-patch-gates.csv
+RE-259,inventory-source-patch-gate,source patch and marker readiness,5,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re259-inventory-source-patch-gates.csv
+RE-260,post-inventory-domain-selection,remaining ranked domains after inventory closure,0,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof,docs/reverse/generated/re260-post-inventory-domain-selection.csv

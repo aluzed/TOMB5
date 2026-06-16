@@ -1,0 +1,7 @@
+rank,domain_id,function,file,line,reason,action
+296,inventory,if,SPEC_PSXPC_N/REQUEST.C,177,c-keyword-parser-artifact-not-a-function,excluded-from-function-scope
+297,inventory,if,SPEC_PSXPC_N/REQUEST.C,196,c-keyword-parser-artifact-not-a-function,excluded-from-function-scope
+304,inventory,if,SPEC_PSX/REQUEST.C,177,c-keyword-parser-artifact-not-a-function,excluded-from-function-scope
+305,inventory,if,SPEC_PSX/REQUEST.C,196,c-keyword-parser-artifact-not-a-function,excluded-from-function-scope
+339,inventory,if,SPEC_PSXPC/REQUEST.C,184,c-keyword-parser-artifact-not-a-function,excluded-from-function-scope
+340,inventory,if,SPEC_PSXPC/REQUEST.C,202,c-keyword-parser-artifact-not-a-function,excluded-from-function-scope

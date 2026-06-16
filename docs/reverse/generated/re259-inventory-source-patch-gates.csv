@@ -1,0 +1,4 @@
+gate,story_id,scope,ready_count,blocked_count,decision,blocker
+equivalence,RE-258,all inventory candidates,0,5,deny,missing-inventory-source-contract-and-non-raw-equivalence-proof
+source-patch,RE-259,all inventory candidates,0,5,deny,missing-inventory-source-contract-and-non-raw-equivalence-proof
+marker,RE-259,all inventory candidates,0,5,deny,missing-inventory-source-contract-and-non-raw-equivalence-proof

@@ -1,0 +1,6 @@
+rank,domain_id,subcluster,function,file,line,status,mapped,runtime_focus,nd,caller_count,callee_count,readiness,source_patch_ready,marker_ready,blocker
+1,inventory,menu-flow,S_CallInventory2,GAME/NEWINV2.C,3153,decompiled,mapped,no,no,2,37,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof
+2,inventory,object-list,draw_current_object_list,GAME/NEWINV2.C,1890,decompiled,mapped,no,no,1,8,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof
+3,inventory,requester-service,Requester,SPEC_PSXPC/REQUEST.C,12,decompiled,mapped,no,no,1,10,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof
+4,inventory,menu-flow,do_keypad_mode,GAME/NEWINV2.C,546,decompiled,mapped,no,no,1,4,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof
+5,inventory,menu-flow,use_current_item,GAME/NEWINV2.C,987,decompiled,mapped,no,no,1,3,blocked,no,no,missing-inventory-source-contract-and-non-raw-equivalence-proof
