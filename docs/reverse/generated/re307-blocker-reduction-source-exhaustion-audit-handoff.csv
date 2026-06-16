@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,candidate_source_count,reduction_complete_count,readiness_gate_complete_count,remaining_metadata_source_count,ready_to_reopen_domain_count,source_patch_authorized_count,raw_or_asset_source_count,next_ticket,next_topic,selected_domain,selected_pivot,metadata_work_readiness,code_change_readiness,stop_condition
+RE-307,blocker-reduction-source-exhaustion-audit,RE-306,5,5,5,0,0,0,0,TBD,blocker-reduction-sources-exhausted,none,none,blocked,blocked,provide changed upstream mapping or new non-raw proof evidence before selecting another proof domain
