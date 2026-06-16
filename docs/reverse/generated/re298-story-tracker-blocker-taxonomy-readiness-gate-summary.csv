@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,taxonomy_class_count,gate_row_count,ready_to_reopen_domain_count,needs_more_metadata_count,raw_or_asset_source_count,next_ticket,next_topic,selected_domain,selected_pivot,metadata_work_readiness,code_change_readiness,stop_condition
+RE-298,story-tracker-blocker-taxonomy-readiness-gate,RE-297,7,7,0,7,0,RE-299,generated-markdown-blocker-taxonomy-reduction,none,none,ready,blocked,reduce generated-markdown blockers before proof-domain selection can reopen

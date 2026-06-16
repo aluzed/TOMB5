@@ -1,0 +1,8 @@
+normalized_class,evidence_count,story_count,gate_decision,readiness_reason,ready_to_reopen_domain,source_patch_authorized,next_metadata_source,next_ticket,next_topic
+no-production-source-authorization,243,201,needs-more-metadata,authorization denials confirm source work is blocked rather than reopenable,no,no,generated-markdown,RE-299,generated-markdown-blocker-taxonomy-reduction
+generic-blocker-reference,197,136,needs-more-metadata,generic story references are not specific enough to justify a proof-domain selection,no,no,generated-markdown,RE-299,generated-markdown-blocker-taxonomy-reduction
+source-or-code-readiness-blocked,187,186,needs-more-metadata,source/code readiness blockers still dominate the tracker,no,no,generated-markdown,RE-299,generated-markdown-blocker-taxonomy-reduction
+blocked-readiness-status,169,103,needs-more-metadata,blocked status labels need corroboration from another metadata source,no,no,generated-markdown,RE-299,generated-markdown-blocker-taxonomy-reduction
+domain-selection-still-blocked,27,14,needs-more-metadata,domain-selection rows explicitly remain blocked,no,no,generated-markdown,RE-299,generated-markdown-blocker-taxonomy-reduction
+stop-condition-before-source-or-domain-work,10,7,needs-more-metadata,stop conditions require another metadata gate before proof-domain work,no,no,generated-markdown,RE-299,generated-markdown-blocker-taxonomy-reduction
+metadata-work-readiness-only,3,3,needs-more-metadata,metadata readiness alone is insufficient to select a proof domain,no,no,generated-markdown,RE-299,generated-markdown-blocker-taxonomy-reduction
