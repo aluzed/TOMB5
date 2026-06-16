@@ -1,0 +1,6 @@
+normalized_class,evidence_count,source_patch_gate_file_count,unique_denial_count,gate_decision,readiness_reason,ready_to_reopen_domain,source_patch_authorized,next_metadata_source,next_ticket,next_topic
+non-raw-equivalence-proof-missing,22,6,2,needs-handoff-stop-condition-metadata,source-patch denials still require non-raw equivalence proof before any domain can reopen,no,no,handoff-csvs,RE-305,handoff-stop-condition-reduction
+upstream-gate-zero-ready,10,5,2,needs-handoff-stop-condition-metadata,source-patch gates inherit zero-ready upstream decisions rather than creating patch authorization,no,no,handoff-csvs,RE-305,handoff-stop-condition-reduction
+state-contract-and-non-raw-equivalence-missing,9,3,3,needs-handoff-stop-condition-metadata,state contracts and non-raw equivalence are still missing from denied source-patch paths,no,no,handoff-csvs,RE-305,handoff-stop-condition-reduction
+symbolic-equivalence-proof-missing,9,1,1,needs-handoff-stop-condition-metadata,source-patch denials still require symbolic equivalence proof before marker or source work,no,no,handoff-csvs,RE-305,handoff-stop-condition-reduction
+source-contract-and-non-raw-equivalence-missing,8,6,6,needs-handoff-stop-condition-metadata,source contracts and non-raw equivalence are still missing from denied source-patch paths,no,no,handoff-csvs,RE-305,handoff-stop-condition-reduction
