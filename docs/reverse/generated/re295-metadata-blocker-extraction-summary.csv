@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,source_count,extraction_row_count,metadata_reduction_ready_count,domain_selection_ready_count,raw_or_asset_source_count,top_source_id,next_ticket,next_topic,selected_domain,selected_pivot,metadata_work_readiness,code_change_readiness,stop_condition
+RE-295,metadata-blocker-extraction,RE-294,5,5,5,0,0,story-tracker,RE-296,blocker-reduction-candidate-selection,none,none,ready,blocked,select a metadata blocker-reduction candidate before reopening any proof domain

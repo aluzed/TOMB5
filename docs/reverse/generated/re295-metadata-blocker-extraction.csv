@@ -1,0 +1,6 @@
+source_id,source_type,safety_class,blocker_class,evidence_count,unique_blocker_count,dominant_blocker,metadata_reduction_ready,domain_selection_ready,reduction_score,next_step
+story-tracker,story-md,metadata-only,progression-blockers,683,149,blocked-readiness-statements,yes,no,683,extract blocked progress tracker and next-objective dependencies from stories
+generated-markdown,generated-md,metadata-only,human-summary-blockers,472,250,blocked-readiness-statements,yes,no,472,extract normalized blocker phrases from reverse function Markdown
+proof-audits,generated-csv,metadata-only,proof-first-gaps,384,43,missing-maths-render-source-contract-and-non-raw-equivalence-proof,yes,no,384,cluster proof-first blockers by domain and missing evidence class
+source-patch-gates,generated-csv,metadata-only,patch-gate-denials,58,11,missing-non-raw-binary-equivalence-proof,yes,no,58,cluster patch denial reasons by missing proof class
+handoff-csvs,generated-csv,metadata-only,handoff-readiness,40,40,debris/object-breakage has source stubs and no non-raw binary equivalence proof for safe patching,yes,no,40,consolidate repeated handoff blockers and terminal stop conditions
