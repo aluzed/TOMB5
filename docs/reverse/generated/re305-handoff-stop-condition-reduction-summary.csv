@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,handoff_file_count,evidence_row_count,normalized_class_count,metadata_reduction_ready_count,domain_selection_ready_count,source_patch_authorized_count,raw_or_asset_source_count,next_ticket,next_topic,selected_domain,selected_pivot,metadata_work_readiness,code_change_readiness,stop_condition
+RE-305,handoff-stop-condition-reduction,RE-304,50,50,5,5,0,0,0,RE-306,handoff-stop-condition-readiness-gate,none,none,ready,blocked,gate handoff stop-condition taxonomy before proof-domain selection can reopen
