@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,ranked_source_count,testable_now_count,testable_with_existing_metadata_count,supporting_only_count,blocked_no_candidate_count,raw_or_asset_source_count,top_source_id,next_ticket,next_topic,selected_domain,selected_pivot,metadata_work_readiness,code_change_readiness,stop_condition
+RE-294,evidence-source-gap-ranking,RE-293,15,5,2,6,2,0,generated-markdown,RE-295,metadata-blocker-extraction,none,none,ready,blocked,extract machine-readable blockers from top-ranked metadata sources before selecting a proof domain

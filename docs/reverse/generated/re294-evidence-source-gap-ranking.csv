@@ -1,0 +1,16 @@
+rank,source_id,source_type,source_count,safety_class,blocker_class,actionability,priority_score,recommended_use,next_step
+1,generated-markdown,generated-md,94,metadata-only,human-summary-blockers,testable-now,100,extract explicit blocker statements into a machine-readable matrix,parse RE markdown sections for readiness and stop-condition language
+2,story-tracker,story-md,304,metadata-only,progression-blockers,testable-now,96,normalize story progress trackers and blocked follow-up items,extract open blocker classes and dependency phrases from story files
+3,handoff-csvs,generated-csv,38,metadata-only,handoff-readiness,testable-now,92,merge next_topic and readiness outcomes across closed chains,rank repeated handoff blockers by frequency and recency
+4,source-patch-gates,generated-csv,16,metadata-only,patch-gate-denials,testable-now,88,identify why source or marker patches were denied,cluster denial reasons by evidence type needed
+5,proof-audits,generated-csv,34,metadata-only,proof-first-gaps,testable-now,84,recover proof-first blocker wording from prior domain openings,extract proof gap classes from audit CSVs
+6,equivalence-gates,generated-csv,7,metadata-only,equivalence-readiness,testable-with-existing-metadata,76,rank equivalence gates by what symbolic evidence is missing,compare gate blockers against available state contracts and taxonomies
+7,state-contracts,generated-csv,7,metadata-only,state-contract-coverage,testable-with-existing-metadata,72,map contracts to equivalence gates that still need narrowing,join contract names to gate topics where possible
+8,argument-taxonomies,generated-csv,22,metadata-only,argument-state-coverage,supporting-only,68,support blocker extraction with symbolic argument group names,link taxonomy topics to proof audit domains
+9,callsite-maps,generated-csv,13,metadata-only,callsite-coverage,supporting-only,64,support source-context claims for already mapped callsite chains,compare map topics with blocked gate topics
+10,selection-gates,generated-csv,15,metadata-only,selection-history,supporting-only,60,trace how prior domain selections were exhausted,use only after blocker extraction names a plausible domain
+11,comparison-gates,generated-csv,2,metadata-only,comparison-readiness,supporting-only,56,preserve earlier comparison gate blockers,fold into unified gate blocker matrix
+12,caller-maps,generated-csv,2,metadata-only,legacy-caller-context,supporting-only,52,normalize older caller maps with newer callsite records,deduplicate with callsite maps before domain selection
+13,source-corpus,checked-in-source,482,source-symbolic,source-symbol-context,supporting-only,40,provide symbolic names and source-level context only,do not use alone to reopen binary equivalence or patch readiness
+14,repo-function-map,generated-csv,1250,metadata-only,unchanged-upstream-map,blocked-no-candidate,24,baseline function/domain map after unchanged refresh,wait for changed upstream mapping before reselection
+15,function-priority,generated-csv,348,metadata-only,exhausted-priority-backlog,blocked-no-candidate,20,document exhausted ranked backlog,do not select a fake priority row
