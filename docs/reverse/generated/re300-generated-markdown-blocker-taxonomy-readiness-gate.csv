@@ -1,0 +1,8 @@
+normalized_class,evidence_count,markdown_file_count,story_tracker_correlated,gate_decision,readiness_reason,ready_to_reopen_domain,source_patch_authorized,next_metadata_source,next_ticket,next_topic
+generic-blocker-reference,811,86,yes,needs-more-metadata,generated-Markdown blockers remain too generic to select a proof domain,no,no,proof-audits,RE-301,proof-audit-blocker-taxonomy-reduction
+domain-selection-still-blocked,233,56,yes,needs-more-metadata,generated Markdown explicitly keeps domain selection blocked,no,no,proof-audits,RE-301,proof-audit-blocker-taxonomy-reduction
+proof-or-marker-change-blocked,140,66,partial,needs-more-metadata,marker/proof blockers require proof-audit corroboration beyond partial story-tracker overlap,no,no,proof-audits,RE-301,proof-audit-blocker-taxonomy-reduction
+source-or-code-readiness-blocked,126,44,yes,needs-more-metadata,source/code readiness remains blocked across generated Markdown,no,no,proof-audits,RE-301,proof-audit-blocker-taxonomy-reduction
+no-production-source-authorization,68,66,yes,needs-more-metadata,source authorization denials confirm no source patch can proceed,no,no,proof-audits,RE-301,proof-audit-blocker-taxonomy-reduction
+metadata-work-readiness-only,19,16,yes,needs-more-metadata,metadata readiness alone does not prove a domain or pivot,no,no,proof-audits,RE-301,proof-audit-blocker-taxonomy-reduction
+stop-condition-before-source-or-domain-work,5,5,yes,needs-more-metadata,stop conditions require another metadata source before proof-domain work,no,no,proof-audits,RE-301,proof-audit-blocker-taxonomy-reduction
