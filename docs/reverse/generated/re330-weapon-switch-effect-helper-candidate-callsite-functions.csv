@@ -1,0 +1,2 @@
+rank,candidate_id,caller_symbol,source_module,source_file,definition_line,end_line,source_backed_callsite_count,function_status,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,blocker_class
+1,1ddbda046e37,FireWeapon,GAME,GAME/LARAFIRE.C,185,189,1,stub-unimplemented,no,no,no,callsite-map-not-yet-gated
