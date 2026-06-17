@@ -1,0 +1,14 @@
+rank,candidate_id,callsite_family,source_backed_callsite_count,implemented_callsite_count,stub_callsite_count,caller_count,implemented_caller_count,candidate_level_proof,readiness_gate,ready_to_reopen_domain,source_patch_authorized,blocker_class,next_probe
+1,f457f2772655,platform-cd-helper,46,46,0,3,3,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+2,f457f2772655,camera-runtime-helper,30,30,0,2,2,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+3,f457f2772655,savegame-memory-helper,23,23,0,9,9,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+4,f457f2772655,platform-file-helper,19,19,0,2,2,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+5,f457f2772655,lara-state-helper,17,17,0,4,4,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+6,f457f2772655,collision-trigger-helper,13,13,0,2,2,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+7,f457f2772655,level-runtime-helper,12,12,0,1,1,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+8,f457f2772655,frontend-runtime-helper,10,10,0,1,1,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+9,f457f2772655,gameflow-load-helper,8,8,0,1,1,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+10,f457f2772655,audio-helper,3,3,0,2,2,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+11,f457f2772655,address-derived-symbol-omitted,2,2,0,1,1,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted
+12,f457f2772655,stub-marker,1,0,1,1,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,candidate-queue-exhausted
+13,f457f2772655,other,1,1,0,1,1,no,blocked-no-candidate-level-proof,no,no,implemented-family-lacks-candidate-level-proof,candidate-queue-exhausted

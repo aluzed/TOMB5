@@ -1,0 +1,2 @@
+rank,candidate_id,callsite_family_count,implemented_callsite_family_count,candidate_level_proof_count,readiness_gate,decision,ready_to_reopen_domain,source_patch_authorized,selected_domain,selected_pivot,next_ticket,next_topic,next_candidate_id,stop_condition
+1,f457f2772655,13,12,0,blocked-single-candidate-queue-exhausted,deny-domain-reopen-and-exhaust-candidate-queue,no,no,none,none,TBD,door-save-runtime-helper-candidate-queue-exhausted,none,single door-save-runtime helper candidate has source-backed callsites but no candidate-level proof; candidate queue exhausted
