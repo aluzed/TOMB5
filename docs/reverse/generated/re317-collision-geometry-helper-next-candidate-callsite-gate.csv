@@ -1,0 +1,2 @@
+rank,candidate_id,previous_candidate_id,source_context_function_count,source_backed_callsite_count,implemented_context_function_count,stub_context_function_count,candidate_level_proof_count,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,d96359c1d9f3,5e99f39fd8ef,23,40,3,19,0,blocked-next-candidate-callsite-map-needs-readiness-gate,no,no,RE-318,collision-geometry-helper-next-candidate-callsite-readiness-gate,next-candidate source-backed callsites exist but still need a readiness gate before domain selection
