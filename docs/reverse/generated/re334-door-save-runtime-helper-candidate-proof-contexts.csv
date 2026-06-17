@@ -1,0 +1,15 @@
+rank,candidate_id,context_kind,source_symbol,source_module,source_file,door_save_runtime_role,context_family,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,blocker_class
+1,f457f2772655,caller,OpenThatDoor,GAME,GAME/DOOR.C,door-caller,door,no,no,no,mapped-context-not-direct-candidate-proof
+2,f457f2772655,caller,DoLevel,GAME,GAME/GAMEFLOW.C,runtime-caller,gameflow-runtime,no,no,no,mapped-context-not-direct-candidate-proof
+3,f457f2772655,caller,LoadGameflow,GAME,GAME/GAMEFLOW.C,runtime-caller,gameflow-runtime,no,no,no,mapped-context-not-direct-candidate-proof
+4,f457f2772655,caller,LaraSwimCollision,GAME,GAME/LARASWIM.C,caller-context,lara-state,no,no,no,mapped-context-not-direct-candidate-proof
+5,f457f2772655,caller,RestoreLaraData,GAME,GAME/SAVEGAME.C,savegame-caller,savegame,no,no,no,mapped-context-not-direct-candidate-proof
+6,f457f2772655,caller,SaveLaraData,GAME,GAME/SAVEGAME.C,savegame-caller,savegame,no,no,no,mapped-context-not-direct-candidate-proof
+7,f457f2772655,caller,sgSaveGame,GAME,GAME/SAVEGAME.C,savegame-caller,savegame,no,no,no,mapped-context-not-direct-candidate-proof
+8,f457f2772655,caller,CalculateSpotCams,GAME,GAME/SPOTCAM.C,caller-context,camera-runtime,no,no,no,mapped-context-not-direct-candidate-proof
+9,f457f2772655,caller,DEL_CDFS_Read,SPEC_PSX,SPEC_PSX/CD.C,runtime-caller,platform-cd,no,no,no,mapped-context-not-direct-candidate-proof
+10,f457f2772655,caller,InitNewCDSystem,SPEC_PSX,SPEC_PSX/CD.C,runtime-caller,platform-cd,no,no,no,mapped-context-not-direct-candidate-proof
+11,f457f2772655,caller,DEL_CDFS_Read,SPEC_PSXPC,SPEC_PSXPC/CD.C,runtime-caller,platform-cd,no,no,no,mapped-context-not-direct-candidate-proof
+12,f457f2772655,caller,InitNewCDSystem,SPEC_PSXPC,SPEC_PSXPC/CD.C,runtime-caller,platform-cd,no,no,no,mapped-context-not-direct-candidate-proof
+13,f457f2772655,caller,DEL_CDFS_Read,SPEC_PSXPC_N,SPEC_PSXPC_N/CD.C,runtime-caller,platform-cd,no,no,no,mapped-context-not-direct-candidate-proof
+14,f457f2772655,caller,InitNewCDSystem,SPEC_PSXPC_N,SPEC_PSXPC_N/CD.C,runtime-caller,platform-cd,no,no,no,mapped-context-not-direct-candidate-proof
