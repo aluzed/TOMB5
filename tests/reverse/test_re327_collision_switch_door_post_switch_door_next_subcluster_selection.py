@@ -1,0 +1,115 @@
+from pathlib import Path
+import csv
+
+from scripts.reverse.re327_collision_switch_door_post_switch_door_next_subcluster_selection import (
+    FORBIDDEN_OUTPUT_FRAGMENTS,
+    build_collision_switch_door_post_switch_door_next_subcluster_selection,
+    write_all_artifacts,
+)
+
+
+def test_re327_selects_weapon_switch_effect_after_switch_door_exhaustion():
+    repo = Path(__file__).resolve().parents[2]
+    bundle = build_collision_switch_door_post_switch_door_next_subcluster_selection(repo)
+
+    assert bundle.summary.story_id == "RE-327"
+    assert bundle.summary.topic == "collision-switch-door-post-switch-door-next-subcluster-selection"
+    assert bundle.summary.upstream_handoff == "RE-326"
+    assert bundle.summary.parent_scope == "collision-switch-door-cluster"
+    assert bundle.summary.closed_subclusters == "collision-geometry-helper;switch-door-control-helper"
+    assert bundle.summary.input_subcluster_count == 5
+    assert bundle.summary.closed_subcluster_count == 2
+    assert bundle.summary.deferred_subcluster_count == 3
+    assert bundle.summary.selected_narrow_subcluster == "weapon-switch-effect-helper"
+    assert bundle.summary.selected_narrow_candidate_count == 1
+    assert bundle.summary.selected_candidate_ids == "1ddbda046e37"
+    assert bundle.summary.ready_to_reopen_domain_count == 0
+    assert bundle.summary.source_patch_authorized_count == 0
+    assert bundle.summary.selected_domain == "none"
+    assert bundle.summary.selected_pivot == "none"
+    assert bundle.summary.next_ticket == "RE-328"
+    assert bundle.summary.next_topic == "weapon-switch-effect-helper-readiness-gate"
+    assert bundle.summary.metadata_work_readiness == "ready"
+    assert bundle.summary.code_change_readiness == "blocked"
+
+    assert [row.narrow_subcluster for row in bundle.subcluster_rows] == [
+        "weapon-switch-effect-helper",
+        "door-save-runtime-helper",
+        "camera-collision-helper",
+    ]
+    assert [row.selection_status for row in bundle.subcluster_rows] == [
+        "selected-next",
+        "deferred-after-selected-subcluster",
+        "deferred-after-selected-subcluster",
+    ]
+    assert [row.candidate_count for row in bundle.subcluster_rows] == [1, 1, 1]
+    assert all(row.ready_to_reopen_domain == "no" for row in bundle.subcluster_rows)
+    assert all(row.source_patch_authorized == "no" for row in bundle.subcluster_rows)
+
+    selected = bundle.candidate_rows[0]
+    assert selected.candidate_id == "1ddbda046e37"
+    assert selected.narrow_subcluster == "weapon-switch-effect-helper"
+    assert selected.bridge_class == "mapped-caller-callee-bridge"
+    assert selected.body_size_bucket == "large"
+    assert selected.mapped_caller_count == 1
+    assert selected.mapped_callee_count == 18
+    assert selected.next_probe == "readiness-gate"
+
+
+def test_re327_writes_metadata_only_next_subcluster_artifacts_and_story(tmp_path):
+    repo = Path(__file__).resolve().parents[2]
+    bundle = build_collision_switch_door_post_switch_door_next_subcluster_selection(repo)
+    written = write_all_artifacts(bundle, tmp_path)
+
+    assert set(written) == {"subclusters_csv", "candidates_csv", "summary_csv", "handoff_csv", "md", "story"}
+
+    subclusters = list(csv.DictReader(written["subclusters_csv"].open(newline="", encoding="utf-8")))
+    assert len(subclusters) == 3
+    assert subclusters[0]["narrow_subcluster"] == "weapon-switch-effect-helper"
+    assert subclusters[0]["selection_status"] == "selected-next"
+    assert subclusters[0]["next_ticket"] == "RE-328"
+    assert subclusters[0]["next_topic"] == "weapon-switch-effect-helper-readiness-gate"
+    assert subclusters[-1]["narrow_subcluster"] == "camera-collision-helper"
+
+    candidates = list(csv.DictReader(written["candidates_csv"].open(newline="", encoding="utf-8")))
+    assert candidates == [
+        {
+            "rank": "1",
+            "source_rank": "12",
+            "candidate_id": "1ddbda046e37",
+            "narrow_subcluster": "weapon-switch-effect-helper",
+            "bridge_class": "mapped-caller-callee-bridge",
+            "body_size_bucket": "large",
+            "mapped_caller_count": "1",
+            "mapped_callee_count": "18",
+            "readiness_gate": "blocked-needs-candidate-level-proof",
+            "ready_to_reopen_domain": "no",
+            "source_patch_authorized": "no",
+            "next_probe": "readiness-gate",
+            "stop_condition": "candidate-level source-symbolic proof is required before domain selection",
+        }
+    ]
+
+    handoff = list(csv.DictReader(written["handoff_csv"].open(newline="", encoding="utf-8")))[0]
+    assert handoff["next_ticket"] == "RE-328"
+    assert handoff["next_topic"] == "weapon-switch-effect-helper-readiness-gate"
+    assert handoff["selected_narrow_subcluster"] == "weapon-switch-effect-helper"
+    assert handoff["selected_candidate_ids"] == "1ddbda046e37"
+    assert handoff["selected_domain"] == "none"
+    assert handoff["selected_pivot"] == "none"
+    assert handoff["code_change_readiness"] == "blocked"
+
+    story = written["story"].read_text(encoding="utf-8")
+    assert "## Progress tracker" in story
+    assert "- [x] RE-326 switch-door candidate queue exhaustion validated." in story
+    assert "weapon-switch-effect-helper" in story
+    assert "RE-328" in story
+
+    md = written["md"].read_text(encoding="utf-8")
+    assert "# RE-327 collision-switch-door post-switch-door next subcluster selection" in md
+    assert "Selected `weapon-switch-effect-helper`" in md
+
+    for path in written.values():
+        text = path.read_text(encoding="utf-8").lower()
+        for fragment in FORBIDDEN_OUTPUT_FRAGMENTS:
+            assert fragment not in text
