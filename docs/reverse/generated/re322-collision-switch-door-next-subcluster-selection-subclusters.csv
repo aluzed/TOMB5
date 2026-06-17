@@ -1,0 +1,5 @@
+rank,source_rank,narrow_subcluster,candidate_count,mapped_caller_total,mapped_callee_total,source_file_count,source_module_count,selection_status,gate_decision,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,2,switch-door-control-helper,1,22,3,8,1,selected-next,gate-before-proof-domain,no,no,RE-323,switch-door-control-helper-readiness-gate,candidate-level source-symbolic proof required before proof-domain selection
+2,3,weapon-switch-effect-helper,1,1,18,11,4,deferred-after-selected-subcluster,defer-after-selected-subcluster,no,no,TBD,defer-after-re323,wait for selected subcluster readiness gate
+3,4,door-save-runtime-helper,1,14,0,8,4,deferred-after-selected-subcluster,defer-after-selected-subcluster,no,no,TBD,defer-after-re323,wait for selected subcluster readiness gate
+4,5,camera-collision-helper,1,11,0,6,1,deferred-after-selected-subcluster,defer-after-selected-subcluster,no,no,TBD,defer-after-re323,wait for selected subcluster readiness gate
