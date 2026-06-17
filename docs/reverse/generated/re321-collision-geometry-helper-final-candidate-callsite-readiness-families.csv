@@ -1,0 +1,5 @@
+rank,candidate_id,previous_candidate_id,callsite_family,source_backed_callsite_count,implemented_callsite_count,stub_callsite_count,caller_count,implemented_caller_count,candidate_level_proof,readiness_gate,ready_to_reopen_domain,source_patch_authorized,blocker_class,next_probe
+1,61d55bb1809b,d96359c1d9f3,collision-helper,9,9,0,4,4,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,needs-non-raw-candidate-equivalence-proof
+2,61d55bb1809b,d96359c1d9f3,position-test,2,2,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,needs-non-raw-candidate-equivalence-proof
+3,61d55bb1809b,d96359c1d9f3,trigger-helper,2,2,0,2,2,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,needs-non-raw-candidate-equivalence-proof
+4,61d55bb1809b,d96359c1d9f3,stub-marker,15,0,15,15,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,defer-selected-candidate
