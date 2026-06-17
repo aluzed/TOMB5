@@ -1,0 +1,6 @@
+rank,candidate_id,callsite_family,source_backed_callsite_count,implemented_callsite_count,stub_callsite_count,caller_count,implemented_caller_count,candidate_level_proof,readiness_gate,ready_to_reopen_domain,source_patch_authorized,blocker_class,next_probe
+1,8d1fc6fc3cfc,door-helper,14,14,0,3,3,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,needs-non-raw-candidate-equivalence-proof
+2,8d1fc6fc3cfc,animation-helper,7,7,0,7,7,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,needs-non-raw-candidate-equivalence-proof
+3,8d1fc6fc3cfc,trigger-helper,2,2,0,2,2,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,needs-non-raw-candidate-equivalence-proof
+4,8d1fc6fc3cfc,effect-helper,3,3,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,needs-non-raw-candidate-equivalence-proof
+5,8d1fc6fc3cfc,stub-marker,13,0,13,13,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,candidate-queue-exhausted
