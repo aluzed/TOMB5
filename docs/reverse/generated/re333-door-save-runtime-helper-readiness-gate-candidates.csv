@@ -1,0 +1,2 @@
+rank,source_rank,candidate_id,selected_narrow_subcluster,bridge_class,body_size_bucket,mapped_caller_count,mapped_callee_count,caller_door_save_runtime_context_count,callee_door_save_runtime_context_count,proof_signal_class,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_probe,stop_condition
+1,19,f457f2772655,door-save-runtime-helper,mapped-caller-heavy,tiny,14,0,3,0,caller-door-save-runtime-context-only,blocked-needs-candidate-level-proof,no,no,candidate-proof-export,candidate-level source-symbolic proof is required before proof-domain selection
