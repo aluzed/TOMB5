@@ -1,0 +1,2 @@
+rank,candidate_id,callsite_family_count,implemented_callsite_family_count,candidate_level_proof_count,readiness_gate,decision,ready_to_reopen_domain,source_patch_authorized,selected_domain,selected_pivot,next_ticket,next_topic,next_candidate_id,stop_condition
+1,1ddbda046e37,1,0,0,blocked-single-candidate-queue-exhausted,deny-domain-reopen-and-exhaust-candidate-queue,no,no,none,none,TBD,weapon-switch-effect-helper-candidate-queue-exhausted,none,single weapon-switch-effect helper candidate has only a stub-marker callsite and no candidate-level proof; candidate queue exhausted
