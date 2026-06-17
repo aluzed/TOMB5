@@ -1,0 +1,2 @@
+rank,candidate_id,source_context_function_count,source_backed_callsite_count,implemented_context_function_count,stub_context_function_count,candidate_level_proof_count,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,f457f2772655,14,185,13,1,0,blocked-callsite-map-needs-readiness-gate,no,no,RE-336,door-save-runtime-helper-callsite-readiness-gate,source-backed callsites exist but still need a readiness gate before domain selection
