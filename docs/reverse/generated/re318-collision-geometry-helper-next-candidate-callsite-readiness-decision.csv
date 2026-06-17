@@ -1,0 +1,2 @@
+rank,candidate_id,previous_candidate_id,callsite_family_count,implemented_callsite_family_count,candidate_level_proof_count,readiness_gate,decision,ready_to_reopen_domain,source_patch_authorized,selected_domain,selected_pivot,next_ticket,next_topic,next_candidate_id,stop_condition
+1,d96359c1d9f3,5e99f39fd8ef,4,3,0,blocked-no-callsite-family-proves-candidate,deny-domain-reopen,no,no,none,none,RE-319,collision-geometry-helper-final-candidate-proof-export,61d55bb1809b,next-candidate source-backed callsite families do not prove candidate-level behavior
