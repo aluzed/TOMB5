@@ -1,0 +1,2 @@
+rank,source_rank,candidate_id,narrow_subcluster,bridge_class,body_size_bucket,mapped_caller_count,mapped_callee_count,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_probe,stop_condition
+1,25,95c41ac597d6,camera-collision-helper,mapped-caller-heavy,small,11,0,blocked-needs-candidate-level-proof,no,no,readiness-gate,candidate-level source-symbolic proof is required before domain selection
