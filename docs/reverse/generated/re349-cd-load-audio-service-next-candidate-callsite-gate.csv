@@ -1,0 +1,2 @@
+rank,candidate_id,previous_candidate_id,source_context_function_count,source_backed_callsite_count,implemented_context_function_count,stub_context_function_count,candidate_level_proof_count,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,653df7c5909b,1e35f3f4fb97,18,97,17,0,0,blocked-next-candidate-callsite-map-needs-readiness-gate,no,no,RE-350,cd-load-audio-service-next-candidate-callsite-readiness-gate,next cd/load/audio candidate has source-backed callsites but still needs a readiness gate before domain selection
