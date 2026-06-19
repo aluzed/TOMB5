@@ -1,0 +1,2 @@
+rank,gate_class,candidate_count,representative_candidates,gate_decision,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,candidate-level-source-symbolic-proof-missing,2,de919274685f;4c90c6af8f9d,request-still-narrower-export,no,no,RE-353,frontend-display-menu-service-candidate-proof-export,candidate-level source-symbolic proof is required before proof-domain selection
