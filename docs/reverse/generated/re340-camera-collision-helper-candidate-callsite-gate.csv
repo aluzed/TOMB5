@@ -1,0 +1,2 @@
+rank,candidate_id,source_context_function_count,source_backed_callsite_count,implemented_context_function_count,stub_context_function_count,candidate_level_proof_count,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,95c41ac597d6,9,60,2,7,0,blocked-callsite-map-needs-readiness-gate,no,no,RE-341,camera-collision-helper-callsite-readiness-gate,source-backed camera/collision callsites exist but still need a readiness gate before domain selection
