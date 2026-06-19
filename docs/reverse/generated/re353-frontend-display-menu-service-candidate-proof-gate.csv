@@ -1,0 +1,2 @@
+rank,candidate_id,source_symbol_context_count,caller_context_count,callee_context_count,direct_repo_symbol_count,candidate_level_proof_count,proof_gate,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,de919274685f,25,25,0,0,0,blocked-unmapped-candidate-identity,no,no,no,RE-354,frontend-display-menu-service-candidate-callsite-map,frontend-display-menu candidate hash still lacks direct repo symbol proof; build a source-backed callsite map next
