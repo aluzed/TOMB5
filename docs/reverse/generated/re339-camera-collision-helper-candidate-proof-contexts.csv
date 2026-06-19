@@ -1,0 +1,10 @@
+rank,candidate_id,context_kind,source_symbol,source_module,source_file,camera_collision_role,context_family,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,blocker_class
+1,95c41ac597d6,caller,CalculateCamera,GAME,GAME/CAMERA.C,camera-caller,camera-runtime,no,no,no,mapped-context-not-direct-candidate-proof
+2,95c41ac597d6,caller,MoveCamera,GAME,GAME/CAMERA.C,camera-caller,camera-runtime,no,no,no,mapped-context-not-direct-candidate-proof
+3,95c41ac597d6,caller,UpdateCameraElevation,GAME,GAME/CAMERA.C,camera-caller,camera-runtime,no,no,no,mapped-context-not-direct-candidate-proof
+4,95c41ac597d6,caller,CreatureCollision,GAME,GAME/COLLIDE.C,collision-caller,collision-helper,no,no,no,mapped-context-not-direct-candidate-proof
+5,95c41ac597d6,caller,ItemPushLaraStatic,GAME,GAME/COLLIDE.C,collision-caller,collision-helper,no,no,no,mapped-context-not-direct-candidate-proof
+6,95c41ac597d6,caller,TriggerDebris,GAME,GAME/DEBRIS.C,effects-context,debris-effects,no,no,no,mapped-context-not-direct-candidate-proof
+7,95c41ac597d6,caller,SoundEffect,GAME,GAME/EFFECTS.C,effects-context,audio-effects,no,no,no,mapped-context-not-direct-candidate-proof
+8,95c41ac597d6,caller,LaraWaterCurrent,GAME,GAME/LARASWIM.C,lara-state-context,lara-state,no,no,no,mapped-context-not-direct-candidate-proof
+9,95c41ac597d6,caller,ControlRollingBall,GAME,GAME/TRAPS.C,trap-runtime-context,trap-runtime,no,no,no,mapped-context-not-direct-candidate-proof
