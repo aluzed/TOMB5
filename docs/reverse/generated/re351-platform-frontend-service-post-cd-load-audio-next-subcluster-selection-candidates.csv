@@ -1,0 +1,3 @@
+rank,source_rank,candidate_id,narrow_subcluster,bridge_class,body_size_bucket,mapped_caller_count,mapped_callee_count,source_context_count,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_probe,stop_condition
+1,8,de919274685f,frontend-display-menu-service,mapped-caller-heavy,tiny,25,0,25,blocked-needs-candidate-level-proof,no,no,candidate-proof-export,candidate-level source-symbolic proof is required before domain selection
+2,14,4c90c6af8f9d,frontend-display-menu-service,mapped-caller-heavy,medium,18,0,18,blocked-needs-candidate-level-proof,no,no,defer-after-re352,candidate-level source-symbolic proof is required before domain selection
