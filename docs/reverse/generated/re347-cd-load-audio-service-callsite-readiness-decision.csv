@@ -1,0 +1,2 @@
+rank,candidate_id,callsite_family_count,implemented_callsite_family_count,candidate_level_proof_count,readiness_gate,decision,ready_to_reopen_domain,source_patch_authorized,selected_domain,selected_pivot,next_ticket,next_topic,next_candidate_id,stop_condition
+1,1e35f3f4fb97,9,9,0,blocked-no-callsite-family-proves-candidate,deny-domain-reopen,no,no,none,none,RE-348,cd-load-audio-service-next-candidate-proof-export,653df7c5909b,source-backed cd/load/audio callsite families do not prove candidate-level behavior
