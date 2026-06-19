@@ -1,0 +1,2 @@
+rank,source_rank,narrow_subcluster,candidate_count,mapped_caller_total,mapped_callee_total,max_source_context_count,bridge_classes,selection_status,gate_decision,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,3,gpu-fmv-mainloop-service,1,14,0,14,mapped-caller-heavy,selected-next,gate-before-proof-domain,no,no,RE-360,gpu-fmv-mainloop-service-readiness-gate,candidate-level source-symbolic proof required before proof-domain selection
