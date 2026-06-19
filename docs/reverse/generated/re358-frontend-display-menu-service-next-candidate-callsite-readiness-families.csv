@@ -1,0 +1,6 @@
+rank,candidate_id,previous_candidate_id,callsite_family,source_backed_callsite_count,implemented_callsite_count,stub_callsite_count,caller_count,implemented_caller_count,candidate_level_proof,readiness_gate,ready_to_reopen_domain,source_patch_authorized,blocker_class,next_probe
+1,4c90c6af8f9d,de919274685f,text-ui-helper,74,74,0,5,5,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-frontend-display-menu-subcluster
+2,4c90c6af8f9d,de919274685f,diagnostic-helper,27,27,0,2,2,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-frontend-display-menu-subcluster
+3,4c90c6af8f9d,de919274685f,level-load-service-helper,21,21,0,3,3,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-frontend-display-menu-subcluster
+4,4c90c6af8f9d,de919274685f,audio-sound-helper,2,2,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-frontend-display-menu-subcluster
+5,4c90c6af8f9d,de919274685f,gpu-display-helper,2,2,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-frontend-display-menu-subcluster
