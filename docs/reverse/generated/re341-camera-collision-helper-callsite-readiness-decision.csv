@@ -1,0 +1,2 @@
+rank,candidate_id,callsite_family_count,implemented_callsite_family_count,candidate_level_proof_count,readiness_gate,decision,ready_to_reopen_domain,source_patch_authorized,selected_domain,selected_pivot,next_ticket,next_topic,next_candidate_id,stop_condition
+1,95c41ac597d6,7,3,0,blocked-single-candidate-queue-exhausted,deny-domain-reopen-and-exhaust-candidate-queue,no,no,none,none,TBD,camera-collision-helper-candidate-queue-exhausted,none,single camera-collision helper candidate lacks candidate-level proof; candidate queue exhausted

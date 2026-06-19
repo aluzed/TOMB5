@@ -1,0 +1,8 @@
+rank,candidate_id,callsite_family,source_backed_callsite_count,implemented_callsite_count,stub_callsite_count,caller_count,implemented_caller_count,candidate_level_proof,readiness_gate,ready_to_reopen_domain,source_patch_authorized,blocker_class,next_probe
+1,95c41ac597d6,camera-runtime-helper,7,0,7,1,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,candidate-queue-exhausted
+2,95c41ac597d6,collision-geometry-helper,12,9,3,2,1,no,blocked-no-candidate-level-proof,no,no,mixed-source-and-stub-family-lacks-candidate-proof,candidate-queue-exhausted
+3,95c41ac597d6,math-transform-helper,22,13,9,4,2,no,blocked-no-candidate-level-proof,no,no,mixed-source-and-stub-family-lacks-candidate-proof,candidate-queue-exhausted
+4,95c41ac597d6,lara-state-helper,6,5,1,3,2,no,blocked-no-candidate-level-proof,no,no,mixed-source-and-stub-family-lacks-candidate-proof,candidate-queue-exhausted
+5,95c41ac597d6,audio-effect-helper,4,0,4,1,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,candidate-queue-exhausted
+6,95c41ac597d6,diagnostic-helper,2,0,2,1,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,candidate-queue-exhausted
+7,95c41ac597d6,stub-marker,7,0,7,7,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,candidate-queue-exhausted
