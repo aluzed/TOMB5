@@ -1,0 +1,9 @@
+rank,candidate_id,callsite_family,source_backed_callsite_count,implemented_callsite_count,stub_callsite_count,caller_count,implemented_caller_count,candidate_level_proof,readiness_gate,ready_to_reopen_domain,source_patch_authorized,blocker_class,next_probe
+1,1b3534d34062,load-file-helper,21,21,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-gpu-fmv-mainloop-subcluster
+2,1b3534d34062,gpu-display-helper,18,18,0,2,2,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-gpu-fmv-mainloop-subcluster
+3,1b3534d34062,profiling-helper,15,15,0,2,2,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-gpu-fmv-mainloop-subcluster
+4,1b3534d34062,audio-sound-helper,12,12,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-gpu-fmv-mainloop-subcluster
+5,1b3534d34062,memory-allocation-helper,9,9,0,2,2,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-gpu-fmv-mainloop-subcluster
+6,1b3534d34062,platform-lifecycle-helper,6,6,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-gpu-fmv-mainloop-subcluster
+7,1b3534d34062,movie-playback-helper,3,3,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-gpu-fmv-mainloop-subcluster
+8,1b3534d34062,text-ui-helper,3,3,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-gpu-fmv-mainloop-subcluster
