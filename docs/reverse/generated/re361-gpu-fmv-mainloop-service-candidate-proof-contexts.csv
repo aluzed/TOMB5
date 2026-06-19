@@ -1,0 +1,15 @@
+rank,candidate_id,context_kind,source_symbol,source_module,source_file,gpu_fmv_mainloop_role,context_family,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,blocker_class
+1,1b3534d34062,caller,GPU_FlipNoIdle,SPEC_PSX,SPEC_PSX/GPU.C,gpu-display-context,gpu-display,no,no,no,mapped-context-not-direct-candidate-proof
+2,1b3534d34062,caller,LOAD_Start,SPEC_PSX,SPEC_PSX/LOAD_LEV.C,load-service-context,level-load-service,no,no,no,mapped-context-not-direct-candidate-proof
+3,1b3534d34062,caller,S_PlayFMV,SPEC_PSX,SPEC_PSX/MOVIE.C,movie-playback-context,movie-playback,no,no,no,mapped-context-not-direct-candidate-proof
+4,1b3534d34062,caller,main,SPEC_PSX,SPEC_PSX/PSXMAIN.C,platform-entry-context,platform-entry,no,no,no,mapped-context-not-direct-candidate-proof
+5,1b3534d34062,caller,GPU_FlipNoIdle,SPEC_PSXPC,SPEC_PSXPC/GPU.C,gpu-display-context,gpu-display,no,no,no,mapped-context-not-direct-candidate-proof
+6,1b3534d34062,caller,LOAD_Start,SPEC_PSXPC,SPEC_PSXPC/LOAD_LEV.C,load-service-context,level-load-service,no,no,no,mapped-context-not-direct-candidate-proof
+7,1b3534d34062,caller,GPU_FlipToBuffer,SPEC_PSXPC,SPEC_PSXPC/MISC.C,gpu-display-context,gpu-display,no,no,no,mapped-context-not-direct-candidate-proof
+8,1b3534d34062,caller,S_PlayFMV,SPEC_PSXPC,SPEC_PSXPC/MOVIE.C,movie-playback-context,movie-playback,no,no,no,mapped-context-not-direct-candidate-proof
+9,1b3534d34062,caller,main,SPEC_PSXPC,SPEC_PSXPC/PSXPCMAIN.C,platform-entry-context,platform-entry,no,no,no,mapped-context-not-direct-candidate-proof
+10,1b3534d34062,caller,GPU_FlipNoIdle,SPEC_PSXPC_N,SPEC_PSXPC_N/GPU.C,gpu-display-context,gpu-display,no,no,no,mapped-context-not-direct-candidate-proof
+11,1b3534d34062,caller,LOAD_Start,SPEC_PSXPC_N,SPEC_PSXPC_N/LOAD_LEV.C,load-service-context,level-load-service,no,no,no,mapped-context-not-direct-candidate-proof
+12,1b3534d34062,caller,GPU_FlipToBuffer,SPEC_PSXPC_N,SPEC_PSXPC_N/MISC.C,gpu-display-context,gpu-display,no,no,no,mapped-context-not-direct-candidate-proof
+13,1b3534d34062,caller,S_PlayFMV,SPEC_PSXPC_N,SPEC_PSXPC_N/MOVIE.C,movie-playback-context,movie-playback,no,no,no,mapped-context-not-direct-candidate-proof
+14,1b3534d34062,caller,main,SPEC_PSXPC_N,SPEC_PSXPC_N/PSXMAIN.C,platform-entry-context,platform-entry,no,no,no,mapped-context-not-direct-candidate-proof

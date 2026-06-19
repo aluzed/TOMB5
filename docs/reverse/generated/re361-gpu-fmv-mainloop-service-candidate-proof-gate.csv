@@ -1,0 +1,2 @@
+rank,candidate_id,source_symbol_context_count,caller_context_count,callee_context_count,direct_repo_symbol_count,candidate_level_proof_count,proof_gate,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,1b3534d34062,14,14,0,0,0,blocked-unmapped-candidate-identity,no,no,no,RE-362,gpu-fmv-mainloop-service-candidate-callsite-map,gpu-fmv-mainloop candidate hash still lacks direct repo symbol proof; build a source-backed callsite map next
