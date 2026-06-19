@@ -1,0 +1,2 @@
+rank,candidate_id,callsite_family_count,implemented_callsite_family_count,candidate_level_proof_count,readiness_gate,decision,ready_to_reopen_domain,source_patch_authorized,selected_domain,selected_pivot,next_ticket,next_topic,next_candidate_id,stop_condition
+1,de919274685f,9,9,0,blocked-no-callsite-family-proves-candidate,deny-domain-reopen,no,no,none,none,RE-356,frontend-display-menu-service-next-candidate-proof-export,4c90c6af8f9d,source-backed frontend display/menu callsite families do not prove candidate-level behavior
