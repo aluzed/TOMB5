@@ -1,0 +1,2 @@
+rank,source_rank,candidate_id,selected_narrow_subcluster,bridge_class,body_size_bucket,mapped_caller_count,mapped_callee_count,source_context_count,gpu_fmv_mainloop_context_count,proof_signal_class,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_probe,stop_condition
+1,18,1b3534d34062,gpu-fmv-mainloop-service,mapped-caller-heavy,medium,14,0,14,5,caller-gpu-fmv-mainloop-context-only,blocked-needs-candidate-level-proof,no,no,candidate-proof-export,candidate-level source-symbolic proof is required before proof-domain selection
