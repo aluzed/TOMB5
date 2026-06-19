@@ -1,0 +1,2 @@
+rank,candidate_id,previous_candidate_id,source_symbol_context_count,caller_context_count,callee_context_count,direct_repo_symbol_count,candidate_level_proof_count,proof_gate,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,4c90c6af8f9d,de919274685f,18,18,0,0,0,blocked-unmapped-candidate-identity,no,no,no,RE-357,frontend-display-menu-service-next-candidate-callsite-map,next frontend display/menu candidate still lacks direct repo symbol proof; build a source-backed callsite map next
