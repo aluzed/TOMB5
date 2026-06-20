@@ -1,0 +1,2 @@
+rank,candidate_id,callsite_family_count,implemented_callsite_family_count,candidate_level_proof_count,readiness_gate,decision,ready_to_reopen_domain,source_patch_authorized,selected_domain,selected_pivot,next_ticket,next_topic,next_candidate_id,stop_condition
+1,f5d0099b5511,7,6,0,blocked-no-callsite-family-proves-candidate,deny-domain-reopen,no,no,none,none,RE-375,dynamic-lighting-service-next-candidate-proof-export,3a208e2bf745,source-backed dynamic-lighting callsite families do not prove candidate-level behavior
