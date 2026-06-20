@@ -1,0 +1,2 @@
+rank,candidate_id,source_context_function_count,source_backed_callsite_count,implemented_context_function_count,stub_context_function_count,candidate_level_proof_count,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,a01f47cb95a4,11,1,1,1,0,blocked-callsite-map-needs-readiness-gate,no,no,RE-368,runtime-callee-bridge-callsite-readiness-gate,source-backed runtime/callee bridge callsites exist but still need a readiness gate before domain selection

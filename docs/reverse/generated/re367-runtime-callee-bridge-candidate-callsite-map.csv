@@ -1,0 +1,2 @@
+rank,candidate_id,caller_symbol,source_module,source_file,source_line,callee_symbol,callsite_family,function_status,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,blocker_class
+1,a01f47cb95a4,GetFloor,GAME,GAME/CONTROL.C,786,GetHeight,floor-height-query,source-with-calls,no,no,no,source-backed-callsite-needs-readiness-gate
