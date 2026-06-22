@@ -1,0 +1,7 @@
+rank,candidate_id,previous_candidate_id,callsite_family,source_backed_callsite_count,implemented_callsite_count,stub_callsite_count,caller_count,implemented_caller_count,candidate_level_proof,readiness_gate,ready_to_reopen_domain,source_patch_authorized,blocker_class,next_probe
+1,3a208e2bf745,f5d0099b5511,dynamic-light-trigger,16,16,0,9,9,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-dynamic-lighting-subcluster
+2,3a208e2bf745,f5d0099b5511,effect-state-helper,6,6,0,2,2,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-dynamic-lighting-subcluster
+3,3a208e2bf745,f5d0099b5511,collision-response-helper,3,3,0,2,2,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-dynamic-lighting-subcluster
+4,3a208e2bf745,f5d0099b5511,control-flow-helper,2,2,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-dynamic-lighting-subcluster
+5,3a208e2bf745,f5d0099b5511,joint-position-helper,1,1,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-dynamic-lighting-subcluster
+6,3a208e2bf745,f5d0099b5511,stub-marker,12,0,12,12,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,close-dynamic-lighting-subcluster
