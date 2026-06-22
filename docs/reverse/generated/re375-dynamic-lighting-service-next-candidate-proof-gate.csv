@@ -1,0 +1,2 @@
+rank,previous_candidate_id,candidate_id,source_symbol_context_count,caller_context_count,callee_context_count,direct_repo_symbol_count,candidate_level_proof_count,proof_gate,candidate_level_proof,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,f5d0099b5511,3a208e2bf745,21,21,0,0,0,blocked-unmapped-next-candidate-identity,no,no,no,RE-376,dynamic-lighting-service-next-candidate-callsite-map,next dynamic-lighting candidate hash still lacks direct repo symbol proof; build a source-backed next-candidate callsite map
