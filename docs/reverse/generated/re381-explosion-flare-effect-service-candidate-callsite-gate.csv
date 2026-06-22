@@ -1,0 +1,2 @@
+rank,candidate_id,source_context_function_count,source_backed_callsite_count,implemented_context_function_count,stub_context_function_count,candidate_level_proof_count,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,87d9c8a62335,18,121,12,6,0,blocked-callsite-map-needs-readiness-gate,no,no,RE-382,explosion-flare-effect-service-callsite-readiness-gate,source-backed explosion/flare callsites exist but still need a readiness gate before domain selection
