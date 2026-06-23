@@ -1,0 +1,8 @@
+rank,candidate_id,callsite_family,source_backed_callsite_count,implemented_callsite_count,stub_callsite_count,caller_count,implemented_caller_count,candidate_level_proof,readiness_gate,ready_to_reopen_domain,source_patch_authorized,blocker_class,next_probe
+1,87d9c8a62335,control-flow-helper,38,38,0,7,7,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-explosion-flare-subcluster
+2,87d9c8a62335,explosion-flare-effect-helper,23,23,0,8,8,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-explosion-flare-subcluster
+3,87d9c8a62335,joint-position-helper,21,20,1,13,12,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-explosion-flare-subcluster
+4,87d9c8a62335,audio-camera-helper,17,1,16,2,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-explosion-flare-subcluster
+5,87d9c8a62335,runtime-effect-support,8,7,1,5,4,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-explosion-flare-subcluster
+6,87d9c8a62335,room-floor-helper,8,7,1,5,4,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-explosion-flare-subcluster
+7,87d9c8a62335,stub-marker,6,0,6,6,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,close-explosion-flare-subcluster
