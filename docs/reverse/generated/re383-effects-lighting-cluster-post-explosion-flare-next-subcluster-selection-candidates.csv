@@ -1,0 +1,2 @@
+rank,source_rank,candidate_id,narrow_subcluster,bridge_class,body_size_bucket,mapped_caller_count,mapped_callee_count,source_context_count,readiness_gate,ready_to_reopen_domain,source_patch_authorized,next_probe,stop_condition
+1,1,b6d128932004,spotcam-projectile-effect-service,mapped-caller-heavy,tiny,52,0,52,blocked-needs-candidate-level-proof,no,no,candidate-proof-export,candidate-level source-symbolic proof is required before domain selection
