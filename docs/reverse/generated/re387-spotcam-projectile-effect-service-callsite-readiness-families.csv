@@ -1,0 +1,9 @@
+rank,candidate_id,callsite_family,source_backed_callsite_count,implemented_callsite_count,stub_callsite_count,caller_count,implemented_caller_count,candidate_level_proof,readiness_gate,ready_to_reopen_domain,source_patch_authorized,blocker_class,next_probe
+1,b6d128932004,spotcam-projectile-helper,204,204,0,33,33,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-spotcam-projectile-subcluster
+2,b6d128932004,ambient-combat-effect-helper,32,32,0,15,15,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-spotcam-projectile-subcluster
+3,b6d128932004,room-floor-helper,16,16,0,7,7,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-spotcam-projectile-subcluster
+4,b6d128932004,runtime-effect-support,16,16,0,13,13,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-spotcam-projectile-subcluster
+5,b6d128932004,conversation-helper,6,6,0,3,3,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-spotcam-projectile-subcluster
+6,b6d128932004,audio-camera-helper,2,2,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-spotcam-projectile-subcluster
+7,b6d128932004,trap-effect-helper,1,1,0,1,1,no,blocked-no-candidate-level-proof,no,no,source-callsite-family-lacks-candidate-proof,close-spotcam-projectile-subcluster
+8,b6d128932004,stub-marker,19,0,19,19,0,no,blocked-stub-only-family,no,no,stub-only-callsite-family,close-spotcam-projectile-subcluster
