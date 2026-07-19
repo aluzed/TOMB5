@@ -1,0 +1,2 @@
+rank,gate_class,candidate_count,representative_candidates,candidate_level_proof_count,gate_decision,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,candidate-level-source-symbolic-proof-missing,1,4a632b41837e,0,close-subcluster-select-next-deferred-subcluster,no,no,RE-394,lara-combat-camera-post-lara-control-next-subcluster-selection,lara control service candidate queue exhausted without candidate-level proof
