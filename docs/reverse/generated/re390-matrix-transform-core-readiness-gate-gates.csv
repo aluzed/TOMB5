@@ -1,0 +1,2 @@
+rank,gate_class,candidate_count,representative_candidates,candidate_level_proof_count,gate_decision,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic,stop_condition
+1,candidate-level-source-symbolic-proof-missing,3,cc1a1b589426;6e9ad2da9fce;95467f3600d5,0,close-subcluster-select-next-deferred-cluster,no,no,RE-391,post-maths-render-next-ghidra-cluster-selection,matrix transform core candidate queue exhausted without candidate-level proof
