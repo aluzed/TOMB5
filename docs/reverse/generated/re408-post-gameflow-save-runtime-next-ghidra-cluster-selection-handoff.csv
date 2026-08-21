@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,closed_clusters,selected_followup_cluster,selected_candidate_id,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-408,post-gameflow-save-runtime-next-ghidra-cluster-selection,RE-407,lara-combat-camera-cluster;gameflow-save-runtime-cluster,actor-ai-cluster,,0,0,none,none,RE-409,ghidra-actor-ai-cluster-narrow-export,ready,blocked,gameflow runtime exhausted; select remaining deferred cluster
