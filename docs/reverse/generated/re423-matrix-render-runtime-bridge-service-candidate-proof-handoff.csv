@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,selected_candidate_id,source_symbol_context_count,candidate_level_proof_count,repository_symbol_direct_proof_count,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-423,matrix-render-runtime-bridge-service-candidate-proof-export,RE-422,c2ed98ffa484,10,0,0,0,0,none,none,RE-424,matrix-render-runtime-bridge-service-candidate-callsite-map,ready,blocked,matrix/render symbolic context has no direct candidate proof
