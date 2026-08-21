@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,closed_clusters,selected_followup_cluster,selected_candidate_ids,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-399,post-lara-combat-camera-next-ghidra-cluster-selection,RE-398,lara-combat-camera-cluster,gameflow-save-runtime-cluster,,0,0,none,none,RE-400,ghidra-gameflow-save-runtime-cluster-narrow-export,ready,blocked,lara/combat/camera cluster exhausted; select next deferred Ghidra bridge cluster
