@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,focus_cluster,candidate_count,selected_subcluster,selected_candidate_id,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-400,ghidra-gameflow-save-runtime-cluster-narrow-export,RE-399,gameflow-save-runtime-cluster,2,gameflow-save-runtime-service,f7335a494e49,0,0,none,none,RE-401,gameflow-save-runtime-service-readiness-gate,ready,blocked,narrow export selects first candidate before proof-domain selection
