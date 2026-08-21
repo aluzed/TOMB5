@@ -1,0 +1,9 @@
+candidate_id,source_symbol
+9d570ef9a5a7,GAME:CreatureCollision
+9d570ef9a5a7,GAME:DoorCollision
+9d570ef9a5a7,GAME:GenericSphereBoxCollision
+9d570ef9a5a7,GAME:SoundEffect
+9d570ef9a5a7,GAME:TurnSwitchCollision
+9d570ef9a5a7,GAME:UpdateLaraRoom
+9d570ef9a5a7,SPEC_PSXPC_N:GetCollisionInfo
+9d570ef9a5a7,SPEC_PSXPC_N:UpdateLaraRoom
