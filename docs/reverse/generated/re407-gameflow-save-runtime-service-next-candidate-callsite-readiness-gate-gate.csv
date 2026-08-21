@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,selected_candidate_id,candidate_level_proof_count,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-407,gameflow-save-runtime-service-next-candidate-callsite-readiness-gate,RE-406,64182b59acd1,0,0,0,none,none,RE-408,post-gameflow-save-runtime-next-ghidra-cluster-selection,ready,blocked,gameflow/save/runtime queue exhausted without candidate-level proof
