@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,selected_candidate_id,candidate_level_proof_count,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-401,gameflow-save-runtime-service-readiness-gate,RE-400,f7335a494e49,0,0,0,none,none,RE-402,gameflow-save-runtime-service-candidate-proof-export,ready,blocked,candidate lacks candidate-level proof
