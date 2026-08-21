@@ -1,0 +1,2 @@
+rank,gate_class,source_backed_callsite_count,candidate_level_proof_count,gate_decision,ready_to_reopen_domain,source_patch_authorized,next_ticket,next_topic
+1,candidate-level-proof-missing,6674,0,close-exhausted-subcluster,no,no,TBD,combat-camera-service-candidate-queue-exhausted
