@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,previous_candidate_id,selected_candidate_id,source_symbol_context_count,candidate_level_proof_count,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-405,gameflow-save-runtime-service-next-candidate-proof-export,RE-404,f7335a494e49,64182b59acd1,11,0,0,0,none,none,RE-406,gameflow-save-runtime-service-next-candidate-callsite-map,ready,blocked,deferred candidate lacks direct proof
