@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,selected_candidate_id,selected_subcluster,source_symbol_context_count,candidate_level_proof_count,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-416,collision-runtime-bridge-service-readiness-gate,RE-415,9d570ef9a5a7,collision-runtime-bridge-service,8,0,0,0,none,none,RE-417,collision-runtime-bridge-service-candidate-proof-export,ready,blocked,collision/runtime bridge lacks candidate-level proof
