@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,selected_candidate_id,candidate_level_proof_count,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-404,gameflow-save-runtime-service-callsite-readiness-gate,RE-403,f7335a494e49,0,0,0,none,none,RE-405,gameflow-save-runtime-service-next-candidate-proof-export,ready,blocked,first gameflow runtime candidate closed without proof; inspect deferred candidate
