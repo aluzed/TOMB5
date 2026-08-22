@@ -46,10 +46,11 @@ def test_metadata_handoff_is_fail_closed(module_name, story_id, candidate_id, ra
         're467_ghidra_second_window_rank_37_narrow_export',
     ],
 )
-def test_metadata_handoff_rejects_forbidden_output(module_name, tmp_path):
+@pytest.mark.parametrize('forbidden_text', ('raw binary', 'raw evidence', 'private key material', 'source patch applied'))
+def test_metadata_handoff_rejects_forbidden_output(module_name, forbidden_text, tmp_path):
     module = __import__(f'scripts.reverse.{module_name}', fromlist=['build', 'write'])
     with pytest.raises(ValueError, match='forbidden output fragment'):
-        module.write(dict(module.build(REPO), stop_condition='raw binary'), tmp_path)
+        module.write(dict(module.build(REPO), stop_condition=forbidden_text), tmp_path)
 
 
 @pytest.mark.parametrize(

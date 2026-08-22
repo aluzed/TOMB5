@@ -10,9 +10,10 @@ from scripts.reverse import re309_ghidra_unmapped_bridge_candidates as candidate
 
 FORBIDDEN_OUTPUT_FRAGMENTS = (
     '0x', 'fun_', 'sub_', 'word_le_hex', 'payload_offset', 'opcode', 'machine word',
-    'raw dump', 'raw_evidence', 'call_address', 'branch target', 'call target',
+    'raw dump', 'raw evidence', 'raw_evidence', 'call_address', 'branch target', 'call target',
     'ghidra_entry', 'ghidra_name', 'source_line_text', 'code.wad', 'gamewad.obj',
-    'secret', 'asset', 'raw binary', 'address', 'symbol evidence', 'copyright',
+    'secret', 'private key', 'credential', 'asset', 'raw binary', 'source patch', 'address',
+    'symbol evidence', 'copyright',
 )
 NARROW_FIELDS = (
     'story_id', 'topic', 'upstream_handoff', 'selected_candidate_id', 'selected_rank',
