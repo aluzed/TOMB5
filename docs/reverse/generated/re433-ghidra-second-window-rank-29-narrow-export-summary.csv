@@ -1,0 +1,2 @@
+story_id,topic,upstream_handoff,selected_candidate_id,selected_rank,selected_subcluster,source_symbol_context_count,candidate_level_proof_count,ready_to_reopen_domain_count,source_patch_authorized_count,selected_domain,selected_pivot,next_ticket,next_topic,metadata_work_readiness,code_change_readiness,stop_condition
+RE-433,ghidra-second-window-rank-29-narrow-export,RE-432,763c9cd0e3f7,29,runtime-bridge-service,10,0,0,0,none,none,RE-434,runtime-bridge-service-readiness-gate,ready,blocked,narrow rank-29 export requires gate before proof-domain selection
