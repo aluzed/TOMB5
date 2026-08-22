@@ -161,8 +161,21 @@ def validate_output(ticket, result):
     for key, value in expected.items():
         if result.get(key) != value:
             raise ValueError(f'output identity drift: {key}')
-    if config['kind'] == 'gate' and any(result[key] != '0' for key in ('source_backed_callsite_count', 'candidate_level_proof_count', 'repository_symbol_direct_proof_count')):
-        raise ValueError('output safety drift')
+    safety_expected = {
+        'safe_context_status': 'filtered-metadata-only',
+        'ready_to_reopen_domain_count': '0',
+        'source_patch_authorized_count': '0',
+        'selected_domain': 'none',
+        'selected_pivot': 'none',
+        'code_change_readiness': 'blocked',
+    }
+    if config['kind'] != 'selection':
+        safety_expected['candidate_level_proof_count'] = '0'
+    if config['kind'] == 'gate':
+        safety_expected.update(source_backed_callsite_count='0', repository_symbol_direct_proof_count='0')
+    for key, value in safety_expected.items():
+        if result.get(key) != value:
+            raise ValueError('output safety drift')
 
 
 def write(ticket, result, repo):

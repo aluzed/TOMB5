@@ -50,3 +50,20 @@ def test_metadata_handoff_rejects_forbidden_output(module_name, tmp_path):
     module = __import__(f'scripts.reverse.{module_name}', fromlist=['build', 'write'])
     with pytest.raises(ValueError, match='forbidden output fragment'):
         module.write(dict(module.build(REPO), stop_condition='raw binary'), tmp_path)
+
+
+@pytest.mark.parametrize(
+    ('module_name', 'field', 'value'),
+    [
+        ('re462_mapped_caller_bridge_readiness_gate', 'safe_context_status', 'source-backed'),
+        ('re463_ghidra_second_window_next_candidate_selection', 'safe_context_status', 'source-backed'),
+        ('re464_ghidra_second_window_rank_36_narrow_export', 'candidate_level_proof_count', '1'),
+        ('re465_mapped_callee_bridge_readiness_gate', 'safe_context_status', 'source-backed'),
+        ('re466_ghidra_second_window_next_candidate_selection', 'safe_context_status', 'source-backed'),
+        ('re467_ghidra_second_window_rank_37_narrow_export', 'candidate_level_proof_count', '1'),
+    ],
+)
+def test_metadata_handoff_rejects_safety_field_drift(module_name, field, value, tmp_path):
+    module = __import__(f'scripts.reverse.{module_name}', fromlist=['build', 'write'])
+    with pytest.raises(ValueError, match='output safety drift'):
+        module.write(dict(module.build(REPO), **{field: value}), tmp_path)
