@@ -53,6 +53,13 @@ def test_metadata_handoff_rejects_forbidden_output(module_name, forbidden_text, 
         module.write(dict(module.build(REPO), stop_condition=forbidden_text), tmp_path)
 
 
+@pytest.mark.parametrize('forbidden_text', ('AKIAIOSFODNN7EXAMPLE', '4d5a9000030000000400'))
+def test_metadata_handoff_rejects_secret_and_hex_evidence_shapes(forbidden_text, tmp_path):
+    module = __import__('scripts.reverse.re467_ghidra_second_window_rank_37_narrow_export', fromlist=['build', 'write'])
+    with pytest.raises(ValueError, match='output safety drift'):
+        module.write(dict(module.build(REPO), stop_condition=forbidden_text), tmp_path)
+
+
 @pytest.mark.parametrize(
     ('module_name', 'field', 'value'),
     [

@@ -156,12 +156,25 @@ def validate_output(ticket, result):
         raise ValueError('forbidden output fragment')
     expected = {'story_id': ticket, 'topic': config['topic'], 'upstream_handoff': config['upstream'],
                 'selected_candidate_id': config['candidate'], 'selected_rank': config['rank'],
+                'source_symbol_context_count': config['contexts'],
                 'next_ticket': config['next_ticket'], 'next_topic': config['next_topic'],
                 'metadata_work_readiness': 'ready', 'code_change_readiness': 'blocked',
-                'source_patch_authorized_count': '0', 'selected_domain': 'none', 'selected_pivot': 'none'}
+                'source_patch_authorized_count': '0', 'selected_domain': 'none', 'selected_pivot': 'none',
+                'stop_condition': ('next ranked metadata candidate selected; source changes remain blocked'
+                                   if config['kind'] == 'selection'
+                                   else 'metadata-only safety gate denies proof-domain selection and source changes')}
+    if config['kind'] == 'selection':
+        expected.update(closed_candidate_id=(CONFIG[config['upstream']]['candidate']
+                                             if config['upstream'] in CONFIG else 'ede72eed0265'),
+                        selected_bridge_class=config['bridge'])
+    else:
+        expected.update(selected_subcluster=(config['topic'] if config['kind'] == 'gate' else config['next_topic']),
+                        bridge_class=config['bridge'], candidate_level_proof_count='0')
+        if config['kind'] == 'gate':
+            expected.update(source_backed_callsite_count='0', repository_symbol_direct_proof_count='0')
     for key, value in expected.items():
         if result.get(key) != value:
-            raise ValueError(f'output identity drift: {key}')
+            raise ValueError(f'output safety drift: {key}')
     safety_expected = {
         'safe_context_status': 'filtered-metadata-only',
         'ready_to_reopen_domain_count': '0',
