@@ -12,9 +12,9 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-575'
-    assert model['next_ticket'] == 'RE-576'
-    assert model['recent_ticket_count'] >= 115
+    assert model['latest_ticket'] == 'RE-576'
+    assert model['next_ticket'] == 'RE-577'
+    assert model['recent_ticket_count'] >= 116
 
     output = write(model, tmp_path)
     text = output.read_text(encoding='utf-8')
