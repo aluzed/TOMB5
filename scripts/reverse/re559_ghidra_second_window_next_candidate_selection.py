@@ -21,17 +21,13 @@ def build(repo):
         rows=list(reader)
     expected={'story_id':'RE-558','topic':'mapped-caller-bridge-readiness-gate','upstream_handoff':'RE-557','selected_candidate_id':'2ae817bfe7f3','selected_rank':'67','selected_subcluster':'mapped-caller-bridge-readiness-gate','source_symbol_context_count':'6','bridge_class':'mapped-caller-bridge','safe_context_status':'filtered-metadata-only','source_backed_callsite_count':'0','candidate_level_proof_count':'0','repository_symbol_direct_proof_count':'0','ready_to_reopen_domain_count':'0','source_patch_authorized_count':'0','selected_domain':'none','selected_pivot':'none','next_ticket':'RE-559','next_topic':'ghidra-second-window-next-candidate-selection','metadata_work_readiness':'ready','code_change_readiness':'blocked','stop_condition':'metadata-only safety gate denies proof-domain selection and source changes'}
     if len(rows)!=1 or any(rows[0].get(k)!=v for k,v in expected.items()): raise ValueError('handoff drift')
-    candidate=base.ranked(repo) # rank overridden below to keep candidate source deterministic
-    old_rank=base.ranked
-    try:
-        def rank68(root):
-            old=base.candidates.TOP_LIMIT
-            try:
-                base.candidates.TOP_LIMIT=80; entries,_=base.candidates.build_bridge_candidates(Path(root))
-            finally: base.candidates.TOP_LIMIT=old
-            return next((entry for entry in entries if entry.rank==68),None)
-        candidate=rank68(repo)
-    finally: base.ranked=old_rank
+    def rank68(root):
+        old=base.candidates.TOP_LIMIT
+        try:
+            base.candidates.TOP_LIMIT=80; entries,_=base.candidates.build_bridge_candidates(Path(root))
+        finally: base.candidates.TOP_LIMIT=old
+        return next((entry for entry in entries if entry.rank==68),None)
+    candidate=rank68(repo)
     if candidate is None or (candidate.candidate_id,candidate.bridge_class,candidate.source_context_count,candidate.ready_to_reopen_domain,candidate.source_patch_authorized)!=('b7ab26b5c07b','mapped-callee-bridge',4,'no','no'): raise ValueError('ranked candidate drift')
     row=dict(story_id='RE-559',topic='ghidra-second-window-next-candidate-selection',upstream_handoff='RE-558',closed_candidate_id=rows[0]['selected_candidate_id'],selected_rank='68',selected_candidate_id='b7ab26b5c07b',selected_bridge_class='mapped-callee-bridge',source_symbol_context_count='4',safe_context_status='filtered-metadata-only',ready_to_reopen_domain_count='0',source_patch_authorized_count='0',selected_domain='none',selected_pivot='none',next_ticket='RE-560',next_topic='ghidra-second-window-rank-68-narrow-export',metadata_work_readiness='ready',code_change_readiness='blocked',stop_condition='next ranked metadata candidate selected; source changes remain blocked')
     validate(row); return row
