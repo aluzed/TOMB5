@@ -1,0 +1,43 @@
+"""Fail-closed metadata-only RE-517 candidate selection."""
+import csv,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
+from scripts.reverse import re309_ghidra_unmapped_bridge_candidates as candidates
+BAD=('0x','fun_','sub_','opcode','machine word','raw dump','raw evidence','call_address','ghidra_entry','code.wad','gamewad.obj','secret','credential','asset','raw binary','source patch','address','copyright')
+FIELDS=('story_id','topic','upstream_handoff','closed_candidate_id','selected_rank','selected_candidate_id','selected_bridge_class','source_symbol_context_count','safe_context_status','ready_to_reopen_domain_count','source_patch_authorized_count','selected_domain','selected_pivot','next_ticket','next_topic','metadata_work_readiness','code_change_readiness','stop_condition')
+UPFIELDS=('story_id','topic','upstream_handoff','selected_candidate_id','selected_rank','selected_subcluster','source_symbol_context_count','bridge_class','safe_context_status','source_backed_callsite_count','candidate_level_proof_count','repository_symbol_direct_proof_count','ready_to_reopen_domain_count','source_patch_authorized_count','selected_domain','selected_pivot','next_ticket','next_topic','metadata_work_readiness','code_change_readiness','stop_condition')
+def ranked(repo):
+ old=candidates.TOP_LIMIT
+ try:
+  candidates.TOP_LIMIT=75;rows,_=candidates.build_bridge_candidates(Path(repo))
+ finally:candidates.TOP_LIMIT=old
+ return next((r for r in rows if r.rank==54),None)
+def build(repo):
+ with (Path(repo)/'docs/reverse/generated/re516-mapped-caller-callee-bridge-readiness-gate-handoff.csv').open(encoding='utf-8',newline='') as h:
+  r=csv.DictReader(h)
+  if tuple(r.fieldnames or ())!=UPFIELDS:raise ValueError('handoff schema drift')
+  rows=list(r)
+ if len(rows)!=1:raise ValueError('handoff row-count drift')
+ x=rows[0];expected={'story_id':'RE-516','topic':'mapped-caller-callee-bridge-readiness-gate','upstream_handoff':'RE-515','selected_candidate_id':'5ff345b548fd','selected_rank':'53','selected_subcluster':'mapped-caller-callee-bridge-readiness-gate','source_symbol_context_count':'7','bridge_class':'mapped-caller-callee-bridge','safe_context_status':'filtered-metadata-only','source_backed_callsite_count':'0','candidate_level_proof_count':'0','repository_symbol_direct_proof_count':'0','ready_to_reopen_domain_count':'0','source_patch_authorized_count':'0','selected_domain':'none','selected_pivot':'none','next_ticket':'RE-517','next_topic':'ghidra-second-window-next-candidate-selection','metadata_work_readiness':'ready','code_change_readiness':'blocked','stop_condition':'metadata-only safety gate denies proof-domain selection and source changes'}
+ for k,v in expected.items():
+  if x.get(k)!=v:raise ValueError(f'handoff drift: {k}')
+ c=ranked(repo)
+ if c is None or (c.candidate_id,c.bridge_class,c.source_context_count,c.ready_to_reopen_domain,c.source_patch_authorized)!=('65e0849a91c0','mapped-caller-bridge',7,'no','no'):raise ValueError('ranked candidate drift')
+ row=dict(story_id='RE-517',topic='ghidra-second-window-next-candidate-selection',upstream_handoff='RE-516',closed_candidate_id=x['selected_candidate_id'],selected_rank='54',selected_candidate_id='65e0849a91c0',selected_bridge_class='mapped-caller-bridge',source_symbol_context_count='7',safe_context_status='filtered-metadata-only',ready_to_reopen_domain_count='0',source_patch_authorized_count='0',selected_domain='none',selected_pivot='none',next_ticket='RE-518',next_topic='ghidra-second-window-rank-54-narrow-export',metadata_work_readiness='ready',code_change_readiness='blocked',stop_condition='next ranked metadata candidate selected; source changes remain blocked');validate(row);return row
+def validate(row):
+ if tuple(row)!=FIELDS:raise ValueError('output schema drift')
+ if any(x in '\n'.join(row.values()).lower() for x in BAD):raise ValueError('forbidden output fragment')
+ if (row['code_change_readiness'],row['source_patch_authorized_count'],row['safe_context_status'])!=('blocked','0','filtered-metadata-only'):raise ValueError('output safety drift')
+def write(row,repo):
+ validate(row);repo=Path(repo);out=[];prefix='re517-ghidra-second-window-next-candidate-selection'
+ for s in ('candidates','summary','handoff'):
+  p=repo/'docs/reverse/generated'/f'{prefix}-{s}.csv';p.parent.mkdir(parents=True,exist_ok=True)
+  with p.open('w',encoding='utf-8',newline='') as h:w=csv.DictWriter(h,fieldnames=FIELDS,lineterminator='\n');w.writeheader();w.writerow(row)
+  out.append(p)
+ docs={repo/'docs/reverse/functions/re517-ghidra-second-window-next-candidate-selection.md':'# RE-517 selection\n\nFiltered metadata-only decision; source and code work remain blocked.\n',repo/'docs/stories/RE-517-ghidra-second-window-next-candidate-selection.md':'# RE-517 selection\n\n## Progress tracker\n\n- [x] RE-516 handoff validated.\n- [x] Filtered metadata decision recorded.\n- [x] RE-518 selected; not executed.\n'}
+ for p,t in docs.items():p.parent.mkdir(parents=True,exist_ok=True);p.write_text(t,encoding='utf-8');out.append(p)
+ for p in out:
+  if any(x in p.read_text(encoding='utf-8').lower() for x in BAD):raise ValueError('forbidden written fragment')
+ return out
+if __name__=='__main__':write(build(ROOT),ROOT)
