@@ -1,4 +1,9 @@
+import sys
 from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[2]
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
 
 from scripts.reverse.generate_tomb5_progress_dashboard import build, write
 
@@ -7,9 +12,9 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-534'
-    assert model['next_ticket'] == 'RE-535'
-    assert model['recent_ticket_count'] >= 86
+    assert model['latest_ticket'] == 'RE-535'
+    assert model['next_ticket'] == 'RE-536'
+    assert model['recent_ticket_count'] >= 87
 
     output = write(model, tmp_path)
     text = output.read_text(encoding='utf-8')
