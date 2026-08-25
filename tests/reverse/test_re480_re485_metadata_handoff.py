@@ -121,3 +121,90 @@ def test_initial_upstream_handoff_rejects_safety_drift(tmp_path, field, replacem
 
     with pytest.raises(ValueError, match=field):
         batch.build('RE-474', tmp_path)
+
+
+def _copy_reverse_handoffs(tmp_path):
+    source = REPO / 'docs/reverse'
+    target = tmp_path / 'docs/reverse'
+    shutil.copytree(source, target)
+    return target / 'generated'
+
+
+@pytest.mark.parametrize('ticket, field, replacement', [
+    ('RE-480', 'safe_context_status', 'source-backed'),
+    ('RE-480', 'candidate_level_proof_count', '1'),
+    ('RE-480', 'ready_to_reopen_domain_count', '1'),
+    ('RE-480', 'source_patch_authorized_count', '1'),
+    ('RE-480', 'selected_domain', 'reopened-domain'),
+    ('RE-480', 'selected_pivot', 'reopened-pivot'),
+    ('RE-481', 'source_backed_callsite_count', '1'),
+    ('RE-481', 'repository_symbol_direct_proof_count', '1'),
+    ('RE-481', 'code_change_readiness', 'ready'),
+    ('RE-482', 'safe_context_status', 'source-backed'),
+    ('RE-483', 'candidate_level_proof_count', '1'),
+    ('RE-484', 'source_patch_authorized_count', '1'),
+    ('RE-485', 'selected_domain', 'reopened-domain'),
+])
+def test_batch_upstream_handoffs_reject_each_applicable_safety_drift(tmp_path, ticket, field, replacement):
+    from scripts.reverse import re480_re485_metadata_handoff as batch
+
+    _copy_reverse_handoffs(tmp_path)
+    config = batch.CONFIG[ticket]
+    upstream = batch.upstream_path(tmp_path, ticket, config)
+    with upstream.open(encoding='utf-8', newline='') as handle:
+        reader = csv.DictReader(handle)
+        rows = list(reader)
+        fields = reader.fieldnames
+    assert fields and len(rows) == 1 and field in rows[0]
+    rows[0][field] = replacement
+    with upstream.open('w', encoding='utf-8', newline='') as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator='\n')
+        writer.writeheader()
+        writer.writerows(rows)
+
+    with pytest.raises(ValueError, match=field):
+        batch.build(ticket, tmp_path)
+
+
+@pytest.mark.parametrize('ticket, mutation, expected', [
+    ('RE-480', 'schema', 'handoff schema drift'),
+    ('RE-481', 'rows', 'handoff row-count drift'),
+    ('RE-482', 'linkage', 'handoff drift: next_ticket'),
+    ('RE-483', 'schema', 'handoff schema drift'),
+    ('RE-484', 'rows', 'handoff row-count drift'),
+    ('RE-485', 'linkage', 'handoff drift: next_ticket'),
+])
+def test_batch_upstream_handoffs_reject_schema_row_and_linkage_drift(tmp_path, ticket, mutation, expected):
+    from scripts.reverse import re480_re485_metadata_handoff as batch
+
+    _copy_reverse_handoffs(tmp_path)
+    config = batch.CONFIG[ticket]
+    upstream = batch.upstream_path(tmp_path, ticket, config)
+    with upstream.open(encoding='utf-8', newline='') as handle:
+        reader = csv.DictReader(handle)
+        rows = list(reader)
+        fields = reader.fieldnames
+    assert fields and len(rows) == 1
+    if mutation == 'schema':
+        fields = fields[:-1]
+        rows = [{key: value for key, value in rows[0].items() if key in fields}]
+    elif mutation == 'rows':
+        rows.append(dict(rows[0]))
+    else:
+        rows[0]['next_ticket'] = 'RE-999'
+    with upstream.open('w', encoding='utf-8', newline='') as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator='\n')
+        writer.writeheader()
+        writer.writerows(rows)
+
+    with pytest.raises(ValueError, match=expected):
+        batch.build(ticket, tmp_path)
+
+
+@pytest.mark.parametrize('ticket', ('RE-481', 'RE-484'))
+def test_batch_selections_reject_ranked_candidate_drift(monkeypatch, ticket):
+    from scripts.reverse import re480_re485_metadata_handoff as batch
+
+    monkeypatch.setattr(batch, 'ranked_candidate', lambda _repo, _rank: None)
+    with pytest.raises(ValueError, match='ranked candidate drift'):
+        batch.build(ticket, REPO)
