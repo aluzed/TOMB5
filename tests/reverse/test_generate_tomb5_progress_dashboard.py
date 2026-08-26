@@ -12,8 +12,8 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-619'
-    assert model['next_ticket'] == 'RE-620'
+    assert model['latest_ticket'] == 'RE-620'
+    assert model['next_ticket'] == 'RE-621'
     assert model['recent_ticket_count'] >= 136
 
     output = write(model, tmp_path)
