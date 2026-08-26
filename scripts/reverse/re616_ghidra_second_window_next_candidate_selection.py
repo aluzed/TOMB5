@@ -1,0 +1,42 @@
+"""Fail-closed metadata-only RE-616 candidate selection."""
+import csv,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
+from scripts.reverse import re613_ghidra_second_window_next_candidate_selection as base
+from scripts.reverse import re556_ghidra_second_window_next_candidate_selection as candidate_source
+BAD,UPFIELDS,FIELDS=base.BAD,base.UPFIELDS,base.FIELDS
+UPSTREAM='docs/reverse/generated/re615-mapped-caller-callee-bridge-readiness-gate-handoff.csv';PREFIX='re616-ghidra-second-window-next-candidate-selection'
+EXPECTED={'story_id':'RE-615','topic':'mapped-caller-callee-bridge-readiness-gate','upstream_handoff':'RE-614','selected_candidate_id':'4fc5988c65ba','selected_rank':'86','selected_subcluster':'mapped-caller-callee-bridge-readiness-gate','source_symbol_context_count':'5','bridge_class':'mapped-caller-callee-bridge','safe_context_status':'filtered-metadata-only','source_backed_callsite_count':'0','candidate_level_proof_count':'0','repository_symbol_direct_proof_count':'0','ready_to_reopen_domain_count':'0','source_patch_authorized_count':'0','selected_domain':'none','selected_pivot':'none','next_ticket':'RE-616','next_topic':'ghidra-second-window-next-candidate-selection','metadata_work_readiness':'ready','code_change_readiness':'blocked','stop_condition':'metadata-only safety gate denies proof-domain selection and production changes'}
+def build(repo):
+ with (Path(repo)/UPSTREAM).open(encoding='utf-8',newline='') as h:
+  reader=csv.DictReader(h)
+  if tuple(reader.fieldnames or ())!=UPFIELDS:raise ValueError('handoff schema drift')
+  rows=list(reader)
+ if len(rows)!=1:raise ValueError('handoff row-count drift')
+ for field,value in EXPECTED.items():
+  if rows[0].get(field)!=value:raise ValueError(f'handoff drift: {field}')
+ old=candidate_source.candidates.TOP_LIMIT
+ try:candidate_source.candidates.TOP_LIMIT=100;entries,_=candidate_source.candidates.build_bridge_candidates(Path(repo))
+ finally:candidate_source.candidates.TOP_LIMIT=old
+ candidate=next((entry for entry in entries if entry.rank==87),None)
+ actual=None if candidate is None else (candidate.candidate_id,candidate.bridge_class,candidate.source_context_count,candidate.ready_to_reopen_domain,candidate.source_patch_authorized)
+ if actual!=('b90186552003','mapped-caller-bridge',5,'no','no'):raise ValueError('ranked candidate drift')
+ row=dict(story_id='RE-616',topic='ghidra-second-window-next-candidate-selection',upstream_handoff='RE-615',closed_candidate_id=rows[0]['selected_candidate_id'],selected_rank='87',selected_candidate_id='b90186552003',selected_bridge_class='mapped-caller-bridge',source_symbol_context_count='5',safe_context_status='filtered-metadata-only',ready_to_reopen_domain_count='0',source_patch_authorized_count='0',selected_domain='none',selected_pivot='none',next_ticket='RE-617',next_topic='ghidra-second-window-rank-87-narrow-export',metadata_work_readiness='ready',code_change_readiness='blocked',stop_condition='next ranked metadata candidate selected; production changes remain blocked')
+ validate(row);return row
+def validate(row):
+ if tuple(row)!=FIELDS:raise ValueError('output schema drift')
+ if any(x in '\n'.join(map(str,row.values())).lower() for x in BAD):raise ValueError('forbidden output fragment')
+ if (row['code_change_readiness'],row['source_patch_authorized_count'],row['safe_context_status'])!=('blocked','0','filtered-metadata-only'):raise ValueError('output safety drift')
+def write(row,repo):
+ validate(row);repo=Path(repo);outs=[]
+ for suffix in ('candidates','summary','handoff'):
+  p=repo/'docs/reverse/generated'/f'{PREFIX}-{suffix}.csv';p.parent.mkdir(parents=True,exist_ok=True)
+  with p.open('w',encoding='utf-8',newline='') as h:w=csv.DictWriter(h,fieldnames=FIELDS,lineterminator='\n');w.writeheader();w.writerow(row)
+  outs.append(p)
+ docs={repo/'docs/reverse/functions/re616-ghidra-second-window-next-candidate-selection.md':'# RE-616 selection\n\nFiltered metadata-only decision; production and code work remain blocked.\n',repo/'docs/stories/RE-616-ghidra-second-window-next-candidate-selection.md':'# RE-616 selection\n\n## Progress tracker\n\n- [x] RE-615 handoff validated.\n- [x] Rank-87 candidate selected from the fixed safe ranking.\n- [x] Filtered metadata-only safety retained.\n- [x] Production and code work remain blocked.\n- [x] RE-617 selected; not executed.\n'}
+ for p,t in docs.items():p.parent.mkdir(parents=True,exist_ok=True);p.write_text(t,encoding='utf-8');outs.append(p)
+ for p in outs:
+  if any(x in p.read_text(encoding='utf-8').lower() for x in BAD):raise ValueError('forbidden written fragment')
+ return outs
+if __name__=='__main__':write(build(ROOT),ROOT)
