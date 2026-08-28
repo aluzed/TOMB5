@@ -18,8 +18,9 @@ def test_re671_metadata_only_narrow_export(tmp_path):
 
 
 @pytest.mark.parametrize('field, value', (
-    ('ready_to_reopen_domain_count', '1'), ('selected_domain', 'reopened-domain'),
-    ('selected_pivot', 'reopened-pivot'), ('metadata_work_readiness', 'blocked'),
+    ('ready_to_reopen_domain_count', '1'), ('candidate_level_proof_count', '1'),
+    ('selected_domain', 'reopened-domain'), ('selected_pivot', 'reopened-pivot'),
+    ('metadata_work_readiness', 'blocked'),
     ('code_change_readiness', 'ready'), ('source_patch_authorized_count', '1'),
     ('safe_context_status', 'unfiltered'),
 ))

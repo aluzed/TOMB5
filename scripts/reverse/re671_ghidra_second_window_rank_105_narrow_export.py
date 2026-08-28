@@ -45,8 +45,8 @@ def validate(row):
         raise ValueError('output schema drift')
     if any(fragment in '\n'.join(map(str, row.values())).lower() for fragment in BAD):
         raise ValueError('forbidden output fragment')
-    safety = (row['safe_context_status'], row['ready_to_reopen_domain_count'], row['source_patch_authorized_count'], row['selected_domain'], row['selected_pivot'], row['metadata_work_readiness'], row['code_change_readiness'])
-    if safety != ('filtered-metadata-only', '0', '0', 'none', 'none', 'ready', 'blocked'):
+    safety = (row['safe_context_status'], row['candidate_level_proof_count'], row['ready_to_reopen_domain_count'], row['source_patch_authorized_count'], row['selected_domain'], row['selected_pivot'], row['metadata_work_readiness'], row['code_change_readiness'])
+    if safety != ('filtered-metadata-only', '0', '0', '0', 'none', 'none', 'ready', 'blocked'):
         raise ValueError('output safety drift')
 
 
