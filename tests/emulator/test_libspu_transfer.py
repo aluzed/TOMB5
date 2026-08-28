@@ -158,3 +158,43 @@ def test_set_transfer_callback_replaces_and_returns_the_previous_callback(tmp_pa
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_set_irq_callback_replaces_and_returns_the_previous_callback(tmp_path):
+    source = tmp_path / "spu_irq_callback_harness.cpp"
+    executable = tmp_path / "spu_irq_callback_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+
+        static void first_callback(void) {}
+        static void second_callback(void) {}
+
+        int main(void) {
+            assert(SpuSetIRQCallback(first_callback) == 0);
+            assert(SpuSetIRQCallback(second_callback) == first_callback);
+            assert(SpuSetIRQCallback(0) == second_callback);
+            assert(SpuSetIRQCallback(first_callback) == 0);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)

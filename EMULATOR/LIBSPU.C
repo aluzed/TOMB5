@@ -63,7 +63,7 @@ unsigned short* _spu_RXX = (unsigned short*)&spu[0];
 int _spu_mem_mode_plus = 3;
 SpuTransferCallbackProc _spu_transferCallback = NULL;///@TODO initial value check
 int _spu_inTransfer = 0;///@TODO initial value check
-int _spu_IRQCallback = 0;
+SpuIRQCallbackProc _spu_IRQCallback = NULL;
 unsigned short _spu_tsa = 0;
 int PrimaryDMAControlRegister = 0;///@TODO check initials wil likely be stripped though
 int* dword_E10 = &PrimaryDMAControlRegister;//Base address is 1F8010F0.
@@ -726,6 +726,14 @@ SpuTransferCallbackProc SpuSetTransferCallback(SpuTransferCallbackProc func)
     SpuTransferCallbackProc previous = _spu_transferCallback;
 
     _spu_transferCallback = func;
+    return previous;
+}
+
+SpuIRQCallbackProc SpuSetIRQCallback(SpuIRQCallbackProc func)
+{
+    SpuIRQCallbackProc previous = _spu_IRQCallback;
+
+    _spu_IRQCallback = func;
     return previous;
 }
 
