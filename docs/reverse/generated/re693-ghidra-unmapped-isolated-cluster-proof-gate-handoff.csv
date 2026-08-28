@@ -1,0 +1,2 @@
+story_id,topic,predecessor,isolated_cluster_count,identity_proof_count,reconciliation_candidate_count,raw_evidence_versioned,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-693,ghidra-unmapped-isolated-cluster-proof-gate,RE-692,79,0,0,no,blocked,RE-694,ghidra-unmapped-boundary-exposure-backlog,"isolated graph status is not identity, semantic, ABI, or equivalence proof"
