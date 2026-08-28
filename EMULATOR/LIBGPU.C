@@ -306,8 +306,8 @@ DISPENV* SetDefDispEnv(DISPENV* env, int x, int y, int w, int h)//(F)
 
 DRAWENV* GetDrawEnv(DRAWENV* env)
 {
-	UNIMPLEMENTED();
-	return NULL;
+	memcpy(env, &activeDrawEnv, sizeof(DRAWENV));
+	return env;
 }
 
 DRAWENV* PutDrawEnv(DRAWENV* env)//Guessed
