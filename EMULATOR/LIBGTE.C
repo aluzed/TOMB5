@@ -3395,14 +3395,12 @@ MATRIX* MulMatrix0(MATRIX* m0, MATRIX* m1, MATRIX* m2)
 
 MATRIX* MulMatrix(MATRIX* m0, MATRIX* m1)
 {
-    UNIMPLEMENTED();
-    return NULL;
+    return MulMatrix0(m0, m1, m0);
 }
 
 MATRIX* MulMatrix2(MATRIX* m0, MATRIX* m1)
 {
-    UNIMPLEMENTED();
-    return NULL;
+    return MulMatrix0(m0, m1, m1);
 }
 
 void SetBackColor(long rbk, long gbk, long bbk)

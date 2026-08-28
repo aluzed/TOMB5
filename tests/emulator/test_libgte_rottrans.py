@@ -118,3 +118,117 @@ def test_mul_matrix0_uses_a_64_bit_accumulator_for_three_q12_products():
     implementation = (REPO / "EMULATOR" / "LIBGTE.C").read_text()
 
     assert "long long value = 0;" in implementation
+
+
+def test_mul_matrix_replaces_its_first_matrix_with_the_q12_product(tmp_path):
+    source = tmp_path / "mul_matrix_harness.cpp"
+    executable = tmp_path / "mul_matrix_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBGTE.H"
+        int main(void) {
+            MATRIX left = {};
+            MATRIX right = {};
+
+            left.m[0][0] = 0;
+            left.m[0][1] = -ONE;
+            left.m[1][0] = ONE;
+            left.m[1][1] = 0;
+            left.m[2][2] = ONE;
+            left.t[0] = 10;
+            left.t[1] = 20;
+            left.t[2] = 30;
+
+            right.m[0][0] = ONE;
+            right.m[1][1] = ONE;
+            right.m[2][2] = ONE;
+
+            assert(MulMatrix(&left, &right) == &left);
+            assert(left.m[0][0] == 0);
+            assert(left.m[0][1] == -ONE);
+            assert(left.m[1][0] == ONE);
+            assert(left.m[1][1] == 0);
+            assert(left.m[2][2] == ONE);
+            assert(left.t[0] == 10);
+            assert(left.t[1] == 20);
+            assert(left.t[2] == 30);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBGTE.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
+
+
+def test_mul_matrix2_replaces_its_second_matrix_with_the_q12_product(tmp_path):
+    source = tmp_path / "mul_matrix2_harness.cpp"
+    executable = tmp_path / "mul_matrix2_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBGTE.H"
+        int main(void) {
+            MATRIX left = {};
+            MATRIX right = {};
+
+            left.m[0][0] = 0;
+            left.m[0][1] = -ONE;
+            left.m[1][0] = ONE;
+            left.m[1][1] = 0;
+            left.m[2][2] = ONE;
+
+            right.m[0][0] = ONE;
+            right.m[1][1] = ONE;
+            right.m[2][2] = ONE;
+            right.t[0] = 40;
+            right.t[1] = 50;
+            right.t[2] = 60;
+
+            assert(MulMatrix2(&left, &right) == &right);
+            assert(right.m[0][0] == 0);
+            assert(right.m[0][1] == -ONE);
+            assert(right.m[1][0] == ONE);
+            assert(right.m[1][1] == 0);
+            assert(right.m[2][2] == ONE);
+            assert(right.t[0] == 40);
+            assert(right.t[1] == 50);
+            assert(right.t[2] == 60);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBGTE.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
