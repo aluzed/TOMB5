@@ -1168,6 +1168,11 @@ unsigned long SpuSetReverbVoice(long on_off, unsigned long voice_bit)
     return _SpuSetAnyVoice(on_off, voice_bit, 204, 205);
 }
 
+unsigned long SpuGetReverbVoice(void)
+{
+    return _spu_RXX[204] | ((unsigned long)(_spu_RXX[205] & 0xFF) << 16);
+}
+
 void SpuSetCommonAttr(SpuCommonAttr* attr)
 {
 	UNIMPLEMENTED();
