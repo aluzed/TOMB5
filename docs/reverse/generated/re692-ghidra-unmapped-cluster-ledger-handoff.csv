@@ -1,0 +1,2 @@
+story_id,topic,predecessor,unmapped_function_count,cluster_count,isolated_cluster_count,reconciliation_candidate_count,reconciliation_ambiguous_count,raw_evidence_versioned,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-692,ghidra-unmapped-cluster-ledger,RE-691,723,112,79,0,0,no,blocked,RE-693,ghidra-unmapped-isolated-cluster-proof-gate,ledger prioritizes metadata proof only; semantic and equivalence claims remain unauthorized

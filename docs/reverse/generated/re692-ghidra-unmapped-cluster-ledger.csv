@@ -1,0 +1,113 @@
+priority_rank,cluster_id,primary_class,member_count,internal_edge_count,mapped_inbound_count,mapped_outbound_count,reconciliation_status,confidence,recommended_next_proof,code_change_readiness
+1,cluster-001,isolated,1,0,0,1,none,medium,metadata identity and caller/callee absence check,blocked
+2,cluster-002,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+3,cluster-003,isolated,1,0,0,3,none,medium,metadata identity and caller/callee absence check,blocked
+4,cluster-004,isolated,1,0,0,1,none,medium,metadata identity and caller/callee absence check,blocked
+5,cluster-005,isolated,1,0,1,1,none,medium,metadata identity and caller/callee absence check,blocked
+6,cluster-006,isolated,1,0,0,1,none,medium,metadata identity and caller/callee absence check,blocked
+7,cluster-007,isolated,1,0,1,1,none,medium,metadata identity and caller/callee absence check,blocked
+8,cluster-008,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+9,cluster-009,isolated,1,0,0,1,none,medium,metadata identity and caller/callee absence check,blocked
+10,cluster-010,isolated,1,0,1,1,none,medium,metadata identity and caller/callee absence check,blocked
+11,cluster-011,isolated,1,0,6,1,none,medium,metadata identity and caller/callee absence check,blocked
+12,cluster-012,isolated,1,0,0,4,none,medium,metadata identity and caller/callee absence check,blocked
+13,cluster-013,isolated,1,0,1,1,none,medium,metadata identity and caller/callee absence check,blocked
+14,cluster-014,isolated,1,0,3,1,none,medium,metadata identity and caller/callee absence check,blocked
+15,cluster-015,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+16,cluster-016,isolated,1,0,4,0,none,medium,metadata identity and caller/callee absence check,blocked
+17,cluster-017,isolated,1,0,1,1,none,medium,metadata identity and caller/callee absence check,blocked
+18,cluster-018,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+19,cluster-019,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+20,cluster-020,isolated,1,0,5,0,none,medium,metadata identity and caller/callee absence check,blocked
+21,cluster-021,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+22,cluster-022,isolated,1,0,3,0,none,medium,metadata identity and caller/callee absence check,blocked
+23,cluster-023,isolated,1,0,3,0,none,medium,metadata identity and caller/callee absence check,blocked
+24,cluster-024,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+25,cluster-025,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+26,cluster-026,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+27,cluster-027,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+28,cluster-028,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+29,cluster-029,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+30,cluster-030,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+31,cluster-031,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+32,cluster-032,isolated,1,0,0,0,none,medium,metadata identity and caller/callee absence check,blocked
+33,cluster-033,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+34,cluster-034,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+35,cluster-035,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+36,cluster-036,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+37,cluster-037,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+38,cluster-038,isolated,1,0,3,0,none,medium,metadata identity and caller/callee absence check,blocked
+39,cluster-039,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+40,cluster-040,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+41,cluster-041,isolated,1,0,0,0,none,medium,metadata identity and caller/callee absence check,blocked
+42,cluster-042,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+43,cluster-043,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+44,cluster-044,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+45,cluster-045,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+46,cluster-046,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+47,cluster-047,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+48,cluster-048,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+49,cluster-049,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+50,cluster-050,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+51,cluster-051,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+52,cluster-052,isolated,1,0,0,0,none,medium,metadata identity and caller/callee absence check,blocked
+53,cluster-053,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+54,cluster-054,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+55,cluster-055,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+56,cluster-056,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+57,cluster-057,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+58,cluster-058,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+59,cluster-059,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+60,cluster-060,isolated,1,0,3,1,none,medium,metadata identity and caller/callee absence check,blocked
+61,cluster-061,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+62,cluster-062,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+63,cluster-063,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+64,cluster-064,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+65,cluster-065,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+66,cluster-066,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+67,cluster-067,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+68,cluster-068,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+69,cluster-069,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+70,cluster-070,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+71,cluster-071,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+72,cluster-072,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+73,cluster-073,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+74,cluster-074,isolated,1,0,1,1,none,medium,metadata identity and caller/callee absence check,blocked
+75,cluster-075,isolated,1,0,2,0,none,medium,metadata identity and caller/callee absence check,blocked
+76,cluster-076,isolated,1,0,1,0,none,medium,metadata identity and caller/callee absence check,blocked
+77,cluster-077,isolated,1,0,1,1,none,medium,metadata identity and caller/callee absence check,blocked
+78,cluster-078,isolated,1,0,1,1,none,medium,metadata identity and caller/callee absence check,blocked
+79,cluster-079,isolated,1,0,1,1,none,medium,metadata identity and caller/callee absence check,blocked
+80,cluster-080,leaf,511,858,538,292,none,medium,source-backed caller-family map,blocked
+81,cluster-081,leaf,16,21,0,0,none,medium,source-backed caller-family map,blocked
+82,cluster-082,leaf,16,25,1,0,none,medium,source-backed caller-family map,blocked
+83,cluster-083,leaf,9,9,0,0,none,medium,source-backed caller-family map,blocked
+84,cluster-084,leaf,8,8,1,0,none,medium,source-backed caller-family map,blocked
+85,cluster-085,leaf,8,7,2,0,none,medium,source-backed caller-family map,blocked
+86,cluster-086,leaf,7,6,4,0,none,medium,source-backed caller-family map,blocked
+87,cluster-087,leaf,7,7,9,0,none,medium,source-backed caller-family map,blocked
+88,cluster-088,leaf,4,3,0,0,none,medium,source-backed caller-family map,blocked
+89,cluster-089,leaf,4,3,4,0,none,medium,source-backed caller-family map,blocked
+90,cluster-090,leaf,3,2,0,6,none,medium,source-backed caller-family map,blocked
+91,cluster-091,leaf,3,2,1,0,none,medium,source-backed caller-family map,blocked
+92,cluster-092,leaf,3,2,0,0,none,medium,source-backed caller-family map,blocked
+93,cluster-093,leaf,3,2,0,0,none,medium,source-backed caller-family map,blocked
+94,cluster-094,leaf,3,2,1,0,none,medium,source-backed caller-family map,blocked
+95,cluster-095,leaf,3,2,1,0,none,medium,source-backed caller-family map,blocked
+96,cluster-096,leaf,3,2,1,0,none,medium,source-backed caller-family map,blocked
+97,cluster-097,leaf,3,2,1,0,none,medium,source-backed caller-family map,blocked
+98,cluster-098,leaf,2,1,0,1,none,medium,source-backed caller-family map,blocked
+99,cluster-099,leaf,2,1,0,3,none,medium,source-backed caller-family map,blocked
+100,cluster-100,leaf,2,1,2,0,none,medium,source-backed caller-family map,blocked
+101,cluster-101,leaf,2,1,1,0,none,medium,source-backed caller-family map,blocked
+102,cluster-102,leaf,2,1,0,0,none,medium,source-backed caller-family map,blocked
+103,cluster-103,leaf,2,1,1,0,none,medium,source-backed caller-family map,blocked
+104,cluster-104,leaf,2,1,0,0,none,medium,source-backed caller-family map,blocked
+105,cluster-105,leaf,2,1,0,0,none,medium,source-backed caller-family map,blocked
+106,cluster-106,leaf,2,1,1,0,none,medium,source-backed caller-family map,blocked
+107,cluster-107,leaf,2,1,2,0,none,medium,source-backed caller-family map,blocked
+108,cluster-108,leaf,2,1,2,0,none,medium,source-backed caller-family map,blocked
+109,cluster-109,leaf,2,1,3,0,none,medium,source-backed caller-family map,blocked
+110,cluster-110,leaf,2,1,1,0,none,medium,source-backed caller-family map,blocked
+111,cluster-111,leaf,2,1,2,1,none,medium,source-backed caller-family map,blocked
+112,cluster-112,leaf,2,1,1,1,none,medium,source-backed caller-family map,blocked
