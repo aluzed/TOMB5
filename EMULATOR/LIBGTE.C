@@ -3370,8 +3370,27 @@ long RotAverageNclip4(SVECTOR* v0, SVECTOR* v1, SVECTOR* v2, SVECTOR* v3, long* 
 
 MATRIX* MulMatrix0(MATRIX* m0, MATRIX* m1, MATRIX* m2)
 {
-    UNIMPLEMENTED();
-    return NULL;
+    short product[3][3];
+
+    for (int row = 0; row < 3; ++row)
+    {
+        for (int column = 0; column < 3; ++column)
+        {
+            long long value = 0;
+
+            for (int term = 0; term < 3; ++term)
+                value += (long long)m0->m[row][term] * m1->m[term][column];
+
+            /* Matrix coefficients are Q12; preserve the library's signed 16-bit result format. */
+            product[row][column] = (short)(value >> 12);
+        }
+    }
+
+    for (int row = 0; row < 3; ++row)
+        for (int column = 0; column < 3; ++column)
+            m2->m[row][column] = product[row][column];
+
+    return m2;
 }
 
 MATRIX* MulMatrix(MATRIX* m0, MATRIX* m1)
