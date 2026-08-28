@@ -281,10 +281,10 @@ DISPENV* GetDispEnv(DISPENV* env)//(F)
 	return env;
 }
 
-DISPENV* PutDispEnv(DISPENV* env)//To Finish
+DISPENV* PutDispEnv(DISPENV* env)
 {
-	memcpy((char*)&activeDispEnv, env, sizeof(DISPENV));
-	return 0;
+	memcpy(&activeDispEnv, env, sizeof(DISPENV));
+	return env;
 }
 
 DISPENV* SetDefDispEnv(DISPENV* env, int x, int y, int w, int h)//(F)
@@ -310,10 +310,10 @@ DRAWENV* GetDrawEnv(DRAWENV* env)
 	return env;
 }
 
-DRAWENV* PutDrawEnv(DRAWENV* env)//Guessed
+DRAWENV* PutDrawEnv(DRAWENV* env)
 {
-	memcpy((char*)&activeDrawEnv, env, sizeof(DRAWENV));
-	return 0;
+	memcpy(&activeDrawEnv, env, sizeof(DRAWENV));
+	return env;
 }
 
 DRAWENV* SetDefDrawEnv(DRAWENV* env, int x, int y, int w, int h)//(F)
