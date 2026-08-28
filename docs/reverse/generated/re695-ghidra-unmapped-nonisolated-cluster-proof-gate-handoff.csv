@@ -1,0 +1,2 @@
+story_id,topic,predecessor,unmapped_function_count,aggregate_category_cluster_count,identity_proof_count,raw_evidence_versioned,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-695,ghidra-unmapped-nonisolated-cluster-proof-gate,RE-694,644,72,0,no,blocked,RE-696,ghidra-unmapped-reconciliation-audit,"category and graph metadata do not prove identity, semantics, ABI, or equivalence"
