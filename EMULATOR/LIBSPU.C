@@ -721,6 +721,11 @@ unsigned long SpuWrite(unsigned char* addr, unsigned long size)
 	return size;
 }
 
+long SpuGetTransferMode(void)
+{
+    return _spu_trans_mode;
+}
+
 long SpuSetTransferMode(long mode)//(F)
 {
     int trans_mode = 1;
