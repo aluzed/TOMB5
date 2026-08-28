@@ -1,0 +1,5 @@
+priority_rank,exposure_class,cluster_count,confidence,identity_proof_status,recommended_next_proof,code_change_readiness
+1,boundary-exposed,12,medium,absent,source-backed boundary family map,blocked
+2,callee-exposed,58,medium,absent,source-backed boundary family map,blocked
+3,caller-exposed,6,medium,absent,source-backed boundary family map,blocked
+4,unconnected,3,medium,absent,identity evidence acquisition,blocked

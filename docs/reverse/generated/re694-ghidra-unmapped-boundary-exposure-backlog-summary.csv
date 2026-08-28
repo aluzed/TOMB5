@@ -1,0 +1,2 @@
+story_id,topic,predecessor,isolated_cluster_count,backlog_lane_count,identity_proof_count,raw_evidence_versioned,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-694,ghidra-unmapped-boundary-exposure-backlog,RE-693,79,4,0,no,blocked,RE-695,ghidra-unmapped-non-isolated-cluster-proof-gate,"boundary exposure prioritizes proof acquisition only; identity, semantics, ABI, and equivalence remain unproven"
