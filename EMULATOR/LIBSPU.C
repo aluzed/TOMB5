@@ -1178,6 +1178,11 @@ unsigned long SpuSetPitchLFOVoice(long on_off, unsigned long voice_bit)
     return _SpuSetAnyVoice(on_off, voice_bit, 200, 201);
 }
 
+unsigned long SpuGetPitchLFOVoice(void)
+{
+    return _spu_RXX[200] | ((unsigned long)(_spu_RXX[201] & 0xFF) << 16);
+}
+
 void SpuSetCommonAttr(SpuCommonAttr* attr)
 {
 	UNIMPLEMENTED();

@@ -331,3 +331,40 @@ def test_set_pitch_lfo_voice_updates_only_the_selected_voice_bits(tmp_path):
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_get_pitch_lfo_voice_returns_the_current_24_voice_mask(tmp_path):
+    source = tmp_path / "spu_get_pitch_lfo_voice_harness.cpp"
+    executable = tmp_path / "spu_get_pitch_lfo_voice_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+        extern unsigned short* _spu_RXX;
+
+        int main(void) {
+            _spu_RXX[200] = 0xA55A;
+            _spu_RXX[201] = 0xFFFF;
+            assert(SpuGetPitchLFOVoice() == 0xFFA55A);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
