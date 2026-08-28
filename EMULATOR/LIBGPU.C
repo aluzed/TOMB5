@@ -630,6 +630,21 @@ void ParseLineG3(LINE_G3* line, bool semiTransparent)
 	}
 }
 
+void ParseLineF4(LINE_F4* line, bool semiTransparent)
+{
+	short* points[] = { &line->x0, &line->x1, &line->x2, &line->x3 };
+
+	for (int i = 0; i < 3; ++i)
+	{
+		AddSplit(semiTransparent, activeDrawEnv.tpage, whiteTexture);
+		Emulator_GenerateLineArray(&g_vertexBuffer[g_vertexIndex], points[i], points[i + 1]);
+		Emulator_GenerateTexcoordArrayLineZero(&g_vertexBuffer[g_vertexIndex], 0);
+		Emulator_GenerateColourArrayLine(&g_vertexBuffer[g_vertexIndex], &line->r0, &line->r0);
+		MakeTriangle();
+		g_vertexIndex += 6;
+	}
+}
+
 int ParsePrimitive(uintptr_t primPtr)
 {
 	P_TAG* pTag = (P_TAG*)primPtr;
@@ -846,6 +861,13 @@ int ParsePrimitive(uintptr_t primPtr)
 			ParseLineF3(poly, semi_transparent);
 
 			primitive_size = sizeof(LINE_F3);
+			break;
+		}
+		case 0x4C: // 3 connected flat lines
+		{
+			ParseLineF4((LINE_F4*)pTag, semi_transparent);
+
+			primitive_size = sizeof(LINE_F4);
 			break;
 		}
 		case 0x50:
