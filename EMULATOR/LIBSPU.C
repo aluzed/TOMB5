@@ -1225,6 +1225,12 @@ void SpuSetCommonMasterVolume(short mvol_left, short mvol_right)//(F)
     _spu_RXX[193] = mvol_right & 0x7FFF;
 }
 
+void SpuGetCommonMasterVolume(short* mvol_left, short* mvol_right)
+{
+    *mvol_left = _spu_RXX[192];
+    *mvol_right = _spu_RXX[193];
+}
+
 long SpuSetReverbModeType(long mode)
 {
 	UNIMPLEMENTED();
