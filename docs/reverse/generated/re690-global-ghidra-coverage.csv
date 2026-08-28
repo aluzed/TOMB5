@@ -1,0 +1,9 @@
+coverage_state,size_bucket,function_count
+ghidra-only,large-1025-plus,47
+ghidra-only,medium-257-1024,203
+ghidra-only,small-65-256,273
+ghidra-only,tiny-1-64,200
+mapped-to-repo,large-1025-plus,56
+mapped-to-repo,medium-257-1024,254
+mapped-to-repo,small-65-256,274
+mapped-to-repo,tiny-1-64,133

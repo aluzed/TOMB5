@@ -1,0 +1,2 @@
+story_id,topic,ghidra_function_count,mapped_ghidra_function_count,ghidra_only_function_count,repo_function_count,mapped_repo_row_count,repo_only_row_count,coverage_status,raw_evidence_versioned,code_change_readiness,next_topic,stop_condition
+RE-690,global-ghidra-coverage-baseline,1440,717,723,1250,866,384,inventory-complete-not-semantic-complete,no,blocked,triage-ghidra-only-function-clusters,"global inventory is a prioritization baseline, not behavior or equivalence proof"
