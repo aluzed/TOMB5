@@ -613,6 +613,23 @@ void ParseLineF3(LINE_F3* line, bool semiTransparent)
 	}
 }
 
+void ParseLineG3(LINE_G3* line, bool semiTransparent)
+{
+	short* starts[] = { &line->x0, &line->x1 };
+	short* ends[] = { &line->x1, &line->x2 };
+	unsigned char* colours[] = { &line->r0, &line->r1, &line->r2 };
+
+	for (int i = 0; i < 2; ++i)
+	{
+		AddSplit(semiTransparent, activeDrawEnv.tpage, whiteTexture);
+		Emulator_GenerateLineArray(&g_vertexBuffer[g_vertexIndex], starts[i], ends[i]);
+		Emulator_GenerateTexcoordArrayLineZero(&g_vertexBuffer[g_vertexIndex], 0);
+		Emulator_GenerateColourArrayLine(&g_vertexBuffer[g_vertexIndex], colours[i], colours[i + 1]);
+		MakeTriangle();
+		g_vertexIndex += 6;
+	}
+}
+
 int ParsePrimitive(uintptr_t primPtr)
 {
 	P_TAG* pTag = (P_TAG*)primPtr;
@@ -849,6 +866,13 @@ int ParsePrimitive(uintptr_t primPtr)
 	#if defined(DEBUG_POLY_COUNT)
 			polygon_count++;
 	#endif
+			break;
+		}
+		case 0x58: // 2 connected Gouraud lines
+		{
+			ParseLineG3((LINE_G3*)pTag, semi_transparent);
+
+			primitive_size = sizeof(LINE_G3);
 			break;
 		}
 		case 0x60:
