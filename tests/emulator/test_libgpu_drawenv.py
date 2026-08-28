@@ -467,3 +467,87 @@ def test_parse_line_f4_emits_three_flat_line_segments(tmp_path):
         ], check=True, cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_parse_line_g4_emits_three_gouraud_line_segments(tmp_path):
+    source = tmp_path / "parse_line_g4_harness.cpp"
+    executable = tmp_path / "parse_line_g4_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBGPU.H"
+        #include "EMULATOR.H"
+
+        extern void ParseLineG4(LINE_G4 *line, bool semiTransparent);
+        extern int g_vertexIndex;
+        extern int g_splitIndex;
+        struct TestVertexBufferSplit {
+            TextureID textureId;
+            unsigned short vIndex;
+            unsigned short vCount;
+            BlendMode blendMode;
+            TexFormat texFormat;
+        };
+        extern TestVertexBufferSplit g_splits[];
+        extern DRAWENV activeDrawEnv;
+        TextureID whiteTexture = (TextureID)1;
+        TextureID vramTexture = {};
+        static int line_calls = 0;
+        static short starts[3][2];
+        static short ends[3][2];
+        static unsigned char colours[3][6];
+
+        void Emulator_GenerateLineArray(Vertex *, short *start, short *end) {
+            starts[line_calls][0] = start[0]; starts[line_calls][1] = start[1];
+            ends[line_calls][0] = end[0]; ends[line_calls][1] = end[1];
+            ++line_calls;
+        }
+        void Emulator_GenerateTexcoordArrayLineZero(Vertex *, unsigned char) {}
+        void Emulator_GenerateColourArrayLine(Vertex *, unsigned char *first, unsigned char *second) {
+            for (int component = 0; component < 3; ++component) {
+                colours[line_calls - 1][component] = first[component];
+                colours[line_calls - 1][component + 3] = second[component];
+            }
+        }
+
+        int main(void) {
+            LINE_G4 line = {};
+            line.x0 = 70; line.y0 = 80; line.x1 = 50; line.y1 = 60;
+            line.x2 = 30; line.y2 = 40; line.x3 = 10; line.y3 = 20;
+            line.r0 = 1; line.g0 = 2; line.b0 = 3;
+            line.r1 = 4; line.g1 = 5; line.b1 = 6;
+            line.r2 = 7; line.g2 = 8; line.b2 = 9;
+            line.r3 = 10; line.g3 = 11; line.b3 = 12;
+            g_vertexIndex = 0; g_splitIndex = 0;
+            activeDrawEnv.tpage = getTPage(0, 0, 0, 0);
+
+            ParseLineG4(&line, false);
+
+            const short expected_starts[3][2] = {{50, 60}, {30, 40}, {10, 20}};
+            const short expected_ends[3][2] = {{70, 80}, {50, 60}, {30, 40}};
+            const unsigned char expected_colours[3][6] = {
+                {4, 5, 6, 1, 2, 3}, {7, 8, 9, 4, 5, 6}, {10, 11, 12, 7, 8, 9}
+            };
+            assert(line_calls == 3);
+            for (int i = 0; i < 3; ++i) {
+                assert(starts[i][0] == expected_starts[i][0] && starts[i][1] == expected_starts[i][1]);
+                assert(ends[i][0] == expected_ends[i][0] && ends[i][1] == expected_ends[i][1]);
+                for (int component = 0; component < 6; ++component)
+                    assert(colours[i][component] == expected_colours[i][component]);
+            }
+            assert(g_splitIndex == 1);
+            assert(g_splits[1].blendMode == BM_NONE);
+            assert(g_vertexIndex == 18);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++", "-Wno-narrowing", "-DUSE_32_BIT_ADDR", "-ffunction-sections",
+            "-fdata-sections", "-Wl,--gc-sections", "-I/usr/include/SDL2", "-I",
+            str(REPO / "EMULATOR"), str(source), str(REPO / "EMULATOR" / "LIBGPU.C"),
+            "-o", str(executable),
+        ], check=True, cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)

@@ -645,6 +645,38 @@ void ParseLineF4(LINE_F4* line, bool semiTransparent)
 	}
 }
 
+void ParseLineG4(LINE_G4* line, bool semiTransparent)
+{
+	short* points[] = { &line->x0, &line->x1, &line->x2, &line->x3 };
+	unsigned char* colours[] = { &line->r0, &line->r1, &line->r2, &line->r3 };
+
+	for (int i = 0; i < 3; ++i)
+	{
+		short* start = points[i];
+		short* end = points[i + 1];
+		unsigned char* startColour = colours[i];
+		unsigned char* endColour = colours[i + 1];
+
+		if (start[0] > end[0] || (start[0] == end[0] && start[1] > end[1]))
+		{
+			short* point = start;
+			start = end;
+			end = point;
+
+			unsigned char* colour = startColour;
+			startColour = endColour;
+			endColour = colour;
+		}
+
+		AddSplit(semiTransparent, activeDrawEnv.tpage, whiteTexture);
+		Emulator_GenerateLineArray(&g_vertexBuffer[g_vertexIndex], start, end);
+		Emulator_GenerateTexcoordArrayLineZero(&g_vertexBuffer[g_vertexIndex], 0);
+		Emulator_GenerateColourArrayLine(&g_vertexBuffer[g_vertexIndex], startColour, endColour);
+		MakeTriangle();
+		g_vertexIndex += 6;
+	}
+}
+
 int ParsePrimitive(uintptr_t primPtr)
 {
 	P_TAG* pTag = (P_TAG*)primPtr;
@@ -895,6 +927,13 @@ int ParsePrimitive(uintptr_t primPtr)
 			ParseLineG3((LINE_G3*)pTag, semi_transparent);
 
 			primitive_size = sizeof(LINE_G3);
+			break;
+		}
+		case 0x5C: // 3 connected Gouraud lines
+		{
+			ParseLineG4((LINE_G4*)pTag, semi_transparent);
+
+			primitive_size = sizeof(LINE_G4);
 			break;
 		}
 		case 0x60:
