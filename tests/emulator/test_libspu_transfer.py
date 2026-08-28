@@ -408,3 +408,43 @@ def test_get_common_master_volume_returns_the_current_register_values(tmp_path):
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_get_reverb_mode_depth_returns_the_configured_depth(tmp_path):
+    source = tmp_path / "spu_get_reverb_mode_depth_harness.cpp"
+    executable = tmp_path / "spu_get_reverb_mode_depth_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+
+        int main(void) {
+            short left = 0;
+            short right = 0;
+
+            SpuSetReverbModeDepth(0x1234, -0x1234);
+            SpuGetReverbModeDepth(&left, &right);
+            assert(left == 0x1234);
+            assert(right == -0x1234);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)

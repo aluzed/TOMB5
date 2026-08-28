@@ -1244,3 +1244,9 @@ void SpuSetReverbModeDepth(short depth_left, short depth_right)//(F)
     _spu_rev_attr[4] = depth_left;
     _spu_rev_attr[5] = depth_right;
 }
+
+void SpuGetReverbModeDepth(short* depth_left, short* depth_right)
+{
+    *depth_left = _spu_RXX[194];
+    *depth_right = _spu_RXX[195];
+}
