@@ -750,8 +750,8 @@ long SpuSetTransferMode(long mode)//(F)
 
 unsigned long SpuSetTransferStartAddr(unsigned long addr)
 {
-	UNIMPLEMENTED();
-	return 0;
+	_spu_tsa = _spu_FsetRXXa(-1, addr);
+	return _spu_FsetRXXa(-2, addr);
 }
 
 long SpuIsTransferCompleted(long flag)//(F)
