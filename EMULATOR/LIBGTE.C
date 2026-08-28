@@ -2763,7 +2763,16 @@ long RotTransPers(SVECTOR* v0, long* sxy, long* p, long* flag)
 
 void RotTrans(SVECTOR* v0, VECTOR* v1, long* flag)
 {
-    UNIMPLEMENTED();
+    VX0 = v0->vx;
+    VY0 = v0->vy;
+    VZ0 = v0->vz;
+
+    docop2(0x480012);
+
+    v1->vx = IR1;
+    v1->vy = IR2;
+    v1->vz = IR3;
+    flag[0] = FLAG;
 }
 
 void NormalColorDpq(SVECTOR* v0, CVECTOR* v1, long p, CVECTOR* v2)
