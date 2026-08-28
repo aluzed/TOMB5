@@ -330,7 +330,7 @@ void SwExitCriticalSection()
 
 unsigned long SetSp(unsigned long newsp)//(F)
 {
-	unsigned long old_sp = sp;
+	unsigned long old_sp = (unsigned int)sp;
 	sp = newsp;
 	return old_sp;
 }

@@ -126,6 +126,8 @@ def test_get_sp_returns_the_value_most_recently_set(tmp_path):
             assert(GetSp() == 0x12345678UL);
             SetSp(0x801FFFE0UL);
             assert(GetSp() == 0x801FFFE0UL);
+            assert(SetSp(0x1000UL) == 0x801FFFE0UL);
+            assert(GetSp() == 0x1000UL);
             return 0;
         }
         """
