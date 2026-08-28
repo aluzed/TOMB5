@@ -1,0 +1,6 @@
+category,function_count,cluster_count,confidence,recommended_next_proof
+helper,54,29,medium,bounded helper signature and state-contract proof
+hub,33,2,low,partitioned callsite and ABI/state-contract proof
+isolated,79,79,medium,metadata identity and caller/callee absence check
+large-block,292,8,low,split into bounded control-flow and state-contract clusters
+leaf,265,33,medium,source-backed caller-family map

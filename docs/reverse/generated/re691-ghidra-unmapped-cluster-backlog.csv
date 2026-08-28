@@ -1,0 +1,6 @@
+priority_rank,cluster_class,function_count,confidence,recommended_next_proof,code_change_readiness
+1,isolated,79,medium,metadata identity and caller/callee absence check,blocked
+2,leaf,265,medium,source-backed caller-family map,blocked
+3,helper,54,medium,bounded helper signature and state-contract proof,blocked
+4,large-block,292,low,split into bounded control-flow and state-contract clusters,blocked
+5,hub,33,low,partitioned callsite and ABI/state-contract proof,blocked

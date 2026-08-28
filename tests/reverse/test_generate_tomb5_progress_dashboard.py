@@ -12,9 +12,10 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-689'
-    assert model['next_ticket'] == 'RE-690'
+    assert model['latest_ticket'] == 'RE-691'
+    assert model['next_ticket'] == 'RE-692'
     assert model['recent_ticket_count'] >= 150
+    assert 'RE-692' in (repo / 'docs/reverse/tomb5-progress-dashboard.html').read_text(encoding='utf-8')
 
     output = write(model, tmp_path)
     text = output.read_text(encoding='utf-8')

@@ -1,0 +1,2 @@
+story_id,topic,predecessor,unmapped_function_count,cluster_count,reconciliation_candidate_count,raw_evidence_versioned,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-691,ghidra-unmapped-completion-matrix,RE-690,723,112,0,no,blocked,RE-692,ghidra-unmapped-isolated-cluster-proof-gate,aggregate mapping prioritizes proof only; no semantic or equivalence authorization
