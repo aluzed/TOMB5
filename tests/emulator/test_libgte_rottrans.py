@@ -56,6 +56,105 @@ def test_rot_trans_applies_current_rotation_and_translation(tmp_path):
     subprocess.run([str(executable)], check=True)
 
 
+def test_normal_color_dpq_applies_identity_lighting_to_input_colour(tmp_path):
+    source = tmp_path / "normal_color_dpq_harness.cpp"
+    executable = tmp_path / "normal_color_dpq_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBGTE.H"
+        int main(void) {
+            MATRIX identity = {};
+            SVECTOR normal = {ONE, ONE, ONE, 0};
+            CVECTOR input = {128, 64, 32, 0x7e};
+            CVECTOR output = {};
+
+            identity.m[0][0] = ONE;
+            identity.m[1][1] = ONE;
+            identity.m[2][2] = ONE;
+            SetLightMatrix(&identity);
+            SetColorMatrix(&identity);
+            SetBackColor(0, 0, 0);
+            SetFarColor(0, 0, 0);
+            NormalColorDpq(&normal, &input, 0, &output);
+
+            assert(output.r == input.r);
+            assert(output.g == input.g);
+            assert(output.b == input.b);
+            assert(output.cd == input.cd);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBGTE.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
+
+
+def test_normal_color_col_applies_identity_lighting_to_input_colour(tmp_path):
+    source = tmp_path / "normal_color_col_harness.cpp"
+    executable = tmp_path / "normal_color_col_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBGTE.H"
+        int main(void) {
+            MATRIX identity = {};
+            SVECTOR normal = {ONE, ONE, ONE, 0};
+            CVECTOR input = {128, 64, 32, 0x7e};
+            CVECTOR output = {};
+
+            identity.m[0][0] = ONE;
+            identity.m[1][1] = ONE;
+            identity.m[2][2] = ONE;
+            SetLightMatrix(&identity);
+            SetColorMatrix(&identity);
+            SetBackColor(0, 0, 0);
+            NormalColorCol(&normal, &input, &output);
+
+            assert(output.r == input.r);
+            assert(output.g == input.g);
+            assert(output.b == input.b);
+            assert(output.cd == input.cd);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBGTE.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
+
+
 def test_mul_matrix0_multiplies_fixed_point_rotation_without_overwriting_translation(tmp_path):
     source = tmp_path / "mul_matrix0_harness.cpp"
     executable = tmp_path / "mul_matrix0_harness"

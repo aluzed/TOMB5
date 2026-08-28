@@ -2777,12 +2777,39 @@ void RotTrans(SVECTOR* v0, VECTOR* v1, long* flag)
 
 void NormalColorDpq(SVECTOR* v0, CVECTOR* v1, long p, CVECTOR* v2)
 {
-    UNIMPLEMENTED();
+    VX0 = v0->vx;
+    VY0 = v0->vy;
+    VZ0 = v0->vz;
+    R = v1->r;
+    G = v1->g;
+    B = v1->b;
+    CODE = v1->cd;
+    IR0 = p;
+
+    docop2(0x780013);
+
+    v2->r = R2;
+    v2->g = G2;
+    v2->b = B2;
+    v2->cd = CD2;
 }
 
 void NormalColorCol(SVECTOR* v0, CVECTOR* v1, CVECTOR* v2)
 {
-    UNIMPLEMENTED();
+    VX0 = v0->vx;
+    VY0 = v0->vy;
+    VZ0 = v0->vz;
+    R = v1->r;
+    G = v1->g;
+    B = v1->b;
+    CODE = v1->cd;
+
+    docop2(0x78001b);
+
+    v2->r = R2;
+    v2->g = G2;
+    v2->b = B2;
+    v2->cd = CD2;
 }
 
 static void RCpolyFT4A()
