@@ -198,3 +198,49 @@ def test_set_irq_callback_replaces_and_returns_the_previous_callback(tmp_path):
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_set_reverb_voice_updates_only_the_selected_voice_bits(tmp_path):
+    source = tmp_path / "spu_reverb_voice_harness.cpp"
+    executable = tmp_path / "spu_reverb_voice_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+        extern unsigned short* _spu_RXX;
+
+        int main(void) {
+            _spu_RXX[204] = 0x0002;
+            _spu_RXX[205] = 0x0040;
+
+            assert(SpuSetReverbVoice(SPU_ON, SPU_00CH | SPU_17CH) ==
+                   (SPU_00CH | SPU_17CH));
+            assert(_spu_RXX[204] == 0x0003);
+            assert(_spu_RXX[205] == 0x0042);
+
+            assert(SpuSetReverbVoice(SPU_OFF, SPU_00CH | SPU_17CH) ==
+                   (SPU_00CH | SPU_17CH));
+            assert(_spu_RXX[204] == 0x0002);
+            assert(_spu_RXX[205] == 0x0040);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)

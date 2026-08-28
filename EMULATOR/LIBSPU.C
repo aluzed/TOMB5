@@ -1145,8 +1145,22 @@ long SpuSetReverb(long on_off)
 
 unsigned long _SpuSetAnyVoice(long on_off, unsigned long voice_bit, int a2, int a3)
 {
-    UNIMPLEMENTED();
-    return 0;
+    voice_bit &= 0xFFFFFF;
+    unsigned short lower_voices = voice_bit;
+    unsigned short upper_voices = voice_bit >> 16;
+
+    if (on_off == SPU_ON)
+    {
+        _spu_RXX[a2] |= lower_voices;
+        _spu_RXX[a3] |= upper_voices;
+    }
+    else if (on_off == SPU_OFF)
+    {
+        _spu_RXX[a2] &= ~lower_voices;
+        _spu_RXX[a3] &= ~upper_voices;
+    }
+
+    return voice_bit;
 }
 
 unsigned long SpuSetReverbVoice(long on_off, unsigned long voice_bit)
