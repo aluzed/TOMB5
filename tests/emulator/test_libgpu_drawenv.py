@@ -102,6 +102,78 @@ def test_put_disp_env_copies_environment_and_returns_source(tmp_path):
     subprocess.run([str(executable)], check=True)
 
 
+def test_parse_draw_move_copies_the_encoded_vram_rectangle(tmp_path):
+    source = tmp_path / "parse_draw_move_harness.cpp"
+    executable = tmp_path / "parse_draw_move_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include <stdint.h>
+        #include "LIBGPU.H"
+
+        extern void ParseDrawMove(DR_MOVE *move);
+
+        static int calls = 0;
+        static unsigned short *received_source = (unsigned short *)1;
+        static int received_x = 0;
+        static int received_y = 0;
+        static int received_w = 0;
+        static int received_h = 0;
+        static int received_dst_x = 0;
+        static int received_dst_y = 0;
+
+        void Emulator_CopyVRAM(unsigned short *source, int x, int y, int w, int h,
+                               int dst_x, int dst_y) {
+            ++calls;
+            received_source = source;
+            received_x = x;
+            received_y = y;
+            received_w = w;
+            received_h = h;
+            received_dst_x = dst_x;
+            received_dst_y = dst_y;
+        }
+
+        int main(void) {
+            DR_MOVE move = {};
+            RECT16 source = { 12, 34, 56, 78 };
+
+            SetDrawMove(&move, &source, 90, 123);
+            ParseDrawMove(&move);
+            assert(calls == 1);
+            assert(received_source == 0);
+            assert(received_x == 12);
+            assert(received_y == 34);
+            assert(received_w == 56);
+            assert(received_h == 78);
+            assert(received_dst_x == 90);
+            assert(received_dst_y == 123);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-Wno-narrowing",
+            "-DUSE_32_BIT_ADDR",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBGPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
+
+
 def test_put_draw_env_copies_environment_and_returns_source(tmp_path):
     source = tmp_path / "put_draw_env_harness.cpp"
     executable = tmp_path / "put_draw_env_harness"

@@ -584,6 +584,19 @@ void DrawPrim(void* p)
 // parses primitive and pushes it to VBO
 // returns primitive size
 // -1 means invalid primitive
+void ParseDrawMove(DR_MOVE* move)
+{
+    RECT16 destination;
+
+    destination.x = (short)(move->code[3] & 0xFFFF);
+    destination.y = (short)(move->code[3] >> 16);
+    destination.w = (short)(move->code[4] & 0xFFFF);
+    destination.h = (short)(move->code[4] >> 16);
+
+    MoveImage(&destination, (short)(move->code[2] & 0xFFFF),
+              (short)(move->code[2] >> 16));
+}
+
 int ParsePrimitive(uintptr_t primPtr)
 {
 	P_TAG* pTag = (P_TAG*)primPtr;
@@ -1019,7 +1032,7 @@ int ParsePrimitive(uintptr_t primPtr)
 			break;
 		}
 		case 0x80: {
-			eprinterr("DR_MOVE unimplemented\n");
+			ParseDrawMove((DR_MOVE*)pTag);
 			primitive_size = sizeof(DR_MOVE);
 			break;
 		}
