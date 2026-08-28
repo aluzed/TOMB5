@@ -84,9 +84,16 @@ long StartRCnt(long spec)//(F)
 	return spec < 3 ? 1 : 0;
 }
 
-long StopRCnt(long spec)//TODO
+long StopRCnt(long spec)//(F)
 {
-	return 0;
+	spec &= 0xFFFF;
+	if (spec > 2)
+	{
+		return 0;
+	}
+
+	dword_300[1] &= ~dword_308[spec];
+	return 1;
 }
 #undef OpenEvent
 long OpenEvent(unsigned long event, long unk01, long unk02, long(*func)())
