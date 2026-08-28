@@ -1,0 +1,9 @@
+priority_rank,lane,scope,function_count,cluster_assignment_count,confidence,identity_proof_status,recommended_next_proof,code_change_readiness
+1,isolated-boundary,isolated,12,12,medium,absent,source-backed boundary-family proof,blocked
+2,isolated-callee,isolated,58,58,medium,absent,source-backed boundary-family proof,blocked
+3,isolated-caller,isolated,6,6,medium,absent,source-backed boundary-family proof,blocked
+4,nonisolated-leaf,nonisolated,265,33,medium,absent,source-backed caller-family proof,blocked
+5,nonisolated-helper,nonisolated,54,29,medium,absent,bounded signature and state-contract proof,blocked
+6,nonisolated-large-block,nonisolated,292,8,low,absent,bounded control-flow and state-contract proof,blocked
+7,nonisolated-hub,nonisolated,33,2,low,absent,partitioned callsite and ABI/state-contract proof,blocked
+8,isolated-unconnected,isolated,3,3,medium,absent,identity evidence acquisition,blocked

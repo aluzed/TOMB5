@@ -1,0 +1,2 @@
+story_id,topic,predecessor,unmapped_function_count,physical_cluster_count,aggregate_lane_count,identity_proof_count,raw_evidence_versioned,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-697,ghidra-unmapped-proof-acquisition-policy,RE-696,723,112,8,0,no,blocked,TBD,none,the finite mapping backlog is complete; a new source-backed identity or behavior proof input is required before reopening a lane
