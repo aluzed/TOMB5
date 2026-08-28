@@ -597,6 +597,22 @@ void ParseDrawMove(DR_MOVE* move)
               (short)(move->code[2] >> 16));
 }
 
+void ParseLineF3(LINE_F3* line, bool semiTransparent)
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		short* start = i == 0 ? &line->x0 : &line->x1;
+		short* end = i == 0 ? &line->x1 : &line->x2;
+
+		AddSplit(semiTransparent, activeDrawEnv.tpage, whiteTexture);
+		Emulator_GenerateLineArray(&g_vertexBuffer[g_vertexIndex], start, end);
+		Emulator_GenerateTexcoordArrayLineZero(&g_vertexBuffer[g_vertexIndex], 0);
+		Emulator_GenerateColourArrayLine(&g_vertexBuffer[g_vertexIndex], &line->r0, &line->r0);
+		MakeTriangle();
+		g_vertexIndex += 6;
+	}
+}
+
 int ParsePrimitive(uintptr_t primPtr)
 {
 	P_TAG* pTag = (P_TAG*)primPtr;
@@ -807,33 +823,10 @@ int ParsePrimitive(uintptr_t primPtr)
 	#endif
 			break;
 		}
-		case 0x48: // TODO (unused)
+		case 0x48: // 2 connected flat lines
 		{
 			LINE_F3* poly = (LINE_F3*)pTag;
-			/*
-						for (int i = 0; i < 2; i++)
-						{
-							AddSplit(POLY_TYPE_LINES, semi_transparent, activeDrawEnv.tpage, whiteTexture);
-
-							if (i == 0)
-							{
-								//First line
-								Emulator_GenerateLineArray(&g_vertexBuffer[g_vertexIndex], &poly->x0, &poly->x1, NULL, NULL);
-								Emulator_GenerateColourArrayQuad(&g_vertexBuffer[g_vertexIndex], &poly->r0, NULL, NULL, NULL);
-								g_vertexIndex += 2;
-							}
-							else
-							{
-								//Second line
-								Emulator_GenerateLineArray(&g_vertexBuffer[g_vertexIndex], &poly->x1, &poly->x2, NULL, NULL);
-								Emulator_GenerateColourArrayQuad(&g_vertexBuffer[g_vertexIndex], &poly->r0, NULL, NULL, NULL);
-								g_vertexIndex += 2;
-							}
-			#if defined(DEBUG_POLY_COUNT)
-							polygon_count++;
-			#endif
-						}
-			*/
+			ParseLineF3(poly, semi_transparent);
 
 			primitive_size = sizeof(LINE_F3);
 			break;
