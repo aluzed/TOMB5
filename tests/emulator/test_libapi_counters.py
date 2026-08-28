@@ -41,6 +41,42 @@ def test_stop_rcnt_clears_only_the_requested_counter_enable_bit(tmp_path):
     subprocess.run([str(executable)], check=True)
 
 
+def test_start_rcnt_rejects_invalid_counter_without_changing_enable_bits(tmp_path):
+    source = tmp_path / "invalid_start_rcnt_harness.cpp"
+    executable = tmp_path / "invalid_start_rcnt_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        extern long StartRCnt(long spec);
+        extern int dword_300[];
+        int main(void) {
+            dword_300[1] = 0;
+            assert(StartRCnt(3) == 0);
+            assert(dword_300[1] == 0);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBAPI.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
+
+
 def test_stop_rcnt_rejects_invalid_counter_without_changing_enable_bits(tmp_path):
     source = tmp_path / "invalid_stop_rcnt_harness.cpp"
     executable = tmp_path / "invalid_stop_rcnt_harness"

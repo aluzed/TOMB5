@@ -80,8 +80,13 @@ long ResetRCnt(long spec)//(F)
 long StartRCnt(long spec)//(F)
 {
 	spec &= 0xFFFF;
+	if (spec > 2)
+	{
+		return 0;
+	}
+
 	dword_300[1] |= dword_308[spec];
-	return spec < 3 ? 1 : 0;
+	return 1;
 }
 
 long StopRCnt(long spec)//(F)
