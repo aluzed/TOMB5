@@ -70,6 +70,8 @@ def build_snapshot(repo: Path) -> Snapshot:
     unexpected_statuses = mapping_statuses - {"mapped", "repo_only"}
     if unexpected_statuses:
         raise ValueError(f"Repository mapping has unexpected mapping statuses: {sorted(unexpected_statuses)}")
+    if any(row.get("mapping_status") == "mapped" and not row.get("ghidra_entry", "") for row in repo_rows):
+        raise ValueError("Repository mapping has mapped rows without a Ghidra entry")
 
     mapped_entries = {
         row["ghidra_entry"].lower()

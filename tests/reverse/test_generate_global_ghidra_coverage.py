@@ -87,3 +87,15 @@ def test_global_coverage_rejects_unknown_mapping_status(tmp_path):
     )
     with pytest.raises(ValueError, match="unexpected mapping statuses"):
         build_snapshot(tmp_path)
+
+
+def test_global_coverage_rejects_mapped_row_without_ghidra_entry(tmp_path):
+    from scripts.reverse.generate_global_ghidra_coverage import build_snapshot
+
+    _write_snapshot_inputs(
+        tmp_path,
+        [{"entry": "entry-a", "name": "a", "body_size": "1"}],
+        [{"ghidra_entry": "", "mapping_status": "mapped"}],
+    )
+    with pytest.raises(ValueError, match="mapped rows without a Ghidra entry"):
+        build_snapshot(tmp_path)
