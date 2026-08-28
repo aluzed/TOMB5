@@ -61,7 +61,7 @@ int _spu_mem_mode_unitM = 7;
 char spu[440];//0x1F801C00 is base address
 unsigned short* _spu_RXX = (unsigned short*)&spu[0];
 int _spu_mem_mode_plus = 3;
-void* _spu_transferCallback = NULL;///@TODO initial value check
+SpuTransferCallbackProc _spu_transferCallback = NULL;///@TODO initial value check
 int _spu_inTransfer = 0;///@TODO initial value check
 int _spu_IRQCallback = 0;
 unsigned short _spu_tsa = 0;
@@ -719,6 +719,14 @@ unsigned long SpuWrite(unsigned char* addr, unsigned long size)
 	}
 
 	return size;
+}
+
+SpuTransferCallbackProc SpuSetTransferCallback(SpuTransferCallbackProc func)
+{
+    SpuTransferCallbackProc previous = _spu_transferCallback;
+
+    _spu_transferCallback = func;
+    return previous;
 }
 
 long SpuGetTransferMode(void)
