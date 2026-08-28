@@ -111,3 +111,40 @@ def test_stop_rcnt_rejects_invalid_counter_without_changing_enable_bits(tmp_path
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_get_sp_returns_the_value_most_recently_set(tmp_path):
+    source = tmp_path / "get_sp_harness.cpp"
+    executable = tmp_path / "get_sp_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        extern unsigned long SetSp(unsigned long newsp);
+        extern unsigned long GetSp();
+        int main(void) {
+            SetSp(0x12345678UL);
+            assert(GetSp() == 0x12345678UL);
+            SetSp(0x801FFFE0UL);
+            assert(GetSp() == 0x801FFFE0UL);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBAPI.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)

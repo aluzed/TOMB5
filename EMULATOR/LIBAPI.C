@@ -337,8 +337,7 @@ unsigned long SetSp(unsigned long newsp)//(F)
 
 unsigned long GetSp()
 {
-	UNIMPLEMENTED();
-	return 0;
+	return (unsigned int)sp;
 }
 
 unsigned long GetGp()
