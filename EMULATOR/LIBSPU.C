@@ -754,6 +754,11 @@ unsigned long SpuSetTransferStartAddr(unsigned long addr)
 	return _spu_FsetRXXa(-2, addr);
 }
 
+unsigned long SpuGetTransferStartAddr(void)
+{
+	return _spu_tsa << _spu_mem_mode_plus;
+}
+
 long SpuIsTransferCompleted(long flag)//(F)
 {
     long event = 0;

@@ -42,3 +42,38 @@ def test_set_transfer_start_addr_aligns_address_and_updates_transfer_state(tmp_p
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_get_transfer_start_addr_returns_the_aligned_transfer_address(tmp_path):
+    source = tmp_path / "spu_get_transfer_start_addr_harness.cpp"
+    executable = tmp_path / "spu_get_transfer_start_addr_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+
+        int main(void) {
+            SpuSetTransferStartAddr(0x54321);
+            assert(SpuGetTransferStartAddr() == 0x54328);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
