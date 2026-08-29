@@ -1230,6 +1230,26 @@ void SpuSetCommonAttr(SpuCommonAttr* attr)
 	{
 		dword_424.cd.mix = attr->cd.mix;
 	}
+
+	if (attr->mask & SPU_COMMON_EXTVOLL)
+	{
+		dword_424.ext.volume.left = attr->ext.volume.left;
+	}
+
+	if (attr->mask & SPU_COMMON_EXTVOLR)
+	{
+		dword_424.ext.volume.right = attr->ext.volume.right;
+	}
+
+	if (attr->mask & SPU_COMMON_EXTREV)
+	{
+		dword_424.ext.reverb = attr->ext.reverb;
+	}
+
+	if (attr->mask & SPU_COMMON_EXTMIX)
+	{
+		dword_424.ext.mix = attr->ext.mix;
+	}
 }
 
 long SpuInitMalloc(long num, char* top)//(F)
