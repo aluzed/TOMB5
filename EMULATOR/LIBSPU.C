@@ -1346,6 +1346,13 @@ void SpuSetCommonMasterVolume(short mvol_left, short mvol_right)//(F)
     _spu_RXX[193] = mvol_right & 0x7FFF;
 }
 
+void SpuSetCommonMasterVolumeAttr(short mvol_left, short mvol_right,
+                                  short mvolmode_left, short mvolmode_right)
+{
+    _spu_RXX[192] = (mvol_left & 0x7FFF) | (mvolmode_left << 15);
+    _spu_RXX[193] = (mvol_right & 0x7FFF) | (mvolmode_right << 15);
+}
+
 void SpuGetCommonMasterVolume(short* mvol_left, short* mvol_right)
 {
     *mvol_left = _spu_RXX[192];
