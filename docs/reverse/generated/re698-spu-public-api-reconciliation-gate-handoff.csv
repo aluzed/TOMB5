@@ -1,0 +1,2 @@
+story_id,topic,predecessor,unmatched_declaration_count,source_behavior_proof_count,source_patch_authorized_count,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-698,spu-public-api-reconciliation-gate,RE-697,78,0,0,blocked,TBD,none,source-backed behavior and ABI proof required before any implementation
