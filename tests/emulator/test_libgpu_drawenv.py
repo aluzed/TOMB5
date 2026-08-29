@@ -431,16 +431,16 @@ def test_parse_line_f4_emits_three_flat_line_segments(tmp_path):
 
         int main(void) {
             LINE_F4 line = {};
-            line.x0 = 10; line.y0 = 20; line.x1 = 30; line.y1 = 40;
-            line.x2 = 50; line.y2 = 60; line.x3 = 70; line.y3 = 80;
+            line.x0 = 70; line.y0 = 80; line.x1 = 50; line.y1 = 60;
+            line.x2 = 30; line.y2 = 40; line.x3 = 10; line.y3 = 20;
             line.r0 = 1; line.g0 = 2; line.b0 = 3;
             g_vertexIndex = 0; g_splitIndex = 0;
             activeDrawEnv.tpage = getTPage(0, 2, 0, 0);
 
             ParseLineF4(&line, true);
 
-            const short expected_starts[3][2] = {{10, 20}, {30, 40}, {50, 60}};
-            const short expected_ends[3][2] = {{30, 40}, {50, 60}, {70, 80}};
+            const short expected_starts[3][2] = {{50, 60}, {30, 40}, {10, 20}};
+            const short expected_ends[3][2] = {{70, 80}, {50, 60}, {30, 40}};
             assert(line_calls == 3);
             for (int i = 0; i < 3; ++i) {
                 assert(starts[i][0] == expected_starts[i][0] && starts[i][1] == expected_starts[i][1]);
