@@ -1211,6 +1211,11 @@ unsigned long SpuGetPitchLFOVoice(void)
 
 void SpuSetCommonAttr(SpuCommonAttr* attr)
 {
+	if (attr->mask & SPU_COMMON_MVOLL)
+	{
+		dword_424.mvol.left = attr->mvol.left;
+	}
+
 	if (attr->mask & SPU_COMMON_CDVOLL)
 	{
 		dword_424.cd.volume.left = attr->cd.volume.left;
