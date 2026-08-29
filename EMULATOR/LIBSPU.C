@@ -1139,8 +1139,21 @@ long SpuSetMute(long on_off)
 
 long SpuSetReverb(long on_off)
 {
-	UNIMPLEMENTED();
-	return 0;
+	if (on_off == SPU_ON)
+	{
+		_spu_rev_flag = SPU_ON;
+	}
+	else if (on_off == SPU_OFF)
+	{
+		_spu_rev_flag = SPU_OFF;
+	}
+
+	return _spu_rev_flag;
+}
+
+long SpuGetReverb(void)
+{
+	return _spu_rev_flag;
 }
 
 unsigned long _SpuSetAnyVoice(long on_off, unsigned long voice_bit, int a2, int a3)

@@ -448,3 +448,43 @@ def test_get_reverb_mode_depth_returns_the_configured_depth(tmp_path):
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_reverb_state_can_be_enabled_disabled_and_queried(tmp_path):
+    source = tmp_path / "spu_reverb_state_harness.cpp"
+    executable = tmp_path / "spu_reverb_state_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+
+        int main(void) {
+            assert(SpuGetReverb() == SPU_OFF);
+            assert(SpuSetReverb(SPU_ON) == SPU_ON);
+            assert(SpuGetReverb() == SPU_ON);
+            assert(SpuSetReverb(SPU_CLEAR) == SPU_ON);
+            assert(SpuGetReverb() == SPU_ON);
+            assert(SpuSetReverb(SPU_OFF) == SPU_OFF);
+            assert(SpuGetReverb() == SPU_OFF);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
