@@ -1273,6 +1273,12 @@ void SpuSetCommonCDMix(long cd_mix)
 	dword_424.cd.mix = cd_mix;
 }
 
+void SpuSetCommonCDVolume(short cd_left, short cd_right)
+{
+	dword_424.cd.volume.left = cd_left;
+	dword_424.cd.volume.right = cd_right;
+}
+
 void SpuSetCommonCDReverb(long cd_reverb)
 {
 	dword_424.cd.reverb = cd_reverb;
