@@ -1268,6 +1268,11 @@ void SpuGetCommonCDVolume(short* cd_left, short* cd_right)
 	*cd_right = dword_424.cd.volume.right;
 }
 
+void SpuSetCommonCDMix(long cd_mix)
+{
+	dword_424.cd.mix = cd_mix;
+}
+
 void SpuGetCommonCDMix(long* cd_mix)
 {
 	*cd_mix = dword_424.cd.mix;
