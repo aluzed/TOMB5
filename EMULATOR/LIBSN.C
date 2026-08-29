@@ -65,7 +65,7 @@ int PCread(uintptr_t fd, char* buff, int len)
 
 int PCwrite(uintptr_t fd, char* buff, int len)
 {
-	return fwrite(buff, len, 1, (FILE*)fd);
+	return fwrite(buff, 1, len, (FILE*)fd);
 }
 
 int PCclose(uintptr_t fd)

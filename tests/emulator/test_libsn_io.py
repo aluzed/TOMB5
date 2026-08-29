@@ -48,3 +48,46 @@ def test_pcread_returns_the_number_of_bytes_read(tmp_path):
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_pcwrite_returns_the_number_of_bytes_written(tmp_path):
+    output_file = tmp_path / "output.bin"
+    source = tmp_path / "pcwrite_harness.cpp"
+    executable = tmp_path / "pcwrite_harness"
+    source.write_text(
+        f"""
+        #include <assert.h>
+        #include <stdint.h>
+        #include "LIBSN.H"
+
+        int main(void) {{
+            char path[] = "{output_file}";
+            char data[] = "TOMB5";
+            uintptr_t handle = PCopen(path, 1, 0);
+
+            assert(handle != (uintptr_t)-1);
+            assert(PCwrite(handle, data, 5) == 5);
+            assert(PCclose(handle) == 0);
+            return 0;
+        }}
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSN.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
+    assert output_file.read_bytes() == b"TOMB5"
