@@ -46,10 +46,9 @@ uintptr_t PCopen(char* name, int flags, int perms)
 	return fileHandle == 0 ? INVALID_FILE_HANDLE : fileHandle;
 }
 
-int PCcreat(char* name, int perms)
+uintptr_t PCcreat(char* name, int perms)
 {
-	//UNIMPLEMENTED();
-	return 0;
+	return PCopen(name, 1, perms);
 }
 
 int PClseek(uintptr_t fd, int offset, int mode)
