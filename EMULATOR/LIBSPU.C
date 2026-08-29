@@ -1133,8 +1133,21 @@ void SpuInit(void)//(F)
 
 long SpuSetMute(long on_off)
 {
-	UNIMPLEMENTED();
-	return 0;
+	if (on_off == SPU_ON)
+	{
+		_spu_RXX[213] |= 0x4000;
+	}
+	else if (on_off == SPU_OFF)
+	{
+		_spu_RXX[213] &= ~0x4000;
+	}
+
+	return SpuGetMute();
+}
+
+long SpuGetMute(void)
+{
+	return (_spu_RXX[213] & 0x4000) != 0 ? SPU_ON : SPU_OFF;
 }
 
 long SpuSetReverb(long on_off)
