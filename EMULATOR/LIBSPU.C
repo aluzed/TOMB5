@@ -1257,6 +1257,11 @@ void SpuSetCommonAttr(SpuCommonAttr* attr)
 	}
 }
 
+void SpuGetCommonAttr(SpuCommonAttr* attr)
+{
+	*attr = dword_424;
+}
+
 long SpuInitMalloc(long num, char* top)//(F)
 {
 	if (num > 0)

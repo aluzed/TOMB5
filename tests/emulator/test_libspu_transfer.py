@@ -686,6 +686,72 @@ def test_set_common_attr_updates_only_requested_master_volume_fields(tmp_path):
     subprocess.run([str(executable)], check=True)
 
 
+def test_get_common_attr_returns_the_current_common_attribute_state(tmp_path):
+    source = tmp_path / "spu_get_common_attr_harness.cpp"
+    executable = tmp_path / "spu_get_common_attr_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include <string.h>
+        #include "LIBSPU.H"
+
+        int main(void) {
+            SpuCommonAttr configured;
+            SpuCommonAttr observed;
+            memset(&configured, 0, sizeof(configured));
+            memset(&observed, 0x7f, sizeof(observed));
+
+            configured.mask = SPU_COMMON_MVOLL | SPU_COMMON_CDVOLL |
+                              SPU_COMMON_CDVOLR | SPU_COMMON_CDREV |
+                              SPU_COMMON_CDMIX | SPU_COMMON_EXTVOLL |
+                              SPU_COMMON_EXTVOLR | SPU_COMMON_EXTREV |
+                              SPU_COMMON_EXTMIX;
+            configured.mvol.left = 0x1234;
+            configured.cd.volume.left = 101;
+            configured.cd.volume.right = -102;
+            configured.cd.reverb = SPU_ON;
+            configured.cd.mix = SPU_OFF;
+            configured.ext.volume.left = 103;
+            configured.ext.volume.right = -104;
+            configured.ext.reverb = SPU_OFF;
+            configured.ext.mix = SPU_ON;
+            SpuSetCommonAttr(&configured);
+
+            SpuGetCommonAttr(&observed);
+            assert(observed.mask == 0);
+            assert(observed.mvol.left == 0x1234);
+            assert(observed.cd.volume.left == 101);
+            assert(observed.cd.volume.right == -102);
+            assert(observed.cd.reverb == SPU_ON);
+            assert(observed.cd.mix == SPU_OFF);
+            assert(observed.ext.volume.left == 103);
+            assert(observed.ext.volume.right == -104);
+            assert(observed.ext.reverb == SPU_OFF);
+            assert(observed.ext.mix == SPU_ON);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
+
+
 def test_set_common_attr_applies_only_the_masked_external_input_fields(tmp_path):
     source = tmp_path / "spu_common_external_attr_harness.cpp"
     executable = tmp_path / "spu_common_external_attr_harness"
