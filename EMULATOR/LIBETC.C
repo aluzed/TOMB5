@@ -124,15 +124,17 @@ int VSyncCallback(void(*f)(void))
 	return 0;
 }
 
+static long videoMode = MODE_NTSC;
+
 long GetVideoMode(void)
 {
-	return MODE_NTSC;
+	return videoMode;
 }
 
 long SetVideoMode(long mode)
 {
-	UNIMPLEMENTED();
-	return MODE_NTSC;
+	videoMode = mode;
+	return videoMode;
 }
 
 u_long PadRead(int id)
