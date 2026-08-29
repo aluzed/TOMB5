@@ -1,0 +1,2 @@
+story_id,topic,predecessor,candidate_api_count,active_source_callsite_count,commented_reference_count,source_behavior_proof_count,source_patch_authorized_count,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-699,spu-source-callsite-proof-gate,RE-698,78,0,1,0,0,blocked,TBD,none,a source-backed behavioral contract and ABI proof are required before any coherent implementation unit
