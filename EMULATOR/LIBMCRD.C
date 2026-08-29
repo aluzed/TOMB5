@@ -27,6 +27,7 @@ int memoryCardCmds = -1;
 int memoryCardResult = -1;
 int openFrameIndex = 0;
 int currentlyOpenedMemoryCard = -1;
+MemCB memoryCardCallback = NULL;
 
 void MemCardInit(long val)
 {
@@ -270,8 +271,10 @@ long MemCardSync(long mode, long* cmds, long* rslt)
 
 MemCB MemCardCallback(MemCB func)
 {
-	UNIMPLEMENTED();
-	return 0;
+	MemCB previous = memoryCardCallback;
+
+	memoryCardCallback = func;
+	return previous;
 }
 
 long MemCardGetDirentry(long chan, char* name, struct DIRENTRY* dir, long* files, long ofs, long max)
