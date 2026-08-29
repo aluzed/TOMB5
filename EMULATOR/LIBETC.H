@@ -52,7 +52,7 @@ extern int ResetCallback(void);
 extern int RestartCallback(void);
 extern int StopCallback(void);
 extern int VSync(int mode);
-extern int VSyncCallback(void (*f)(void)) ;
+extern void (*VSyncCallback(void (*f)(void)))(void);
 extern long GetVideoMode (void);
 extern long SetVideoMode (long mode);
 extern u_long PadRead(int id);

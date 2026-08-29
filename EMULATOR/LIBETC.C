@@ -117,10 +117,12 @@ int VSync(int mode)
 #endif
 }
 
-int VSyncCallback(void(*f)(void))
+void (*VSyncCallback(void(*f)(void)))(void)
 {
+	void (*previous)(void) = vsync_callback;
+
 	vsync_callback = f;
-	return 0;
+	return previous;
 }
 
 static long videoMode = MODE_NTSC;

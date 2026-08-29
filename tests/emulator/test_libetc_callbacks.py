@@ -44,3 +44,42 @@ def test_stop_callback_clears_the_vsync_callback(tmp_path):
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_vsync_callback_returns_the_callback_it_replaces(tmp_path):
+    source = tmp_path / "vsync_callback_harness.cpp"
+    executable = tmp_path / "vsync_callback_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBETC.H"
+
+        static void first(void) {}
+        static void second(void) {}
+
+        int main(void) {
+            assert(VSyncCallback(first) == 0);
+            assert(VSyncCallback(second) == first);
+            assert(VSyncCallback(0) == second);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBETC.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
