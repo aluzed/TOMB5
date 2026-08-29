@@ -1221,6 +1221,11 @@ void SpuSetCommonAttr(SpuCommonAttr* attr)
 		dword_424.cd.volume.right = attr->cd.volume.right;
 	}
 
+	if (attr->mask & SPU_COMMON_CDREV)
+	{
+		dword_424.cd.reverb = attr->cd.reverb;
+	}
+
 	if (attr->mask & SPU_COMMON_CDMIX)
 	{
 		dword_424.cd.mix = attr->cd.mix;
