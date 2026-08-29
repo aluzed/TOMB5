@@ -273,7 +273,7 @@ def test_parse_line_f3_emits_two_flat_line_segments(tmp_path):
         int main(void) {
             LINE_F3 line = {};
             SetLineF3(&line);
-            setXY3(&line, 10, 20, 30, 40, 50, 60);
+            setXY3(&line, 70, 80, 50, 60, 30, 40);
             setRGB0(&line, 1, 2, 3);
 
             g_vertexIndex = 0;
@@ -281,8 +281,8 @@ def test_parse_line_f3_emits_two_flat_line_segments(tmp_path):
             activeDrawEnv.tpage = getTPage(0, 2, 0, 0);
             ParseLineF3(&line, true);
             assert(line_calls == 2);
-            assert(starts[0][0] == 10 && starts[0][1] == 20);
-            assert(ends[0][0] == 30 && ends[0][1] == 40);
+            assert(starts[0][0] == 50 && starts[0][1] == 60);
+            assert(ends[0][0] == 70 && ends[0][1] == 80);
             assert(starts[1][0] == 30 && starts[1][1] == 40);
             assert(ends[1][0] == 50 && ends[1][1] == 60);
             for (int i = 0; i < 2; ++i) {

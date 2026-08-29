@@ -604,6 +604,13 @@ void ParseLineF3(LINE_F3* line, bool semiTransparent)
 		short* start = i == 0 ? &line->x0 : &line->x1;
 		short* end = i == 0 ? &line->x1 : &line->x2;
 
+		if (start[0] > end[0] || (start[0] == end[0] && start[1] > end[1]))
+		{
+			short* point = start;
+			start = end;
+			end = point;
+		}
+
 		AddSplit(semiTransparent, activeDrawEnv.tpage, whiteTexture);
 		Emulator_GenerateLineArray(&g_vertexBuffer[g_vertexIndex], start, end);
 		Emulator_GenerateTexcoordArrayLineZero(&g_vertexBuffer[g_vertexIndex], 0);
