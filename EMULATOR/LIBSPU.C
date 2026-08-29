@@ -1273,6 +1273,11 @@ void SpuGetCommonCDMix(long* cd_mix)
 	*cd_mix = dword_424.cd.mix;
 }
 
+void SpuGetCommonCDReverb(long* cd_reverb)
+{
+	*cd_reverb = dword_424.cd.reverb;
+}
+
 long SpuInitMalloc(long num, char* top)//(F)
 {
 	if (num > 0)
