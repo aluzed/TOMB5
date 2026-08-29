@@ -60,7 +60,7 @@ int PClseek(uintptr_t fd, int offset, int mode)
 
 int PCread(uintptr_t fd, char* buff, int len)
 {
- 	return fread(buff, len, 1, (FILE*)fd);
+	return fread(buff, 1, len, (FILE*)fd);
 }
 
 int PCwrite(uintptr_t fd, char* buff, int len)
