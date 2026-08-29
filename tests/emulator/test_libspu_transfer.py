@@ -788,6 +788,39 @@ def test_get_common_cd_volume_returns_the_current_cd_volume_state(tmp_path):
     subprocess.run([str(executable)], check=True)
 
 
+def test_get_common_cd_mix_returns_the_current_cd_mix_state(tmp_path):
+    source = tmp_path / "spu_get_common_cd_mix_harness.cpp"
+    executable = tmp_path / "spu_get_common_cd_mix_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+
+        int main(void) {
+            SpuCommonAttr attr = {};
+            long mix = -1;
+            attr.mask = SPU_COMMON_CDMIX;
+            attr.cd.mix = SPU_ON;
+            SpuSetCommonAttr(&attr);
+
+            SpuGetCommonCDMix(&mix);
+            assert(mix == SPU_ON);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++", "-ffunction-sections", "-fdata-sections", "-Wl,--gc-sections",
+            "-I/usr/include/SDL2", "-I", str(REPO / "EMULATOR"), str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"), "-o", str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
+
+
 def test_set_common_attr_applies_only_the_masked_external_input_fields(tmp_path):
     source = tmp_path / "spu_common_external_attr_harness.cpp"
     executable = tmp_path / "spu_common_external_attr_harness"
