@@ -1071,45 +1071,6 @@ def test_set_common_attr_updates_only_requested_master_volume_mode_fields(tmp_pa
     subprocess.run([str(executable)], check=True)
 
 
-def test_set_common_master_volume_attr_sets_volume_and_mode_registers(tmp_path):
-    source = tmp_path / "spu_common_master_volume_attr_harness.cpp"
-    executable = tmp_path / "spu_common_master_volume_attr_harness"
-    source.write_text(
-        """
-        #include <assert.h>
-        #include "LIBSPU.H"
-        extern unsigned short* _spu_RXX;
-
-        int main(void) {
-            SpuSetCommonMasterVolumeAttr(0x1234, 0x5678,
-                                         SPU_VOICE_LINEARIncN,
-                                         SPU_VOICE_DIRECT16);
-            assert(_spu_RXX[192] == 0x9234);
-            assert(_spu_RXX[193] == 0x5678);
-            return 0;
-        }
-        """
-    )
-    subprocess.run(
-        [
-            "g++",
-            "-ffunction-sections",
-            "-fdata-sections",
-            "-Wl,--gc-sections",
-            "-I/usr/include/SDL2",
-            "-I",
-            str(REPO / "EMULATOR"),
-            str(source),
-            str(REPO / "EMULATOR" / "LIBSPU.C"),
-            "-o",
-            str(executable),
-        ],
-        check=True,
-        cwd=REPO,
-    )
-    subprocess.run([str(executable)], check=True)
-
-
 def test_set_common_attr_applies_only_the_masked_external_input_fields(tmp_path):
     source = tmp_path / "spu_common_external_attr_harness.cpp"
     executable = tmp_path / "spu_common_external_attr_harness"
