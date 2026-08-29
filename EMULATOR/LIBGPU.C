@@ -379,8 +379,10 @@ void SetDrawMove(DR_MOVE* p, RECT16* rect, int x, int y)
 
 u_long DrawSyncCallback(void(*func)(void))
 {
+	void (*previous)(void) = drawsync_callback;
+
 	drawsync_callback = func;
-	return 0;
+	return (u_long)(uintptr_t)previous;
 }
 
 u_short GetClut(int x, int y)
