@@ -531,3 +531,64 @@ def test_mute_state_uses_the_control_register_mute_bit(tmp_path):
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_set_common_attr_applies_only_the_masked_cd_input_fields(tmp_path):
+    source = tmp_path / "spu_common_attr_harness.cpp"
+    executable = tmp_path / "spu_common_attr_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+        extern SpuCommonAttr dword_424;
+        extern unsigned short* _spu_RXX;
+
+        int main(void) {
+            SpuCommonAttr attr = {};
+            dword_424.cd.volume.left = 1;
+            dword_424.cd.volume.right = 2;
+            dword_424.cd.mix = SPU_OFF;
+            _spu_RXX[192] = 0x1234;
+
+            attr.mask = SPU_COMMON_CDVOLL | SPU_COMMON_CDVOLR | SPU_COMMON_CDMIX;
+            attr.cd.volume.left = 0x1111;
+            attr.cd.volume.right = -0x2222;
+            attr.cd.mix = SPU_ON;
+            SpuSetCommonAttr(&attr);
+
+            assert(dword_424.cd.volume.left == 0x1111);
+            assert(dword_424.cd.volume.right == -0x2222);
+            assert(dword_424.cd.mix == SPU_ON);
+            assert(_spu_RXX[192] == 0x1234);
+
+            attr.mask = SPU_COMMON_CDVOLL;
+            attr.cd.volume.left = -3;
+            attr.cd.volume.right = 99;
+            attr.cd.mix = SPU_OFF;
+            SpuSetCommonAttr(&attr);
+
+            assert(dword_424.cd.volume.left == -3);
+            assert(dword_424.cd.volume.right == -0x2222);
+            assert(dword_424.cd.mix == SPU_ON);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
