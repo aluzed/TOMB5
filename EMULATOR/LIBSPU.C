@@ -1262,6 +1262,12 @@ void SpuGetCommonAttr(SpuCommonAttr* attr)
 	*attr = dword_424;
 }
 
+void SpuGetCommonCDVolume(short* cd_left, short* cd_right)
+{
+	*cd_left = dword_424.cd.volume.left;
+	*cd_right = dword_424.cd.volume.right;
+}
+
 long SpuInitMalloc(long num, char* top)//(F)
 {
 	if (num > 0)
