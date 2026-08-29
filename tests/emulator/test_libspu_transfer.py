@@ -968,6 +968,53 @@ def test_set_common_cd_volume_updates_only_the_cd_volume_state(tmp_path):
     subprocess.run([str(executable)], check=True)
 
 
+def test_set_common_attr_updates_only_requested_right_master_volume_field(tmp_path):
+    source = tmp_path / "spu_common_master_right_attr_harness.cpp"
+    executable = tmp_path / "spu_common_master_right_attr_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+        extern SpuCommonAttr dword_424;
+
+        int main(void) {
+            SpuCommonAttr attr = {};
+            dword_424.mvol.left = 10;
+            dword_424.mvol.right = 20;
+            dword_424.mvolmode.right = 30;
+
+            attr.mask = SPU_COMMON_MVOLR;
+            attr.mvol.left = 1234;
+            attr.mvol.right = 5678;
+            SpuSetCommonAttr(&attr);
+
+            assert(dword_424.mvol.left == 10);
+            assert(dword_424.mvol.right == 5678);
+            assert(dword_424.mvolmode.right == 30);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)
+
+
 def test_set_common_attr_applies_only_the_masked_external_input_fields(tmp_path):
     source = tmp_path / "spu_common_external_attr_harness.cpp"
     executable = tmp_path / "spu_common_external_attr_harness"

@@ -1216,6 +1216,11 @@ void SpuSetCommonAttr(SpuCommonAttr* attr)
 		dword_424.mvol.left = attr->mvol.left;
 	}
 
+	if (attr->mask & SPU_COMMON_MVOLR)
+	{
+		dword_424.mvol.right = attr->mvol.right;
+	}
+
 	if (attr->mask & SPU_COMMON_CDVOLL)
 	{
 		dword_424.cd.volume.left = attr->cd.volume.left;
