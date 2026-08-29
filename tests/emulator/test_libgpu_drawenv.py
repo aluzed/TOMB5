@@ -352,7 +352,7 @@ def test_parse_line_g3_emits_two_gouraud_line_segments(tmp_path):
 
         int main(void) {
             LINE_G3 line = {};
-            line.x0 = 10; line.y0 = 20; line.x1 = 30; line.y1 = 40; line.x2 = 50; line.y2 = 60;
+            line.x0 = 70; line.y0 = 80; line.x1 = 50; line.y1 = 60; line.x2 = 30; line.y2 = 40;
             line.r0 = 1; line.g0 = 2; line.b0 = 3;
             line.r1 = 4; line.g1 = 5; line.b1 = 6;
             line.r2 = 7; line.g2 = 8; line.b2 = 9;
@@ -362,11 +362,11 @@ def test_parse_line_g3_emits_two_gouraud_line_segments(tmp_path):
             ParseLineG3(&line, false);
 
             assert(line_calls == 2);
-            assert(starts[0][0] == 10 && starts[0][1] == 20);
-            assert(ends[0][0] == 30 && ends[0][1] == 40);
+            assert(starts[0][0] == 50 && starts[0][1] == 60);
+            assert(ends[0][0] == 70 && ends[0][1] == 80);
             assert(starts[1][0] == 30 && starts[1][1] == 40);
             assert(ends[1][0] == 50 && ends[1][1] == 60);
-            const unsigned char expected[2][6] = {{1, 2, 3, 4, 5, 6}, {4, 5, 6, 7, 8, 9}};
+            const unsigned char expected[2][6] = {{4, 5, 6, 1, 2, 3}, {7, 8, 9, 4, 5, 6}};
             for (int i = 0; i < 2; ++i)
                 for (int component = 0; component < 6; ++component)
                     assert(colours[i][component] == expected[i][component]);

@@ -621,10 +621,26 @@ void ParseLineG3(LINE_G3* line, bool semiTransparent)
 
 	for (int i = 0; i < 2; ++i)
 	{
+		short* start = starts[i];
+		short* end = ends[i];
+		unsigned char* startColour = colours[i];
+		unsigned char* endColour = colours[i + 1];
+
+		if (start[0] > end[0] || (start[0] == end[0] && start[1] > end[1]))
+		{
+			short* point = start;
+			start = end;
+			end = point;
+
+			unsigned char* colour = startColour;
+			startColour = endColour;
+			endColour = colour;
+		}
+
 		AddSplit(semiTransparent, activeDrawEnv.tpage, whiteTexture);
-		Emulator_GenerateLineArray(&g_vertexBuffer[g_vertexIndex], starts[i], ends[i]);
+		Emulator_GenerateLineArray(&g_vertexBuffer[g_vertexIndex], start, end);
 		Emulator_GenerateTexcoordArrayLineZero(&g_vertexBuffer[g_vertexIndex], 0);
-		Emulator_GenerateColourArrayLine(&g_vertexBuffer[g_vertexIndex], colours[i], colours[i + 1]);
+		Emulator_GenerateColourArrayLine(&g_vertexBuffer[g_vertexIndex], startColour, endColour);
 		MakeTriangle();
 		g_vertexIndex += 6;
 	}
