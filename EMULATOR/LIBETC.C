@@ -27,8 +27,7 @@ static int g_initialisedPadSubsystem = FALSE;
 
 int StopCallback(void)
 {
-	UNIMPLEMENTED();
-	return 0;
+	return ResetCallback();
 }
 
 void PadInit(int mode)
