@@ -14,13 +14,19 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
 
     assert model['latest_ticket'] == 'RE-702'
     assert model['next_ticket'] == 'TBD'
+    assert model['next_topic'] == 'none'
+    assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
+                                       'before reopening this inventory')
     assert model['recent_ticket_count'] >= 151
     dashboard = (repo / 'docs/reverse/tomb5-progress-dashboard.html').read_text(encoding='utf-8')
     assert 'RE-702' in dashboard
     assert 'TBD' in dashboard
+    assert 'Statut terminal : external source-backed behavioral contracts and ABI proof are required before reopening this inventory' in dashboard
 
     output = write(model, tmp_path)
     text = output.read_text(encoding='utf-8')
+    assert 'Statut terminal : external source-backed behavioral contracts and ABI proof are required before reopening this inventory' in text
+    assert write(model, tmp_path).read_bytes() == text.encode('utf-8')
     assert 'RE-449' in text
     assert 'RE-450' in text
     assert 'RE-700' in text
