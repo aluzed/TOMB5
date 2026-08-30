@@ -16,7 +16,9 @@ def build(repo):
   'stop_condition':last.get('stop_condition',''),
   'history_heading': ('Historique clôturé — aucun backlog actif'
                       if last.get('next_ticket', 'TBD') == 'TBD' and last.get('stop_condition', '')
-                      else 'Historique & reste à faire'),
+                      else ('État terminal incomplet — validation requise'
+                            if last.get('next_ticket', 'TBD') == 'TBD'
+                            else 'Historique & reste à faire')),
   'recent_ticket_count':len(recent),
   'rows':recent,
  }
