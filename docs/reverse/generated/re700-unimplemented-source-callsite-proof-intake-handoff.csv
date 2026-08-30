@@ -1,0 +1,2 @@
+story_id,topic,predecessor,source_file_count,unimplemented_marker_count,source_behavior_proof_count,source_patch_authorized_count,selected_domain,selected_pivot,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-700,unimplemented-source-callsite-proof-intake,RE-699,66,354,0,0,none,none,blocked,TBD,none,a source-backed behavioral contract and ABI proof are required before selecting any implementation unit
