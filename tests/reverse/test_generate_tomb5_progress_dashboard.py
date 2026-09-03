@@ -14,7 +14,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-717'
+    assert model['latest_ticket'] == 'RE-718'
     assert model['next_ticket'] == 'TBD'
     assert model['next_topic'] == 'none'
     assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
@@ -22,7 +22,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     assert model['history_heading'] == 'Historique clôturé — aucun backlog actif'
     assert model['recent_ticket_count'] >= 151
     dashboard = (repo / 'docs/reverse/tomb5-progress-dashboard.html').read_text(encoding='utf-8')
-    assert 'RE-717' in dashboard
+    assert 'RE-718' in dashboard
     assert 'TBD' in dashboard
     assert 'Statut terminal : external source-backed behavioral contracts and ABI proof are required before reopening this inventory' in dashboard
 
@@ -60,6 +60,20 @@ def test_dashboard_generator_rejects_a_whitespace_only_terminal_stop_condition(t
     )
 
     with pytest.raises(ValueError, match='incomplete terminal handoff stop_condition: re716-whitespace-stop-handoff.csv'):
+        build(tmp_path)
+
+
+@pytest.mark.parametrize('placeholder', ('none', ' TBD ', 'Unknown', 'n/a', '?'))
+def test_dashboard_generator_rejects_a_placeholder_terminal_topic(tmp_path, placeholder):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're718-placeholder-topic-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        f'RE-718,{placeholder},TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='unmeaningful terminal handoff topic: re718-placeholder-topic-handoff.csv'):
         build(tmp_path)
 
 
