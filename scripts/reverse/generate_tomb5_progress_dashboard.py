@@ -27,7 +27,7 @@ def build(repo):
   if n >= TERMINAL_HANDOFF_FLOOR and row.get('story_id') != f'RE-{n}':
    raise ValueError(f'invalid handoff story_id: {p.name}')
   if n >= TERMINAL_HANDOFF_FLOOR:
-   missing=next((field for field in TERMINAL_REQUIRED_FIELDS if not row.get(field)),None)
+   missing=next((field for field in TERMINAL_REQUIRED_FIELDS if not row.get(field, '').strip()),None)
    if missing: raise ValueError(f'incomplete terminal handoff {missing}: {p.name}')
    next_ticket=row['next_ticket'];next_topic=row['next_topic']
    if next_ticket != 'TBD' and not re.fullmatch(r'RE-[1-9]\d*',next_ticket):

@@ -50,6 +50,19 @@ def test_dashboard_generator_rejects_terminal_handoff_without_stop_condition(tmp
         build(tmp_path)
 
 
+def test_dashboard_generator_rejects_a_whitespace_only_terminal_stop_condition(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're716-whitespace-stop-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        'RE-716,terminal-proof-intake,TBD,none,   \n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='incomplete terminal handoff stop_condition: re716-whitespace-stop-handoff.csv'):
+        build(tmp_path)
+
+
 def test_dashboard_generator_rejects_a_closed_terminal_handoff_with_a_next_topic(tmp_path):
     generated = tmp_path / 'docs/reverse/generated'
     generated.mkdir(parents=True)
