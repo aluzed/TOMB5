@@ -37,7 +37,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     assert 'RE-700' in text
 
 
-def test_dashboard_generator_marks_terminal_handoff_without_stop_condition_incomplete(tmp_path):
+def test_dashboard_generator_rejects_terminal_handoff_without_stop_condition(tmp_path):
     generated = tmp_path / 'docs/reverse/generated'
     generated.mkdir(parents=True)
     (generated / 're705-incomplete-handoff.csv').write_text(
@@ -46,16 +46,8 @@ def test_dashboard_generator_marks_terminal_handoff_without_stop_condition_incom
         encoding='utf-8',
     )
 
-    model = build(tmp_path)
-
-    assert model['latest_ticket'] == 'RE-705'
-    assert model['history_heading'] == 'État terminal incomplet — validation requise'
-    assert 'backlog actif' not in model['history_heading']
-
-    text = write(model, tmp_path).read_text(encoding='utf-8')
-    assert '<h2>État terminal incomplet — validation requise</h2>' in text
-    assert 'Historique clôturé — aucun backlog actif' not in text
-    assert 'Historique &amp; reste à faire' not in text
+    with pytest.raises(ValueError, match='incomplete terminal handoff stop_condition: re705-incomplete-handoff.csv'):
+        build(tmp_path)
 
 
 def test_dashboard_generator_rejects_a_closed_terminal_handoff_with_a_next_topic(tmp_path):

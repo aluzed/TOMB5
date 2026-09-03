@@ -2,7 +2,7 @@ import csv, html, re
 from pathlib import Path
 
 TERMINAL_HANDOFF_FLOOR = 420
-TERMINAL_REQUIRED_FIELDS = ('story_id', 'topic', 'next_ticket', 'next_topic')
+TERMINAL_REQUIRED_FIELDS = ('story_id', 'topic', 'next_ticket', 'next_topic', 'stop_condition')
 
 def _read_handoff(path):
  with path.open(encoding='utf-8', newline='') as handle:
