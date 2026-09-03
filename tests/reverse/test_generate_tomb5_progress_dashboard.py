@@ -58,7 +58,7 @@ def test_dashboard_generator_marks_terminal_handoff_without_stop_condition_incom
     assert 'Historique &amp; reste à faire' not in text
 
 
-def test_dashboard_generator_requires_no_next_topic_for_a_closed_terminal_handoff(tmp_path):
+def test_dashboard_generator_rejects_a_closed_terminal_handoff_with_a_next_topic(tmp_path):
     generated = tmp_path / 'docs/reverse/generated'
     generated.mkdir(parents=True)
     (generated / 're706-ambiguous-handoff.csv').write_text(
@@ -67,14 +67,8 @@ def test_dashboard_generator_requires_no_next_topic_for_a_closed_terminal_handof
         encoding='utf-8',
     )
 
-    model = build(tmp_path)
-
-    assert model['latest_ticket'] == 'RE-706'
-    assert model['history_heading'] == 'État terminal incomplet — validation requise'
-
-    text = write(model, tmp_path).read_text(encoding='utf-8')
-    assert '<h2>État terminal incomplet — validation requise</h2>' in text
-    assert 'Historique clôturé — aucun backlog actif' not in text
+    with pytest.raises(ValueError, match='incoherent terminal handoff direction: re706-ambiguous-handoff.csv'):
+        build(tmp_path)
 
 
 def test_dashboard_generator_rejects_a_multirow_handoff_instead_of_silently_using_its_first_row(tmp_path):
@@ -160,4 +154,25 @@ def test_dashboard_generator_rejects_a_terminal_handoff_without_next_ticket(tmp_
     )
 
     with pytest.raises(ValueError, match='incomplete terminal handoff next_ticket: re710-missing-direction-handoff.csv'):
+        build(tmp_path)
+
+
+@pytest.mark.parametrize(
+    ('next_ticket', 'next_topic', 'message'),
+    [
+        ('later', 'proof-intake', 'invalid terminal handoff next_ticket'),
+        ('TBD', 'proof-intake', 'incoherent terminal handoff direction'),
+        ('RE-712', 'none', 'incoherent terminal handoff direction'),
+    ],
+)
+def test_dashboard_generator_rejects_an_incoherent_terminal_direction(tmp_path, next_ticket, next_topic, message):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're711-incoherent-direction-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        f'RE-711,terminal-proof-intake,{next_ticket},{next_topic},external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match=message):
         build(tmp_path)

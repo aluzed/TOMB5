@@ -28,6 +28,11 @@ def build(repo):
   if n >= TERMINAL_HANDOFF_FLOOR:
    missing=next((field for field in TERMINAL_REQUIRED_FIELDS if not row.get(field)),None)
    if missing: raise ValueError(f'incomplete terminal handoff {missing}: {p.name}')
+   next_ticket=row['next_ticket'];next_topic=row['next_topic']
+   if next_ticket != 'TBD' and not re.fullmatch(r'RE-[1-9]\d*',next_ticket):
+    raise ValueError(f'invalid terminal handoff next_ticket: {p.name}')
+   if (next_ticket == 'TBD') != (next_topic == 'none'):
+    raise ValueError(f'incoherent terminal handoff direction: {p.name}')
   if n >= TERMINAL_HANDOFF_FLOOR and n in terminal_ticket_paths:
    raise ValueError(f'ambiguous terminal handoff ticket: RE-{n}')
   if n >= TERMINAL_HANDOFF_FLOOR: terminal_ticket_paths[n]=p
