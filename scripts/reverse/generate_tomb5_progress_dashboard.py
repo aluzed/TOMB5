@@ -3,6 +3,7 @@ from pathlib import Path
 
 TERMINAL_HANDOFF_FLOOR = 420
 TERMINAL_PREDECESSOR_REQUIRED_FLOOR = 725
+TERMINAL_PREDECESSOR_EXISTENCE_REQUIRED_FLOOR = 726
 TERMINAL_REQUIRED_FIELDS = ('story_id', 'topic', 'next_ticket', 'next_topic', 'stop_condition')
 TERMINAL_STOP_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
 TERMINAL_TOPIC_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
@@ -59,6 +60,9 @@ def build(repo):
   if n >= TERMINAL_HANDOFF_FLOOR: terminal_ticket_paths[n]=p
   rows.append((n,row))
  if not rows: raise ValueError('no valid handoff')
+ for n,row in rows:
+  if n >= TERMINAL_PREDECESSOR_EXISTENCE_REQUIRED_FLOOR and n - 1 not in terminal_ticket_paths:
+   raise ValueError(f'missing terminal handoff predecessor: RE-{n - 1}')
  rows.sort(key=lambda item: item[0]); recent=[(n,r) for n,r in rows if n>=TERMINAL_HANDOFF_FLOOR]; n,last=rows[-1]
  if n >= TERMINAL_HANDOFF_FLOOR and last['next_ticket'] != 'TBD' and int(last['next_ticket'][3:]) not in terminal_ticket_paths:
   raise ValueError(f'dangling latest terminal handoff successor: RE-{n}')
