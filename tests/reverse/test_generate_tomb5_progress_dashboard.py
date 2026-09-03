@@ -204,3 +204,16 @@ def test_dashboard_generator_rejects_a_terminal_successor_without_its_handoff(tm
 
     with pytest.raises(ValueError, match='dangling latest terminal handoff successor: RE-713'):
         build(tmp_path)
+
+
+def test_dashboard_generator_rejects_duplicate_handoff_headers(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're714-duplicate-header-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_ticket,next_topic,stop_condition\n'
+        'RE-714,terminal-proof-intake,RE-715,TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='invalid handoff: re714-duplicate-header-handoff.csv'):
+        build(tmp_path)

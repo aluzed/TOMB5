@@ -8,7 +8,8 @@ def _read_handoff(path):
  with path.open(encoding='utf-8', newline='') as handle:
   reader=csv.DictReader(handle)
   rows=list(reader)
- if not reader.fieldnames or len(rows)!=1 or any(None in row or None in row.values() for row in rows):
+ if (not reader.fieldnames or len(reader.fieldnames) != len(set(reader.fieldnames))
+     or len(rows)!=1 or any(None in row or None in row.values() for row in rows)):
   raise ValueError(f'invalid handoff: {path.name}')
  match=re.fullmatch(r're(\d+)-.+-handoff\.csv',path.name)
  if not match: raise ValueError(f'invalid handoff filename: {path.name}')
