@@ -17,12 +17,16 @@ def _read_handoff(path):
 
 def build(repo):
  rows=[]
+ terminal_ticket_paths={}
  for p in (Path(repo)/'docs/reverse/generated').glob('*handoff.csv'):
   try:
    n,row=_read_handoff(p)
   except (OSError, UnicodeDecodeError, csv.Error) as error: raise ValueError(f'unreadable handoff: {p.name}') from error
   if n >= TERMINAL_HANDOFF_FLOOR and row.get('story_id') != f'RE-{n}':
    raise ValueError(f'invalid handoff story_id: {p.name}')
+  if n >= TERMINAL_HANDOFF_FLOOR and n in terminal_ticket_paths:
+   raise ValueError(f'ambiguous terminal handoff ticket: RE-{n}')
+  if n >= TERMINAL_HANDOFF_FLOOR: terminal_ticket_paths[n]=p
   rows.append((n,row))
  if not rows: raise ValueError('no valid handoff')
  rows.sort(key=lambda item: item[0]); recent=[(n,r) for n,r in rows if n>=TERMINAL_HANDOFF_FLOOR]; n,last=rows[-1]

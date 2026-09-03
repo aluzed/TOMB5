@@ -134,3 +134,17 @@ def test_dashboard_generator_preserves_legacy_handoffs_without_story_ids(tmp_pat
     model = build(tmp_path)
 
     assert model['latest_ticket'] == 'RE-708'
+
+
+def test_dashboard_generator_rejects_duplicate_terminal_ticket_handoffs(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    for suffix in ('authoritative', 'shadow'):
+        (generated / f're709-{suffix}-handoff.csv').write_text(
+            'story_id,topic,next_ticket,next_topic,stop_condition\n'
+            'RE-709,terminal-proof-intake,TBD,none,external proof required\n',
+            encoding='utf-8',
+        )
+
+    with pytest.raises(ValueError, match='ambiguous terminal handoff ticket: RE-709'):
+        build(tmp_path)
