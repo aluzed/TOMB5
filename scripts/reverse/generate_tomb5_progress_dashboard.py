@@ -2,6 +2,7 @@ import csv, html, re
 from pathlib import Path
 
 TERMINAL_HANDOFF_FLOOR = 420
+TERMINAL_REQUIRED_FIELDS = ('story_id', 'topic', 'next_ticket', 'next_topic')
 
 def _read_handoff(path):
  with path.open(encoding='utf-8', newline='') as handle:
@@ -24,6 +25,9 @@ def build(repo):
   except (OSError, UnicodeDecodeError, csv.Error) as error: raise ValueError(f'unreadable handoff: {p.name}') from error
   if n >= TERMINAL_HANDOFF_FLOOR and row.get('story_id') != f'RE-{n}':
    raise ValueError(f'invalid handoff story_id: {p.name}')
+  if n >= TERMINAL_HANDOFF_FLOOR:
+   missing=next((field for field in TERMINAL_REQUIRED_FIELDS if not row.get(field)),None)
+   if missing: raise ValueError(f'incomplete terminal handoff {missing}: {p.name}')
   if n >= TERMINAL_HANDOFF_FLOOR and n in terminal_ticket_paths:
    raise ValueError(f'ambiguous terminal handoff ticket: RE-{n}')
   if n >= TERMINAL_HANDOFF_FLOOR: terminal_ticket_paths[n]=p

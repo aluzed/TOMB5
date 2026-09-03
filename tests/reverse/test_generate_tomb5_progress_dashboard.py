@@ -148,3 +148,16 @@ def test_dashboard_generator_rejects_duplicate_terminal_ticket_handoffs(tmp_path
 
     with pytest.raises(ValueError, match='ambiguous terminal handoff ticket: RE-709'):
         build(tmp_path)
+
+
+def test_dashboard_generator_rejects_a_terminal_handoff_without_next_ticket(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're710-missing-direction-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        'RE-710,terminal-proof-intake,,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='incomplete terminal handoff next_ticket: re710-missing-direction-handoff.csv'):
+        build(tmp_path)
