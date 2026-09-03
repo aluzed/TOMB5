@@ -41,6 +41,8 @@ def build(repo):
   rows.append((n,row))
  if not rows: raise ValueError('no valid handoff')
  rows.sort(key=lambda item: item[0]); recent=[(n,r) for n,r in rows if n>=TERMINAL_HANDOFF_FLOOR]; n,last=rows[-1]
+ if n >= TERMINAL_HANDOFF_FLOOR and last['next_ticket'] != 'TBD' and int(last['next_ticket'][3:]) not in terminal_ticket_paths:
+  raise ValueError(f'dangling latest terminal handoff successor: RE-{n}')
  return {
   'latest_ticket':f'RE-{n}',
   'next_ticket':last.get('next_ticket','TBD'),

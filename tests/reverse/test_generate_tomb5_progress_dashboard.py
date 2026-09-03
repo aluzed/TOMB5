@@ -191,3 +191,16 @@ def test_dashboard_generator_rejects_a_non_forward_terminal_successor(tmp_path, 
 
     with pytest.raises(ValueError, match='non-successor terminal handoff next_ticket: re712-non-forward-handoff.csv'):
         build(tmp_path)
+
+
+def test_dashboard_generator_rejects_a_terminal_successor_without_its_handoff(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're713-dangling-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        'RE-713,terminal-proof-intake,RE-714,proof-intake,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='dangling latest terminal handoff successor: RE-713'):
+        build(tmp_path)
