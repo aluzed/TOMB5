@@ -1,6 +1,8 @@
 import csv, html, re
 from pathlib import Path
 
+TERMINAL_HANDOFF_FLOOR = 420
+
 def _read_handoff(path):
  with path.open(encoding='utf-8', newline='') as handle:
   reader=csv.DictReader(handle)
@@ -17,10 +19,13 @@ def build(repo):
  rows=[]
  for p in (Path(repo)/'docs/reverse/generated').glob('*handoff.csv'):
   try:
-   rows.append(_read_handoff(p))
+   n,row=_read_handoff(p)
   except (OSError, UnicodeDecodeError, csv.Error) as error: raise ValueError(f'unreadable handoff: {p.name}') from error
+  if n >= TERMINAL_HANDOFF_FLOOR and row.get('story_id') != f'RE-{n}':
+   raise ValueError(f'invalid handoff story_id: {p.name}')
+  rows.append((n,row))
  if not rows: raise ValueError('no valid handoff')
- rows.sort(key=lambda item: item[0]); recent=[(n,r) for n,r in rows if n>=420]; n,last=rows[-1]
+ rows.sort(key=lambda item: item[0]); recent=[(n,r) for n,r in rows if n>=TERMINAL_HANDOFF_FLOOR]; n,last=rows[-1]
  return {
   'latest_ticket':f'RE-{n}',
   'next_ticket':last.get('next_ticket','TBD'),

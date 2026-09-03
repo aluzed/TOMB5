@@ -102,3 +102,35 @@ def test_dashboard_generator_rejects_a_handoff_with_a_story_id_that_disagrees_wi
 
     with pytest.raises(ValueError, match='invalid handoff story_id: re707-invalid-handoff.csv'):
         build(tmp_path)
+
+
+def test_dashboard_generator_rejects_a_handoff_without_a_story_id(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're708-missing-story-id-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        ',terminal-proof-intake,TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='invalid handoff story_id: re708-missing-story-id-handoff.csv'):
+        build(tmp_path)
+
+
+def test_dashboard_generator_preserves_legacy_handoffs_without_story_ids(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're148-legacy-handoff.csv').write_text(
+        'topic,next_ticket,next_topic,stop_condition\n'
+        'legacy,RE-149,next,legacy format\n',
+        encoding='utf-8',
+    )
+    (generated / 're708-current-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        'RE-708,current,TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    model = build(tmp_path)
+
+    assert model['latest_ticket'] == 'RE-708'
