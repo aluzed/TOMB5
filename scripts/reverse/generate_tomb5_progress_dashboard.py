@@ -5,6 +5,7 @@ TERMINAL_HANDOFF_FLOOR = 420
 TERMINAL_PREDECESSOR_REQUIRED_FLOOR = 725
 TERMINAL_PREDECESSOR_EXISTENCE_REQUIRED_FLOOR = 726
 TERMINAL_PREDECESSOR_DIRECTION_REQUIRED_FLOOR = 727
+TERMINAL_PREDECESSOR_STOP_CONDITION_REQUIRED_FLOOR = 728
 TERMINAL_REQUIRED_FIELDS = ('story_id', 'topic', 'next_ticket', 'next_topic', 'stop_condition')
 TERMINAL_STOP_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
 TERMINAL_TOPIC_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
@@ -69,6 +70,9 @@ def build(repo):
    predecessor_row=next(candidate for ticket,candidate in rows if ticket == n - 1)
    if predecessor_row.get('next_ticket') != f'RE-{n}':
     raise ValueError(f'incoherent terminal handoff predecessor direction: RE-{n - 1}')
+   if (n >= TERMINAL_PREDECESSOR_STOP_CONDITION_REQUIRED_FLOOR
+       and predecessor_row.get('stop_condition') != row.get('stop_condition')):
+    raise ValueError(f'incoherent terminal handoff predecessor stop_condition: RE-{n - 1}')
  rows.sort(key=lambda item: item[0]); recent=[(n,r) for n,r in rows if n>=TERMINAL_HANDOFF_FLOOR]; n,last=rows[-1]
  if n >= TERMINAL_HANDOFF_FLOOR and last['next_ticket'] != 'TBD' and int(last['next_ticket'][3:]) not in terminal_ticket_paths:
   raise ValueError(f'dangling latest terminal handoff successor: RE-{n}')

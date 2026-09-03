@@ -9,6 +9,7 @@ Status: `Done`
 - [x] Un test RED couvre RE-727 dont le prédécesseur RE-726 existe mais ferme encore la chaîne.
 - [x] Le générateur exige désormais, pour les nouveaux handoffs à partir de RE-727, que le prédécesseur immédiatement antérieur désigne explicitement le ticket courant.
 - [x] RE-726 désigne RE-727, ce qui rend la transition publiée cohérente sans rouvrir les dossiers de comportement source.
+- [x] RE-727 désigne RE-728 afin de poursuivre l'audit fail-closed de la condition d'arrêt publiée.
 - [x] Aucun contrat comportemental externe attribuable ni preuve ABI non brute n’a été trouvé dans les artefacts autorisés ; aucun patch de production n’est tenté.
 - [x] Le dashboard reste déterministe, terminal et sans backlog actif.
 
