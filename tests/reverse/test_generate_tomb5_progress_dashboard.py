@@ -1,6 +1,8 @@
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO = Path(__file__).resolve().parents[2]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
@@ -73,3 +75,30 @@ def test_dashboard_generator_requires_no_next_topic_for_a_closed_terminal_handof
     text = write(model, tmp_path).read_text(encoding='utf-8')
     assert '<h2>État terminal incomplet — validation requise</h2>' in text
     assert 'Historique clôturé — aucun backlog actif' not in text
+
+
+def test_dashboard_generator_rejects_a_multirow_handoff_instead_of_silently_using_its_first_row(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're707-ambiguous-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        'RE-707,terminal-proof-intake,TBD,none,external proof required\n'
+        'RE-708,unauthorized-reopen,RE-709,unsafe,\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='invalid handoff: re707-ambiguous-handoff.csv'):
+        build(tmp_path)
+
+
+def test_dashboard_generator_rejects_a_handoff_with_a_story_id_that_disagrees_with_its_filename(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're707-invalid-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        'RE-708,terminal-proof-intake,TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='invalid handoff story_id: re707-invalid-handoff.csv'):
+        build(tmp_path)

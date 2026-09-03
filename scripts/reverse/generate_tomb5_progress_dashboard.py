@@ -1,14 +1,26 @@
 import csv, html, re
 from pathlib import Path
 
+def _read_handoff(path):
+ with path.open(encoding='utf-8', newline='') as handle:
+  reader=csv.DictReader(handle)
+  rows=list(reader)
+ if not reader.fieldnames or len(rows)!=1 or any(None in row or None in row.values() for row in rows):
+  raise ValueError(f'invalid handoff: {path.name}')
+ match=re.fullmatch(r're(\d+)-.+-handoff\.csv',path.name)
+ if not match: raise ValueError(f'invalid handoff filename: {path.name}')
+ row=rows[0];story_id=row.get('story_id')
+ if story_id and story_id != f'RE-{match.group(1)}': raise ValueError(f'invalid handoff story_id: {path.name}')
+ return int(match.group(1)),row
+
 def build(repo):
  rows=[]
  for p in (Path(repo)/'docs/reverse/generated').glob('*handoff.csv'):
   try:
-   r=next(csv.DictReader(p.open(encoding='utf-8')));m=re.fullmatch(r'RE-(\d+)',r.get('story_id',''))
-   if m: rows.append((int(m.group(1)),r))
-  except (OSError, StopIteration): pass
- rows.sort(); recent=[(n,r) for n,r in rows if n>=420]; n,last=rows[-1]
+   rows.append(_read_handoff(p))
+  except (OSError, UnicodeDecodeError, csv.Error) as error: raise ValueError(f'unreadable handoff: {p.name}') from error
+ if not rows: raise ValueError('no valid handoff')
+ rows.sort(key=lambda item: item[0]); recent=[(n,r) for n,r in rows if n>=420]; n,last=rows[-1]
  return {
   'latest_ticket':f'RE-{n}',
   'next_ticket':last.get('next_ticket','TBD'),
