@@ -3,6 +3,7 @@ from pathlib import Path
 
 TERMINAL_HANDOFF_FLOOR = 420
 TERMINAL_REQUIRED_FIELDS = ('story_id', 'topic', 'next_ticket', 'next_topic', 'stop_condition')
+TERMINAL_STOP_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
 
 def _read_handoff(path):
  with path.open(encoding='utf-8', newline='') as handle:
@@ -29,6 +30,8 @@ def build(repo):
   if n >= TERMINAL_HANDOFF_FLOOR:
    missing=next((field for field in TERMINAL_REQUIRED_FIELDS if not row.get(field, '').strip()),None)
    if missing: raise ValueError(f'incomplete terminal handoff {missing}: {p.name}')
+   if row['stop_condition'].strip().casefold() in TERMINAL_STOP_PLACEHOLDERS:
+    raise ValueError(f'unmeaningful terminal handoff stop_condition: {p.name}')
    next_ticket=row['next_ticket'];next_topic=row['next_topic']
    if next_ticket != 'TBD' and not re.fullmatch(r'RE-[1-9]\d*',next_ticket):
     raise ValueError(f'invalid terminal handoff next_ticket: {p.name}')
