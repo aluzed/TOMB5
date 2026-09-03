@@ -6,8 +6,8 @@ TERMINAL_REQUIRED_FIELDS = ('story_id', 'topic', 'next_ticket', 'next_topic', 's
 TERMINAL_STOP_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
 TERMINAL_TOPIC_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
 
-def _has_terminal_control_characters(value):
- return any(unicodedata.category(character) == 'Cc' for character in value)
+def _has_unsafe_terminal_format_characters(value):
+ return any(unicodedata.category(character) in {'Cc', 'Cf'} for character in value)
 
 def _read_handoff(path):
  with path.open(encoding='utf-8', newline='') as handle:
@@ -42,7 +42,7 @@ def build(repo):
    if row['stop_condition'].strip().casefold() in TERMINAL_STOP_PLACEHOLDERS:
     raise ValueError(f'unmeaningful terminal handoff stop_condition: {p.name}')
    control_field=next((field for field in TERMINAL_REQUIRED_FIELDS
-                       if _has_terminal_control_characters(row[field])),None)
+                       if _has_unsafe_terminal_format_characters(row[field])),None)
    if control_field:
     raise ValueError(f'unsafe terminal handoff {control_field}: {p.name}')
    next_ticket=row['next_ticket'];next_topic=row['next_topic']
