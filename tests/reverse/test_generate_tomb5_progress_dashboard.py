@@ -14,7 +14,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-726'
+    assert model['latest_ticket'] == 'RE-727'
     assert model['next_ticket'] == 'TBD'
     assert model['next_topic'] == 'none'
     assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
@@ -87,6 +87,29 @@ def test_dashboard_generator_rejects_a_new_terminal_handoff_whose_predecessor_is
     )
 
     with pytest.raises(ValueError, match='missing terminal handoff predecessor: RE-725'):
+        build(tmp_path)
+
+
+def test_dashboard_generator_rejects_a_new_terminal_handoff_whose_published_predecessor_closes_the_chain(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're725-predecessor-handoff.csv').write_text(
+        'story_id,topic,predecessor,next_ticket,next_topic,stop_condition\n'
+        'RE-725,terminal-handoff-predecessor-presence,RE-724,TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+    (generated / 're726-predecessor-handoff.csv').write_text(
+        'story_id,topic,predecessor,next_ticket,next_topic,stop_condition\n'
+        'RE-726,terminal-handoff-predecessor-existence,RE-725,TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+    (generated / 're727-direction-handoff.csv').write_text(
+        'story_id,topic,predecessor,next_ticket,next_topic,stop_condition\n'
+        'RE-727,terminal-handoff-predecessor-direction,RE-726,TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='incoherent terminal handoff predecessor direction: RE-726'):
         build(tmp_path)
 
 

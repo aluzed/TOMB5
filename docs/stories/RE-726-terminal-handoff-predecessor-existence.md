@@ -15,6 +15,6 @@ Status: `Done`
 
 Tout nouveau handoff terminal à partir de RE-726 doit référencer un prédécesseur immédiatement antérieur effectivement publié. Cette contrainte fail-closed complète le contrôle de présence et de cohérence de RE-725, protège la traçabilité des métadonnées sans réécrire l’historique et ne réinterprète aucun artefact de jeu. Aucun patch de production n’est autorisé sans contrat comportemental externe attribuable et preuve ABI non brute.
 
-## Next safe objective
+## Successeur publié
 
-`TBD` — intake d’un contrat comportemental source-backed attribuable et d’une preuve ABI non brute ; aucun patch de production n’est autorisé avant cette preuve.
+RE-727 vérifie que le prédécesseur publié désigne explicitement son successeur ; l’intake d’un contrat comportemental source-backed attribuable et d’une preuve ABI non brute reste requis avant tout patch de production.
