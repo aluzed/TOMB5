@@ -14,7 +14,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-723'
+    assert model['latest_ticket'] == 'RE-724'
     assert model['next_ticket'] == 'TBD'
     assert model['next_topic'] == 'none'
     assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
@@ -291,3 +291,18 @@ def test_dashboard_generator_rejects_duplicate_handoff_headers(tmp_path):
 
     with pytest.raises(ValueError, match='invalid handoff: re714-duplicate-header-handoff.csv'):
         build(tmp_path)
+
+
+def test_dashboard_generator_escapes_a_legacy_next_ticket_before_projecting_it_to_html(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're419-legacy-handoff.csv').write_text(
+        'topic,next_ticket,next_topic,stop_condition\n'
+        'legacy,<img src=x onerror=alert(1)>,legacy-next,legacy status\n',
+        encoding='utf-8',
+    )
+
+    dashboard = write(build(tmp_path), tmp_path).read_text(encoding='utf-8')
+
+    assert '<p class="n">&lt;img src=x onerror=alert(1)&gt;</p>' in dashboard
+    assert '<p class="n"><img src=x onerror=alert(1)></p>' not in dashboard
