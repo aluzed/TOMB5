@@ -7,7 +7,7 @@ TERMINAL_STOP_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'u
 TERMINAL_TOPIC_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
 
 def _has_unsafe_terminal_format_characters(value):
- return any(unicodedata.category(character) in {'Cc', 'Cf'} for character in value)
+ return any(unicodedata.category(character) in {'Cc', 'Cf', 'Zl', 'Zp'} for character in value)
 
 def _read_handoff(path):
  with path.open(encoding='utf-8', newline='') as handle:

@@ -1,0 +1,2 @@
+story_id,topic,predecessor,source_file_count,function_row_count,unimplemented_marker_count,source_behavior_proof_count,source_patch_authorized_count,selected_domain,selected_pivot,code_change_readiness,next_ticket,next_topic,stop_condition
+RE-723,terminal-handoff-unicode-line-separator-rejection,RE-722,66,353,354,0,0,none,none,blocked,TBD,none,external source-backed behavioral contracts and ABI proof are required before reopening this inventory

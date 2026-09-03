@@ -14,7 +14,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-722'
+    assert model['latest_ticket'] == 'RE-723'
     assert model['next_ticket'] == 'TBD'
     assert model['next_topic'] == 'none'
     assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
@@ -112,6 +112,7 @@ def test_dashboard_generator_rejects_a_placeholder_terminal_stop_condition(tmp_p
     ('stop_condition', 'external\nproof required'),
     ('stop_condition', 'external\x85proof required'),
     ('stop_condition', 'external\u200bproof required'),
+    ('stop_condition', 'external\u2028proof required'),
 ))
 def test_dashboard_generator_rejects_control_characters_in_terminal_fields(tmp_path, field, value):
     generated = tmp_path / 'docs/reverse/generated'
