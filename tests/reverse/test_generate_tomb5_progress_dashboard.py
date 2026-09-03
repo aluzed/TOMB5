@@ -14,7 +14,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-724'
+    assert model['latest_ticket'] == 'RE-725'
     assert model['next_ticket'] == 'TBD'
     assert model['next_topic'] == 'none'
     assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
@@ -60,6 +60,20 @@ def test_dashboard_generator_rejects_a_whitespace_only_terminal_stop_condition(t
     )
 
     with pytest.raises(ValueError, match='incomplete terminal handoff stop_condition: re716-whitespace-stop-handoff.csv'):
+        build(tmp_path)
+
+
+@pytest.mark.parametrize('predecessor', ('', '   '))
+def test_dashboard_generator_rejects_a_terminal_handoff_without_a_predecessor(tmp_path, predecessor):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're725-missing-predecessor-handoff.csv').write_text(
+        'story_id,topic,predecessor,next_ticket,next_topic,stop_condition\n'
+        f'RE-725,terminal-handoff-predecessor-presence,{predecessor},TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='incomplete terminal handoff predecessor: re725-missing-predecessor-handoff.csv'):
         build(tmp_path)
 
 

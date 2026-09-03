@@ -2,6 +2,7 @@ import csv, html, re, unicodedata
 from pathlib import Path
 
 TERMINAL_HANDOFF_FLOOR = 420
+TERMINAL_PREDECESSOR_REQUIRED_FLOOR = 725
 TERMINAL_REQUIRED_FIELDS = ('story_id', 'topic', 'next_ticket', 'next_topic', 'stop_condition')
 TERMINAL_STOP_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
 TERMINAL_TOPIC_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
@@ -32,7 +33,8 @@ def build(repo):
   if n >= TERMINAL_HANDOFF_FLOOR and row.get('story_id') != f'RE-{n}':
    raise ValueError(f'invalid handoff story_id: {p.name}')
   if n >= TERMINAL_HANDOFF_FLOOR:
-   missing=next((field for field in TERMINAL_REQUIRED_FIELDS if not row.get(field, '').strip()),None)
+   required_fields = TERMINAL_REQUIRED_FIELDS + (('predecessor',) if n >= TERMINAL_PREDECESSOR_REQUIRED_FLOOR else ())
+   missing=next((field for field in required_fields if not row.get(field, '').strip()),None)
    if missing: raise ValueError(f'incomplete terminal handoff {missing}: {p.name}')
    if 'predecessor' in row:
     if row['predecessor'] != f'RE-{n - 1}':
