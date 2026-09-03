@@ -1,4 +1,4 @@
-import csv, html, re
+import csv, html, re, unicodedata
 from pathlib import Path
 
 TERMINAL_HANDOFF_FLOOR = 420
@@ -7,7 +7,7 @@ TERMINAL_STOP_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'u
 TERMINAL_TOPIC_PLACEHOLDERS = frozenset({'-', '?', 'n/a', 'na', 'none', 'tbd', 'unknown'})
 
 def _has_terminal_control_characters(value):
- return any(ord(character) < 32 or ord(character) == 127 for character in value)
+ return any(unicodedata.category(character) == 'Cc' for character in value)
 
 def _read_handoff(path):
  with path.open(encoding='utf-8', newline='') as handle:
