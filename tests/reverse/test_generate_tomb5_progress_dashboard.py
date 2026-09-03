@@ -14,7 +14,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-719'
+    assert model['latest_ticket'] == 'RE-720'
     assert model['next_ticket'] == 'TBD'
     assert model['next_topic'] == 'none'
     assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
@@ -22,7 +22,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     assert model['history_heading'] == 'Historique clôturé — aucun backlog actif'
     assert model['recent_ticket_count'] >= 151
     dashboard = (repo / 'docs/reverse/tomb5-progress-dashboard.html').read_text(encoding='utf-8')
-    assert 'RE-719' in dashboard
+    assert 'RE-720' in dashboard
     assert 'TBD' in dashboard
     assert 'Statut terminal : external source-backed behavioral contracts and ABI proof are required before reopening this inventory' in dashboard
 
@@ -102,6 +102,30 @@ def test_dashboard_generator_rejects_a_placeholder_terminal_stop_condition(tmp_p
     )
 
     with pytest.raises(ValueError, match='unmeaningful terminal handoff stop_condition: re717-placeholder-stop-handoff.csv'):
+        build(tmp_path)
+
+
+@pytest.mark.parametrize(('field', 'value'), (
+    ('topic', 'terminal\tproof-intake'),
+    ('next_ticket', 'TBD\x7f'),
+    ('next_topic', 'no\nnone'),
+    ('stop_condition', 'external\nproof required'),
+))
+def test_dashboard_generator_rejects_control_characters_in_terminal_fields(tmp_path, field, value):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    row = {
+        'story_id': 'RE-720', 'topic': 'terminal-proof-intake', 'next_ticket': 'TBD',
+        'next_topic': 'none', 'stop_condition': 'external proof required',
+    }
+    row[field] = value
+    (generated / 're720-control-character-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        + ','.join(f'"{row[name]}"' for name in ('story_id', 'topic', 'next_ticket', 'next_topic', 'stop_condition')) + '\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match=f'unsafe terminal handoff {field}: re720-control-character-handoff.csv'):
         build(tmp_path)
 
 
