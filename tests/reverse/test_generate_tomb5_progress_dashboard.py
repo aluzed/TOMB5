@@ -163,6 +163,7 @@ def test_dashboard_generator_rejects_a_terminal_handoff_without_next_ticket(tmp_
         ('later', 'proof-intake', 'invalid terminal handoff next_ticket'),
         ('TBD', 'proof-intake', 'incoherent terminal handoff direction'),
         ('RE-712', 'none', 'incoherent terminal handoff direction'),
+        ('RE-713', 'proof-intake', 'non-successor terminal handoff next_ticket'),
     ],
 )
 def test_dashboard_generator_rejects_an_incoherent_terminal_direction(tmp_path, next_ticket, next_topic, message):
@@ -175,4 +176,18 @@ def test_dashboard_generator_rejects_an_incoherent_terminal_direction(tmp_path, 
     )
 
     with pytest.raises(ValueError, match=message):
+        build(tmp_path)
+
+
+@pytest.mark.parametrize('next_ticket', ('RE-711', 'RE-710'))
+def test_dashboard_generator_rejects_a_non_forward_terminal_successor(tmp_path, next_ticket):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're712-non-forward-handoff.csv').write_text(
+        'story_id,topic,next_ticket,next_topic,stop_condition\n'
+        f'RE-712,terminal-proof-intake,{next_ticket},proof-intake,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='non-successor terminal handoff next_ticket: re712-non-forward-handoff.csv'):
         build(tmp_path)

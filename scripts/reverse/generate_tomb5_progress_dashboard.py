@@ -33,6 +33,8 @@ def build(repo):
     raise ValueError(f'invalid terminal handoff next_ticket: {p.name}')
    if (next_ticket == 'TBD') != (next_topic == 'none'):
     raise ValueError(f'incoherent terminal handoff direction: {p.name}')
+   if next_ticket != 'TBD' and int(next_ticket[3:]) != n + 1:
+    raise ValueError(f'non-successor terminal handoff next_ticket: {p.name}')
   if n >= TERMINAL_HANDOFF_FLOOR and n in terminal_ticket_paths:
    raise ValueError(f'ambiguous terminal handoff ticket: RE-{n}')
   if n >= TERMINAL_HANDOFF_FLOOR: terminal_ticket_paths[n]=p
