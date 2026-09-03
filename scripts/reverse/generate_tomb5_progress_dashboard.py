@@ -31,6 +31,9 @@ def build(repo):
   if n >= TERMINAL_HANDOFF_FLOOR:
    missing=next((field for field in TERMINAL_REQUIRED_FIELDS if not row.get(field, '').strip()),None)
    if missing: raise ValueError(f'incomplete terminal handoff {missing}: {p.name}')
+   if 'predecessor' in row:
+    if row['predecessor'] != f'RE-{n - 1}':
+     raise ValueError(f'incoherent terminal handoff predecessor: {p.name}')
    if row['topic'].strip().casefold() in TERMINAL_TOPIC_PLACEHOLDERS:
     raise ValueError(f'unmeaningful terminal handoff topic: {p.name}')
    if row['stop_condition'].strip().casefold() in TERMINAL_STOP_PLACEHOLDERS:
