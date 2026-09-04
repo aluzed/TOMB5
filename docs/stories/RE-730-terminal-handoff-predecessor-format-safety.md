@@ -19,4 +19,4 @@ Un caractère de format invisible dans `predecessor` ne doit pas être rapporté
 
 ## Next safe objective
 
-`TBD` — intake d'un contrat comportemental source-backed attribuable et d'une preuve ABI non brute ; aucun patch de production n'est autorisé avant cette preuve.
+Remplacé par `RE-731` — sûreté de format de l'identifiant de story terminal ; le blocage de fond reste l'intake d'un contrat comportemental source-backed attribuable et d'une preuve ABI non brute.

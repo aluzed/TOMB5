@@ -23,9 +23,11 @@ def _read_handoff(path):
   raise ValueError(f'invalid handoff: {path.name}')
  match=re.fullmatch(r're(\d+)-.+-handoff\.csv',path.name)
  if not match: raise ValueError(f'invalid handoff filename: {path.name}')
- row=rows[0];story_id=row.get('story_id')
+ row=rows[0];story_id=row.get('story_id');ticket_number=int(match.group(1))
+ if ticket_number >= TERMINAL_HANDOFF_FLOOR and story_id and _has_unsafe_terminal_format_characters(story_id):
+  raise ValueError(f'unsafe terminal handoff story_id: {path.name}')
  if story_id and story_id != f'RE-{match.group(1)}': raise ValueError(f'invalid handoff story_id: {path.name}')
- return int(match.group(1)),row
+ return ticket_number,row
 
 def build(repo):
  rows=[]

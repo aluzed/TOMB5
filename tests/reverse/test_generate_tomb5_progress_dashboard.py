@@ -14,7 +14,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-730'
+    assert model['latest_ticket'] == 'RE-731'
     assert model['next_ticket'] == 'TBD'
     assert model['next_topic'] == 'none'
     assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
@@ -23,6 +23,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     assert model['recent_ticket_count'] >= 151
     dashboard = (repo / 'docs/reverse/tomb5-progress-dashboard.html').read_text(encoding='utf-8')
     assert 'RE-720' in dashboard
+    assert 'RE-731' in dashboard
     assert 'TBD' in dashboard
     assert 'Statut terminal : external source-backed behavioral contracts and ABI proof are required before reopening this inventory' in dashboard
 
@@ -184,6 +185,19 @@ def test_dashboard_generator_rejects_unsafe_format_characters_in_a_terminal_pred
     )
 
     with pytest.raises(ValueError, match='unsafe terminal handoff predecessor: re730-unsafe-predecessor-handoff.csv'):
+        build(tmp_path)
+
+
+def test_dashboard_generator_rejects_unsafe_format_characters_in_a_terminal_story_id(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're731-unsafe-story-id-handoff.csv').write_text(
+        'story_id,topic,predecessor,next_ticket,next_topic,stop_condition\n'
+        'RE-731\u200b,terminal-handoff-story-id-format-safety,RE-730,TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='unsafe terminal handoff story_id: re731-unsafe-story-id-handoff.csv'):
         build(tmp_path)
 
 
