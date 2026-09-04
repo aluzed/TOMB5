@@ -14,7 +14,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-729'
+    assert model['latest_ticket'] == 'RE-730'
     assert model['next_ticket'] == 'TBD'
     assert model['next_topic'] == 'none'
     assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
@@ -171,6 +171,19 @@ def test_dashboard_generator_rejects_an_incoherent_declared_terminal_predecessor
     )
 
     with pytest.raises(ValueError, match='incoherent terminal handoff predecessor: re719-incoherent-predecessor-handoff.csv'):
+        build(tmp_path)
+
+
+def test_dashboard_generator_rejects_unsafe_format_characters_in_a_terminal_predecessor(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    (generated / 're730-unsafe-predecessor-handoff.csv').write_text(
+        'story_id,topic,predecessor,next_ticket,next_topic,stop_condition\n'
+        'RE-730,terminal-handoff-predecessor-format-safety,RE-729\u200b,TBD,none,external proof required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='unsafe terminal handoff predecessor: re730-unsafe-predecessor-handoff.csv'):
         build(tmp_path)
 
 

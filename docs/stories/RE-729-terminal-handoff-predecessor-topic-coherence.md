@@ -19,4 +19,4 @@ Une référence de ticket ne suffit pas à assurer la continuité de la chaîne 
 
 ## Next safe objective
 
-`TBD` — intake d'un contrat comportemental source-backed attribuable et d'une preuve ABI non brute ; aucun patch de production n'est autorisé avant cette preuve.
+Remplacé par `RE-730` — sûreté de format du prédécesseur terminal ; le blocage de fond reste l'intake d'un contrat comportemental source-backed attribuable et d'une preuve ABI non brute.

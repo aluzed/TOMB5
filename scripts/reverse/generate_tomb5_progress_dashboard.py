@@ -40,6 +40,11 @@ def build(repo):
    required_fields = TERMINAL_REQUIRED_FIELDS + (('predecessor',) if n >= TERMINAL_PREDECESSOR_REQUIRED_FLOOR else ())
    missing=next((field for field in required_fields if not row.get(field, '').strip()),None)
    if missing: raise ValueError(f'incomplete terminal handoff {missing}: {p.name}')
+   control_fields = TERMINAL_REQUIRED_FIELDS + (('predecessor',) if 'predecessor' in row else ())
+   control_field=next((field for field in control_fields
+                       if _has_unsafe_terminal_format_characters(row[field])),None)
+   if control_field:
+    raise ValueError(f'unsafe terminal handoff {control_field}: {p.name}')
    if 'predecessor' in row:
     if row['predecessor'] != f'RE-{n - 1}':
      raise ValueError(f'incoherent terminal handoff predecessor: {p.name}')
@@ -47,10 +52,6 @@ def build(repo):
     raise ValueError(f'unmeaningful terminal handoff topic: {p.name}')
    if row['stop_condition'].strip().casefold() in TERMINAL_STOP_PLACEHOLDERS:
     raise ValueError(f'unmeaningful terminal handoff stop_condition: {p.name}')
-   control_field=next((field for field in TERMINAL_REQUIRED_FIELDS
-                       if _has_unsafe_terminal_format_characters(row[field])),None)
-   if control_field:
-    raise ValueError(f'unsafe terminal handoff {control_field}: {p.name}')
    next_ticket=row['next_ticket'];next_topic=row['next_topic']
    if next_ticket != 'TBD' and not re.fullmatch(r'RE-[1-9]\d*',next_ticket):
     raise ValueError(f'invalid terminal handoff next_ticket: {p.name}')
