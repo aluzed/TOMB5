@@ -14,7 +14,7 @@ def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)
 
-    assert model['latest_ticket'] == 'RE-728'
+    assert model['latest_ticket'] == 'RE-729'
     assert model['next_ticket'] == 'TBD'
     assert model['next_topic'] == 'none'
     assert model['stop_condition'] == ('external source-backed behavioral contracts and ABI proof are required '
@@ -133,6 +133,30 @@ def test_dashboard_generator_rejects_a_new_terminal_handoff_that_weakens_its_pre
     )
 
     with pytest.raises(ValueError, match='incoherent terminal handoff predecessor stop_condition: RE-727'):
+        build(tmp_path)
+
+
+def test_dashboard_generator_rejects_a_new_terminal_handoff_whose_predecessor_names_a_different_topic(tmp_path):
+    generated = tmp_path / 'docs/reverse/generated'
+    generated.mkdir(parents=True)
+    for ticket, predecessor, next_ticket, next_topic in (
+        ('RE-725', 'RE-724', 'RE-726', 'terminal-handoff-predecessor-existence'),
+        ('RE-726', 'RE-725', 'RE-727', 'terminal-handoff-predecessor-direction-coherence'),
+        ('RE-727', 'RE-726', 'RE-728', 'terminal-handoff-predecessor-stop-condition-coherence'),
+        ('RE-728', 'RE-727', 'RE-729', 'wrong-successor-topic'),
+    ):
+        (generated / f're{ticket[3:]}-predecessor-handoff.csv').write_text(
+            'story_id,topic,predecessor,next_ticket,next_topic,stop_condition\n'
+            f'{ticket},terminal-proof-intake,{predecessor},{next_ticket},{next_topic},external source-backed behavioral contracts and ABI proof are required\n',
+            encoding='utf-8',
+        )
+    (generated / 're729-topic-handoff.csv').write_text(
+        'story_id,topic,predecessor,next_ticket,next_topic,stop_condition\n'
+        'RE-729,terminal-handoff-predecessor-topic-coherence,RE-728,TBD,none,external source-backed behavioral contracts and ABI proof are required\n',
+        encoding='utf-8',
+    )
+
+    with pytest.raises(ValueError, match='incoherent terminal handoff predecessor topic: RE-728'):
         build(tmp_path)
 
 
