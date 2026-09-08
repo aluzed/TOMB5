@@ -90,8 +90,16 @@
 <tr><td>Livraison et limites</td><td>Revue indépendante favorable ; tests et différentiel rejoués par le parent ; accents et sentinelles toujours ouverts ; aucun rejet de production ajouté</td></tr>
 </table>
 <p><a href="../stories/RE-743-control-glyph-colour-contract.md">Contrat, preuve, tests et tracker RE-743</a>. Les 88 écarts RGB authentiques de RE-742 sont corrigés sur le corpus signé ; les résultats RE-742 ci-dessus restent historiques.</p>
+<h2>RE-744 · Sentinelle et dimensions : preuves différentielles</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Ghidra et expérience causale cible</td><td class="ok">14 720 appels ; 960 cas sentinelles changent de RGB avec la RAM adjacente synthétique, sans variation XY/UV ni mesure ; 2 720 témoins stables</td></tr>
+<tr><td>GetStringDimensions et mesure, vraie unité</td><td class="ok">4 300 cas sans accents concordants, normal et ASan/UBSan ; preuve bornée, pas universelle</td></tr>
+<tr><td>Accents et appel direct DrawChar</td><td class="blocked">552 écarts de dimensions, 184 de mesure ; sentinelle directe : diagnostics ASan/UBSan, atteignabilité réelle non prouvée</td></tr>
+<tr><td>Validation et portée</td><td>4 tests privés et probe rejoués par le parent ; revue indépendante favorable avec limites ; aucune modification de production</td></tr>
+</table>
+<p><a href="../stories/RE-744-text-sentinel-dimensions-proof.md">Preuves, tracker, limites et handoff RE-744</a>. Les couleurs réelles en jeu ne sont pas établies par la perturbation synthétique.</p>
 <h2>Suite de la recherche</h2>
-<p>Prochaine unité : représentation fidèle et sûre des glyphes accentués/sentinelles et domaine d’entrée, avant unification de la sélection. Le correctif local de couleur ne reconstruit pas le contrat complet et ne généralise pas les rejets expérimentaux.</p>
-<p>RE-743 corrige le contrat local de couleur après revue indépendante favorable. GetStringDimensions n’est pas nouvellement prouvé. Limite de cette unité : 8 septembre 2026 à 23 h 15 (Paris), dans l’autonomie globale autorisée jusqu’à 23 h 45.</p>
+<p>Prochaine unité : établir l’atteignabilité des sentinelles par les appelants/chaînes réels et l’état vivant des teintes adjacentes avant une représentation portable ; sinon changer de domaine cohérent. Le corpus chargé testé ne contient pas d’octet accentué.</p>
+<p>RE-743 conserve son correctif local de couleur. RE-744 établit seulement une équivalence bornée de GetStringDimensions sans accents. Gardes privées de cette unité : 8 septembre 2026 à 23 h 10 Paris ; autonomie globale autorisée jusqu’à 23 h 45.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
