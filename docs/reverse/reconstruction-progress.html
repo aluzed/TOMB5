@@ -98,8 +98,16 @@
 <tr><td>Validation et portée</td><td>4 tests privés et probe rejoués par le parent ; revue indépendante favorable avec limites ; aucune modification de production</td></tr>
 </table>
 <p><a href="../stories/RE-744-text-sentinel-dimensions-proof.md">Preuves, tracker, limites et handoff RE-744</a>. Les couleurs réelles en jeu ne sont pas établies par la perturbation synthétique.</p>
+<h2>RE-745 · Chargeur cible et texte vivant</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Ghidra et chargeur depuis l’entrée au retour</td><td class="ok">Services fichiers et cache CD cibles exécutés ; 30 entrées concordent avec l’ISO indépendant</td></tr>
+<tr><td>Sorties chargées et branche DisplayConfig</td><td class="ok">250 vues terminées ; pointeurs conservés ; 16 impressions, huit libellés chargés, 48 primitives CPU</td></tr>
+<tr><td>Rejeu et revue indépendante</td><td class="ok">6 tests privés ; neuf sorties reproduites à l’identique ; 1 199 tests publics réussis</td></tr>
+<tr><td>Limites</td><td class="blocked">Une vue non terminée ; aucun accent sur ce chemin ; initialisation et frontières BIOS/CD modélisées, pas de démarrage complet ni preuve matérielle</td></tr>
+</table>
+<p><a href="../stories/RE-745-live-loader-caller-proof.md">Preuves, tracker, limites et handoff RE-745</a>. Aucun correctif de production supplémentaire ; aucune sûreté mémoire générale revendiquée.</p>
 <h2>Suite de la recherche</h2>
-<p>Prochaine unité : établir l’atteignabilité des sentinelles par les appelants/chaînes réels et l’état vivant des teintes adjacentes avant une représentation portable ; sinon changer de domaine cohérent. Le corpus chargé testé ne contient pas d’octet accentué.</p>
-<p>RE-743 conserve son correctif local de couleur. RE-744 établit seulement une équivalence bornée de GetStringDimensions sans accents. Gardes privées de cette unité : 8 septembre 2026 à 23 h 10 Paris ; autonomie globale autorisée jusqu’à 23 h 45.</p>
+<p>Changer de domaine vers les services de chargement/allocation effectivement attribués : comparer contrats et dépendances hôtes avant toute reconstruction. L’ISO disponible ne fournit pas d’autre corpus de langue accentué ; ne pas multiplier les variantes de la matrice texte.</p>
+<p>RE-743 conserve son correctif local de couleur. RE-744 reste une équivalence bornée sans accents. Gardes privées RE-745 : 8 septembre 2026 à 23 h 20 Paris ; autonomie globale autorisée jusqu’à 23 h 45.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
