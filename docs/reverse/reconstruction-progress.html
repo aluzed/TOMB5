@@ -73,8 +73,17 @@
 <tr><td>Limites et livraison</td><td>Doubles SDK distincts des preuves cibles ; ni boucle de jeu complète ni matériel ; revue indépendante approuvée ; 125 tests réexécutés par le parent</td></tr>
 </table>
 <p><a href="../stories/RE-739-inherited-pulse-colour-contract.md">Contrat, attribution, tests, tracker et handoff RE-739</a>. Les matrices historiques restent des jalons bornés, pas une reconstruction complète de l’entrée ou du texte.</p>
+<h2>RE-742 · Texte chargé : contrat différentiel borné</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Loader et modèle C face aux instructions MIPS</td><td class="ok">250 vues authentiques sûres ; 2 000 cas authentiques + 848 synthétiques ; 5 696 exécutions cibles</td></tr>
+<tr><td>Glyphes, métriques, événements et primitives</td><td class="ok">30 288 événements et primitives ; aucun écart modèle/cible dans les champs comparés</td></tr>
+<tr><td>Vraie unité source, métriques privées</td><td class="blocked">88 cas authentiques divergent en couleur en signed char ; unsigned char altère aussi les métriques verticales</td></tr>
+<tr><td>Vérification et portée</td><td>4 tests de recherche rejoués par le parent ; modèle ASan/UBSan : 2 955 cas ; revue indépendante favorable ; aucune modification production</td></tr>
+<tr><td>Limites</td><td>Accents synthétiques, dernière vue non terminée rejetée ; rejets expérimentaux non équivalents au binaire ; RAM et teintes synthétiques, pas de matériel</td></tr>
+</table>
+<p><a href="../stories/RE-742-bounded-text-differential-proof.md">Résultats, divergences, tracker et handoff RE-742</a>. RE740/RE741 sont des expériences privées intermédiaires, pas des tickets publics fictivement clôturés.</p>
 <h2>Suite de la recherche</h2>
-<p>RE-739 validée par revue indépendante. Prochaine étape : sélection d’une nouvelle unité cohérente attribuée. Ne pas prolonger les matrices audio ni généraliser les doubles SDK au matériel. Aucune RE-740 ouverte ici. Autonomie autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
-<p>Sélection des glyphes et domaine des caractères différés, non résolus. GetStringDimensions et les corrections multiligne restent inchangées ; aucun marqueur de reconstruction globale ajouté.</p>
+<p>Prochaine unité : sélection et couleur des glyphes PSXPC_N, conversions d’octets séparées du signe des métriques et raccordement des tables. Tests sur la vraie unité avant correction et comparaison privée après correction. Ne pas généraliser le resolver expérimental à la production sans contrat d’entrée.</p>
+<p>RE-739 reste la dernière reconstruction production. GetStringDimensions n’est pas nouvellement prouvé ; sentinelles et domaine d’entrée restent à qualifier. Autonomie autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
