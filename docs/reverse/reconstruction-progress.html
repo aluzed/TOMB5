@@ -30,8 +30,16 @@
 <tr><td>Activation C de l’animation</td><td class="blocked">Producteur PSX des textures désactivé ; initialisation à prouver avant intégration</td></tr>
 </table>
 <p><a href="../stories/RE-734-pulse-waterfall-target-execution.md">Preuves, limites, tracker et handoff RE-734</a>. Aucun changement du code de production ; pas de validation matérielle revendiquée.</p>
+<h2>RE-735 · Cascades : initialisation et animation reconstruites ensemble</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Overlay embarqué, chargement et relocation cible</td><td class="ok">15 extractions identiques ; vraie routine de relocation exécutée ; producteur décompilé</td></tr>
+<tr><td>Preuve cible producteur et chaîne animation</td><td class="ok">4 992 cas producteur et 704 chaînes réussis en RAM synthétique</td></tr>
+<tr><td>InitialiseWaterfalls + AnimateWaterfalls dans les vraies unités C</td><td class="ok">27 tests après RED ; initialisation appelée par LoadLevel sous PSX_VERSION</td></tr>
+<tr><td>Portée</td><td>Fragment producteur et blocs texture vérifiés ; chargement complet et console non testés ; couleur inchangée</td></tr>
+</table>
+<p><a href="../stories/RE-735-waterfall-initialisation-animation.md">Preuves, tracker et handoff RE-735</a>. Le blocage du producteur mentionné au jalon RE-734 est levé pour cette unité.</p>
 <h2>Suite de la recherche</h2>
-<p>Priorité : attribuer le producteur de textures de cascades dans LoadLevel et son overlay, puis prouver initialisation et animation ensemble. Caractériser aussi la valeur héritée après S_UpdateInput avant tout changement de couleur. L’autonomie reste autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
+<p>Priorité : caractériser la valeur héritée après S_UpdateInput et ses appels SDK avant tout changement de couleur. L’autonomie reste autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
 <p>Sélection des glyphes et domaine des caractères différés, non résolus. GetStringDimensions et les corrections multiligne restent inchangées ; aucun marqueur de reconstruction globale ajouté.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>

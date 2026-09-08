@@ -17,6 +17,9 @@ def test_dashboard_links_separate_binary_reconstruction_progress(tmp_path):
     assert 'RE-732' in progress
     assert 'GetStringLength' in progress
     assert 'accents' in progress
+    assert 'RE-735' in progress
+    assert 'InitialiseWaterfalls' in progress
+    assert 'S_UpdateInput' in progress
 
 
 def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):

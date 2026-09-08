@@ -994,6 +994,27 @@ void sub_B3A7C(int a0)
 	envmap_data[5] = ((spr->u1 + 32) & 0xFF) | (((spr->v1 + 32) & 0xFF) << 8);
 }
 #endif
+#if PSX_VERSION
+static void InitialiseWaterfalls(void)
+{
+	int i;
+	for (i = 0; i < 6; i++)
+	{
+		if (objects[WATERFALL1 + i].loaded)
+		{
+			short* mesh = meshes[objects[WATERFALL1 + i].mesh_index];
+			/* The signed packed count belongs to the original mesh header. */
+			int count = mesh[5];
+			int half = count >= 0 ? count / 2 : -((-count + 1) / 2);
+			short texture = mesh[8 + half];
+			struct PSXTEXTI* info = (struct PSXTEXTI*)psxtextinfo + texture;
+			AnimatingWaterfalls[i] = info;
+			AnimatingWaterfallsV[i] = info->v0;
+		}
+	}
+}
+#endif
+
 /*
  * [FUNCTIONALITY] - LoadLevel.
  * Relocates all game data pointers from the level file to be loaded back into the engine.
@@ -1569,29 +1590,8 @@ void LoadLevel(FILE* nHandle)
 	}//loc_CF4
 
 
-	//a3 = &AnimatingWaterfallsV
-	//v1 = 0xA0000
-	//a2 = &AnimatingWaterfalls
-	//v0 = &objects
-	//a1 = &objects[WATERFALL1];
-	//s4 = 5;
-	//t1 = meshes
-	//t0 = psxtextinfo
-
-	//loc_D20
-#if 0
-	for (i = 5; i >= 0; i--)
-	{
-		if (objects[WATERFALL1 + i].loaded)
-		{
-			short* meshptr;//a0
-			meshptr = meshes[objects[WATERFALL1 + i].mesh_index];
-			meshptr += 6;//0xC for next itr?
-			meshptr += meshptr[5] << 16 >> 17;
-			AnimatingWaterfalls[i] = (PSXTEXTI*)&psxtextinfo[meshptr[2] << 4];//why << 4? 1<<4=16!
-			AnimatingWaterfallsV[i] = ((char*)&psxtextinfo[meshptr[2] << 4])[1];//why << 4? 1<<4=16!
-		}//loc_D84
-	}
+#if PSX_VERSION
+	InitialiseWaterfalls();
 #endif
 
 	MonitorScreenTI = NULL;

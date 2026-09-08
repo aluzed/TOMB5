@@ -1,16 +1,32 @@
 import csv
 from pathlib import Path
+from shutil import copyfile
+
+import pytest
 
 
-def test_re702_emits_terminal_blocked_behavior_contract_gate(tmp_path):
+@pytest.fixture
+def historical_repo(tmp_path):
+    """Isolate the terminal contract from live/generated RE-701 inventories."""
+    source = Path(__file__).parent / "fixtures/re702"
+    generated = tmp_path / "docs/reverse/generated"
+    generated.mkdir(parents=True)
+    for name in (
+        "re701-unimplemented-source-function-identity-export-handoff.csv",
+        "re701-unimplemented-source-function-identity-export.csv",
+    ):
+        copyfile(source / name, generated / name)
+    return tmp_path
+
+
+def test_re702_emits_terminal_blocked_behavior_contract_gate(tmp_path, historical_repo):
     from scripts.reverse.re702_unimplemented_source_behavior_contract_gate import (
         FORBIDDEN,
         build_gate,
         write_artifacts,
     )
 
-    repo = Path(__file__).resolve().parents[2]
-    gate = build_gate(repo)
+    gate = build_gate(historical_repo)
 
     assert gate.source_file_count == 66
     assert gate.function_row_count == 353
@@ -50,22 +66,11 @@ def test_re702_emits_terminal_blocked_behavior_contract_gate(tmp_path):
             assert fragment not in text
 
 
-def test_re702_rejects_every_re701_handoff_field_drift(tmp_path):
+def test_re702_rejects_every_re701_handoff_field_drift(tmp_path, historical_repo):
     from scripts.reverse.re702_unimplemented_source_behavior_contract_gate import build_gate
 
-    source = Path(__file__).resolve().parents[2]
-    generated = tmp_path / "docs/reverse/generated"
-    generated.mkdir(parents=True)
+    generated = historical_repo / "docs/reverse/generated"
     upstream = generated / "re701-unimplemented-source-function-identity-export-handoff.csv"
-    upstream.write_text(
-        (source / "docs/reverse/generated/re701-unimplemented-source-function-identity-export-handoff.csv").read_text(encoding="utf-8"),
-        encoding="utf-8",
-    )
-    identity = generated / "re701-unimplemented-source-function-identity-export.csv"
-    identity.write_text(
-        (source / "docs/reverse/generated/re701-unimplemented-source-function-identity-export.csv").read_text(encoding="utf-8"),
-        encoding="utf-8",
-    )
     with upstream.open(newline="", encoding="utf-8") as handle:
         reader = csv.DictReader(handle)
         fields = reader.fieldnames
@@ -86,18 +91,12 @@ def test_re702_rejects_every_re701_handoff_field_drift(tmp_path):
             raise AssertionError(f"RE-702 must reject RE-701 handoff drift in {field}")
 
 
-def test_re702_rejects_identity_schema_row_and_safety_drift(tmp_path):
+def test_re702_rejects_identity_schema_row_and_safety_drift(tmp_path, historical_repo):
     from scripts.reverse.re702_unimplemented_source_behavior_contract_gate import build_gate
 
-    source = Path(__file__).resolve().parents[2]
-    generated = tmp_path / "docs/reverse/generated"
-    generated.mkdir(parents=True)
-    (generated / "re701-unimplemented-source-function-identity-export-handoff.csv").write_text(
-        (source / "docs/reverse/generated/re701-unimplemented-source-function-identity-export-handoff.csv").read_text(encoding="utf-8"),
-        encoding="utf-8",
-    )
+    generated = historical_repo / "docs/reverse/generated"
     identity = generated / "re701-unimplemented-source-function-identity-export.csv"
-    baseline = (source / "docs/reverse/generated/re701-unimplemented-source-function-identity-export.csv").read_text(encoding="utf-8")
+    baseline = identity.read_text(encoding="utf-8")
 
     identity.write_text(baseline.rstrip() + ",unexpected\n", encoding="utf-8")
     try:
@@ -130,21 +129,15 @@ def test_re702_rejects_identity_schema_row_and_safety_drift(tmp_path):
         raise AssertionError("RE-702 must reject identity readiness escalation")
 
 
-def test_re702_rejects_identity_formula_and_aggregate_preserving_count_drift(tmp_path):
+def test_re702_rejects_identity_formula_and_aggregate_preserving_count_drift(tmp_path, historical_repo):
     from scripts.reverse.re702_unimplemented_source_behavior_contract_gate import build_gate
 
-    source = Path(__file__).resolve().parents[2]
-    generated = tmp_path / "docs/reverse/generated"
-    generated.mkdir(parents=True)
-    for name in (
-        "re701-unimplemented-source-function-identity-export-handoff.csv",
-        "re701-unimplemented-source-function-identity-export.csv",
-    ):
-        (generated / name).write_text((source / "docs/reverse/generated" / name).read_text(encoding="utf-8"), encoding="utf-8")
+    generated = historical_repo / "docs/reverse/generated"
     identity = generated / "re701-unimplemented-source-function-identity-export.csv"
     with identity.open(newline="", encoding="utf-8") as handle:
-        rows = list(csv.DictReader(handle))
-        fields = tuple(csv.DictReader((source / "docs/reverse/generated/re701-unimplemented-source-function-identity-export.csv").open(newline="", encoding="utf-8")).fieldnames or ())
+        reader = csv.DictReader(handle)
+        rows = list(reader)
+        fields = tuple(reader.fieldnames or ())
 
     rows[0]["repo_function"] = '=HYPERLINK("https://example.invalid","x")'
     with identity.open("w", newline="", encoding="utf-8") as handle:

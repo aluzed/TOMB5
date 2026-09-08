@@ -188,40 +188,21 @@ void ControlTriggerTriggerer(short item_number)
 
 void AnimateWaterfalls()//4FABC(<), 4FF20(<)
 {
-#if PSX_VERSION && 0
-	struct PSXTEXTI* Twaterfall;
-	long i;
-	long speed1;
-	long speed2;
-
-	speed1 = (GlobalCounter << 3) - GlobalCounter & 0x3F;
-	speed2 = -(GlobalCounter << 2) & 0x3F;
-
-	//loc_4FB00
+#if PSX_VERSION
+	int i;
 	for (i = 0; i < 6; i++)
 	{
 		if (objects[WATERFALL1 + i].loaded)
 		{
-			Twaterfall = AnimatingWaterfalls[i];
-
-			Twaterfall->v0 = ((char*)&AnimatingWaterfallsV[i])[0] + speed1;
-			Twaterfall->v1 = ((char*)&AnimatingWaterfallsV[i])[0] + speed1;
-			Twaterfall->v2 = ((char*)&AnimatingWaterfallsV[i])[0] + speed1 & 0x3F;
-			Twaterfall->v3 = ((char*)&AnimatingWaterfallsV[i])[0] + speed1 & 0x3F;
-
-			if (i < 4)
+			struct PSXTEXTI* info = AnimatingWaterfalls[i];
+			int phase = (-(int)GlobalCounter * (i < 5 ? 7 : 4)) & 63;
+			int top = AnimatingWaterfallsV[i] + phase;
+			int n;
+			for (n = 0; n < (i < 4 ? 2 : 1); n++, info++)
 			{
-				Twaterfall++;
-				Twaterfall->v0 = ((char*)&AnimatingWaterfallsV[i])[0] + speed1;
-				Twaterfall->v1 = ((char*)&AnimatingWaterfallsV[i])[0] + speed1;
-				Twaterfall->v2 = ((char*)&AnimatingWaterfallsV[i])[0] + speed1 & 0x3F;
-				Twaterfall->v3 = ((char*)&AnimatingWaterfallsV[i])[0] + speed1 & 0x3F;
-			}//loc_4FB98
-		}//loc_4FB98
-
-		if (i == 4)
-		{
-			speed1 = speed2;
+				info->v0 = info->v1 = (unsigned char)top;
+				info->v2 = info->v3 = (unsigned char)(top + 63);
+			}
 		}
 	}
 #else
