@@ -55,8 +55,17 @@
 <tr><td>Contrat C et couleur</td><td class="blocked">Toujours non ouverts ; aucune modification de production</td></tr>
 </table>
 <p><a href="../stories/RE-737-gte-active-audio-proof.md">Preuves, limites, reproduction et handoff RE-737</a>. Les exceptions COP2 de RE-736 sont résolues pour ces chemins, pas pour le GTE général.</p>
+<h2>RE-738 · Voix occupées et tranches appelantes</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Recyclage, remplacement et réutilisation authentifiés</td><td class="ok">864 cas voix ; quatre matrices appelantes de 864 cas chacune</td></tr>
+<tr><td>État conservé entre demandes, temporisation réelle</td><td class="ok">4 séquences ; 136 demandes sur 3 964 frames</td></tr>
+<tr><td>Réexécution parent et guards</td><td class="ok">Toutes matrices réussies ; 6 contrôles négatifs ; 864 lignes identiques avec banque COP2 alternative</td></tr>
+<tr><td>Limites</td><td>Contention séquentielle, MMIO synthétique ; ni fonctions appelantes complètes, ni interruptions, ni SPU matériel</td></tr>
+<tr><td>Contrat C et couleur</td><td class="blocked">Branches SDK restantes et préconditions à borner ; production inchangée</td></tr>
+</table>
+<p><a href="../stories/RE-738-occupied-voices-caller-proof.md">Preuves, revue, tracker et reproduction RE-738</a>. Le recyclage est désormais parcouru sur ces chemins, sans généralisation au matériel.</p>
 <h2>Suite de la recherche</h2>
-<p>Priorité : examiner et exécuter le recyclage et la réutilisation des voix occupées, puis les tranches appelantes réelles avant de borner le contrat portable de couleur. Autonomie autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
+<p>Priorité : borner le domaine des retours SDK et la représentation C du producteur de couleur avant les tests RED sur l'unité réelle. Ne pas multiplier les variantes audio ; changer de cible cohérente si le contrat ne peut être attribué. Autonomie autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
 <p>Sélection des glyphes et domaine des caractères différés, non résolus. GetStringDimensions et les corrections multiligne restent inchangées ; aucun marqueur de reconstruction globale ajouté.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
