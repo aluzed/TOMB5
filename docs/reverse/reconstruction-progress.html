@@ -115,8 +115,15 @@
 <tr><td>Production et revue</td><td class="blocked">Aucun écart dans le périmètre comparé, donc aucun correctif ; revue indépendante et vérification parent en attente</td></tr>
 </table>
 <p><a href="../stories/RE-746-loading-allocation-service-proof.md">Preuves, tracker, limites et handoff RE-746</a>. La lecture partielle avance d’un secteur entier ; le backend fichiers par défaut et la transaction de chargement complète ne sont pas validés.</p>
+<h2>RE-747 · Appelant, allocation temporaire et relocation</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>S_LoadLevelFile jusqu’au dispatch</td><td class="ok">Sélection, remise à zéro du tas, LOAD_Start avec allocation/lecture/libération, puis chargement et relocation du module</td></tr>
+<tr><td>Relocation du module authentique</td><td class="ok">263 relocations ; concordance intégrale avec modèle indépendant et vraie FILE.C compilée en 32 bits</td></tr>
+<tr><td>Limites</td><td class="blocked">Frontières graphiques/CD modélisées ; arrêt avant le corps LoadLevel ; pas de preuve matérielle ou du chargeur hôte complet</td></tr>
+</table>
+<p><a href="../stories/RE-747-level-module-transaction-proof.md">Preuves, tracker et handoff RE-747</a>. Aucun correctif de production ; revue parent en attente.</p>
 <h2>Suite de la recherche</h2>
-<p>Relier une transaction réelle de chargement de module/niveau : sélection/positionnement, allocation, lecture, relocation et durée de vie des blocs. Ne pas répéter les matrices de tailles isolées ; reconstruire seulement sur écart observable prouvé.</p>
+<p>Franchir le dispatch LoadLevel avec les pointeurs et le curseur conservés, établir ses premières allocations et dépendances. Ne pas répéter les matrices de tailles isolées ; reconstruire seulement sur écart observable prouvé.</p>
 <p>Le texte conserve les résultats et limites RE-743 à RE-745. Gardes privées RE-746 et autonomie globale : 8 septembre 2026 à 23 h 45 Paris. Aucun commit ni push par cette unité.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
