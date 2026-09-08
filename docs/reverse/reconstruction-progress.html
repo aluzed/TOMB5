@@ -38,8 +38,16 @@
 <tr><td>Portée</td><td>Fragment producteur et blocs texture vérifiés ; chargement complet et console non testés ; couleur inchangée</td></tr>
 </table>
 <p><a href="../stories/RE-735-waterfall-initialisation-animation.md">Preuves, tracker et handoff RE-735</a>. Le blocage du producteur mentionné au jalon RE-734 est levé pour cette unité.</p>
+<h2>RE-736 · Entrées manette et SDK : preuve partielle de couleur</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Ghidra, instructions SDK authentifiées et tranches appelantes</td><td class="ok">Décompilation et exécution réelles, sans stubs SDK</td></tr>
+<tr><td>Manette / quatre tranches / transitoires / boutons et axes</td><td class="ok">384 / 384 / 512 / 912 cas réussis, réexécutés par le parent</td></tr>
+<tr><td>SayNo et descendants audio, CPU et RAM isolés</td><td>672 cas réussis ; 96 exceptions sur le chemin GTE actif, sans faux retour</td></tr>
+<tr><td>Contrat complet et reconstruction C</td><td class="blocked">Non prouvés ; couleur inchangée, aucune validation matérielle</td></tr>
+</table>
+<p><a href="../stories/RE-736-input-sdk-pulse-proof.md">Preuves, limites, tracker et handoff RE-736</a>. Revue indépendante des premières matrices ; matrice audio ensuite vérifiée par le parent.</p>
 <h2>Suite de la recherche</h2>
-<p>Priorité : caractériser la valeur héritée après S_UpdateInput et ses appels SDK avant tout changement de couleur. L’autonomie reste autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
+<p>Priorité : recouper ou émuler le chemin COP2/GTE et le retour audio actif de SayNo, sans stub arbitraire, puis établir le contrat portable de couleur. Cette limite de l’émulateur ne clôt pas l’autonomie, autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
 <p>Sélection des glyphes et domaine des caractères différés, non résolus. GetStringDimensions et les corrections multiligne restent inchangées ; aucun marqueur de reconstruction globale ajouté.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
