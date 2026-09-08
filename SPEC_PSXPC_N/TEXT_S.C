@@ -349,16 +349,17 @@ void PrintString(unsigned short x, unsigned short y, unsigned char colourFlag, c
 				if (c < 0x20)
 				{
 					//v1 = &word_9230E
-					c -= 0x18;
-					s1 = &word_9230E[c + 0x18];
-					if (c > 3)
+					s1 = &word_9230E[c];
+					// Only controls 24..27 inherit the current colour; the
+					// other control glyphs use shade bank zero locally.
+					if (c < 24 || c > 27)
 					{
-						DrawChar(s2, y, 0, &word_9230E[c + 0x18]);
+						DrawChar(s2, y, 0, s1);
 						//addiu ra 0x1C ***************checkme
 					}//loc_8DD0C
 					else
 					{
-						DrawChar(s2, y, s3, &word_9230E[c + 0x18]);
+						DrawChar(s2, y, s3, s1);
 						//addiu ra 0x1C ***************checkme
 					}
 

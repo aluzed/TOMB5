@@ -82,8 +82,16 @@
 <tr><td>Limites</td><td>Accents synthétiques, dernière vue non terminée rejetée ; rejets expérimentaux non équivalents au binaire ; RAM et teintes synthétiques, pas de matériel</td></tr>
 </table>
 <p><a href="../stories/RE-742-bounded-text-differential-proof.md">Résultats, divergences, tracker et handoff RE-742</a>. RE740/RE741 sont des expériences privées intermédiaires, pas des tickets publics fictivement clôturés.</p>
+<h2>RE-743 · Couleur locale des glyphes de contrôle</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Preuve Ghidra et correction bornée</td><td class="ok">Contrôles 20–23 et 28–31 : couleur zéro ; 24–27 : couleur courante ; état persistant inchangé</td></tr>
+<tr><td>TDD public, vraie unité</td><td class="ok">344 échecs comportementaux avant source ; 1 061 tests texte puis 1 150 tests émulateur réussis</td></tr>
+<tr><td>Source corrigée / instructions cibles</td><td class="ok">2 000 cas authentiques + 1 056 synthétiques ; 30 160 primitives identiques par mode ; vraie unité également sous ASan/UBSan sans diagnostic</td></tr>
+<tr><td>Livraison et limites</td><td>Revue indépendante favorable ; tests et différentiel rejoués par le parent ; accents et sentinelles toujours ouverts ; aucun rejet de production ajouté</td></tr>
+</table>
+<p><a href="../stories/RE-743-control-glyph-colour-contract.md">Contrat, preuve, tests et tracker RE-743</a>. Les 88 écarts RGB authentiques de RE-742 sont corrigés sur le corpus signé ; les résultats RE-742 ci-dessus restent historiques.</p>
 <h2>Suite de la recherche</h2>
-<p>Prochaine unité : sélection et couleur des glyphes PSXPC_N, conversions d’octets séparées du signe des métriques et raccordement des tables. Tests sur la vraie unité avant correction et comparaison privée après correction. Ne pas généraliser le resolver expérimental à la production sans contrat d’entrée.</p>
-<p>RE-739 reste la dernière reconstruction production. GetStringDimensions n’est pas nouvellement prouvé ; sentinelles et domaine d’entrée restent à qualifier. Autonomie autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
+<p>Prochaine unité : représentation fidèle et sûre des glyphes accentués/sentinelles et domaine d’entrée, avant unification de la sélection. Le correctif local de couleur ne reconstruit pas le contrat complet et ne généralise pas les rejets expérimentaux.</p>
+<p>RE-743 corrige le contrat local de couleur après revue indépendante favorable. GetStringDimensions n’est pas nouvellement prouvé. Limite de cette unité : 8 septembre 2026 à 23 h 15 (Paris), dans l’autonomie globale autorisée jusqu’à 23 h 45.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
