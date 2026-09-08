@@ -107,6 +107,9 @@ void S_UpdateInput()//5F628(<), 6038C(<)
 
 					 //v0 = SayNoCount
 
+	/* SDK calls may leave unrelated volatile values; the proven normal-return
+	 * contract is zero unless this invocation submits the two actuator bytes. */
+	SecondaryPulseColour = 0;
 	Emulator_UpdateInput();
 
 	in = 0;
@@ -120,16 +123,12 @@ void S_UpdateInput()//5F628(<), 6038C(<)
 	state = PadGetState(0);
 	type = PadInfoMode(0, InfoModeCurID, 0);
 
-	if (state != 0)
+	if (state != 0 && (type == 4 || type == 7))
 	{
-		if (type == 4 || type == 7)
+		if (SetDebounce != 0)
 		{
-			//loc_5F6AC
-			if (SetDebounce != 0)
-			{
-				dbinput = inputBusy;
-				RawEdge = RawPad;
-			}
+			dbinput = inputBusy;
+			RawEdge = RawPad;
 		}
 	}
 	else
@@ -593,6 +592,7 @@ void S_UpdateInput()//5F628(<), 6038C(<)
 		{
 			//loc_5FED4
 			PadSetAct(0, &Motors[0], 2);
+			SecondaryPulseColour = 2;
 		}
 	}
 	else

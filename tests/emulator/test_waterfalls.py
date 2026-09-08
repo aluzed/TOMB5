@@ -84,6 +84,7 @@ int main(int argc, char** argv) {
                "-I", str(REPO), "-I", str(REPO / "GAME"),
                "-I", str(REPO / "SPEC_PSXPC_N"), "-I", str(REPO / "EMULATOR"),
                "-I/usr/include/SDL2", str(source), str(REPO / "GAME/OBJECTS.C"),
+               str(REPO / "SPEC_PSXPC_N/TEXT_S.C"),
                "-o", str(executable)]
     if request.param:
         command.append("-DTEST_PRODUCER")

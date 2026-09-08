@@ -3,6 +3,14 @@
 
 #include <stdio.h>
 #include "STYPES.H"
+#include <stdint.h>
+
+/* RE-739: backend-local replacement for the target's inherited colour word.
+ * The last S_UpdateInput / AnimateWaterfalls invocation publishes it;
+ * UpdatePulseColour consumes it without changing either public call signature.
+ * This capability belongs to this backend, not the PSXPC_TEST build option. */
+#define PSXPC_N_INHERITED_PULSE_COLOUR 1
+extern uint32_t SecondaryPulseColour;
 
 #define WARN_HACK(x) printf("%s\n", x);
 

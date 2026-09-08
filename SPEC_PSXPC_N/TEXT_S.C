@@ -756,6 +756,8 @@ void draw_outlines()
 #endif
 }
 
+uint32_t SecondaryPulseColour = 0;
+
 void UpdatePulseColour()//8E0F8(<), 9013C(<) (F)
 {
 	int i;
@@ -771,8 +773,14 @@ void UpdatePulseColour()//8E0F8(<), 9013C(<) (F)
 	//loc_8E138
 	for (i = 0; i < 16; i++)
 	{
-		((int*)&FontShades[1][i])[0] = ((localPulseCnt << 3) & 0xFF) | (((localPulseCnt << 3) & 0xFF) << 8) | (((localPulseCnt << 3) & 0xFF) << 16);
-		((int*)&FontShades[9][i])[0] = (GlobalCounter - (GlobalCounter << 3)) & 0x3F;
+		unsigned char grey = (unsigned char)((localPulseCnt << 3) & 0xFF);
+		FontShades[1][i].r = FontShades[1][i].g = FontShades[1][i].b = grey;
+		FontShades[1][i].cd = 0;
+		/* Explicit little-endian colour channels, without aliasing CVECTOR. */
+		FontShades[9][i].r = (unsigned char)SecondaryPulseColour;
+		FontShades[9][i].g = (unsigned char)(SecondaryPulseColour >> 8);
+		FontShades[9][i].b = (unsigned char)(SecondaryPulseColour >> 16);
+		FontShades[9][i].cd = (unsigned char)(SecondaryPulseColour >> 24);
 	}
 	return;
 }

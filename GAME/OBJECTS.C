@@ -188,6 +188,10 @@ void ControlTriggerTriggerer(short item_number)
 
 void AnimateWaterfalls()//4FABC(<), 4FF20(<)
 {
+#ifdef PSXPC_N_INHERITED_PULSE_COLOUR
+	/* Final loop phase is inherited even when no waterfall is loaded. */
+	SecondaryPulseColour = (0u - 4u * (unsigned int)GlobalCounter) & 63u;
+#endif
 #if PSX_VERSION
 	int i;
 	for (i = 0; i < 6; i++)
