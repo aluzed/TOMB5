@@ -14,8 +14,16 @@
 <tr><td>Revue de livraison et validation complète</td><td class="ok">Approuvées ; 3368 tests réussis, guards validés</td></tr>
 <tr><td>Reconstruction complète des accents</td><td class="blocked">Non autorisée techniquement : domaine d’entrée et indexation sûre à prouver</td></tr>
 </table>
+<h2>RE-733 · PrintString : transitions multiligne</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Ghidra : helper partagé, état vertical, ABI et delay slots</td><td class="ok">Nouvelles inspections headless et recoupement effectués</td></tr>
+<tr><td>Réancrage à droite et lignes blanches</td><td class="ok">Deux corrections prouvées ; RED : 8 échecs, GREEN : 15 tests de rendu</td></tr>
+<tr><td>Régression mesure et rendu / suite complète</td><td class="ok">36 / 3383 tests réussis</td></tr>
+<tr><td>Revue indépendante de livraison</td><td class="ok">Approuvée ; guards validés, aucun défaut bloquant</td></tr>
+</table>
+<p><a href="../stories/RE-733-text-multiline-binary-reconstruction.md">Preuves, tracker et handoff RE-733</a>. Tests sur le port hôte avec métriques synthétiques ; aucune reconstruction globale revendiquée.</p>
 <h2>Suite de la recherche</h2>
-<p>Établir les caractères autorisés et les métriques utilisées par les accents. Ne pas traduire aveuglément les accès hors tableau C ni inventer un caractère de remplacement. Changer de cluster si cette piste est épuisée.</p>
+<p>Établir la sélection des glyphes entre mesure et rendu et les caractères autorisés. Ne pas traduire aveuglément les accès hors tableau C ni inventer un caractère de remplacement. Changer de cluster si cette piste est épuisée.</p>
 <p>GetStringDimensions reste inchangée ; sa composition multiligne est testée. Aucun marqueur de reconstruction globale n’est ajouté.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>

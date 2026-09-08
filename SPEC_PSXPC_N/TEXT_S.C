@@ -254,7 +254,7 @@ void PrintString(unsigned short x, unsigned short y, unsigned char colourFlag, c
 				if (c == *string)
 				{
 					//a0 = string
-					//var_30 = 0
+					var_30 = 0;
 					y += 16;
 					//j loc_8DD54
 				}
@@ -269,7 +269,7 @@ void PrintString(unsigned short x, unsigned short y, unsigned char colourFlag, c
 					}
 					else if ((flag & 0x4000))
 					{
-						s2 = x + v0;
+						s2 = x - v0;
 					}
 					else
 					{
