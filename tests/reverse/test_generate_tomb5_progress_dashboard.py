@@ -22,6 +22,24 @@ def test_dashboard_links_separate_binary_reconstruction_progress(tmp_path):
     assert 'S_UpdateInput' in progress
 
 
+def test_reconstruction_dashboard_records_service_equivalence_scope():
+    progress = (REPO / 'docs/reverse/reconstruction-progress.html').read_text(encoding='utf-8')
+    story_path = REPO / 'docs/stories/RE-746-loading-allocation-service-proof.md'
+    assert story_path.exists()
+    story = story_path.read_text(encoding='utf-8')
+    assert 'RE-746-loading-allocation-service-proof.md' in progress
+    assert '65 états' in progress
+    assert '11 lectures' in progress
+    assert 'DISC_VERSION=1' in progress
+    assert 'Aucune reconstruction de production' in story
+    assert '- [x]' in story and '- [ ]' in story
+    assert 'SPEC_PSXPC_N/MALLOC.C' in story
+    assert 'SPEC_PSXPC_N/CD.C' in story
+    assert 'backend fichiers par défaut' in story
+    assert 'Pas de preuve matérielle' in story
+    assert '## Handoff' in story
+
+
 def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)

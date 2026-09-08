@@ -106,8 +106,17 @@
 <tr><td>Limites</td><td class="blocked">Une vue non terminée ; aucun accent sur ce chemin ; initialisation et frontières BIOS/CD modélisées, pas de démarrage complet ni preuve matérielle</td></tr>
 </table>
 <p><a href="../stories/RE-745-live-loader-caller-proof.md">Preuves, tracker, limites et handoff RE-745</a>. Aucun correctif de production supplémentaire ; aucune sûreté mémoire générale revendiquée.</p>
+<h2>RE-746 · Allocation et lecture sectorielle : équivalence bornée</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Ghidra et vraies unités hôtes</td><td class="ok">Inspection fraîche ; MALLOC.C et CD.C compilés séparément ; instructions cibles authentifiées</td></tr>
+<tr><td>Tas et allocation/libération</td><td class="ok">5 séquences, 65 états et tas complets concordants ; 10 allocations insuffisantes sans mutation</td></tr>
+<tr><td>Lecteur sectoriel avec état conservé</td><td class="ok">8 séquences, 11 lectures, 11 attentes occupées ; tampons et événements concordants</td></tr>
+<tr><td>Validation et portée</td><td>3 tests privés et différentiel ASan/UBSan réussis ; DISC_VERSION=1, DEBUG_VERSION=0 ; frontières CD modélisées, pas de matériel</td></tr>
+<tr><td>Production et revue</td><td class="blocked">Aucun écart dans le périmètre comparé, donc aucun correctif ; revue indépendante et vérification parent en attente</td></tr>
+</table>
+<p><a href="../stories/RE-746-loading-allocation-service-proof.md">Preuves, tracker, limites et handoff RE-746</a>. La lecture partielle avance d’un secteur entier ; le backend fichiers par défaut et la transaction de chargement complète ne sont pas validés.</p>
 <h2>Suite de la recherche</h2>
-<p>Changer de domaine vers les services de chargement/allocation effectivement attribués : comparer contrats et dépendances hôtes avant toute reconstruction. L’ISO disponible ne fournit pas d’autre corpus de langue accentué ; ne pas multiplier les variantes de la matrice texte.</p>
-<p>RE-743 conserve son correctif local de couleur. RE-744 reste une équivalence bornée sans accents. Gardes privées RE-745 : 8 septembre 2026 à 23 h 20 Paris ; autonomie globale autorisée jusqu’à 23 h 45.</p>
+<p>Relier une transaction réelle de chargement de module/niveau : sélection/positionnement, allocation, lecture, relocation et durée de vie des blocs. Ne pas répéter les matrices de tailles isolées ; reconstruire seulement sur écart observable prouvé.</p>
+<p>Le texte conserve les résultats et limites RE-743 à RE-745. Gardes privées RE-746 et autonomie globale : 8 septembre 2026 à 23 h 45 Paris. Aucun commit ni push par cette unité.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
