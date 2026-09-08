@@ -46,8 +46,17 @@
 <tr><td>Contrat complet et reconstruction C</td><td class="blocked">Non prouvés ; couleur inchangée, aucune validation matérielle</td></tr>
 </table>
 <p><a href="../stories/RE-736-input-sdk-pulse-proof.md">Preuves, limites, tracker et handoff RE-736</a>. Revue indépendante des premières matrices ; matrice audio ensuite vérifiée par le parent.</p>
+<h2>RE-737 · Retour audio actif : obstacle COP2 levé</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Pont de transferts de contrôle GTE, sans faux retour audio</td><td class="ok">3 027 vecteurs et 5 guards réussis</td></tr>
+<tr><td>SayNo / audio actif et témoins / modes et témoins</td><td class="ok">768 / 2 592 / 1 728 cas réussis, réexécutés par le parent</td></tr>
+<tr><td>Portée audio réelle</td><td>864 cas avec accès audio dans chacune des deux dernières matrices ; MMIO synthétique, pas de SPU matériel</td></tr>
+<tr><td>Revue indépendante</td><td class="ok">Preuve positive bornée ; récupération et concurrence des voix encore non couvertes</td></tr>
+<tr><td>Contrat C et couleur</td><td class="blocked">Toujours non ouverts ; aucune modification de production</td></tr>
+</table>
+<p><a href="../stories/RE-737-gte-active-audio-proof.md">Preuves, limites, reproduction et handoff RE-737</a>. Les exceptions COP2 de RE-736 sont résolues pour ces chemins, pas pour le GTE général.</p>
 <h2>Suite de la recherche</h2>
-<p>Priorité : recouper ou émuler le chemin COP2/GTE et le retour audio actif de SayNo, sans stub arbitraire, puis établir le contrat portable de couleur. Cette limite de l’émulateur ne clôt pas l’autonomie, autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
+<p>Priorité : examiner et exécuter le recyclage et la réutilisation des voix occupées, puis les tranches appelantes réelles avant de borner le contrat portable de couleur. Autonomie autorisée jusqu’au 8 septembre 2026 à 23 h 45 (Paris).</p>
 <p>Sélection des glyphes et domaine des caractères différés, non résolus. GetStringDimensions et les corrections multiligne restent inchangées ; aucun marqueur de reconstruction globale ajouté.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
