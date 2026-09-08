@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TOMB5 — Reconstruction active</title>
+<style>body{font:16px system-ui;background:#101514;color:#edf4ee;max-width:1000px;margin:auto;padding:32px;line-height:1.6}a{color:#b7f36a}table{border-collapse:collapse;width:100%}td,th{padding:12px;border-bottom:1px solid #30433e;text-align:left}.ok{color:#b7f36a}.blocked{color:#ffd084}</style></head>
+<body>
+<h1>TOMB5 — Reconstruction fondée sur le binaire</h1>
+<p>Suivi au 8 septembre 2026. L’historique terminal de l’inventaire n’est pas une interdiction de rechercher de nouvelles preuves.</p>
+<h2>RE-732 · GetStringLength : espaces et tabulations</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Version PSX NTSC et import Ghidra</td><td class="ok">Vérifiés ; décompilation réellement exécutée</td></tr>
+<tr><td>Attribution, ABI, globale, flux de contrôle et tables</td><td class="ok">Recoupés ; audit indépendant de preuve effectué</td></tr>
+<tr><td>Deux branches de mesure des blancs</td><td class="ok">Corrigées ; 21 tests hôte réussis après RED</td></tr>
+<tr><td>Revue de livraison et validation complète</td><td class="ok">Approuvées ; 3368 tests réussis, guards validés</td></tr>
+<tr><td>Reconstruction complète des accents</td><td class="blocked">Non autorisée techniquement : domaine d’entrée et indexation sûre à prouver</td></tr>
+</table>
+<h2>Suite de la recherche</h2>
+<p>Établir les caractères autorisés et les métriques utilisées par les accents. Ne pas traduire aveuglément les accès hors tableau C ni inventer un caractère de remplacement. Changer de cluster si cette piste est épuisée.</p>
+<p>GetStringDimensions reste inchangée ; sa composition multiligne est testée. Aucun marqueur de reconstruction globale n’est ajouté.</p>
+<p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
+</body></html>

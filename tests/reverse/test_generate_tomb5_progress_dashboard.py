@@ -10,6 +10,15 @@ if str(REPO) not in sys.path:
 from scripts.reverse.generate_tomb5_progress_dashboard import build, write
 
 
+def test_dashboard_links_separate_binary_reconstruction_progress(tmp_path):
+    output = write(build(REPO), tmp_path)
+    assert 'href="reconstruction-progress.html"' in output.read_text(encoding='utf-8')
+    progress = (REPO / 'docs/reverse/reconstruction-progress.html').read_text(encoding='utf-8')
+    assert 'RE-732' in progress
+    assert 'GetStringLength' in progress
+    assert 'accents' in progress
+
+
 def test_dashboard_generator_tracks_latest_handoff_and_next_ticket(tmp_path):
     repo = Path(__file__).resolve().parents[2]
     model = build(repo)

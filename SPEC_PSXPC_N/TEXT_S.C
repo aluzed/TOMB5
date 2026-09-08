@@ -422,7 +422,7 @@ int GetStringLength(char* string, unsigned short* a1, unsigned short* a2)//8DEDC
 			{
 				if (ScaleFlag != 0)
 				{
-					t0 -= 2;
+					t0 += 6;
 				}
 				else
 				{
@@ -434,7 +434,7 @@ int GetStringLength(char* string, unsigned short* a1, unsigned short* a2)//8DEDC
 				//loc_8DF30
 				t0 += 0x28;
 
-				if (t1 > -0xA)
+				if (t1 > -12)
 				{
 					t1 = -12;
 				}//loc_8DF4C
