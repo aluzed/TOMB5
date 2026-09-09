@@ -260,7 +260,11 @@ struct FLOOR_INFO* GetFloor(long x, long y, long z, short* room_number)//(F)
 			else
 			{
 				dz = r->x_size - 1;
+#if PSX_VERSION && PSXPC_TEST
+				dx = 1;
+#else
 				dx = r->y_size - 2;
+#endif
 			}
 		}
 		else if (dx <= 0)
