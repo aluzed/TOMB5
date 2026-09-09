@@ -122,8 +122,16 @@
 <tr><td>Limites</td><td class="blocked">Frontières graphiques/CD modélisées ; arrêt avant le corps LoadLevel ; pas de preuve matérielle ou du chargeur hôte complet</td></tr>
 </table>
 <p><a href="../stories/RE-747-level-module-transaction-proof.md">Preuves, tracker et handoff RE-747</a>. Aucun correctif de production ; revue parent en attente.</p>
+<h2>RE-748 · Préfixe LoadLevel avec état conservé</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Appelant, dispatch et préfixe</td><td class="ok">Même CPU/RAM/curseur ; 4 effets sonores, bloc de 7 616 octets ; 3 allocations, 3 libérations, 5 lectures et 262 secteurs</td></tr>
+<tr><td>Vraie TU et comparaisons bornées</td><td class="ok">GAME/SETUP.C compilée en 32 bits ; tailles et octets utilisés, buffers lus, curseur, textures et audio comparés ; pas de descripteur host complet</td></tr>
+<tr><td>Revue et vérification parent</td><td class="ok">Revue indépendante avec 4 tests et audit complémentaire ; 3 tests cible et 1 test host rejoués par le parent le 9 septembre à 07:51 Paris</td></tr>
+<tr><td>Frontières indispensables</td><td class="blocked">Vrai LoadSoundEffects, SDK SPU doublé ; arrêt au troisième free, exception host avant les dépendances non résolues immédiatement suivantes ; pas de preuve matérielle ni de retour final</td></tr>
+</table>
+<p><a href="../stories/RE-748-loadlevel-prefix-proof.md">Preuves, tracker, corrections de revue et handoff RE-748</a>. Aucun correctif de production justifié. Les compteurs privés désignent des visites du hook, pas des instructions exécutées.</p>
 <h2>Suite de la recherche</h2>
-<p>Franchir le dispatch LoadLevel avec les pointeurs et le curseur conservés, établir ses premières allocations et dépendances. Ne pas répéter les matrices de tailles isolées ; reconstruire seulement sur écart observable prouvé.</p>
-<p>Le texte conserve les résultats et limites RE-743 à RE-745. Gardes privées RE-746 et autonomie globale : 8 septembre 2026 à 23 h 45 Paris. Aucun commit ni push par cette unité.</p>
+<p>Établir les allocations frames puis roomInfo et leurs premières reconstructions de pointeurs avec CPU/RAM/curseur conservés ; résoudre les dépendances hôtes hors préfixe avant de déplacer l’arrêt. Reconstruire seulement sur écart observable prouvé.</p>
+<p>Résultats et limites historiques conservés. Garde RE-748 : HEAD prépublication, échéance du 9 septembre 2026 à 23:25 Paris ; futur rejeu seulement dans une nouvelle unité explicitement autorisée, sans désactiver les anciennes gardes. Aucun nouveau job ; livraison limitée à la publication revue, inventaire terminal non régénéré.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 </body></html>
