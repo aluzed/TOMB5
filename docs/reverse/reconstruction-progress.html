@@ -131,7 +131,7 @@
 </table>
 <p><a href="../stories/RE-748-loadlevel-prefix-proof.md">Preuves, tracker, corrections de revue et handoff RE-748</a>. Aucun correctif de production justifié. Les compteurs privés désignent des visites du hook, pas des instructions exécutées.</p>
 <h2>Suite de la recherche</h2>
-<p>Après RE-749 : qualifier les 24 mots transformés et leurs consommateurs, puis établir door/floor/light/mesh avec CPU/RAM/curseur conservés. Résoudre les dépendances natives nouvellement atteintes avant de déplacer l’arrêt. Reconstruire seulement sur écart observable prouvé.</p>
+<p>Après RE-750 : étendre de manière bornée aux salles suivantes ou au trajet réel du consommateur ; les tranches scalaires ne prouvent pas le corps GTE ni la boucle complète. Résoudre les dépendances natives nouvellement atteintes avant de déplacer l’arrêt. Reconstruire seulement sur écart observable prouvé.</p>
 <p>Résultats et limites historiques conservés. Garde RE-748 : HEAD prépublication, échéance du 9 septembre 2026 à 23:25 Paris ; futur rejeu seulement dans une nouvelle unité explicitement autorisée, sans désactiver les anciennes gardes. Aucun nouveau job ; livraison limitée à la publication revue, inventaire terminal non régénéré.</p>
 <p><a href="../stories/RE-732-text-whitespace-binary-reconstruction.md">Preuves, tracker et handoff RE-732</a> · <a href="tomb5-progress-dashboard.html">Inventaire historique clos</a></p>
 <h2>RE-749 · Frames et première reconstruction roomInfo</h2>
@@ -143,4 +143,12 @@
 <tr><td>Limites / suite</td><td>Cas normal unique, doubles SDK, lien incomplet après borne ; qualifier les mots/consommateurs puis door/floor/light/mesh ; aucun correctif de production</td></tr>
 </table>
 <p><a href="../stories/RE-749-frames-room-prefix-proof.md">Preuves, tracker et handoff RE-749</a>. Ni retour du chargeur, ni matériel, ni sûreté mémoire générale revendiqués.</p>
+<h2>RE-750 · Première salle et consommateur borné</h2>
+<table><tr><th>Étape</th><th>État</th></tr>
+<tr><td>Extension de RE-749</td><td class="ok">data/door/floor/light/mesh ; buffer entier avec 29 mots transformés ; arrêt avant la deuxième salle, même CPU/RAM/curseur</td></tr>
+<tr><td>Qualification locale</td><td>2 entrées actives déréférencées dans des tranches indépendantes ; troisième mot chargé en delay slot sans déréférencement ; 22 autres mots, dont les ordinaux 4, 16 et 24 hors allocation</td></tr>
+<tr><td>Revue indépendante</td><td class="ok">4 tests privés frais ; vraie GAME/SETUP.C 32 bits recompilée ; 41 fichiers de résultats/métadonnées identiques à la sauvegarde</td></tr>
+<tr><td>Limites</td><td class="blocked">CPU/RAM frais par tranche consommateur, compteurs fournis ; GTE et boucle complète non exécutés. Lien natif incomplet après borne, doubles SDK, aucun correctif de production ; parent : 41 fichiers identiques et 1 204 tests publics réussis (pas de rejeu binaire après publication)</td></tr>
+</table>
+<p><a href="../stories/RE-750-first-room-consumer-proof.md">Preuves, tracker et handoff RE-750</a>. Pas de preuve matérielle ni de sûreté universelle des mots inactifs.</p>
 </body></html>
