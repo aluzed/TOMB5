@@ -86,7 +86,12 @@ void SmashObject(short item_number)//4EDB0, 4F214 (F)
 
 void SmashObjectControl(short item_number)//4EEF8(<), 4F35C(<) (F)
 {
+#if PSX_VERSION && PSXPC_TEST
+	// RE-758: preserve the short index on the attributed PSXPC backend.
+	SmashObject(item_number);
+#else
 	SmashObject(item_number << 16);
+#endif
 }
 
 void BridgeFlatFloor(struct ITEM_INFO* item, long x, long y, long z, long* height)//4EF1C(<), 4F380(<) (F)
