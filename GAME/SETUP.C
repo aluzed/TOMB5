@@ -1408,9 +1408,9 @@ void LoadLevel(FILE* nHandle)
 	{
 		for (i = level->numBoxes; i != 0; i--)
 		{
-			if ((boxes[i].overlap_index & BOX_LAST))
+			if ((boxes[i - 1].overlap_index & BOX_LAST))
 			{
-				boxes[i].overlap_index |= BOX_BLOCKED;
+				boxes[i - 1].overlap_index |= BOX_BLOCKED;
 			}
 		}
 	}//loc_854
