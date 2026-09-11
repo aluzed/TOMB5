@@ -311,7 +311,11 @@ loc_78A68:
 
 		if (v0 == -1)
 		{
+#if PSX_VERSION && PSXPC_TEST
+			if (y < r->minfloor)
+#else
 			if (y >= room->minfloor)
+#endif
 			{
 				return floor;
 			}
