@@ -1,0 +1,493 @@
+{
+  "date": "2026-09-13",
+  "baseline": "eac6d930",
+  "scope_status": "Proposed",
+  "scope": "Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.",
+  "implementation_authorized": false,
+  "drafted": 8,
+  "implemented": 0,
+  "tickets": [
+    {
+      "id": "PORT-001",
+      "title": "Build Linux32 reproductible",
+      "status": "Todo",
+      "reason": "Prêt à planifier ; aucune implémentation autorisée par ce lot.",
+      "priority": "P0",
+      "goal": "Pouvoir construire et lancer la même application depuis un environnement documenté, sans dépendre du répertoire privé d’un précédent essai.",
+      "facts": "RE-772 rapporte un build ELF32 réussi avec GLEW privé ; le build ELF64 a crashé dans LoadLevel. Linux.cmake recherche SDL2/OpenGL/GLEW mais ne fixe pas à lui seul l’ABI 32-bit.",
+      "scope": "Toolchain, options effectives, dépendances i386, chemins de données fournis légalement, lancement et fermeture.",
+      "exclusions": "Reconstruction menu, correctifs gameplay, port natif64 et redistribution des données exclus.",
+      "dependencies": [],
+      "tasks": [
+        "Documenter une recette neuve avec versions et architecture de chaque dépendance ; adapter seulement après autorisation d’implémentation.",
+        "Reproduire dans un nouveau build tree et archiver flags, ELF, résolution des bibliothèques et hash avant lancement.",
+        "Documenter le placement des données utilisateur et tester absence de données avec diagnostic exploitable."
+      ],
+      "acceptance": [
+        "Deux builds neufs à partir du même commit aboutissent sans dépendance cachée à runtime-1058 ; identité bit-à-bit du binaire non exigée.",
+        "Le binaire est ELF32, ses bibliothèques sont compatibles, le splash est capturé depuis ce binaire et une fermeture normale est observée.",
+        "Une dépendance ou donnée absente produit une erreur attribuable et une procédure de résolution."
+      ],
+      "validation": "Logs configure/build/ldd et application distincts, capture privée avec hash du binaire ; recette rejouée indépendamment. Un timeout ne remplace pas une fermeture normale.",
+      "unknowns": "Disponibilité des dépendances sur une autre machine, variantes de données et nécessité d’un conteneur à décider.",
+      "estimate": "1–3 jours-personne pour industrialiser la recette existante ; hors résolution de défauts runtime nouveaux.",
+      "confidence": "Medium",
+      "references": [
+        {
+          "path": "docs/stories/RE-772-build-runtime-observable.md",
+          "line": 15,
+          "note": "Build32 et limites"
+        },
+        {
+          "path": "SPEC_PSXPC_N/PLATFORM/Linux.cmake",
+          "line": 3,
+          "note": "Dépendances Linux"
+        },
+        {
+          "path": "SPEC_PSXPC_N/CMakeLists.txt",
+          "line": 11,
+          "note": "Options indépendantes du build type"
+        }
+      ]
+    },
+    {
+      "id": "PORT-002",
+      "title": "Du splash au menu interactif",
+      "status": "Blocked",
+      "reason": "Recette intégrée bloquée tant que PORT-001 ne sont pas validés ; rédaction terminée, travail non commencé.",
+      "priority": "P0",
+      "goal": "Atteindre un menu lisible et pouvoir choisir Nouvelle partie avec une entrée réelle.",
+      "facts": "RE-772 ne montre qu’un splash pendant 30 secondes, sans menu ni gameplay validés. DoTitle pilote le titre ; TitleOptions contient des branches liées à la connexion et à la cinématique. Cause de l’absence de menu non établie.",
+      "scope": "Chemin normal de démarrage, rendu du menu, clavier ou manette de référence, navigation/validation/retour ; entrées minimales incluses.",
+      "exclusions": "Pas de saut artificiel du titre, pas de lancement direct du niveau présenté comme navigation validée ; commandes en jeu réservées à PORT-004.",
+      "dependencies": [
+        "PORT-001"
+      ],
+      "tasks": [
+        "Reproduire et isoler l’étape splash/titre/menu avec chronologie des événements.",
+        "Vérifier conditions de fondu/cinématique et réception des entrées sans présumer la cause.",
+        "Implémenter uniquement une correction attribuée si nécessaire et faire une recette de navigation."
+      ],
+      "acceptance": [
+        "Sur trois lancements neufs, un menu avec options lisibles apparaît dans une borne convenue et consignée.",
+        "Les actions haut/bas/valider/retour modifient visiblement la sélection sans touche bloquée.",
+        "Nouvelle partie quitte le menu par le chemin normal ; atteindre une scène jouable relève de PORT-003."
+      ],
+      "validation": "Vidéo ou série de captures privées horodatées, entrées enregistrées, logs et sortie application ; distinguer menu visible et menu réactif.",
+      "unknowns": "Interaction clavier/PadConnected, séquence titre, rendu ou synchronisation : hypothèses à départager, pas causes établies.",
+      "estimate": "3–10 jours-personne exploratoires ; à rechiffrer dès le premier obstacle reproduit.",
+      "confidence": "Low",
+      "references": [
+        {
+          "path": "docs/stories/RE-772-build-runtime-observable.md",
+          "line": 19,
+          "note": "Splash et absence de menu"
+        },
+        {
+          "path": "GAME/GAMEFLOW.C",
+          "line": 931,
+          "note": "DoTitle"
+        },
+        {
+          "path": "SPEC_PSXPC_N/TITSEQ.C",
+          "line": 140,
+          "note": "TitleOptions"
+        }
+      ]
+    },
+    {
+      "id": "PORT-003",
+      "title": "Nouvelle partie et première scène jouable",
+      "status": "Blocked",
+      "reason": "Recette intégrée bloquée tant que PORT-002 ne sont pas validés ; rédaction terminée, travail non commencé.",
+      "priority": "P0",
+      "goal": "Démarrer une nouvelle partie depuis le menu et voir Lara dans le premier niveau des données de référence.",
+      "facts": "S_LoadLevelFile appelle le chargement du niveau ; LoadLevel reconstruit les rooms ; DoLevel relie chargement, caméra, contrôle et dessin. Ces sources présentes ne prouvent pas un niveau jouable. RE-772 n’a pas validé cette transition.",
+      "scope": "Premier niveau des données choisies (Rome attendu, à confirmer par le gameflow), chargement complet et boucle graphique active.",
+      "exclusions": "Campagne entière, fidélité de chaque effet et parcours complet exclus ; pas de succès fondé sur un loader isolé.",
+      "dependencies": [
+        "PORT-002"
+      ],
+      "tasks": [
+        "Fixer jeu de données légal, niveau attendu et recette menu vers nouvelle partie.",
+        "Identifier le premier obstacle intégré et ses dépendances réelles sans neutraliser silencieusement les services.",
+        "Corriger seulement après preuve/recette sensible, puis répéter depuis un processus neuf."
+      ],
+      "acceptance": [
+        "Depuis Nouvelle partie, Lara et une géométrie de niveau identifiable sont visibles sans appel direct de test au loader.",
+        "Animation et caméra évoluent pendant au moins 60 secondes ; les journaux distinguent crash, timeout et fermeture demandée.",
+        "Trois relancements reproduisent la même arrivée, avec identité du niveau et configuration archivées."
+      ],
+      "validation": "Capture privée de la transition et de la scène, trace de chargement, hash binaire ; absence de crash sur cette fenêtre seulement.",
+      "unknowns": "Identité effective du premier niveau, intégrité des données, overlays, animations, dépendances rendu/audio encore à vérifier en intégration.",
+      "estimate": "5–15 jours-personne exploratoires ; aucune garantie tant que PORT-002 n’est pas franchi.",
+      "confidence": "Low",
+      "references": [
+        {
+          "path": "SPEC_PSXPC_N/ROOMLOAD.C",
+          "line": 62,
+          "note": "S_LoadLevelFile"
+        },
+        {
+          "path": "GAME/SETUP.C",
+          "line": 1208,
+          "note": "LoadLevel"
+        },
+        {
+          "path": "GAME/GAMEFLOW.C",
+          "line": 1209,
+          "note": "DoLevel"
+        }
+      ]
+    },
+    {
+      "id": "PORT-004",
+      "title": "Commandes et caméra de base utilisables",
+      "status": "Blocked",
+      "reason": "Recette intégrée bloquée tant que PORT-003 ne sont pas validés ; rédaction terminée, travail non commencé.",
+      "priority": "P0",
+      "goal": "Contrôler Lara et garder une vue exploitable avec un clavier de référence, puis une manette choisie.",
+      "facts": "UpdateKeyboardInput et S_UpdateInput existent. LookCamera est un stub dans GAME/CAMERA.C ; cela ne prouve pas la cause du splash. Le suivi caméra est distinct de la solidité complète des collisions.",
+      "scope": "Marche/course, rotation, saut, action, regard, pause et relâchement ; scène ouverte comme recette indépendante de PORT-005.",
+      "exclusions": "Toutes manettes, remapping complet/accessibilité et caméra combat avancée exclus ; obstacles/salles traités dans PORT-005.",
+      "dependencies": [
+        "PORT-003"
+      ],
+      "tasks": [
+        "Définir une table de commandes visible et une recette en scène ouverte.",
+        "Caractériser touches maintenues/edges, focus et déconnexion ; attribuer les fonctions manquantes requises.",
+        "Compléter le regard/suivi nécessaire et ajouter des contrôles absence d’entrée/relâchement."
+      ],
+      "acceptance": [
+        "Chaque commande listée produit une réponse identifiable ; relâchement et perte de focus ne laissent pas une action bloquée.",
+        "Pause arrête la simulation et reprise la réactive sans perdre le contrôle.",
+        "Regard puis retour au suivi gardent Lara visible en scène ouverte ; une déconnexion/reconnexion est récupérable."
+      ],
+      "validation": "Séquence privée d’entrées/captures en jeu, mesures position/caméra symboliques et témoins sans entrée ; recette obstacles additionnelle dans PORT-005.",
+      "unknowns": "Combinaison des branches d’entrée, disponibilité physique d’une manette et contrat du regard à confirmer.",
+      "estimate": "5–15 jours-personne pour le socle ; périphériques supplémentaires non compris.",
+      "confidence": "Low",
+      "references": [
+        {
+          "path": "EMULATOR/LIBPAD.C",
+          "line": 240,
+          "note": "UpdateKeyboardInput"
+        },
+        {
+          "path": "SPEC_PSXPC_N/PSXINPUT.C",
+          "line": 91,
+          "note": "S_UpdateInput"
+        },
+        {
+          "path": "GAME/CAMERA.C",
+          "line": 1596,
+          "note": "LookCamera"
+        }
+      ]
+    },
+    {
+      "id": "PORT-005",
+      "title": "Déplacement solide et passages entre salles",
+      "status": "Blocked",
+      "reason": "Recette intégrée bloquée tant que PORT-004 ne sont pas validés ; rédaction terminée, travail non commencé.",
+      "priority": "P0",
+      "goal": "Parcourir un petit trajet avec pentes, murs et changement de salle sans traversée ni chute incohérente.",
+      "facts": "UpdateLaraRoom et GetCollisionInfo existent côté PSXPC_N. RE-770/771 caractérisent GetHeight/callback côté SOURCE seulement : pas une correction ni une équivalence cible. Préconditions ItemPushLara et preuve cible restent ouvertes.",
+      "scope": "Sol/pente/marche, saut/chute, mur, obstacle statique et portail sur une route de référence ; position/salle/item.floor.",
+      "exclusions": "Pas de correction spéculative du callback ; pas de certification de toutes les géométries, ennemis ou eau.",
+      "dependencies": [
+        "PORT-004"
+      ],
+      "tasks": [
+        "Choisir une route avec témoins géométriques et identifier le consommateur réel de hauteur.",
+        "Établir les préconditions d’alias/appel et la preuve cible manquante avant toute correction qui s’en réclame.",
+        "Comparer cas sensibles et trajet intégré, conserver explicitement les divergences non corrigées."
+      ],
+      "acceptance": [
+        "La route enregistrée franchit le portail attendu et maintient position, salle et hauteur de sol cohérentes.",
+        "Mur et obstacle empêchent le passage ; saut/chute atterrit sur le sol prévu sans téléportation inexpliquée.",
+        "Cas limites pente/seuil/absence de collision ont des témoins sensibles ; une caractérisation PASS avec divergence ne clôt pas le ticket."
+      ],
+      "validation": "Recette privée en jeu et tests réels des TUs touchées ; attribution binaire requise pour une prétention d’équivalence, sans publier dumps.",
+      "unknowns": "GetHeight cible, appelants ItemPushLara, alias et triangles non couverts par les preuves disponibles ; coût potentiellement supérieur après découverte.",
+      "estimate": "10–30 jours-personne exploratoires sur route bornée ; campagne complète exclue.",
+      "confidence": "Low",
+      "references": [
+        {
+          "path": "SPEC_PSXPC_N/COLLIDE_S.C",
+          "line": 53,
+          "note": "UpdateLaraRoom"
+        },
+        {
+          "path": "GAME/CONTROL.C",
+          "line": 3428,
+          "note": "GetHeight"
+        },
+        {
+          "path": "docs/stories/RE-771-getheight-callback-source.md",
+          "line": 1,
+          "note": "Caractérisation SOURCE"
+        },
+        {
+          "path": "GAME/COLLIDE.C",
+          "line": 413,
+          "note": "Collision objets"
+        }
+      ]
+    },
+    {
+      "id": "PORT-006",
+      "title": "Sauvegarder et reprendre après relancement",
+      "status": "Blocked",
+      "reason": "Recette intégrée bloquée tant que PORT-005 ne sont pas validés ; rédaction terminée, travail non commencé.",
+      "priority": "P1",
+      "goal": "Retrouver une partie sauvegardée après fermeture complète de l’application.",
+      "facts": "LoadGame/SaveGame existent côté PSXPC_N ; RestoreLevelData est un stub dans GAME/SAVEGAME.C. La présence des menus ne vaut pas restauration du monde. Le stockage carte mémoire passe par EMULATOR/LIBMCRD.C.",
+      "scope": "Un emplacement de sauvegarde local, cycle complet save/exit/relaunch/load, état de Lara et d’un objet représentatif.",
+      "exclusions": "Compatibilité universelle avec sauvegardes originales, migration de versions, synchronisation cloud et tous slots exclus.",
+      "dependencies": [
+        "PORT-005"
+      ],
+      "tasks": [
+        "Définir un état avant/après et isoler le stockage de test des sauvegardes utilisateur.",
+        "Caractériser sérialisation, restauration et taille des buffers avant correction.",
+        "Faire le cycle avec processus neuf puis tester annulation et fichier invalide sur copies."
+      ],
+      "acceptance": [
+        "Après relancement, niveau, position, santé, inventaire et état d’un objet correspondent aux valeurs sauvegardées.",
+        "Un déplacement après sauvegarde n’est pas confondu avec l’état restauré.",
+        "Annulation/fichier invalide n’écrasent pas la sauvegarde valide et produisent une réponse compréhensible."
+      ],
+      "validation": "Captures privées avant/après, comparaison structurée des états et hashes des fichiers privés ; aucune sauvegarde originale en Git.",
+      "unknowns": "Format, checksum, validité des chemins et logique de restauration ; aucune corruption réelle prétendue sans reproduction.",
+      "estimate": "5–20 jours-personne exploratoires ; compatibilité externe à estimer séparément.",
+      "confidence": "Low",
+      "references": [
+        {
+          "path": "SPEC_PSXPC_N/LOADSAVE.C",
+          "line": 119,
+          "note": "LoadGame"
+        },
+        {
+          "path": "GAME/SAVEGAME.C",
+          "line": 52,
+          "note": "sgRestoreGame et RestoreLevelData"
+        },
+        {
+          "path": "EMULATOR/LIBMCRD.C",
+          "line": 78,
+          "note": "Stockage carte mémoire"
+        }
+      ]
+    },
+    {
+      "id": "PORT-007",
+      "title": "Audio essentiel et arrêt propre des sons",
+      "status": "Blocked",
+      "reason": "Recette intégrée bloquée tant que PORT-004 ne sont pas validés ; rédaction terminée, travail non commencé.",
+      "priority": "P1",
+      "goal": "Entendre les sons utiles et l’ambiance, avec réglage du volume et sans son persistant hors contexte.",
+      "facts": "SFX.C contient SPU_Play/PlaySample et le pont de samples ; CD.C contient S_CDPlay/S_CDStop. Présence d’appels et fonctions partielles ne prouve pas une sortie audible fonctionnelle.",
+      "scope": "Sons menu/action, ambiance du premier niveau, volumes, arrêt au titre et reprise après pause selon le contrat retenu.",
+      "exclusions": "Fidélité matérielle SPU, toutes voix/langues, mixage de la campagne entière et redistribution audio exclus.",
+      "dependencies": [
+        "PORT-004"
+      ],
+      "tasks": [
+        "Fixer périphérique de sortie et sources sonores représentatives avec contrôle silence.",
+        "Tracer chemin sample/CD et durée de vie des voix ; traiter seulement les manques attribués.",
+        "Vérifier changements volume, pause/retour titre et absence de boucle persistante."
+      ],
+      "acceptance": [
+        "Au moins un son menu, deux actions distinctes et une ambiance sont audibles aux moments attendus.",
+        "Volume nul coupe la catégorie concernée et le rétablissement la rend audible sans modifier une autre catégorie.",
+        "Retour au titre arrête les sons du niveau ; trois cycles n’accumulent pas de sons persistants."
+      ],
+      "validation": "Capture audio privée et journal événements, écoute humaine sur sortie choisie ; appels de services seuls insuffisants.",
+      "unknowns": "Backend actif, couverture des samples, musique/cinématiques et partage des voix à caractériser.",
+      "estimate": "3–10 jours-personne exploratoires pour ce socle audio.",
+      "confidence": "Low",
+      "references": [
+        {
+          "path": "SPEC_PSXPC_N/SFX.C",
+          "line": 164,
+          "note": "PlaySample"
+        },
+        {
+          "path": "SPEC_PSXPC_N/CD.C",
+          "line": 267,
+          "note": "S_CDPlay"
+        },
+        {
+          "path": "GAME/GAMEFLOW.C",
+          "line": 1308,
+          "note": "Ambiance du niveau"
+        }
+      ]
+    },
+    {
+      "id": "PORT-008",
+      "title": "Boucle du premier niveau et passage au suivant",
+      "status": "Blocked",
+      "reason": "Recette intégrée bloquée tant que PORT-005, PORT-006, PORT-007 ne sont pas validés ; rédaction terminée, travail non commencé.",
+      "priority": "P1",
+      "goal": "Jouer un parcours représentatif puis atteindre le niveau suivant, avec mort/reprise et retour au titre utilisables.",
+      "facts": "GAMEFLOW.C traite la fin de niveau ; dans la branche gfStatus==3, une affectation vers le niveau suivant est suivie d’une remise à zéro. C’est une observation source, pas une preuve de la cause d’un échec runtime ni un correctif validé.",
+      "scope": "Un parcours réel avec interaction/pickup, obstacle et sortie normale ; mort/reprise, état persistant et entrée au niveau suivant.",
+      "exclusions": "Campagne entière, tous combats/boss/secrets/cinématiques et niveau de fidélité finale exclus ; décomposer un mécanisme indispensable découvert au lieu de le masquer.",
+      "dependencies": [
+        "PORT-005",
+        "PORT-006",
+        "PORT-007"
+      ],
+      "tasks": [
+        "Choisir le parcours et les mécanismes réellement requis à partir du niveau chargé.",
+        "Vérifier triggers et transitions avec témoins fin normale/retour volontaire/mort.",
+        "Intégrer les dépendances indispensables et rejouer la route avec sauvegarde/reprise."
+      ],
+      "acceptance": [
+        "Une interaction et un pickup changent leur état attendu sur une route jouée par les entrées normales.",
+        "La sortie normale charge le bon niveau suivant et son point de départ, sans retour inattendu au titre.",
+        "Mort/reprise, reprise sauvegardée et retour volontaire au titre restent utilisables ; la route est répétée deux fois."
+      ],
+      "validation": "Vidéo privée du parcours avec journal transitions et identités des niveaux ; tests des régressions touchées et scénario de reprise.",
+      "unknowns": "Mécanismes du niveau non inventoriés, combat/IA/eau/cinématiques potentiellement bloquants ; ce ticket devra être découpé si nécessaire, sans déclarer le port complet.",
+      "estimate": "10–30 jours-personne exploratoires après dépendances ; forte possibilité de nouveaux tickets.",
+      "confidence": "Low",
+      "references": [
+        {
+          "path": "GAME/CONTROL.C",
+          "line": 3011,
+          "note": "TO_FINISH"
+        },
+        {
+          "path": "GAME/GAMEFLOW.C",
+          "line": 231,
+          "note": "Traitement gfStatus"
+        },
+        {
+          "path": "GAME/GAMEFLOW.C",
+          "line": 1389,
+          "note": "Sortie DoLevel"
+        }
+      ]
+    }
+  ],
+  "domains": [
+    {
+      "name": "Build/ABI32",
+      "status": "Covered",
+      "tickets": [
+        "PORT-001"
+      ],
+      "note": "Recette bornée, pas tous environnements"
+    },
+    {
+      "name": "Titre/menu",
+      "status": "Covered",
+      "tickets": [
+        "PORT-002"
+      ],
+      "note": "Menu de base"
+    },
+    {
+      "name": "Chargement/rendu initial",
+      "status": "Partial",
+      "tickets": [
+        "PORT-003"
+      ],
+      "note": "Premier niveau seulement"
+    },
+    {
+      "name": "Entrées/caméra",
+      "status": "Partial",
+      "tickets": [
+        "PORT-004"
+      ],
+      "note": "Socle ; caméra combat et remapping restants"
+    },
+    {
+      "name": "Collision/salles",
+      "status": "Partial",
+      "tickets": [
+        "PORT-005"
+      ],
+      "note": "Route bornée ; eau et cas étendus restants"
+    },
+    {
+      "name": "Sauvegarde",
+      "status": "Partial",
+      "tickets": [
+        "PORT-006"
+      ],
+      "note": "Cycle local ; compatibilité externe restante"
+    },
+    {
+      "name": "Audio",
+      "status": "Partial",
+      "tickets": [
+        "PORT-007"
+      ],
+      "note": "Socle ; voix et fidélité restantes"
+    },
+    {
+      "name": "Progression/campagne",
+      "status": "Partial",
+      "tickets": [
+        "PORT-008"
+      ],
+      "note": "Premier passage seulement, reste campagne à inventorier"
+    },
+    {
+      "name": "Combat/IA/armes",
+      "status": "To inventory",
+      "tickets": [],
+      "note": "Pas de ticket détaillé dans ce lot"
+    },
+    {
+      "name": "Inventaire/puzzles/objets",
+      "status": "Partial",
+      "tickets": [
+        "PORT-008"
+      ],
+      "note": "Un pickup/interaction ; catalogue restant"
+    },
+    {
+      "name": "Eau/nage/cordes/mouvements spéciaux",
+      "status": "To inventory",
+      "tickets": [],
+      "note": "Dépendances du parcours à découvrir"
+    },
+    {
+      "name": "Cinématiques/FMV/textes/langues",
+      "status": "To inventory",
+      "tickets": [],
+      "note": "Ne pas masquer une dépendance indispensable au titre/parcours"
+    },
+    {
+      "name": "Rendu complet/effets/performance",
+      "status": "To inventory",
+      "tickets": [],
+      "note": "Pas de budget performance ni fidélité exhaustive"
+    },
+    {
+      "name": "Distribution/config/accessibilité",
+      "status": "To inventory",
+      "tickets": [],
+      "note": "Installation utilisateur finale et options à définir"
+    },
+    {
+      "name": "Linux64 natif/autres plateformes",
+      "status": "Separate",
+      "tickets": [],
+      "note": "Cadrage distinct à valider"
+    },
+    {
+      "name": "Équivalence binaire complète",
+      "status": "Separate",
+      "tickets": [],
+      "note": "Pas le critère du premier port jouable"
+    }
+  ],
+  "estimate_note": "Estimations par ticket : jugement exploratoire, pas une mesure ; jours-personne de travail futur sur la portée bornée, pas des engagements et non sommables en durée de port. Confiance Low sauf recette build Medium. Première version du backlog : le socle initial de 8 tickets est rédigé. Reste indicatif 0,5–1 journée pour élargir le cadrage ; 2–4 jours de travail supplémentaires pour un backlog multi-domaines structuré et revu, selon accès aux preuves et arbitrages. Aucun runtime nouveau mesuré pendant ce lot. Portage complet : durée non estimable de façon crédible avant menu/niveau et inventaire de la campagne."
+}

@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TOMB5 — Backlog fonctionnel</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:1120px;margin:auto;padding:24px;color:#18293a;background:#f6f8fb}h1,h2{line-height:1.25}a{color:#075a9c}table{width:100%;border-collapse:collapse;background:white}th,td{border:1px solid #ccd5df;padding:10px;text-align:left}.scroll{overflow-x:auto}.notice{padding:18px;border-left:5px solid #a66a00;background:#fff4d9}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}section{margin:32px 0;padding:20px;background:white;border:1px solid #ccd5df}</style></head><body><h1>TOMB5 — Premier backlog fonctionnel</h1><p>Copie snapshot documentaire du 2026-09-13 · base eac6d930 · <a href="README.md">Tracker Markdown</a></p><div class="notice"><strong>Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.</strong><p>Backlog fonctionnel initial, distinct des tickets historiques RE. Rédaction terminée ne signifie pas fonctionnalité terminée. Aucune implémentation, nouvelle RE binaire, compilation ou exécution du jeu dans ce lot. État hérité de RE-772 : build64 crash LoadLevel ; build32 splash 30 secondes, timeout 124 ; menu interactif et gameplay non validés. Les tests de ce backlog valident les documents, pas le jeu.</p></div><h2>Deux progressions distinctes</h2><p><strong>Rédaction : 8/8 tickets. Implémentation validée dans ce lot : 0/8.</strong> Aucun pourcentage de portage complet.</p><p>Todo : prêt à planifier, non commencé. Blocked : dépendances de recette non validées. P0 : socle jouable ; P1 : boucle intégrée suivante. Rédiger ≠ implémenter.</p><div class="scroll"><table><caption>8 tickets proposés, aucune implémentation autorisée</caption><thead><tr><th>ID</th><th>Priorité</th><th>Status</th><th>Objectif</th><th>Dépendances</th></tr></thead><tbody><tr><th><a href="#PORT-001">PORT-001</a></th><td>P0</td><td>Todo</td><td>Build Linux32 reproductible</td><td>Aucune</td></tr><tr><th><a href="#PORT-002">PORT-002</a></th><td>P0</td><td>Blocked</td><td>Du splash au menu interactif</td><td>PORT-001</td></tr><tr><th><a href="#PORT-003">PORT-003</a></th><td>P0</td><td>Blocked</td><td>Nouvelle partie et première scène jouable</td><td>PORT-002</td></tr><tr><th><a href="#PORT-004">PORT-004</a></th><td>P0</td><td>Blocked</td><td>Commandes et caméra de base utilisables</td><td>PORT-003</td></tr><tr><th><a href="#PORT-005">PORT-005</a></th><td>P0</td><td>Blocked</td><td>Déplacement solide et passages entre salles</td><td>PORT-004</td></tr><tr><th><a href="#PORT-006">PORT-006</a></th><td>P1</td><td>Blocked</td><td>Sauvegarder et reprendre après relancement</td><td>PORT-005</td></tr><tr><th><a href="#PORT-007">PORT-007</a></th><td>P1</td><td>Blocked</td><td>Audio essentiel et arrêt propre des sons</td><td>PORT-004</td></tr><tr><th><a href="#PORT-008">PORT-008</a></th><td>P1</td><td>Blocked</td><td>Boucle du premier niveau et passage au suivant</td><td>PORT-005, PORT-006, PORT-007</td></tr></tbody></table></div><h2>Couverture : backlog non exhaustif</h2><p>Covered : périmètre borné décrit ; Partial : tranche décrite ; To inventory : à inventorier ; Separate : chantier distinct. Ce ne sont pas des statuts de jeu.</p><div class="scroll"><table><thead><tr><th>Domaine</th><th>Couverture</th><th>Tickets</th><th>Reste / limite</th></tr></thead><tbody><tr><td>Build/ABI32</td><td>Covered</td><td>PORT-001</td><td>Recette bornée, pas tous environnements</td></tr><tr><td>Titre/menu</td><td>Covered</td><td>PORT-002</td><td>Menu de base</td></tr><tr><td>Chargement/rendu initial</td><td>Partial</td><td>PORT-003</td><td>Premier niveau seulement</td></tr><tr><td>Entrées/caméra</td><td>Partial</td><td>PORT-004</td><td>Socle ; caméra combat et remapping restants</td></tr><tr><td>Collision/salles</td><td>Partial</td><td>PORT-005</td><td>Route bornée ; eau et cas étendus restants</td></tr><tr><td>Sauvegarde</td><td>Partial</td><td>PORT-006</td><td>Cycle local ; compatibilité externe restante</td></tr><tr><td>Audio</td><td>Partial</td><td>PORT-007</td><td>Socle ; voix et fidélité restantes</td></tr><tr><td>Progression/campagne</td><td>Partial</td><td>PORT-008</td><td>Premier passage seulement, reste campagne à inventorier</td></tr><tr><td>Combat/IA/armes</td><td>To inventory</td><td>—</td><td>Pas de ticket détaillé dans ce lot</td></tr><tr><td>Inventaire/puzzles/objets</td><td>Partial</td><td>PORT-008</td><td>Un pickup/interaction ; catalogue restant</td></tr><tr><td>Eau/nage/cordes/mouvements spéciaux</td><td>To inventory</td><td>—</td><td>Dépendances du parcours à découvrir</td></tr><tr><td>Cinématiques/FMV/textes/langues</td><td>To inventory</td><td>—</td><td>Ne pas masquer une dépendance indispensable au titre/parcours</td></tr><tr><td>Rendu complet/effets/performance</td><td>To inventory</td><td>—</td><td>Pas de budget performance ni fidélité exhaustive</td></tr><tr><td>Distribution/config/accessibilité</td><td>To inventory</td><td>—</td><td>Installation utilisateur finale et options à définir</td></tr><tr><td>Linux64 natif/autres plateformes</td><td>Separate</td><td>—</td><td>Cadrage distinct à valider</td></tr><tr><td>Équivalence binaire complète</td><td>Separate</td><td>—</td><td>Pas le critère du premier port jouable</td></tr></tbody></table></div><h2>Estimation indicative et suite</h2><p>Estimations par ticket : jugement exploratoire, pas une mesure ; jours-personne de travail futur sur la portée bornée, pas des engagements et non sommables en durée de port. Confiance Low sauf recette build Medium. Première version du backlog : le socle initial de 8 tickets est rédigé. Reste indicatif 0,5–1 journée pour élargir le cadrage ; 2–4 jours de travail supplémentaires pour un backlog multi-domaines structuré et revu, selon accès aux preuves et arbitrages. Aucun runtime nouveau mesuré pendant ce lot. Portage complet : durée non estimable de façon crédible avant menu/niveau et inventaire de la campagne.</p><p>Prochaine décision : confirmer la cible, puis autoriser séparément PORT-001/002. Les preuves historiques RE restent distinctes ; GetHeight/callback SOURCE ne signifie pas correctif validé.</p><section id="PORT-001"><h2>PORT-001 — Build Linux32 reproductible</h2><p><a href="PORT-001.md">Fiche Markdown</a></p><pre># PORT-001 — Build Linux32 reproductible
+
+[Tracker](README.md) · [Tableau HTML](index.html#PORT-001)
+
+Status: Todo
+
+Priorité : P0
+
+Motif : Prêt à planifier ; aucune implémentation autorisée par ce lot.
+
+Dépendances : Aucune
+
+Cadrage proposé : Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.
+
+## Objectif utilisateur
+
+Pouvoir construire et lancer la même application depuis un environnement documenté, sans dépendre du répertoire privé d’un précédent essai.
+
+## Faits existants — base eac6d930
+
+RE-772 rapporte un build ELF32 réussi avec GLEW privé ; le build ELF64 a crashé dans LoadLevel. Linux.cmake recherche SDL2/OpenGL/GLEW mais ne fixe pas à lui seul l’ABI 32-bit.
+
+## Portée
+
+Toolchain, options effectives, dépendances i386, chemins de données fournis légalement, lancement et fermeture.
+
+## Exclusions
+
+Reconstruction menu, correctifs gameplay, port natif64 et redistribution des données exclus.
+
+## Tâches — implémentation non commencée
+
+- [ ] Documenter une recette neuve avec versions et architecture de chaque dépendance ; adapter seulement après autorisation d’implémentation.
+- [ ] Reproduire dans un nouveau build tree et archiver flags, ELF, résolution des bibliothèques et hash avant lancement.
+- [ ] Documenter le placement des données utilisateur et tester absence de données avec diagnostic exploitable.
+
+## Critères d’acceptation futurs
+
+- [ ] Deux builds neufs à partir du même commit aboutissent sans dépendance cachée à runtime-1058 ; identité bit-à-bit du binaire non exigée.
+- [ ] Le binaire est ELF32, ses bibliothèques sont compatibles, le splash est capturé depuis ce binaire et une fermeture normale est observée.
+- [ ] Une dépendance ou donnée absente produit une erreur attribuable et une procédure de résolution.
+
+## Validation et capture attendues
+
+Logs configure/build/ldd et application distincts, capture privée avec hash du binaire ; recette rejouée indépendamment. Un timeout ne remplace pas une fermeture normale.
+
+Captures, assets, exécutables et données restent dans des dossiers ignorés ; seuls scripts, tests et métadonnées sûrs seront versionnables.
+
+## Inconnues
+
+Disponibilité des dépendances sur une autre machine, variantes de données et nécessité d’un conteneur à décider.
+
+## Estimation indicative
+
+1–3 jours-personne pour industrialiser la recette existante ; hors résolution de défauts runtime nouveaux. Confiance : Medium. Jugement de planification, pas une mesure ; à réviser après les dépendances, non une promesse de délai.
+
+## Références consultables
+
+- `docs/stories/RE-772-build-runtime-observable.md:15` — Build32 et limites.
+- `SPEC_PSXPC_N/PLATFORM/Linux.cmake:3` — Dépendances Linux.
+- `SPEC_PSXPC_N/CMakeLists.txt:11` — Options indépendantes du build type.
+
+## Progression séparée
+
+- [x] Ticket rédigé.
+- [ ] Travail fonctionnel autorisé et démarré.
+- [ ] Recette observable validée ; revue avant passage à Done.
+</pre></section><section id="PORT-002"><h2>PORT-002 — Du splash au menu interactif</h2><p><a href="PORT-002.md">Fiche Markdown</a></p><pre># PORT-002 — Du splash au menu interactif
+
+[Tracker](README.md) · [Tableau HTML](index.html#PORT-002)
+
+Status: Blocked
+
+Priorité : P0
+
+Motif : Recette intégrée bloquée tant que PORT-001 ne sont pas validés ; rédaction terminée, travail non commencé.
+
+Dépendances : PORT-001
+
+Cadrage proposé : Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.
+
+## Objectif utilisateur
+
+Atteindre un menu lisible et pouvoir choisir Nouvelle partie avec une entrée réelle.
+
+## Faits existants — base eac6d930
+
+RE-772 ne montre qu’un splash pendant 30 secondes, sans menu ni gameplay validés. DoTitle pilote le titre ; TitleOptions contient des branches liées à la connexion et à la cinématique. Cause de l’absence de menu non établie.
+
+## Portée
+
+Chemin normal de démarrage, rendu du menu, clavier ou manette de référence, navigation/validation/retour ; entrées minimales incluses.
+
+## Exclusions
+
+Pas de saut artificiel du titre, pas de lancement direct du niveau présenté comme navigation validée ; commandes en jeu réservées à PORT-004.
+
+## Tâches — implémentation non commencée
+
+- [ ] Reproduire et isoler l’étape splash/titre/menu avec chronologie des événements.
+- [ ] Vérifier conditions de fondu/cinématique et réception des entrées sans présumer la cause.
+- [ ] Implémenter uniquement une correction attribuée si nécessaire et faire une recette de navigation.
+
+## Critères d’acceptation futurs
+
+- [ ] Sur trois lancements neufs, un menu avec options lisibles apparaît dans une borne convenue et consignée.
+- [ ] Les actions haut/bas/valider/retour modifient visiblement la sélection sans touche bloquée.
+- [ ] Nouvelle partie quitte le menu par le chemin normal ; atteindre une scène jouable relève de PORT-003.
+
+## Validation et capture attendues
+
+Vidéo ou série de captures privées horodatées, entrées enregistrées, logs et sortie application ; distinguer menu visible et menu réactif.
+
+Captures, assets, exécutables et données restent dans des dossiers ignorés ; seuls scripts, tests et métadonnées sûrs seront versionnables.
+
+## Inconnues
+
+Interaction clavier/PadConnected, séquence titre, rendu ou synchronisation : hypothèses à départager, pas causes établies.
+
+## Estimation indicative
+
+3–10 jours-personne exploratoires ; à rechiffrer dès le premier obstacle reproduit. Confiance : Low. Jugement de planification, pas une mesure ; à réviser après les dépendances, non une promesse de délai.
+
+## Références consultables
+
+- `docs/stories/RE-772-build-runtime-observable.md:19` — Splash et absence de menu.
+- `GAME/GAMEFLOW.C:931` — DoTitle.
+- `SPEC_PSXPC_N/TITSEQ.C:140` — TitleOptions.
+
+## Progression séparée
+
+- [x] Ticket rédigé.
+- [ ] Travail fonctionnel autorisé et démarré.
+- [ ] Recette observable validée ; revue avant passage à Done.
+</pre></section><section id="PORT-003"><h2>PORT-003 — Nouvelle partie et première scène jouable</h2><p><a href="PORT-003.md">Fiche Markdown</a></p><pre># PORT-003 — Nouvelle partie et première scène jouable
+
+[Tracker](README.md) · [Tableau HTML](index.html#PORT-003)
+
+Status: Blocked
+
+Priorité : P0
+
+Motif : Recette intégrée bloquée tant que PORT-002 ne sont pas validés ; rédaction terminée, travail non commencé.
+
+Dépendances : PORT-002
+
+Cadrage proposé : Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.
+
+## Objectif utilisateur
+
+Démarrer une nouvelle partie depuis le menu et voir Lara dans le premier niveau des données de référence.
+
+## Faits existants — base eac6d930
+
+S_LoadLevelFile appelle le chargement du niveau ; LoadLevel reconstruit les rooms ; DoLevel relie chargement, caméra, contrôle et dessin. Ces sources présentes ne prouvent pas un niveau jouable. RE-772 n’a pas validé cette transition.
+
+## Portée
+
+Premier niveau des données choisies (Rome attendu, à confirmer par le gameflow), chargement complet et boucle graphique active.
+
+## Exclusions
+
+Campagne entière, fidélité de chaque effet et parcours complet exclus ; pas de succès fondé sur un loader isolé.
+
+## Tâches — implémentation non commencée
+
+- [ ] Fixer jeu de données légal, niveau attendu et recette menu vers nouvelle partie.
+- [ ] Identifier le premier obstacle intégré et ses dépendances réelles sans neutraliser silencieusement les services.
+- [ ] Corriger seulement après preuve/recette sensible, puis répéter depuis un processus neuf.
+
+## Critères d’acceptation futurs
+
+- [ ] Depuis Nouvelle partie, Lara et une géométrie de niveau identifiable sont visibles sans appel direct de test au loader.
+- [ ] Animation et caméra évoluent pendant au moins 60 secondes ; les journaux distinguent crash, timeout et fermeture demandée.
+- [ ] Trois relancements reproduisent la même arrivée, avec identité du niveau et configuration archivées.
+
+## Validation et capture attendues
+
+Capture privée de la transition et de la scène, trace de chargement, hash binaire ; absence de crash sur cette fenêtre seulement.
+
+Captures, assets, exécutables et données restent dans des dossiers ignorés ; seuls scripts, tests et métadonnées sûrs seront versionnables.
+
+## Inconnues
+
+Identité effective du premier niveau, intégrité des données, overlays, animations, dépendances rendu/audio encore à vérifier en intégration.
+
+## Estimation indicative
+
+5–15 jours-personne exploratoires ; aucune garantie tant que PORT-002 n’est pas franchi. Confiance : Low. Jugement de planification, pas une mesure ; à réviser après les dépendances, non une promesse de délai.
+
+## Références consultables
+
+- `SPEC_PSXPC_N/ROOMLOAD.C:62` — S_LoadLevelFile.
+- `GAME/SETUP.C:1208` — LoadLevel.
+- `GAME/GAMEFLOW.C:1209` — DoLevel.
+
+## Progression séparée
+
+- [x] Ticket rédigé.
+- [ ] Travail fonctionnel autorisé et démarré.
+- [ ] Recette observable validée ; revue avant passage à Done.
+</pre></section><section id="PORT-004"><h2>PORT-004 — Commandes et caméra de base utilisables</h2><p><a href="PORT-004.md">Fiche Markdown</a></p><pre># PORT-004 — Commandes et caméra de base utilisables
+
+[Tracker](README.md) · [Tableau HTML](index.html#PORT-004)
+
+Status: Blocked
+
+Priorité : P0
+
+Motif : Recette intégrée bloquée tant que PORT-003 ne sont pas validés ; rédaction terminée, travail non commencé.
+
+Dépendances : PORT-003
+
+Cadrage proposé : Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.
+
+## Objectif utilisateur
+
+Contrôler Lara et garder une vue exploitable avec un clavier de référence, puis une manette choisie.
+
+## Faits existants — base eac6d930
+
+UpdateKeyboardInput et S_UpdateInput existent. LookCamera est un stub dans GAME/CAMERA.C ; cela ne prouve pas la cause du splash. Le suivi caméra est distinct de la solidité complète des collisions.
+
+## Portée
+
+Marche/course, rotation, saut, action, regard, pause et relâchement ; scène ouverte comme recette indépendante de PORT-005.
+
+## Exclusions
+
+Toutes manettes, remapping complet/accessibilité et caméra combat avancée exclus ; obstacles/salles traités dans PORT-005.
+
+## Tâches — implémentation non commencée
+
+- [ ] Définir une table de commandes visible et une recette en scène ouverte.
+- [ ] Caractériser touches maintenues/edges, focus et déconnexion ; attribuer les fonctions manquantes requises.
+- [ ] Compléter le regard/suivi nécessaire et ajouter des contrôles absence d’entrée/relâchement.
+
+## Critères d’acceptation futurs
+
+- [ ] Chaque commande listée produit une réponse identifiable ; relâchement et perte de focus ne laissent pas une action bloquée.
+- [ ] Pause arrête la simulation et reprise la réactive sans perdre le contrôle.
+- [ ] Regard puis retour au suivi gardent Lara visible en scène ouverte ; une déconnexion/reconnexion est récupérable.
+
+## Validation et capture attendues
+
+Séquence privée d’entrées/captures en jeu, mesures position/caméra symboliques et témoins sans entrée ; recette obstacles additionnelle dans PORT-005.
+
+Captures, assets, exécutables et données restent dans des dossiers ignorés ; seuls scripts, tests et métadonnées sûrs seront versionnables.
+
+## Inconnues
+
+Combinaison des branches d’entrée, disponibilité physique d’une manette et contrat du regard à confirmer.
+
+## Estimation indicative
+
+5–15 jours-personne pour le socle ; périphériques supplémentaires non compris. Confiance : Low. Jugement de planification, pas une mesure ; à réviser après les dépendances, non une promesse de délai.
+
+## Références consultables
+
+- `EMULATOR/LIBPAD.C:240` — UpdateKeyboardInput.
+- `SPEC_PSXPC_N/PSXINPUT.C:91` — S_UpdateInput.
+- `GAME/CAMERA.C:1596` — LookCamera.
+
+## Progression séparée
+
+- [x] Ticket rédigé.
+- [ ] Travail fonctionnel autorisé et démarré.
+- [ ] Recette observable validée ; revue avant passage à Done.
+</pre></section><section id="PORT-005"><h2>PORT-005 — Déplacement solide et passages entre salles</h2><p><a href="PORT-005.md">Fiche Markdown</a></p><pre># PORT-005 — Déplacement solide et passages entre salles
+
+[Tracker](README.md) · [Tableau HTML](index.html#PORT-005)
+
+Status: Blocked
+
+Priorité : P0
+
+Motif : Recette intégrée bloquée tant que PORT-004 ne sont pas validés ; rédaction terminée, travail non commencé.
+
+Dépendances : PORT-004
+
+Cadrage proposé : Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.
+
+## Objectif utilisateur
+
+Parcourir un petit trajet avec pentes, murs et changement de salle sans traversée ni chute incohérente.
+
+## Faits existants — base eac6d930
+
+UpdateLaraRoom et GetCollisionInfo existent côté PSXPC_N. RE-770/771 caractérisent GetHeight/callback côté SOURCE seulement : pas une correction ni une équivalence cible. Préconditions ItemPushLara et preuve cible restent ouvertes.
+
+## Portée
+
+Sol/pente/marche, saut/chute, mur, obstacle statique et portail sur une route de référence ; position/salle/item.floor.
+
+## Exclusions
+
+Pas de correction spéculative du callback ; pas de certification de toutes les géométries, ennemis ou eau.
+
+## Tâches — implémentation non commencée
+
+- [ ] Choisir une route avec témoins géométriques et identifier le consommateur réel de hauteur.
+- [ ] Établir les préconditions d’alias/appel et la preuve cible manquante avant toute correction qui s’en réclame.
+- [ ] Comparer cas sensibles et trajet intégré, conserver explicitement les divergences non corrigées.
+
+## Critères d’acceptation futurs
+
+- [ ] La route enregistrée franchit le portail attendu et maintient position, salle et hauteur de sol cohérentes.
+- [ ] Mur et obstacle empêchent le passage ; saut/chute atterrit sur le sol prévu sans téléportation inexpliquée.
+- [ ] Cas limites pente/seuil/absence de collision ont des témoins sensibles ; une caractérisation PASS avec divergence ne clôt pas le ticket.
+
+## Validation et capture attendues
+
+Recette privée en jeu et tests réels des TUs touchées ; attribution binaire requise pour une prétention d’équivalence, sans publier dumps.
+
+Captures, assets, exécutables et données restent dans des dossiers ignorés ; seuls scripts, tests et métadonnées sûrs seront versionnables.
+
+## Inconnues
+
+GetHeight cible, appelants ItemPushLara, alias et triangles non couverts par les preuves disponibles ; coût potentiellement supérieur après découverte.
+
+## Estimation indicative
+
+10–30 jours-personne exploratoires sur route bornée ; campagne complète exclue. Confiance : Low. Jugement de planification, pas une mesure ; à réviser après les dépendances, non une promesse de délai.
+
+## Références consultables
+
+- `SPEC_PSXPC_N/COLLIDE_S.C:53` — UpdateLaraRoom.
+- `GAME/CONTROL.C:3428` — GetHeight.
+- `docs/stories/RE-771-getheight-callback-source.md:1` — Caractérisation SOURCE.
+- `GAME/COLLIDE.C:413` — Collision objets.
+
+## Progression séparée
+
+- [x] Ticket rédigé.
+- [ ] Travail fonctionnel autorisé et démarré.
+- [ ] Recette observable validée ; revue avant passage à Done.
+</pre></section><section id="PORT-006"><h2>PORT-006 — Sauvegarder et reprendre après relancement</h2><p><a href="PORT-006.md">Fiche Markdown</a></p><pre># PORT-006 — Sauvegarder et reprendre après relancement
+
+[Tracker](README.md) · [Tableau HTML](index.html#PORT-006)
+
+Status: Blocked
+
+Priorité : P1
+
+Motif : Recette intégrée bloquée tant que PORT-005 ne sont pas validés ; rédaction terminée, travail non commencé.
+
+Dépendances : PORT-005
+
+Cadrage proposé : Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.
+
+## Objectif utilisateur
+
+Retrouver une partie sauvegardée après fermeture complète de l’application.
+
+## Faits existants — base eac6d930
+
+LoadGame/SaveGame existent côté PSXPC_N ; RestoreLevelData est un stub dans GAME/SAVEGAME.C. La présence des menus ne vaut pas restauration du monde. Le stockage carte mémoire passe par EMULATOR/LIBMCRD.C.
+
+## Portée
+
+Un emplacement de sauvegarde local, cycle complet save/exit/relaunch/load, état de Lara et d’un objet représentatif.
+
+## Exclusions
+
+Compatibilité universelle avec sauvegardes originales, migration de versions, synchronisation cloud et tous slots exclus.
+
+## Tâches — implémentation non commencée
+
+- [ ] Définir un état avant/après et isoler le stockage de test des sauvegardes utilisateur.
+- [ ] Caractériser sérialisation, restauration et taille des buffers avant correction.
+- [ ] Faire le cycle avec processus neuf puis tester annulation et fichier invalide sur copies.
+
+## Critères d’acceptation futurs
+
+- [ ] Après relancement, niveau, position, santé, inventaire et état d’un objet correspondent aux valeurs sauvegardées.
+- [ ] Un déplacement après sauvegarde n’est pas confondu avec l’état restauré.
+- [ ] Annulation/fichier invalide n’écrasent pas la sauvegarde valide et produisent une réponse compréhensible.
+
+## Validation et capture attendues
+
+Captures privées avant/après, comparaison structurée des états et hashes des fichiers privés ; aucune sauvegarde originale en Git.
+
+Captures, assets, exécutables et données restent dans des dossiers ignorés ; seuls scripts, tests et métadonnées sûrs seront versionnables.
+
+## Inconnues
+
+Format, checksum, validité des chemins et logique de restauration ; aucune corruption réelle prétendue sans reproduction.
+
+## Estimation indicative
+
+5–20 jours-personne exploratoires ; compatibilité externe à estimer séparément. Confiance : Low. Jugement de planification, pas une mesure ; à réviser après les dépendances, non une promesse de délai.
+
+## Références consultables
+
+- `SPEC_PSXPC_N/LOADSAVE.C:119` — LoadGame.
+- `GAME/SAVEGAME.C:52` — sgRestoreGame et RestoreLevelData.
+- `EMULATOR/LIBMCRD.C:78` — Stockage carte mémoire.
+
+## Progression séparée
+
+- [x] Ticket rédigé.
+- [ ] Travail fonctionnel autorisé et démarré.
+- [ ] Recette observable validée ; revue avant passage à Done.
+</pre></section><section id="PORT-007"><h2>PORT-007 — Audio essentiel et arrêt propre des sons</h2><p><a href="PORT-007.md">Fiche Markdown</a></p><pre># PORT-007 — Audio essentiel et arrêt propre des sons
+
+[Tracker](README.md) · [Tableau HTML](index.html#PORT-007)
+
+Status: Blocked
+
+Priorité : P1
+
+Motif : Recette intégrée bloquée tant que PORT-004 ne sont pas validés ; rédaction terminée, travail non commencé.
+
+Dépendances : PORT-004
+
+Cadrage proposé : Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.
+
+## Objectif utilisateur
+
+Entendre les sons utiles et l’ambiance, avec réglage du volume et sans son persistant hors contexte.
+
+## Faits existants — base eac6d930
+
+SFX.C contient SPU_Play/PlaySample et le pont de samples ; CD.C contient S_CDPlay/S_CDStop. Présence d’appels et fonctions partielles ne prouve pas une sortie audible fonctionnelle.
+
+## Portée
+
+Sons menu/action, ambiance du premier niveau, volumes, arrêt au titre et reprise après pause selon le contrat retenu.
+
+## Exclusions
+
+Fidélité matérielle SPU, toutes voix/langues, mixage de la campagne entière et redistribution audio exclus.
+
+## Tâches — implémentation non commencée
+
+- [ ] Fixer périphérique de sortie et sources sonores représentatives avec contrôle silence.
+- [ ] Tracer chemin sample/CD et durée de vie des voix ; traiter seulement les manques attribués.
+- [ ] Vérifier changements volume, pause/retour titre et absence de boucle persistante.
+
+## Critères d’acceptation futurs
+
+- [ ] Au moins un son menu, deux actions distinctes et une ambiance sont audibles aux moments attendus.
+- [ ] Volume nul coupe la catégorie concernée et le rétablissement la rend audible sans modifier une autre catégorie.
+- [ ] Retour au titre arrête les sons du niveau ; trois cycles n’accumulent pas de sons persistants.
+
+## Validation et capture attendues
+
+Capture audio privée et journal événements, écoute humaine sur sortie choisie ; appels de services seuls insuffisants.
+
+Captures, assets, exécutables et données restent dans des dossiers ignorés ; seuls scripts, tests et métadonnées sûrs seront versionnables.
+
+## Inconnues
+
+Backend actif, couverture des samples, musique/cinématiques et partage des voix à caractériser.
+
+## Estimation indicative
+
+3–10 jours-personne exploratoires pour ce socle audio. Confiance : Low. Jugement de planification, pas une mesure ; à réviser après les dépendances, non une promesse de délai.
+
+## Références consultables
+
+- `SPEC_PSXPC_N/SFX.C:164` — PlaySample.
+- `SPEC_PSXPC_N/CD.C:267` — S_CDPlay.
+- `GAME/GAMEFLOW.C:1308` — Ambiance du niveau.
+
+## Progression séparée
+
+- [x] Ticket rédigé.
+- [ ] Travail fonctionnel autorisé et démarré.
+- [ ] Recette observable validée ; revue avant passage à Done.
+</pre></section><section id="PORT-008"><h2>PORT-008 — Boucle du premier niveau et passage au suivant</h2><p><a href="PORT-008.md">Fiche Markdown</a></p><pre># PORT-008 — Boucle du premier niveau et passage au suivant
+
+[Tracker](README.md) · [Tableau HTML](index.html#PORT-008)
+
+Status: Blocked
+
+Priorité : P1
+
+Motif : Recette intégrée bloquée tant que PORT-005, PORT-006, PORT-007 ne sont pas validés ; rédaction terminée, travail non commencé.
+
+Dépendances : PORT-005, PORT-006, PORT-007
+
+Cadrage proposé : Linux 32-bit / PSXPC_N en premier : proposition de cadrage, PAS décision utilisateur définitivement validée.
+
+## Objectif utilisateur
+
+Jouer un parcours représentatif puis atteindre le niveau suivant, avec mort/reprise et retour au titre utilisables.
+
+## Faits existants — base eac6d930
+
+GAMEFLOW.C traite la fin de niveau ; dans la branche gfStatus==3, une affectation vers le niveau suivant est suivie d’une remise à zéro. C’est une observation source, pas une preuve de la cause d’un échec runtime ni un correctif validé.
+
+## Portée
+
+Un parcours réel avec interaction/pickup, obstacle et sortie normale ; mort/reprise, état persistant et entrée au niveau suivant.
+
+## Exclusions
+
+Campagne entière, tous combats/boss/secrets/cinématiques et niveau de fidélité finale exclus ; décomposer un mécanisme indispensable découvert au lieu de le masquer.
+
+## Tâches — implémentation non commencée
+
+- [ ] Choisir le parcours et les mécanismes réellement requis à partir du niveau chargé.
+- [ ] Vérifier triggers et transitions avec témoins fin normale/retour volontaire/mort.
+- [ ] Intégrer les dépendances indispensables et rejouer la route avec sauvegarde/reprise.
+
+## Critères d’acceptation futurs
+
+- [ ] Une interaction et un pickup changent leur état attendu sur une route jouée par les entrées normales.
+- [ ] La sortie normale charge le bon niveau suivant et son point de départ, sans retour inattendu au titre.
+- [ ] Mort/reprise, reprise sauvegardée et retour volontaire au titre restent utilisables ; la route est répétée deux fois.
+
+## Validation et capture attendues
+
+Vidéo privée du parcours avec journal transitions et identités des niveaux ; tests des régressions touchées et scénario de reprise.
+
+Captures, assets, exécutables et données restent dans des dossiers ignorés ; seuls scripts, tests et métadonnées sûrs seront versionnables.
+
+## Inconnues
+
+Mécanismes du niveau non inventoriés, combat/IA/eau/cinématiques potentiellement bloquants ; ce ticket devra être découpé si nécessaire, sans déclarer le port complet.
+
+## Estimation indicative
+
+10–30 jours-personne exploratoires après dépendances ; forte possibilité de nouveaux tickets. Confiance : Low. Jugement de planification, pas une mesure ; à réviser après les dépendances, non une promesse de délai.
+
+## Références consultables
+
+- `GAME/CONTROL.C:3011` — TO_FINISH.
+- `GAME/GAMEFLOW.C:231` — Traitement gfStatus.
+- `GAME/GAMEFLOW.C:1389` — Sortie DoLevel.
+
+## Progression séparée
+
+- [x] Ticket rédigé.
+- [ ] Travail fonctionnel autorisé et démarré.
+- [ ] Recette observable validée ; revue avant passage à Done.
+</pre></section></body></html>
