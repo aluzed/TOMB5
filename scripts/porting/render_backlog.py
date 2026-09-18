@@ -162,6 +162,23 @@ def render(data):
         files['index.html'] = files['index.html'].replace(old_section, new_section, 1)
         html_active = '<aside><pre>' + escape(active) + '</pre><a href="linux32.md">Recette Linux32</a></aside>'
         files['index.html'] = files['index.html'].replace('<body>', '<body>' + html_active, 1)
+    if 'runtime_progress' in data:
+        p = data['runtime_progress']
+        if (p['ticket'] != 'PORT-002' or p['status'] != 'In progress'
+                or not p['authorization_until'] or not p['summary']):
+            raise ValueError('runtime progress')
+        runtime = (f'## Progression runtime du {p["date"]}\n\n'
+                   f'{p["ticket"]} — **{p["status"]}** ; PORT-001 reste en cours. '
+                   f'Autorisation jusqu’au {p["authorization_until"]}. Linux32 provisoire.\n\n'
+                   f'{p["summary"]}\n\nDétails : [preuve runtime](runtime-menu.md).\n\n'
+                   'Les blocs antérieurs ci-dessous sont historiques, y compris leur '
+                   'ancienne échéance et leurs réserves visuelles. Aucun Done attribué.\n\n')
+        for name in ('PORT-001.md', 'PORT-002.md', 'README.md'):
+            files[name] = runtime + files[name]
+        html = ('<aside id="runtime-progress"><pre>' + escape(runtime)
+                + '</pre><a href="runtime-menu.md">Preuve runtime</a></aside>'
+                + '<!-- runtime milestone end -->')
+        files['index.html'] = files['index.html'].replace('<body>', '<body>' + html, 1)
     return files
 
 

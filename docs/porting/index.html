@@ -1,5 +1,15 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TOMB5 — Backlog fonctionnel</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:1120px;margin:auto;padding:24px;color:#18293a;background:#f6f8fb}h1,h2{line-height:1.25}a{color:#075a9c}table{width:100%;border-collapse:collapse;background:white}th,td{border:1px solid #ccd5df;padding:10px;text-align:left}.scroll{overflow-x:auto}.notice{padding:18px;border-left:5px solid #a66a00;background:#fff4d9}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}section{margin:32px 0;padding:20px;background:white;border:1px solid #ccd5df}</style></head><body><aside><pre>## Progression active du 2026-09-18
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TOMB5 — Backlog fonctionnel</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:1120px;margin:auto;padding:24px;color:#18293a;background:#f6f8fb}h1,h2{line-height:1.25}a{color:#075a9c}table{width:100%;border-collapse:collapse;background:white}th,td{border:1px solid #ccd5df;padding:10px;text-align:left}.scroll{overflow-x:auto}.notice{padding:18px;border-left:5px solid #a66a00;background:#fff4d9}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}section{margin:32px 0;padding:20px;background:white;border:1px solid #ccd5df}</style></head><body><aside id="runtime-progress"><pre>## Progression runtime du 2026-09-18
+
+PORT-002 — **In progress** ; PORT-001 reste en cours. Autorisation jusqu’au 2026-09-18T10:30:00+02:00. Linux32 provisoire.
+
+Premier crash de navigation corrigé : SIGILL au retour manquant de S_SoundPlaySample, avec argument pitch rétabli selon preuve cible. RED 30 échecs/60 PASS puis GREEN 90 PASS sur vraie TU i386 et double PlaySample explicite. Trois lancements neufs du binaire corrigé : titre atteint vers 26 secondes, menu capturé à 29 secondes, entrées réelles Down/Up/c/z observées selon parcours ; ouverture Special Features et retour, Nouvelle partie atteint DoLevel(1). Fermetures WM_DELETE_WINDOW : application exit 0. Capture de chargement illustrée, gameplay non validé ; audio complet non reconstruit. Preuves privées : build/reverse/autonomy-20260918-1030-recovery/. Revue indépendante précommit PASS à 09:47 Paris : 126 tests publics réussis, preuves archivées auditées sans régénération ; pas de validation audio matérielle ni gameplay.
+
+Détails : [preuve runtime](runtime-menu.md).
+
+Les blocs antérieurs ci-dessous sont historiques, y compris leur ancienne échéance et leurs réserves visuelles. Aucun Done attribué.
+
+</pre><a href="runtime-menu.md">Preuve runtime</a></aside><!-- runtime milestone end --><aside><pre>## Progression active du 2026-09-18
 
 PORT-001 — **In progress**. Autorisation technique bornée jusqu’au 2026-09-18T08:30:00+02:00 ; elle ne valide pas définitivement la cible.
 
