@@ -138,6 +138,30 @@ def render(data):
         ''.join(domain_rows)+'</tbody></table></div><h2>Estimation indicative et suite</h2><p>'+escape(data['estimate_note'])+
         '</p><p>Prochaine décision : confirmer la cible, puis autoriser séparément PORT-001/002. Les preuves historiques RE restent distinctes ; GetHeight/callback SOURCE ne signifie pas correctif validé.</p>'+
         ''.join(sections)+'</body></html>\n')
+    # The initial lot above is a frozen planning snapshot, including its denial
+    # of implementation authorization. A separately dated execution overlay does
+    # not convert that historical permission or its counters into current truth.
+    if 'progress' in data:
+        p = data['progress']
+        if (p['ticket'] not in {t['id'] for t in tickets}
+                or p['status'] != 'In progress'
+                or not p['authorization_until'] or not p['summary']):
+            raise ValueError('active progress')
+        active = (f'## Progression active du {p["date"]}\n\n'
+                  f'{p["ticket"]} — **{p["status"]}**. Autorisation technique bornée jusqu’au '
+                  f'{p["authorization_until"]} ; elle ne valide pas définitivement la cible.\n\n'
+                  f'{p["summary"]}\n\nRecette : [Linux32](linux32.md).\n\n'
+                  'Les statuts, compteurs et restrictions du lot initial ci-dessous restent '
+                  'un historique du 13 septembre, pas une nouvelle demande de GO. '
+                  'Aucun ticket accepté Done.\n\n')
+        files['README.md'] = active + files['README.md']
+        ticket_file = p['ticket'] + '.md'
+        files[ticket_file] = active + 'Status: In progress\n\n## Fiche initiale historique\n\n' + files[ticket_file]
+        old_section = next(s for s in sections if s.startswith(f'<section id="{p["ticket"]}">'))
+        new_section = old_section[:old_section.index('<pre>')] + '<pre>' + escape(files[ticket_file]) + '</pre></section>'
+        files['index.html'] = files['index.html'].replace(old_section, new_section, 1)
+        html_active = '<aside><pre>' + escape(active) + '</pre><a href="linux32.md">Recette Linux32</a></aside>'
+        files['index.html'] = files['index.html'].replace('<body>', '<body>' + html_active, 1)
     return files
 
 
