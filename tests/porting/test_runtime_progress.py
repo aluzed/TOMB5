@@ -5,8 +5,11 @@ import pytest
 from test_backlog import DATA, module
 
 
-def test_runtime_overlay_is_current_and_preserves_history():
+def test_historical_runtime_overlay_preserves_earlier_history():
     data = json.loads(DATA.read_text())
+    # Isolate the September 18 overlay; later append-only milestones have
+    # their own preservation contract in test_runtime_milestones.py.
+    data.pop('runtime_milestones', None)
     p = data['runtime_progress']
     assert p['ticket'] == 'PORT-002'
     assert p['status'] == 'In progress'

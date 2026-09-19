@@ -179,6 +179,25 @@ def render(data):
                 + '</pre><a href="runtime-menu.md">Preuve runtime</a></aside>'
                 + '<!-- runtime milestone end -->')
         files['index.html'] = files['index.html'].replace('<body>', '<body>' + html, 1)
+    # Append observations without rewriting the earlier authorization or claims.
+    for p in data.get('runtime_milestones', []):
+        ids = p['tickets']
+        if (p['status'] != 'In progress' or not p['date']
+                or not p['authorization_until'] or not p['summary'].strip()
+                or not ids or len(ids) != len(set(ids))
+                or any(tid not in {t['id'] for t in tickets} for tid in ids)):
+            raise ValueError('runtime milestone')
+        text = (f'## Progression vérifiée du {p["date"]}\n\n'
+                f'{", ".join(ids)} — **{p["status"]}**. '
+                f'Autorisation bornée jusqu’au {p["authorization_until"]}. Linux32 provisoire.\n\n'
+                f'{p["summary"]}\n\nDétails : [scène et parcours runtime](runtime-level.md).\n\n'
+                'Aucun Done attribué. Les blocs suivants sont historiques ; '
+                'leurs tests documentaires ne constituent pas une validation du jeu.\n\n')
+        for name in ['README.md'] + [tid + '.md' for tid in ids]:
+            files[name] = text + files[name]
+        html = ('<aside class="runtime-milestone"><pre>' + escape(text)
+                + '</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside>')
+        files['index.html'] = files['index.html'].replace('<body>', '<body>' + html, 1)
     return files
 
 
