@@ -5209,6 +5209,11 @@ void LaraAboveWater(struct ITEM_INFO* item, struct COLL_INFO* coll)//14228, 142D
 	else
 		ResetLook();
 
+#if PSX_VERSION && PSXPC_TEST
+	// Rearm after consuming the previous frame's inhibition, before control.
+	lara.look = TRUE;
+#endif
+
 	lara_control_routines[item->current_anim_state](item, coll);
 
 	item->pos.z_rot = CLAMPADD2(item->pos.z_rot, ANGLE(1), ANGLE(2));

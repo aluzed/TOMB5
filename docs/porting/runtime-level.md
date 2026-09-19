@@ -1,3 +1,5 @@
+> Suite vérifiée le 19 septembre : [commandes, transition et correctif local du regard](runtime-controls.md). Le jalon ci-dessous est conservé comme historique.
+
 # Linux32 — première scène et boucle de retour au titre
 
 19 septembre 2026, source jeu inchangée depuis `73faba47`. Cible PSXPC_N/i386
