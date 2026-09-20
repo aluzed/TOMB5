@@ -2148,7 +2148,7 @@ void GetLaraJointPos(struct PHD_VECTOR* pos /*a3*/, long joint)//85A58 (F)
 	R12 = (t0 >> 16) & 0xFFFF;
 	R13 = t1 & 0xFFFF;
 	R21 = (t1 >> 16) & 0xFFFF;
-	R22 = t2 & 0xFFF;
+	R22 = t2 & 0xFFFF;
 	R23 = (t2 >> 16) & 0xFFFF;
 	R31 = t3 & 0xFFFF;
 	R32 = (t3 >> 16) & 0xFFFF;

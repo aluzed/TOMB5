@@ -2052,7 +2052,11 @@ long mgLOS(struct GAME_VECTOR* start, struct GAME_VECTOR* target, long push)//28
 		h = GetHeight(floor, x, y, z);
 		c = GetCeiling(floor, x, y, z);
 
+#if defined(PSX_VERSION) && defined(PSXPC_TEST)
+		if (h != BAD_HEIGHT && c != BAD_HEIGHT && c < h)
+#else
 		if (h != BAD_HEIGHT && c != BAD_HEIGHT)
+#endif
 		{
 			if (c < h)
 			{
@@ -2083,6 +2087,13 @@ long mgLOS(struct GAME_VECTOR* start, struct GAME_VECTOR* target, long push)//28
 						//loc_28CB4
 						y = c;
 					}
+#if defined(PSX_VERSION) && defined(PSXPC_TEST)
+					else
+					{
+						clipped = 1;
+						break;
+					}
+#endif
 				}
 				//loc_28CB8
 				nc = 1;
