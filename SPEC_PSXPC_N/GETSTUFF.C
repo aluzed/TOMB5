@@ -830,6 +830,10 @@ short GetHeight(struct FLOOR_INFO* floor, int x, int y, int z)//78C74(<), 7ACB8(
 					trigger_value = *fd++;
 					continue;
 				}
+				if (((trigger_value & 0x3FFF) >> 10) != 0)
+				{
+					continue;
+				}
 				//loc_78F54
 				item = &items[trigger_value & 0x3FF];
 
