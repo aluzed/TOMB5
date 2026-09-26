@@ -843,7 +843,9 @@ short GetHeight(struct FLOOR_INFO* floor, int x, int y, int z)//78C74(<), 7ACB8(
 
 					if (object->floor != NULL)
 					{
+						height = ret;
 						object->floor(item, x, y, z, &height);
+						ret = height;
 					}//loc_78FB8
 				}//loc_78FB8
 			} while (!(trigger_value & 0x8000));

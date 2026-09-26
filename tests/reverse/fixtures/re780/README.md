@@ -19,8 +19,12 @@ Le dossier output doit être absent. Pour tester une correction privée, passer 
 - Les types avec payload supplémentaire le consomment et terminent selon le payload, pas selon le mot d'action précédent.
 - Terminaison des actions simples ; suites mixtes, répétitions et inhibition mixte.
 - Pointeur items protégé pour chacun des types non-objet ; exécution isolée par processus enfant.
-- Hauteur plane positive, globals réinitialisés, données/items/descripteurs inchangés. Le callback écrit son paramètre hauteur sans lire le local non initialisé.
+- Hauteur plane positive, globals réinitialisés, données/items/descripteurs inchangés. Le callback synthétique écrit son paramètre hauteur sans lire sa valeur entrante.
 
 La sortie se termine par un compteur d'assertions agrégées ; le code de retour vaut zéro uniquement si tous les cas passent. Chaque cas comporte plusieurs assertions regroupées. Les crashes enfants sont des échecs de cas, distincts des erreurs de compilation ou de liaison.
 
-Limites : callbacks non nuls non réparés ; initialisation et propagation du retour restent hors correction. Fixtures minimales, Linux/i386, pas de sanitizer, pas de preuve universelle d'absence d'UB, pas de callback de jeu réel, pas de géométrie complexe, pas d'équivalence cible ni de couverture gameplay. Le callback synthétique conserve le comportement actuel du retour GetHeight ; ce test ne propose pas de correction indépendante de ce retour.
+Historique RE-780 : « callbacks non nuls non réparés » décrivait le snapshot avant RE-781, et non la correction actuelle.
+
+Évolution RE-781 : le callback écrit toujours la même valeur synthétique, mais le test attend désormais sa propagation au retour GetHeight quand il est appelé. Le filtre, les arguments, l'ordre et les cas protégés restent inchangés. Les anciens résultats RE-780 restent historiques ; ils décrivaient le retour non propagé avant cette correction.
+
+Limites : fixtures minimales, Linux/i386, pas de sanitizer, pas de preuve universelle d'absence d'UB, pas de callback de jeu réel dans cette fixture, pas de géométrie complexe ni de couverture gameplay. La fixture RE-781 séparée compose le vrai BridgeFlatFloor via un adaptateur de types explicite et le vrai consommateur UpdateLaraRoom.

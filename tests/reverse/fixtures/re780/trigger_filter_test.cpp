@@ -21,7 +21,7 @@ static int bad_args;
 static void callback(ITEM_INFO* item, int x, int y, int z, int* height) {
     events.push_back(int(item - storage));
     if (x != 117 || y != 231 || z != 349) ++bad_args;
-    *height = 777; // The source local is uninitialized: write only.
+    *height = 777; // Write-only fixture; RE-781 now propagates this output.
     OnObject = 91;
 }
 static unsigned short action(int type, int id, bool stop, bool extra = false) {
@@ -58,7 +58,7 @@ static bool run(const char* label, const std::vector<unsigned short>& words,
     }
     short height = GetHeight(&floor, 117, 231, 349);
     if (protected_items) { munmap(guard, 4096); items = storage; }
-    bool ok = events == expected && bad_args == 0 && height == 3072 &&
+    bool ok = events == expected && bad_args == 0 && height == (expected.empty() ? 3072 : 777) &&
         height_type == 0 && tiltxoff == 0 && tiltyoff == 0 &&
         OnObject == (expected.empty() ? 0 : 91) && trigger_index == data + 1 &&
         !std::memcmp(before_data, data, sizeof data) &&
