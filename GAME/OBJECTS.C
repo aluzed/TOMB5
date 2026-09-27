@@ -106,7 +106,12 @@ void BridgeFlatFloor(struct ITEM_INFO* item, long x, long y, long z, long* heigh
 
 void BridgeFlatCeiling(struct ITEM_INFO* item, long x, long y, long z, long* height)//4EF58(<), 4F3BC(<) (F)
 {
+#if PSX_VERSION && PSXPC_TEST
+	// RE-782: the attributed ceiling excludes equality and the floor side.
+	if (y > item->pos.y_pos)
+#else
 	if (item->pos.y_pos >= y)
+#endif
 	{
 		*height = item->pos.y_pos + 256;
 	}
@@ -148,10 +153,18 @@ void BridgeTilt1Ceiling(struct ITEM_INFO* item, long x, long y, long z, long* he
 {
 	long level = item->pos.y_pos + (GetOffset(item, x, z) >> 2);
 
+#if PSX_VERSION && PSXPC_TEST
+	// RE-782: the ceiling output is offset by 256 from the floor surface.
+	if (y > level)
+	{
+		*height = level + 256;
+	}
+#else
 	if (level >= y)
 	{
 		*height = level;
 	}
+#endif
 }
 
 void BridgeTilt2Floor(struct ITEM_INFO* item, long x, long y, long z, long* height)//4F090(<), 4F4F4(<) (F)
@@ -170,10 +183,18 @@ void BridgeTilt2Ceiling(struct ITEM_INFO* item, long x, long y, long z, long* he
 {
 	long level = item->pos.y_pos + (GetOffset(item, x, z) >> 1);
 
+#if PSX_VERSION && PSXPC_TEST
+	// RE-782: the ceiling output is offset by 256 from the floor surface.
+	if (y > level)
+	{
+		*height = level + 256;
+	}
+#else
 	if (level >= y)
 	{
 		*height = level;
 	}
+#endif
 }
 
 void ControlAnimatingSlots(short item_number)
