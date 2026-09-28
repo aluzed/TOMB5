@@ -294,7 +294,7 @@ struct FLOOR_INFO* GetFloor(long x, long y, long z, short* room_number)//(F)
 	} while (door != 255);
 
 	//loc_78A50
-	if (y >= floor->floor << 8)
+	if (y >= (signed char)floor->floor * 256)
 	{
 loc_78A68:
 		if (floor->pit_room == 255)
@@ -326,7 +326,7 @@ loc_78A68:
 		//v0 = z - v0
 		floor = &r->floor[(((x - r->x) >> 10) * r->x_size) + ((z - r->z) >> 10)];	
 		
-		if (y < (floor->floor << 8))
+		if (y < ((signed char)floor->floor * 256))
 		{
 			return floor;
 		}
@@ -335,7 +335,7 @@ loc_78A68:
 
 	}//loc_78BB0
 
-	if (y >= (floor->ceiling << 8))
+	if (y >= ((signed char)floor->ceiling * 256))
 	{
 		return floor;
 	}
@@ -368,7 +368,7 @@ loc_78A68:
 		r = &room[floor->sky_room];
 		floor = &r->floor[(((z - r->z) >> 10) + (((x - r->x) >> 10)) * r->x_size)];
 	
-	} while (y < (floor->ceiling << 8));
+	} while (y < ((signed char)floor->ceiling * 256));
 
 	return floor;
 }
