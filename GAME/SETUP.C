@@ -1,4 +1,7 @@
 #include "SETUP.H"
+#if PSX_VERSION && PSXPC_TEST
+#include "BRIDGE_CALLBACKS.H"
+#endif
 
 
 #include "BOX.H"
@@ -4528,6 +4531,12 @@ void ObjectObjects()//?, B84F0
 		nop
 		ori     $v0, 4
 		sw      $v0, 0x10($v1)
+#endif
+#if PSX_VERSION && PSXPC_TEST
+	// BLOCKED-001: register only the six bridge callback slots (MIP 3072).
+	objects[BRIDGE_FLAT].floor = BridgeCallbackFlatFloor; objects[BRIDGE_FLAT].ceiling = BridgeCallbackFlatCeiling; objects[BRIDGE_FLAT].object_mip = 0x0c00;
+	objects[BRIDGE_TILT1].floor = BridgeCallbackTilt1Floor; objects[BRIDGE_TILT1].ceiling = BridgeCallbackTilt1Ceiling; objects[BRIDGE_TILT1].object_mip = 0x0c00;
+	objects[BRIDGE_TILT2].floor = BridgeCallbackTilt2Floor; objects[BRIDGE_TILT2].ceiling = BridgeCallbackTilt2Ceiling; objects[BRIDGE_TILT2].object_mip = 0x0c00;
 #endif
 	UNIMPLEMENTED();
 }

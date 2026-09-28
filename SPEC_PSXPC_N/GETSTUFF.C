@@ -624,7 +624,13 @@ loc_7931C:
 					if (object->ceiling != NULL)
 					{
 						///@CHECKME args?!?!?
+#if PSX_VERSION && PSXPC_TEST
+						int ceiling_output = t7; /* valid and initialized */
+						object->ceiling(item, x, y, z, &ceiling_output);
+						t7 = ceiling_output;
+#else
 						object->ceiling(item, x, y, z, NULL);
+#endif
 					}
 				}//loc_793C0
 			}
