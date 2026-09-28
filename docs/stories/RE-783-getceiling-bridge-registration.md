@@ -1,6 +1,8 @@
 # RE-783 — Contrat consommateur GetCeiling et registration des bridges (adaptation bornée)
 
-Statut : **correction source + composition validées BORNÉES — publication/fusion PENDING**.
+Statut : **ACTUEL — RÉSOLU BORNÉ / INTÉGRÉ**. Source commit 71be9fe4 fusionnée et poussée (master + branche, FF) ; **84 tests PASS** ; guards assets/secrets/metadata PASS ; job paused. Le terme **PENDING** désignait un **état prépublication historique désormais levé**.
+Dette gameplay toujours ouverte ; aucun GAMEPLAY/fullbuild/sanitaire global revendiqué.
+
 Date : 28 septembre 2026. Branche `re/blocked-001-deepseek`, baseline `a10b06bb`.
 Parent : BLOCKED-001 ; suite de RE-781/RE-782. Aucun raw/adresse cible dans ce document public.
 
@@ -12,8 +14,8 @@ Parent : BLOCKED-001 ; suite de RE-781/RE-782. Aucun raw/adresse cible dans ce d
 - [x] Registration six slots bridge + MIP 3072 dans `ObjectObjects()`, adaptateurs exactement typés,
   aucun cast de pointeur incompatible, précondition output valide ET initialisé ; `UNIMPLEMENTED` conservé.
 - [x] Preuves publiques rerunnables composition/observer, current/baseline, normal+UBSan.
-- [ ] Publication/fusion : **PENDING** revue finale ; guards/commit allowlist non fournis.
-- [ ] Gameplay non validé ; dette sanitaire préexistante et 7 échecs RE-778 / FAIL fade non résolus.
+- [x] Publication/fusion : **faite** (commit 71be9fe4, FF master + branche, poussé) ; guards PASS ; 84 PASS.
+- [ ] Gameplay non validé (dette ouverte) ; dette sanitaire préexistante et 7 échecs RE-778 / FAIL fade non résolus.
 
 ## Décision et types
 `GetCeiling` initialise puis relit un accumulateur `int` réel passé au callback `void` ; la valeur est
