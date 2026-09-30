@@ -464,6 +464,10 @@ short GetCeiling(struct FLOOR_INFO* floor, int x, int y, int z)
 				//loc_79154
 				if (((a0 & 0x8000) << 10) != 0)
 				{
+#if PSX_VERSION && PSXPC_TEST
+					// A terminal floor record has no following roof geometry record.
+					goto ceiling_floor_record_done;
+#endif
 					a0 = fd[1];
 					fd += 2;
 					//s2 = a0 & 0x1F
@@ -549,6 +553,9 @@ short GetCeiling(struct FLOOR_INFO* floor, int x, int y, int z)
 			}
 		}
 		//loc_792BC
+#if PSX_VERSION && PSXPC_TEST
+ceiling_floor_record_done:
+#endif
 		//v1 = floor->pit_room
 		f = floor;
 		while (f->pit_room != 0xFF)
