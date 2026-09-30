@@ -544,7 +544,10 @@ short GetCeiling(struct FLOOR_INFO* floor, int x, int y, int z)
 				}
 				//loc_79228
 				a0 &= 0x1F;
-
+#if PSX_VERSION && PSXPC_TEST
+				// Preserve the signed five-bit offset in the accumulator passed to callbacks.
+				t7 += ((a0 & 0x10) ? (int)a0 - 32 : (int)a0) * 256;
+#else
 				if ((a0 & 0x10))
 				{
 					a0 |= -0x10;
@@ -552,6 +555,7 @@ short GetCeiling(struct FLOOR_INFO* floor, int x, int y, int z)
 				//loc_7923C
 				a0 <<= 8;
 				t7 += a0;
+#endif
 
 				GC_adjust_height(a0, a1, a2, x, z, &t7);
 				//j loc_792BC

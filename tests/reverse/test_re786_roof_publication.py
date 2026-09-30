@@ -26,6 +26,12 @@ def test_re786_scope():
 
 def test_re786_history():
     data = DASH.read_bytes()
+    # Only RE787 is excluded here; its own guard pins the complete preceding dashboard.
+    successor_start, successor_end = b'<section id="re787">', b'<!-- end re787 -->'
+    if successor_start in data:
+        assert data.count(successor_start) == data.count(successor_end) == 1
+        a = data.index(successor_start); b = data.index(successor_end, a) + len(successor_end)
+        data = data[:a] + data[b:]
     start, end = START.encode(), END.encode()
     assert data.count(start) == data.count(end) == 1
     i = data.index(start); j = data.index(end) + len(end)
