@@ -29,6 +29,12 @@ def test_re784_publication_scope():
 
 def test_re784_history_byte_exact():
     data = DASH.read_bytes()
+    # Only the named successor is excluded; RE786 proves the preceding bytes unchanged.
+    successor_start, successor_end = b'<section id="re786">', b'<!-- end re786 -->'
+    if successor_start in data:
+        assert data.count(successor_start) == data.count(successor_end) == 1
+        a = data.index(successor_start); b = data.index(successor_end, a) + len(successor_end)
+        data = data[:a] + data[b:]
     # The explicitly authorized successor has its own byte-exact history guard.
     successor_start, successor_end = b'<section id="re785">', b'<!-- end re785 -->'
     if successor_start in data:

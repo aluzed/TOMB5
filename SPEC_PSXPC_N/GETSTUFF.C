@@ -503,7 +503,12 @@ short GetCeiling(struct FLOOR_INFO* floor, int x, int y, int z)
 				//v1 = -(fd[0] >> 12);
 				//v0 = 9
 
+#if PSX_VERSION && PSXPC_TEST
+				// The target tests the 15..16 range unsigned; type 10 uses the other diagonal.
+				if ((a0 & 0x1F) == 9 || (unsigned)((a0 & 0x1F) - 15) < 2)
+#else
 				if ((a0 & 0x1F) == 9 || (a0 & 0x1F) - 15  < 2)
+#endif
 				{
 					//loc_791D4
 					//v0 = (1024 - (z & 1023));
