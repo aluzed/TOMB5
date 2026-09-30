@@ -1,0 +1,36 @@
+"""RE-784 publication contract, metadata-only and append-only historical bytes."""
+import hashlib
+import html
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+STORY = ROOT / 'docs/stories/RE-784-signed-base-heights.md'
+DASH = ROOT / 'docs/reverse/reconstruction-progress.html'
+START = '<section id="re784">'
+END = '<!-- end re784 -->'
+BASE = 'cc703675c09cab3cc01a05cf33091279713e22d62131c485543208304df35204'
+
+
+def test_re784_publication_scope():
+    assert STORY.exists(), 'RED documentaire: story absente'
+    dashboard = DASH.read_text()
+    assert dashboard.count(START) == 1 and dashboard.count(END) == 1
+    section = html.unescape(dashboard.split(START, 1)[1].split(END, 1)[0])
+    for text in (STORY.read_text(), section):
+        for token in ('30 septembre 2026', 'GetHeight', 'GetCeiling', '512', '256',
+                      'PSX_VERSION', 'PSXPC_TEST', 'UBSan', 'sentinelle',
+                      'char', 'index nul', 'pas de runtime', 'pas de GREEN global'):
+            assert token in text, token
+        assert not re.search(r'0x[0-9a-fA-F]+|(?:FUN|DAT|LAB)_[0-9a-fA-F]{6,}|<img\b|data:image|```(?:c|cpp|asm|mips)\b', text)
+    assert '## Tracker' in STORY.read_text()
+    assert '- [x]' in STORY.read_text() and '- [ ]' in STORY.read_text()
+
+
+def test_re784_history_byte_exact():
+    data = DASH.read_bytes()
+    start, end = START.encode(), END.encode()
+    assert data.count(start) == data.count(end) == 1
+    i = data.index(start); j = data.index(end, i) + len(end)
+    assert hashlib.sha256(data[:i] + data[j:]).hexdigest() == BASE
+    assert data.count(b'</body>') == data.count(b'</html>') == 1

@@ -442,11 +442,16 @@ short GetCeiling(struct FLOOR_INFO* floor, int x, int y, int z)
 		f = &r->floor[((z - r->z) >> 10) + (((x - r->x) >> 10) * r->x_size)];
 	}
 	//loc_79100
+#if PSX_VERSION && PSXPC_TEST
+	// Target height bytes are signed; multiplication is defined for the full byte range.
+	t7 = (signed char)f->ceiling * 256;
+#else
 	t7 = f->ceiling << 8;
+#endif
 	//v1 = f->index << 1
 	//v0 = -32512
 
-	if ((f->ceiling << 8) != -32512)
+	if (t7 != -32512)
 	{
 		if(f->index != 0)
 		{
@@ -741,10 +746,15 @@ short GetHeight(struct FLOOR_INFO* floor, int x, int y, int z)//78C74(<), 7ACB8(
 	}
 
 	//loc_78D28
+#if PSX_VERSION && PSXPC_TEST
+	// Keep signed height decoding independent of the host's plain-char mode.
+	ret = (signed char)f->floor * 256;
+#else
 	ret = f->floor << 8;
+#endif
 	//v0 = -32512
 
-	if ((f->floor << 8) == -32512)
+	if (ret == -32512)
 	{
 		return ret;
 	}
