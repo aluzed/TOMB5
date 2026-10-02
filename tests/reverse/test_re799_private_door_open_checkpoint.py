@@ -33,9 +33,24 @@ def test_story_documents_scope_and_missing_prerequisites():
         assert word in text, word
 
 
+def dashboard_before_named_re800(b):
+    """Exclude only RE800, pinning the whole unchanged RE799-era dashboard."""
+    start = b'<!-- start re800-integration -->'
+    end = b'<!-- end re800-integration -->'
+    if start in b or end in b:
+        assert b.count(start) == b.count(end) == 1
+        a = b.index(start)
+        assert end in b[a:]
+        z = b.index(end, a) + len(end)
+        b = b[:a] + b[z:]
+    assert hashlib.sha256(b).hexdigest() == 'ee30d8b3cfb87ca589fde3c61c5129cc9cdf5eeba738715f0d618caef18edfed'
+    return b
+
+
 def test_dashboard_preserves_preceding_bytes_exactly():
     b = (ROOT / 'docs/reverse/reconstruction-progress.html').read_bytes()
     assert b.count(START) == b.count(END) == 1, 'RED: opening checkpoint dashboard missing'
+    b = dashboard_before_named_re800(b)
     a = b.index(START); z = b.index(END, a) + len(END)
     assert hashlib.sha256(b[:a] + b[z:]).hexdigest() == '9c7188118d7b3880ad71994e7ee8c3a39be8e00069a393568f01d3c70f035f52'
     assert b.count(b'</body>') == b.count(b'</html>') == 1

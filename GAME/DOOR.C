@@ -13,6 +13,7 @@
 #if defined(PSX_VERSION) && defined(PSXPC_TEST) && defined(__i386__)
 #include "BOX.H"
 #include "LOT.H"
+#include <string.h>
 #endif
 #include "SPHERE.H"
 #include "SWITCH.H"
@@ -239,7 +240,38 @@ void DoorControl(short item_number)//2AD74, 2B09C
 
 void OpenThatDoor(struct DOORPOS_DATA* d, struct DOOR_DATA* dd)//2AB8C, 2AEB4
 {
+// Proven domain: disjoint valid floor/data, boxes and five creature slots;
+// dptr3 must be valid when dptr1 is active; dptr2/dptr4 are optional.
+// Mesh buffers are disjoint with at least three shorts each; final state only.
+#if defined(PSX_VERSION) && defined(PSXPC_TEST) && defined(__i386__)
+	if (d->floor)
+	{
+		memcpy(d->floor, &d->data, sizeof(d->data));
+		if (d->block != 2047)
+		{
+			if (!LiftDoor)
+				boxes[d->block].overlap_index &= 0xBFFF;
+			for (int i = 0; i < 5; ++i)
+				baddie_slots[i].LOT.target_box = 2047;
+		}
+	}
+	if (dd->dptr1)
+	{
+		short* mesh[4] = { dd->dptr1, dd->dptr2, dd->dptr3, dd->dptr4 };
+		unsigned char direction[4] = { (unsigned char)dd->dn1, (unsigned char)dd->dn2,
+			(unsigned char)dd->dn3, (unsigned char)dd->dn4 };
+		for (int i = 0; i < 4; ++i)
+		{
+			if (i == 0 || i == 2 || mesh[i])
+			{
+				int axis = (direction[i] & 1) ? 0 : (direction[i] & 2) ? 1 : 2;
+				mesh[i][axis] = (direction[i] & 0x80) ? -1 : 1;
+			}
+		}
+	}
+#else
 	UNIMPLEMENTED();
+#endif
 }
 
 void ShutThatDoor(struct DOORPOS_DATA* d, struct DOOR_DATA* dd)//2AA88, 2ADB0

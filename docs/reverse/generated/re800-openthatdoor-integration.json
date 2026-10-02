@@ -1,0 +1,75 @@
+{
+  "schema": "re800-openthatdoor-integration-v1",
+  "source_integrated": true,
+  "integration_accepted": true,
+  "effective_gate": "PSX_VERSION && PSXPC_TEST && __i386__",
+  "candidate_sha256": "a538fca3ca3bd0426570d60b7a1c8b3a44d4d96c66b59990a04e716ef4e295ff",
+  "review_sha256": "e094a56b62539a224d18642850248900aaace1fd404644b909ac9237d48c45a9",
+  "baseline": {
+    "build_exit": 0,
+    "run_exit": 1,
+    "cases": 3328,
+    "failures": 2944,
+    "modes": [
+      "normal",
+      "asan-ubsan"
+    ]
+  },
+  "public_actual_tu": {
+    "cases_per_mode": 3328,
+    "modes": [
+      "normal",
+      "asan-ubsan"
+    ],
+    "build_exit": 0,
+    "run_exit": 0,
+    "runtime_diagnostics": []
+  },
+  "shutthatdoor_cases_per_mode": 144,
+  "code_mutants_rejected": 5,
+  "registration_activated": false,
+  "runtime_performed": false,
+  "full_game_link": false,
+  "global_green": false,
+  "readiness": {
+    "OpenThatDoor": "integrated-bounded-GREEN",
+    "initializer": "private-bounded-not-integrated",
+    "DoorControl": "blocked",
+    "ProcessClosedDoors": "blocked",
+    "registration": "not-activated",
+    "natural_callback_bridge": "blocked",
+    "gameplay": "not-validated"
+  },
+  "target_review": {
+    "fresh_target_replay": false,
+    "fresh_authenticated_decoded_words": 131,
+    "historical_cases_independently_reconstructed": 3328
+  },
+  "public_sweeps": "all-four-meshes-active-different-from-RE799-masks",
+  "preconditions": [
+    "d == &dd.d1; door et premier sous-record valides",
+    "Buffers floor/door/boxes/creatures/meshes valides et disjoints; sauvegarde et destination disjointes",
+    "Floor null ou valide",
+    "Bloc sentinel 2047 ou index valide sélectionné 0/7/15; boxes accessible",
+    "Cinq creatures accessibles lorsque floor et bloc non-sentinel actifs",
+    "Troisième mesh requis si premier actif; deuxième/quatrième optionnels; trois shorts par mesh",
+    "LiftDoor 0/1"
+  ],
+  "limits": [
+    "État final des régions sélectionnées, pas ordre de stores, alias ou write-set exhaustif",
+    "i386 seulement, ABI native packed DOORPOS14/DOOR82 projetée depuis cible DOORPOS16/DOOR92",
+    "TU complète avec vrais headers et link normal gc-sections, pas full-game-link",
+    "Attribution historique authentifiée et archives indépendamment reconstruites, sans rejeu cible frais; contexte loader et GP hérités",
+    "Cinq mutants du code discriminants, pas couverture exhaustive",
+    "Pas registration, runtime, matériel ou gameplay; initializer/control/process restent bloqués"
+  ],
+  "preceding_dashboard_sha256": "ee30d8b3cfb87ca589fde3c61c5129cc9cdf5eeba738715f0d618caef18edfed",
+  "next_story": "RE-801",
+  "next_frontier": {
+    "symbol": "DoorControl",
+    "status": "planned-not-proven",
+    "repeat_old_matrices": false,
+    "registration_allowed": false,
+    "smallest_real_proof": "Isoler une seule branche atteignable de DoorControl sur objet synthétique valide; authentifier entrée/retour cible et dépendance réellement appelée; écrire test privé actual-TU avant candidat et observer RED comportemental. Comparer état sélectionné et trace des appels de dépendance, puis GREEN normal/ASan+UBSan et revue indépendante. Si dépendance absente, conserver RED et blocker précis sans simuler un retour pour prétendre équivalence."
+  }
+}
