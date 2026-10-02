@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "security_concerns": [],
+  "logic_errors": [],
+  "suggestions": [],
+  "limits": [
+    "PASS borné aux matrices synthétiques source-only, sans preuve cible indépendante, gameplay, runtime jeu, fullbuild ou sécurité globale.",
+    "ABI observée uniquement i386 cdecl avec -O0 et frames conservées; les hooks sont dépendants de ce compilateur et de ces options.",
+    "État complet des tableaux et globals possédés par la fixture, pas de tout état mémoire du moteur.",
+    "Six slots floor/ceiling réellement enregistrés, mais seuls les trois chemins ceiling sont exécutés; rotations, frontières diagonales, traversées de salles et corpus hors matrice non couverts.",
+    "Baseline GETSTUFF 243c16ac combinée aux autres TU courantes 22f190ea: comparaison locale, pas build historique complet.",
+    "Aucune conclusion sur la terminaison du child précédent; seuls ces quatre nouveaux runs sont validés.",
+    "Le timeout du subprocess pytest est 150 s dans le test; les commandes de revue sont bornées à 120 s et les commandes compilateur/native à 25/20 s."
+  ],
+  "summary": "Revue indépendante RE788: registration ObjectObjects réelle, slots non remplacés après registration, adaptateurs et corps réels observés entrée/sortie. Les quatre nouveaux tests passent; baseline: 3456 divergences d’entrée sur 13824 lignes par mode, zéro divergence de retour; current: zéro divergence. Aucun défaut bloquant détecté dans ce delta borné.",
+  "scope": "source-only-synthetic-i386",
+  "validation": {
+    "checked_at": "2026-10-02T19:03:42.228206+02:00",
+    "pytest_exit": 0,
+    "pytest_tests": 4,
+    "sha256": {
+      "tests/reverse/test_re788_roof_registration.py": "f0b00c9a95e197c89cc9534fd0356d96514e768424a0f3e9ce86613ea7bd02a3",
+      "tests/reverse/fixtures/re788/run_test.py": "0f75b0375d28898553be3a2bf3062ab2ea83b77fe1eeee649003d493babd525f",
+      "tests/reverse/fixtures/re788/roof_registration.cpp": "0c6a9963c0176f9089a81bf3f49577e97095c1a86258a55a81531f53d89ebd53"
+    },
+    "archive": "build/reverse/autonomy-20261002/re788-review/verdict.json"
+  }
+}

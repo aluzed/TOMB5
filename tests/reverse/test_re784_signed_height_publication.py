@@ -29,6 +29,12 @@ def test_re784_publication_scope():
 
 def test_re784_history_byte_exact():
     data = DASH.read_bytes()
+    # Only RE788 is excluded; its own guard pins every preceding byte including RE787.
+    successor_start, successor_end = b'<section id="re788">', b'<!-- end re788 -->'
+    if successor_start in data:
+        assert data.count(successor_start) == data.count(successor_end) == 1
+        a = data.index(successor_start); b = data.index(successor_end, a) + len(successor_end)
+        data = data[:a] + data[b:]
     # Only RE787 is excluded here; its own guard pins the complete preceding dashboard.
     successor_start, successor_end = b'<section id="re787">', b'<!-- end re787 -->'
     if successor_start in data:

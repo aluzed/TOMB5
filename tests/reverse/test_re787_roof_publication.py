@@ -27,6 +27,12 @@ def test_re787_scope():
 
 def test_re787_history_byte_exact():
     data=DASH.read_bytes()
+    # Only RE788 is excluded; its own guard pins every preceding byte including RE787.
+    successor_start, successor_end = b'<section id="re788">', b'<!-- end re788 -->'
+    if successor_start in data:
+        assert data.count(successor_start) == data.count(successor_end) == 1
+        a = data.index(successor_start); b = data.index(successor_end, a) + len(successor_end)
+        data = data[:a] + data[b:]
     start,end=START.encode(),END.encode()
     assert data.count(start)==data.count(end)==1
     i=data.index(start);j=data.index(end)+len(end)
