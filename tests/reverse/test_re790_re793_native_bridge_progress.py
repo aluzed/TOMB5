@@ -85,6 +85,13 @@ def test_stories_have_trackers_and_honest_limits():
 def test_append_only_dashboard_history():
     d = proof()
     dashboard = DASH.read_bytes()
+    # Exclude only RE794; its own guard pins every preceding dashboard byte.
+    successor_start, successor_end = b'<section id="re794">', b'<!-- end re794 -->'
+    if successor_start in dashboard:
+        assert dashboard.count(successor_start) == dashboard.count(successor_end) == 1
+        a = dashboard.index(successor_start)
+        b = dashboard.index(successor_end, a) + len(successor_end)
+        dashboard = dashboard[:a] + dashboard[b:]
     start, end = START.encode(), END.encode()
     assert dashboard.count(start) == dashboard.count(end) == 1
     a = dashboard.index(start)

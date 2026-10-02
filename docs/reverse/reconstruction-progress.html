@@ -735,4 +735,17 @@
 <h3>Reste à faire — RE-794</h3>
 <p>Capturer doors/flip/cells vivants puis atteindre une référence bridge par inputs légitimes ; observer callback et effet consommé. Handoff <a href="../stories/blocked/BLOCKED-003-RE793-natural-bridge-navigation.md">BLOCKED-003</a>. Source patch bloqué ; pas de GREEN global sanitaire/gameplay ou hardware. Deadline2octobre23h autorise la reprise sans GO intermédiaire ; checkpoint ne signifie pas worker continu.</p>
 <p>Trackers <a href="../stories/RE-790-natural-registration-runtime.md">RE-790</a>, <a href="../stories/RE-791-authentic-bridge-corpus.md">RE-791</a>, <a href="../stories/RE-792-natural-base-registration.md">RE-792</a>, <a href="../stories/RE-793-bridge-navigation-boundary.md">RE-793</a> ; <a href="generated/re790-re793-native-bridge-progress.json">preuves metadata-only</a>.</p>
-</section><!-- end re790 --></body></html>
+</section><!-- end re790 --><section id="re794">
+<h3>RE-794–797 — Portail natif, prérequis door et helper intégré</h3>
+<p><strong>Pas de GREEN global.</strong> Runtime mix-relink: premier portail naturel au draw94 sans input; vraie commande ensuite, arrêt debugger volontaire. Quatre observations, 169 rooms et 11459 cellules par observation: égalité des buffers sélectionnés. Aucune attribution entrée/retour GetFloor/GetDoor, aucun callback bridge naturel.</p>
+<table><thead><tr><th>Histoire / composant</th><th>Preuve disponible</th><th>Readiness / reste</th></tr></thead><tbody>
+<tr><td><a href="../stories/RE-794-native-first-portal.md">RE-794 — Premier portail</a></td><td>Runtime natif observé, archives revues indépendamment</td><td>Route bridge et gameplay bloqués; pas fullbuild</td></tr>
+<tr><td><a href="../stories/RE-795-door-registration-prerequisite.md">RE-795 — Producteur door</a></td><td>14 slots génériques cible; actual-TU natif 4 cas × 46 records, aucune installation</td><td>Producteur manquant, RED; registration non activée</td></tr>
+<tr><td><a href="../stories/RE-796-door-initializer-proof.md">RE-796 — Initializer</a></td><td>32 appels authentiques complets; régions sélectionnées, projection ABI 92→82 bytes</td><td>Initialiseur natif absent; projection non adapter de pointeurs</td></tr>
+<tr><td><a href="../stories/RE-797-shutthatdoor-reconstruction.md">RE-797 — ShutThatDoor</a></td><td>GAME/DOOR.C intégré sous gate i386; actual-TU 144/144 normal et 144/144 ASan+UBSan</td><td>GREEN helper borné seulement; autres backends UNIMPLEMENTED conservé</td></tr>
+<tr><td>InitialiseDoor / DoorControl / OpenThatDoor / ProcessClosedDoors</td><td>Absent ou non implémenté en source</td><td>Bloqué: reconstruction et dépendances requises</td></tr>
+<tr><td>Registration door / callback bridge naturel / fullbuild / gameplay</td><td>Aucune nouvelle activation ou preuve globale</td><td>Bloqué / non effectué / non validé</td></tr>
+</tbody></table>
+<p>Ancien verdict RE797 FAILED conservé: le claim sanitizer clean original est invalide (stores pointeurs packed du harness). Fixture corrigée par affectations directes; revue finale et production reconstruite sans diagnostic. Ni historique réécrit ni sûreté mémoire exhaustive revendiquée.</p>
+<p><a href="../stories/blocked/BLOCKED-004-door-production-prerequisites.md">BLOCKED-004 — Prérequis de production</a> · <a href="generated/re794-re797-door-progress.json">Manifeste metadata-only et hashes de revue</a>. RE-798: initialiseur privé actual-TU et fermeture des dépendances, ou preuve OpenThatDoor bornée. Autorisation existante seulement, aucun nouveau GO implicite.</p>
+</section><!-- end re794 --></body></html>

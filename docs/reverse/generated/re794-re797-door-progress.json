@@ -1,0 +1,117 @@
+{
+  "schema": "door-progress-v1",
+  "reviews": {
+    "re794_re795": {
+      "passed": true,
+      "security_concerns": [],
+      "logic_errors": [],
+      "sha256": "b0b77e62b21e9dc02cb984adb95f1592b8f2ce35ec2b8acd5fadc35a4ac5f574",
+      "scope": "archival-runtime-and-generic-registration-proof-only"
+    },
+    "re796": {
+      "passed": true,
+      "security_concerns": [],
+      "logic_errors": [],
+      "sha256": "4e4e0db8bd785558e0647927c5ddf84c265b521d8323c3642086760c6c8e0d36",
+      "scope": "authentic-generic-initializer-selected-regions-only"
+    },
+    "re797": {
+      "passed": true,
+      "security_concerns": [],
+      "logic_errors": [],
+      "sha256": "c9a11e238fa91ec6b3f3c85cb1baefb0db5e9d4238bee00d096dc150e05ec6dd",
+      "scope": "exact-helper-supported-i386-domain-only"
+    }
+  },
+  "readiness": {
+    "first_natural_portal": "observed-native-mixed-relink",
+    "generic_door_producer": "missing-native-behavioral-RED",
+    "native_initializer": "absent-target-proof-only",
+    "shutthatdoor": "integrated-bounded-GREEN",
+    "door_registration": "not-activated",
+    "DoorControl": "blocked",
+    "OpenThatDoor": "blocked",
+    "ProcessClosedDoors": "blocked",
+    "natural_bridge_callback": "blocked",
+    "fullbuild": "not-performed",
+    "global_gameplay": "not-validated"
+  },
+  "re794": {
+    "run": "run03",
+    "portal_transitions_claimed": 1,
+    "transition_draw": 94,
+    "transition_without_player_input": true,
+    "real_input_draws": 60,
+    "stop_draw": 161,
+    "observations_compared": 4,
+    "rooms_per_observation": 169,
+    "cells_per_observation": 11459,
+    "floor_data_bytes": 16944,
+    "selected_buffers_equal": true,
+    "helper_entry_return_attribution": false,
+    "process_observations_capped": 20,
+    "bridge_callback_entries": 0,
+    "shutdown": "intentional-debugger-kill"
+  },
+  "re795": {
+    "target_generic_slots": 14,
+    "target_loaded_conditions": 2,
+    "native_cases": 4,
+    "native_records_per_case": 46,
+    "native_installed_per_case": 0,
+    "behavioral_requirement_exit": 1,
+    "characterization_exit": 0,
+    "registration_activated": false
+  },
+  "re796": {
+    "complete_authentic_calls": 32,
+    "matrix": {
+      "orientations": 4,
+      "flip_conditions": 2,
+      "navbox_conditions": 2,
+      "portal_conditions": 2
+    },
+    "authentic_helpers_continuously_executed": true,
+    "comparison_scope": "complete-selected-regions-not-whole-RAM",
+    "target_door_bytes": 92,
+    "native_projected_bytes": 82,
+    "projection_is_native_pointer_adapter": false,
+    "actual_native_initializer_executed": false
+  },
+  "re797": {
+    "target_calls": 144,
+    "baseline_behavioral_failures": 120,
+    "normal_cases": 144,
+    "sanitizer_cases": 144,
+    "actual_production_TU": true,
+    "normal_exit": 0,
+    "sanitizer_exit": 0,
+    "sanitizer_diagnostics": [],
+    "integration_gate": "PSX_VERSION && PSXPC_TEST && defined(__i386__)",
+    "alternative_backend": "UNIMPLEMENTED-preserved",
+    "original_review_status": "failed-preserved",
+    "original_review_sha256": "2b067878491261c5e57cf71fccc47b13d368da26efa64195570c15d0115c8efe",
+    "original_sanitizer_claim_valid": false,
+    "fixture_correction": "direct-packed-member-pointer-stores",
+    "whole_door_approved": false,
+    "production_source_sha256": "4fd35a2eb49a68ae7c79c7cd6e27955d3e065d1850c1216276c400086fd8c055"
+  },
+  "limits": [
+    "Native runtime observed on mixed-provenance relink, not authentic target hardware or fullbuild.",
+    "One first natural portal; no helper entry/return trace attribution, no second portal or natural bridge callback claimed.",
+    "Native generic registration requirement remains RED; 14 authentic slots, 46 native records and 28 live door names are different domains.",
+    "Initializer proof is generic selected-region equality with synthetic state; no native initializer or pointer rebasing adapter.",
+    "Original RE797 sanitizer-clean claim invalid and historical failed review retained; corrected fixture independently rebuilt clean.",
+    "ShutThatDoor only: valid reached buffers and in-range blocks, coherent meshes, five creatures; arbitrary aliasing, malformed pointers and other backends unproved.",
+    "No door activation, control/open/process reconstruction, exhaustive RAM/stack equivalence, gameplay or global GREEN."
+  ],
+  "next_story": "RE-798",
+  "preceding_dashboard_sha256": "d0e75a11bb47ddafdb7bd637a43fe0e0df46c1ef940cd52e2fc87ceac3dab9c8",
+  "frozen_history": {
+    "docs/stories/RE-793-bridge-navigation-boundary.md": "9519aad8cff7a1d371654b77beec9e7136070bfdb703576e6bf946100e5051ca",
+    "docs/stories/RE-792-natural-base-registration.md": "7c1c58495b119c9cc526d02fbe47241c14dd6aa0223feb4dfdbad333d11fdaa9",
+    "docs/stories/RE-790-natural-registration-runtime.md": "914a90a6cb98a55db97c6f63aa39fa1c792e04e1779fa25ceed1a1b5db60c99b",
+    "docs/stories/RE-791-authentic-bridge-corpus.md": "8abc2f44492965631e0dc7903bea9301a6d70614d4b67c9ae204e1ffc1ec2e09",
+    "docs/stories/blocked/BLOCKED-003-RE793-natural-bridge-navigation.md": "21b205c0d668b632b02a8a69ee7c5afe897c70664b99959c51230a87fbb8b815"
+  }
+}

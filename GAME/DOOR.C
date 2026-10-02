@@ -10,6 +10,10 @@
 #include "SOUND.H"
 #include "SPECIFIC.H"
 #include "STYPES.H"
+#if defined(PSX_VERSION) && defined(PSXPC_TEST) && defined(__i386__)
+#include "BOX.H"
+#include "LOT.H"
+#endif
 #include "SPHERE.H"
 #include "SWITCH.H"
 #include "OBJECTS.H"
@@ -240,5 +244,35 @@ void OpenThatDoor(struct DOORPOS_DATA* d, struct DOOR_DATA* dd)//2AB8C, 2AEB4
 
 void ShutThatDoor(struct DOORPOS_DATA* d, struct DOOR_DATA* dd)//2AA88, 2ADB0
 {
+#if defined(PSX_VERSION) && defined(PSXPC_TEST) && defined(__i386__)
+	if (d->floor)
+	{
+		d->floor->index = 0;
+		d->floor->box = 2047;
+		d->floor->pit_room = 255;
+		d->floor->floor = -127;
+		d->floor->sky_room = 255;
+		d->floor->ceiling = -127;
+		if (d->block != 2047)
+		{
+			boxes[d->block].overlap_index |= 0x4000;
+			for (int i = 0; i < 5; ++i)
+				baddie_slots[i].LOT.target_box = 2047;
+		}
+	}
+	if (dd->dptr1)
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			dd->dptr1[i] = 0;
+			dd->dptr3[i] = 0;
+			if (dd->dptr2)
+				dd->dptr2[i] = 0;
+			if (dd->dptr4)
+				dd->dptr4[i] = 0;
+		}
+	}
+#else
 	UNIMPLEMENTED();
+#endif
 }

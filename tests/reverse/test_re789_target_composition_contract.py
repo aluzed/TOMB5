@@ -95,6 +95,13 @@ def test_story_scope_and_remaining_readiness():
 def test_history_preserved_exactly():
     data = proof()
     dashboard = DASH.read_bytes()
+    # Exclude only RE794; its own guard pins every preceding dashboard byte.
+    successor_start, successor_end = b'<section id="re794">', b'<!-- end re794 -->'
+    if successor_start in dashboard:
+        assert dashboard.count(successor_start) == dashboard.count(successor_end) == 1
+        a = dashboard.index(successor_start)
+        b = dashboard.index(successor_end, a) + len(successor_end)
+        dashboard = dashboard[:a] + dashboard[b:]
     # Only the named RE790 successor is excluded; its own guard pins all previous bytes.
     successor_start, successor_end = b'<section id="re790">', b'<!-- end re790 -->'
     if successor_start in dashboard:
