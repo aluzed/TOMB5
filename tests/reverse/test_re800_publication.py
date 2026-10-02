@@ -64,8 +64,22 @@ def test_next_frontier_is_small_real_doorcontrol_proof():
         assert word in n['smallest_real_proof'], word
 
 
+def dashboard_before_named_re801(b):
+    """Retire uniquement RE801 et vérifie le digest entier du dashboard RE800."""
+    start = b'<!-- start re801-private-door-control -->'
+    end = b'<!-- end re801-private-door-control -->'
+    if start in b or end in b:
+        assert b.count(start) == b.count(end) == 1
+        a = b.index(start)
+        assert end in b[a:]
+        z = b.index(end, a) + len(end)
+        b = b[:a] + b[z:]
+    assert hashlib.sha256(b).hexdigest() == '5234b7a4b176613bb1525cfa63d3db05f2e3959ae85a869d258bf16d93582403'
+    return b
+
+
 def test_dashboard_pins_every_preceding_byte():
-    b = DASH.read_bytes()
+    b = dashboard_before_named_re801(DASH.read_bytes())
     assert b.count(START) == b.count(END) == 1, 'RED: RE800 dashboard section absent'
     a = b.index(START); z = b.index(END, a) + len(END)
     assert hashlib.sha256(b[:a] + b[z:]).hexdigest() == PRECEDING
@@ -79,7 +93,7 @@ def test_predecessor_exclusion_rejects_all_unrelated_changes():
     guard = runpy.run_path(str(ROOT / 'tests/reverse/test_re799_private_door_open_checkpoint.py'))
     assert 'dashboard_before_named_re800' in guard, 'RED: named successor preservation guard absent'
     check = guard['dashboard_before_named_re800']
-    b = DASH.read_bytes()
+    b = dashboard_before_named_re801(DASH.read_bytes())
     assert hashlib.sha256(check(b)).hexdigest() == PRECEDING
     for mutant in (b + b'foreign', b.replace(b'RE-799', b'RE-xxx', 1), b + START + END, b.replace(END, b'', 1), b.replace(START, b'<!-- start re801-integration -->', 1)):
         with pytest.raises(AssertionError):

@@ -1,0 +1,109 @@
+{
+  "schema": "re801-private-door-control-v1",
+  "approval_scope": "private-proof-only",
+  "production_status": "DoorControl-stub",
+  "source_integrated": false,
+  "registration_activated": false,
+  "runtime_performed": false,
+  "global_green": false,
+  "full_game_link": false,
+  "candidate_sha256": "d98fe4690e47a82fbfa6fe09f5e01f6b33b99f86ba365e29da8080272a8e65d7",
+  "review_sha256": "2a77bd27399493cfd29bddaeeb738bd834611fd227a39f9aaf68e06353e23803",
+  "production_baseline_sha256": "a538fca3ca3bd0426570d60b7a1c8b3a44d4d96c66b59990a04e716ef4e295ff",
+  "gate": "PSX_VERSION && PSXPC_TEST && __i386__",
+  "branch": "DoorControl lift trigger_flags==1",
+  "target": {
+    "sequences": 16,
+    "calls_per_sequence": 6,
+    "calls": 96,
+    "visits_per_replay": 8342,
+    "prior_reviewer_fresh_replays": 2,
+    "cpu_ram_preserved": true
+  },
+  "native": {
+    "cases_per_mode": 96,
+    "baseline_failures_per_mode": 96,
+    "baseline_input_failures_per_mode": 80,
+    "baseline_event_failures_per_mode": 16,
+    "baseline_build_exit": 0,
+    "baseline_run_exit": 1,
+    "candidate_build_exit": 0,
+    "candidate_run_exit": 0,
+    "modes": [
+      "normal",
+      "strict-ASan-UBSan"
+    ],
+    "behavioral_doubles": false,
+    "real_services": [
+      "OpenThatDoor",
+      "ShutThatDoor",
+      "GetBoundsAccurate",
+      "GetFrames_CL"
+    ],
+    "observation_wrappers_only": true
+  },
+  "sensitivity": {
+    "expected_output_mutants_rejected": 11,
+    "code_mutants": 0
+  },
+  "observations": {
+    "bounds_calls": 12,
+    "interpolated": 6,
+    "open": 4,
+    "shut": 4,
+    "clamps": 8,
+    "events": 56,
+    "repaired_copy_entries": 8
+  },
+  "final_review": {
+    "kind": "archival",
+    "passed": true,
+    "fresh_target_calls": 0,
+    "fresh_native_calls": 0,
+    "artifact_hashes_verified": 1708
+  },
+  "prior_review": {
+    "verdict_present": false,
+    "fresh_target_native_executed": true,
+    "stop": "provider-safety-filter-before-verdict"
+  },
+  "projection": {
+    "bytes": 2293,
+    "target_door_bytes": 92,
+    "native_door_bytes": 82,
+    "full_ram_archived": false,
+    "target_final_ram_assertion": "égalité RAM finale sauf stack; régions sélectionnées archivées"
+  },
+  "failed_attempts": [
+    "Worker producteur timeout après création de preuves; pas verdict implicite.",
+    "Compilations initiales échouées avant retries: pas RED comportemental.",
+    "Premier oracle copies invalide: liste mutable vidée; huit entrées réparées par rejeu indépendant.",
+    "Premier ABI compile échoué, retry ABI réussi.",
+    "Premier reviewer arrêté par provider sans verdict malgré exécutions fraîches.",
+    "Checker archivage échoué puis corrigé: erreurs conservées.",
+    "Dernier reviewer timeout après verdict existant: artifact vérifié séparément."
+  ],
+  "limits": [
+    "16 états corrélés, pas produit cartésien.",
+    "Branche lift seulement; non-lift et chemin spécial hors preuve.",
+    "Buffers valides disjoints; ordre des stores différent, pas preuve alias.",
+    "Projection packed et relocation explicites, pas identité de layout.",
+    "État final RAM sauf stack; pas couverture des écritures transitoires, pas full RAM archivée.",
+    "Timers négatifs/grands, overflow, indices/pointeurs invalides non prouvés.",
+    "Animations/rates/strides bornés; pas tous callers.",
+    "i386 normal/strict ASan+UBSan uniquement; detect_leaks désactivé.",
+    "TU instrumentées: renommage définitions et forward declarations, vrais services; pas full-game-link.",
+    "Sensibilité expected-output seulement, pas mutants du code ni robustesse exhaustive.",
+    "Revue finale archivale, pas nouveau rejeu frais.",
+    "Production DoorControl reste stub, registration inactive, runtime/gameplay non validés."
+  ],
+  "preceding_dashboard_sha256": "5234b7a4b176613bb1525cfa63d3db05f2e3959ae85a869d258bf16d93582403",
+  "next_story": "RE-802",
+  "next_frontier": {
+    "status": "planned-not-proven",
+    "branch": "une branche générique non-lift predicate/state",
+    "repeat_old_matrices": false,
+    "registration_allowed": false,
+    "smallest_real_proof": "Authentifier dépendance predicate réelle et transitions state; objet synthétique valide, actual-TU RED comportemental avant candidat privé, GREEN borné et revue indépendante. Chemin spécial timer séparé; aucun GO implicite."
+  }
+}
