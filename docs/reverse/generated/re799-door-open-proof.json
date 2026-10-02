@@ -1,0 +1,38 @@
+{
+  "schema": "private-door-open-checkpoint-v1",
+  "cases": {
+    "cartesian": 2304,
+    "byte_sweeps": 1024,
+    "total": 3328
+  },
+  "baseline": {
+    "build_exit": 0,
+    "run_exit": 1,
+    "failures": 2944
+  },
+  "normal_exit": 0,
+  "sanitizer_exit": 0,
+  "target_exit": 0,
+  "sanitizer_diagnostics": [],
+  "target_visits": 401792,
+  "authentic_copy_calls": 2176,
+  "review_passed": true,
+  "review_sha256": "d443ff41b4750ae7941aeae5b18114f836c3ab77c69519c88d30c59f1cd4f0b9",
+  "candidate_sha256": "c8334730c0a3a7f6879bd93feaafe612d663851621b225c60b4f75faa268a96a",
+  "source_integrated": false,
+  "registration_activated": false,
+  "runtime_performed": false,
+  "global_green": false,
+  "next_story": "RE-800",
+  "limits": [
+    "PASS exclusivement pour OpenThatDoor dans le domaine valide disjoint de la matrice archivée, backend PSX_VERSION && PSXPC_TEST && __i386__; aucune acceptation globale ni intégration production.",
+    "Floor valide ou nul; block 2047 ou 0/7/15 valide; cinq creatures accessibles; dptr3 valide lorsque dptr1 actif; dptr2/4 facultatifs; trois shorts accessibles; LiftDoor 0/1 seulement. Les pointeurs invalides et indices hors domaine sont exclus.",
+    "Ordre cible des stores mesh 1,3,2,4 et ordre natif 1,2,3,4: équivalence finale seulement sous exclusion des alias. Copie cible octet-par-octet versus memcpy natif: sources/destination doivent être disjointes.",
+    "Comparaison cible complète sur les régions sélectionnées de 1689 octets, non sur toute la RAM; stack/registre/accès mémoire hors projection non couverts par le verdict.",
+    "GP synthétique et offset LiftDoor hérité; aucune extraction fraîche ni preuve startup/relocation globale; rejeu frais des seules instructions du payload local authentifié.",
+    "Projection cible DOORPOS_DATA stride16 / DOOR_DATA92 vers natif packed14 / 82: padding cible exclu de projection native, champs pointeurs rebased; intégrité native contrôlée avant/après. Le harness n’interprète pas les pointeurs globals expected: leur immobilité native est vérifiée directement.",
+    "Tous les appels de la fixture utilisent d == &dd.d1; pas de preuve exhaustive des autres sous-records/appels ou de la compatibilité arbitraire d/dd.",
+    "Compilation vraie TU complète avec sections non utilisées éliminées par gc-sections; pas de preuve de link complet du jeu, autres backends, registration, DoorControl/ProcessClosedDoors, assets ou gameplay.",
+    "Mutants de sorties sont des contrôles de sensibilité du consumer sur cinq régions, pas des mutations authentiques des instructions ni une preuve exhaustive du code."
+  ]
+}
