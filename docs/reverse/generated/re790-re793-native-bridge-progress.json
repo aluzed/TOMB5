@@ -1,0 +1,122 @@
+{
+  "schema": "native-bridge-progress-v1",
+  "review": {
+    "passed": true,
+    "security_concerns": [],
+    "logic_errors": [],
+    "scope": "natural-base-selection-and-registration-only",
+    "verdict_sha256": "3f0bf804f80e73b79ef0737faf3572f822de1a281d72722a950bd391154a847f"
+  },
+  "broad_review": {
+    "passed": false,
+    "scope": "general-provenance-and-security-refused",
+    "verdict_sha256": "d21142532518bee5b5c4bd65d7ceddbe445e3f617212b98d6b34d30b55971048"
+  },
+  "readiness": {
+    "natural_registration": "verified-bounded",
+    "natural_bridge_callback": "blocked",
+    "source_patch": "blocked",
+    "fullbuild": "not-performed",
+    "global_gameplay": "not-validated"
+  },
+  "rome": {
+    "items": 151,
+    "bridge_items": 0,
+    "reported_draws": 750,
+    "retained_ceiling_pairs": 920,
+    "retained_collision_pairs": 100
+  },
+  "base": {
+    "native_level": 4,
+    "container_ordinal": 5,
+    "items": 177,
+    "rooms": 169,
+    "bridge_items": 8,
+    "producer_calls": 2,
+    "unique_registered_slots": 6,
+    "slot_comparisons": 12,
+    "callback_entries": 0,
+    "reported_draws": 452,
+    "release_draw": 2,
+    "retained_pairs": {
+      "GetHeight": 964,
+      "GetCeiling": 840,
+      "GetCollisionInfo": 100
+    },
+    "reported_entries": {
+      "GetHeight": 17149,
+      "GetCeiling": 13367,
+      "GetCollisionInfo": 450
+    },
+    "totals_are_archived_counters_not_full_trace": true
+  },
+  "relink": {
+    "fresh_translation_units": [
+      "GETSTUFF",
+      "SETUP",
+      "OBJECTS",
+      "BRIDGE_CALLBACKS"
+    ],
+    "classification": "mixed-provenance-not-fullbuild",
+    "executable_sha256": "a9d0d7ccbc84dabad12cdefffb8f6ea616109c05abef5e2eb899b49003506a6f",
+    "explicit_inputs": 124,
+    "declared_headers": 127
+  },
+  "corpus": {
+    "levels": 15,
+    "items": 2084,
+    "bridge_totals": {
+      "BRIDGE_FLAT": 35,
+      "BRIDGE_TILT1": 0,
+      "BRIDGE_TILT2": 31
+    },
+    "positive_levels": [
+      {
+        "level": "LVL5_BASE",
+        "bridge_items": 8
+      },
+      {
+        "level": "LVL5_LABYRINTH",
+        "bridge_items": 27
+      },
+      {
+        "level": "LVL5_OLD_MILL",
+        "bridge_items": 9
+      },
+      {
+        "level": "LVL5_THIRTEENTH_FLOOR",
+        "bridge_items": 13
+      },
+      {
+        "level": "LVL5_ESCAPE_WITH_THE_IRIS",
+        "bridge_items": 3
+      },
+      {
+        "level": "LVL5_RED_ALERT",
+        "bridge_items": 6
+      }
+    ],
+    "all_bridge_items_referenced": true,
+    "fresh_item_loader_execution": false
+  },
+  "navigation": {
+    "rooms": 169,
+    "cells": 11459,
+    "geometric_portals": 626,
+    "private_tests_passed": 11,
+    "runtime_performed": false,
+    "gameplay_reachability": "unproven",
+    "independent_review": "pending"
+  },
+  "limits": [
+    "No natural bridge callback or consumed effect observed.",
+    "Fresh compilation of four translation units; remaining objects historical; not fullbuild.",
+    "Final breakpoint counters are not an exhaustive retained execution trace.",
+    "Corpus freshly decoded; target room-loader suffix archived, not replayed here.",
+    "Navigation graph does not prove gameplay traversal; live door and flip state missing.",
+    "RE790 broad refusal retained; scoped RE792 acceptance does not authorize raw publication.",
+    "No global gameplay or sanitizer GREEN; no engine changes."
+  ],
+  "next_story": "RE-794",
+  "preceding_dashboard_sha256": "58745129cc534bae09eac1387bd5b7e26143c918240a3e89985e5c4286569693"
+}
