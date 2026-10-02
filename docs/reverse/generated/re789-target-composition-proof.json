@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "security_concerns": [],
+  "logic_errors": [],
+  "scope": "authenticated-target-synthetic-composition",
+  "cases": 13824,
+  "prefix_cases": 2,
+  "relocator_hook_visits": 4945,
+  "prefix_hook_visits_per_case": 148,
+  "prefix_store_events_per_case": 46,
+  "helper_visits": 4608,
+  "helper_observation": "visited instruction inside the helper, not the function entry",
+  "source_current_differences": {
+    "normal": 0,
+    "ubsan": 0
+  },
+  "baseline": {
+    "entry_differences": 3456,
+    "callback_masks": 1152,
+    "short_masks": 2304,
+    "return_differences": 0
+  },
+  "contract_sha256": "0ff45dd9c42d3ed2f79fe341de1e1aa6a03cae07d5e1a1a851d27d014806b3aa",
+  "contract_encoding": "ordered JSON compact arrays: loaded,type,low,high,x,z,family,q,inhibited,body_entry_or_null,call_count,body_exit_or_null,actual_return_short",
+  "preceding_dashboard_sha256": "3d82323f18f9f9ce70810fec2e6530963d2af2fd10df406c9506688a7751dc6d",
+  "reviewer_target_replay_exit": 0,
+  "reviewer_source_fresh": false,
+  "review_verdict_sha256": "05ac78b2a0a754d9977232c3f384a93eaf0135d34f20feee4b91edfd0504f805",
+  "target_results_sha256": "fa26e8c69aebcd0216f87c831d6293f4577713bd213bebbc7d135de170ec3fca",
+  "boot_sha256": "6d368fb961de71958f68a7df32d12385774b24bbdf4ed1ed34b26e5ad467629e",
+  "review_archive": "build/reverse/autonomy-20261002/re789-review/verdict.json",
+  "limits": [
+    "Bounded synthetic target-prefix/query software-emulation proof, no hardware/startup/global security/gameplay/fullbuild claim.",
+    "Only ceiling bodies executed; six floor/ceiling pointer identities established but floor behavior not executed.",
+    "Only zero rotation and two coordinates; no room traversal/diagonal boundary corpus.",
+    "Query final RAM comparison masks 96 stack bytes, covers final state only, not transient stores; prefix equality excludes no RAM. Callee-saved check limited to SP/RA/s0/s1/s2 used by these bodies.",
+    "Prefix before-images outside poisoned bridge slots are zero, so mask/OR effects on arbitrary nonzero state are not independently established.",
+    "Native baseline/source registration setup differs from PSX target prefix in unrelated setup effects; comparison is roof/callback observable contract, not whole-motor RAM equivalence.",
+    "Native evidence is archived, not freshly rebuilt by this target reviewer. Adapter events have no separate target ABI adapter equivalent; body entry/return and source adapter agreement are checked separately."
+  ],
+  "setup_failure": "first run missing capstone before extraction; zero cases; preserved private setup snapshot; isolated venv installation then successful fresh runs"
+}

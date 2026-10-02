@@ -31,6 +31,12 @@ def test_source_only_scope_and_remaining_work():
 
 def test_preceding_dashboard_bytes_unchanged():
     data = DASH.read_bytes()
+    # Only RE789 is excluded; its successor guard pins all preceding bytes including RE788.
+    successor_start, successor_end = b'<section id="re789">', b'<!-- end re789 -->'
+    if successor_start in data:
+        assert data.count(successor_start) == data.count(successor_end) == 1
+        a = data.index(successor_start); b = data.index(successor_end, a) + len(successor_end)
+        data = data[:a] + data[b:]
     start, end = START.encode(), END.encode()
     assert data.count(start) == data.count(end) == 1
     a = data.index(start)
