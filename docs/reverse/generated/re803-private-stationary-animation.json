@@ -1,0 +1,119 @@
+{
+  "schema": "re803-private-stationary-animation-v1",
+  "approval_scope": "private-bounded-fixtures-only",
+  "production_status": {
+    "DoorControl": "stub",
+    "AnimateItem": "stub",
+    "ProcessClosedDoors": "not-implemented"
+  },
+  "source_integrated": false,
+  "registration_activated": false,
+  "runtime_performed": false,
+  "fullbuild_performed": false,
+  "global_green": false,
+  "general_stationary_proven": false,
+  "self_loop_proven": false,
+  "getchange_authentic_exercised": false,
+  "candidate_sha256": "d60ca859dc9e12bfef8f2e0c47ce05bbffd488fbfed19e646839a1d32488f896",
+  "review_sha256": "db511cd1da0a5a1272c709053b6d7747952b3ccf738e7d8b604f115e6d3124f4",
+  "production_baseline_sha256": "5a24abe8b574054875a1fd2e4d66499400cbbfa427d2b0a1f7aa3956000b4158",
+  "door_private_candidate_sha256": "bf1ed5dc4c15f1d02d72c7a98b639d3ad40079937cfa68c8030dfec43fe2d0a1",
+  "direct": {
+    "cases": 16,
+    "advances": 8,
+    "jumps": 8,
+    "advance_frames": [
+      3,
+      4
+    ],
+    "jump_animations": [
+      0,
+      1
+    ],
+    "jump_frames": [
+      8,
+      2
+    ],
+    "target_visits": 1716,
+    "buffer_bytes": 224,
+    "return_proven": true
+  },
+  "composition": {
+    "cases": 4,
+    "target_visits": 642,
+    "real_services": [
+      "TriggerActive",
+      "AnimateItem"
+    ],
+    "return_proven": true,
+    "synthetic_only": true,
+    "jumps": 0
+  },
+  "native": {
+    "modes": [
+      "normal",
+      "ASan",
+      "UBSan",
+      "ASan+UBSan"
+    ],
+    "baseline": {
+      "build_exit": 0,
+      "run_exit": 1,
+      "direct_failures": 16,
+      "composition_failures": 4
+    },
+    "candidate": {
+      "build_exit": 0,
+      "run_exit": 0,
+      "direct_pass": 16,
+      "composition_pass": 4
+    },
+    "detect_leaks": false,
+    "run_stderr_empty": true
+  },
+  "sensitivity": {
+    "kind": "code-mutants",
+    "mode": "normal-only",
+    "failures": {
+      "frame": 16,
+      "jump": 8,
+      "touch": 16
+    }
+  },
+  "independent_review": {
+    "passed": true,
+    "fresh_native_builds": 19,
+    "fresh_native_runs": 19,
+    "original_hashes_verified": 271,
+    "fresh_target_replay": true
+  },
+  "limits": [
+    "Acceptation des 16 fixtures seulement, pas domaine stationnaire universel ni gameplay; deux positions initiales seulement, pas 16 branches sémantiques.",
+    "Huit avances frame3→4 et huit sauts animation0→1/frame8→2; aucun self-loop sur la même animation, ni frontière frame7→8 sans saut.",
+    "Composition synthétique seulement: quatre cas sans saut, deux branches TriggerActive et orientations différentes; pas tout DoorControl.",
+    "DOOR cible92/natif82: normalisation exacte des champs synthétiques nuls, pas preuve de DOOR arbitraire.",
+    "Buffers directs ITEM144 et deux ANIM40 entièrement comparés; composition pointeur item.data seulement relogé; pas identité de layouts.",
+    "RAM cible finale comparée hors pile autorisée36/68 octets, pas trace exhaustive des écritures transitoires.",
+    "Unicorn logiciel, aucun hardware ou jeu exécuté.",
+    "i386 C++11 O0 et assertions actives, pas LP64, NDEBUG ni autres plateformes.",
+    "ASan detect_leaks désactivé, avertissements de compilation DOOR; stderr des runs frais vide, pas preuve de fuites.",
+    "Les harness archivés ne vérifient pas tous fread/fopen; tailles et hashes des fixtures valides vérifiés par revue.",
+    "Aucun GetChange authentique exercé; commandes, son, effets, déplacement, gravité exclus.",
+    "Loader, registration, ProcessClosedDoors, callback naturel, fullbuild, runtime et gameplay exclus; pas de GREEN global.",
+    "Ordre historique RED avant candidat attesté seulement par archives; revue fraîche attribue ses nouveaux RED/GREEN aux sources exactes."
+  ],
+  "failed_attempts": [
+    "Premier oracle target-first erroné sur required_state conservé, archive seule non rejouée.",
+    "Échec initial mutant-touch et mutants-setup-failed conservés, non rejoués; mutants corrigés CODE frais discriminants.",
+    "Premier reviewer bloqué fournisseur après lectures: aucun verdict; reviewer final distinct PASS frais.",
+    "Audit original non relancé pour préserver preuve; verdict provisoire non approuvé remplacé par verdict final après recompilations."
+  ],
+  "preceding_dashboard_sha256": "beaaa9177c5e454b9d3a05f0c36a7603a4b979c1bba88b2d9356b1856989904a",
+  "next_story": "RE-804",
+  "next_frontier": {
+    "status": "planned-not-proven",
+    "repeat_closed_fixtures": false,
+    "registration_allowed": false,
+    "smallest_real_proof": "GetChange authentique: nouvelle branche/prérequis atteint, entrée/retour cible et dépendances réelles, actual-TU RED avant candidat privé, GREEN borné normal/sanitizers puis revue indépendante. Pas répétition fixtures closes RE803 ni retours simulés."
+  }
+}

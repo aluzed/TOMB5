@@ -47,7 +47,11 @@ def test_story_blocker_and_limits():
         for term in ('RE-802','RE-803','AnimateItem','TriggerActive','40','2408','120','stub','non-lift','pas de GREEN global','02:20','02:40','02:50','03:00'):
             assert term in text,term
     assert '## Tracker' in STORY.read_text() and '- [x]' in STORY.read_text() and '- [ ]' in STORY.read_text()
-    assert '## État actuel — frontière RE-802' in BLOCKER.read_text()
+    # Successeur nommé RE803 uniquement; le checkpoint RE802 reste historique.
+    text = BLOCKER.read_text()
+    assert ('## État actuel — frontière RE-802' in text or
+            ('## Checkpoint historique — frontière RE-802' in text and
+             '## État actuel — frontière RE-803' in text))
 def test_historical_bytes_and_named_section():
     b=DASH.read_bytes();assert b.count(START)==b.count(END)==1,'RED: section RE802 absente'
     a=b.index(START);z=b.index(END,a)+len(END)
