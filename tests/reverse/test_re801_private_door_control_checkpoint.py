@@ -45,8 +45,21 @@ def test_story_current_checkpoint():
     assert d['next_frontier']['status']=='planned-not-proven'
     assert d['next_frontier']['repeat_old_matrices'] is d['next_frontier']['registration_allowed'] is False
 
+def dashboard_before_named_re802(b):
+    """Retire seulement le successeur RE802; épingle chaque octet RE801."""
+    start = b'<!-- start re802-private-door-prefix -->'
+    end = b'<!-- end re802-private-door-prefix -->'
+    if start in b or end in b:
+        assert b.count(start) == b.count(end) == 1
+        a = b.index(start)
+        assert end in b[a:]
+        z = b.index(end, a) + len(end)
+        b = b[:a] + b[z:]
+    assert hashlib.sha256(b).hexdigest() == '75203801505616180d3ed635c737e898f6dba9b219baa60660d9aeb4fcddf595'
+    return b
+
 def test_dashboard_preserves_whole_predecessor():
-    b=DASH.read_bytes()
+    b=dashboard_before_named_re802(DASH.read_bytes())
     assert b.count(START)==b.count(END)==1,'RED: section RE801 absente'
     a=b.index(START);z=b.index(END,a)+len(END)
     assert hashlib.sha256(b[:a]+b[z:]).hexdigest()==PRECEDING

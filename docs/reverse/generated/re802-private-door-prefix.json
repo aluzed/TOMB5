@@ -1,0 +1,140 @@
+{
+  "schema": "re802-private-door-prefix-v1",
+  "approval_scope": "private-prefix-proof-only",
+  "production_status": {
+    "DoorControl": "stub",
+    "AnimateItem": "stub",
+    "ProcessClosedDoors": "not-implemented"
+  },
+  "source_integrated": false,
+  "registration_activated": false,
+  "runtime_performed": false,
+  "fullbuild_performed": false,
+  "global_green": false,
+  "full_game_link": false,
+  "doorcontrol_return_proven": false,
+  "animateitem_body_executed": false,
+  "candidate_sha256": "bf1ed5dc4c15f1d02d72c7a98b639d3ad40079937cfa68c8030dfec43fe2d0a1",
+  "review_sha256": "d975a3b7049dce5eaa94a7a1391e6960d76546a086398bcd094dab372b6657db",
+  "harness_sha256": "1a964451f350f6ed01135532c95604a592cfe36eeac0ee54c2a6a8fe29c7cebc",
+  "production_baseline_sha256": "a538fca3ca3bd0426570d60b7a1c8b3a44d4d96c66b59990a04e716ef4e295ff",
+  "gate": "PSX_VERSION && PSXPC_TEST && __i386__",
+  "branch": "DoorControl generic non-lift prefix",
+  "target": {
+    "cases": 40,
+    "active": 20,
+    "inactive": 20,
+    "timer_changes": 12,
+    "hook_visits": 2408,
+    "ordered_events": 120,
+    "stop": "before-first-AnimateItem-instruction",
+    "fresh_independent_replay": true
+  },
+  "native": {
+    "modes": [
+      "normal",
+      "strict-ASan-UBSan"
+    ],
+    "cases_per_mode": 40,
+    "baseline": {
+      "build_exit": 0,
+      "run_exit": 1,
+      "event_failures": 40,
+      "state_failures": 26,
+      "input_failures": 0
+    },
+    "candidate": {
+      "build_exit": 0,
+      "run_exit": 0,
+      "event_failures": 0,
+      "state_failures": 0,
+      "input_failures": 0
+    },
+    "real_services": [
+      "TriggerActive"
+    ],
+    "animateitem_observation": "entry-exception-no-return",
+    "detect_leaks": false,
+    "run_stderr_empty": true
+  },
+  "sensitivity": {
+    "kind": "code-mutants",
+    "mode": "normal-only",
+    "failures": {
+      "status": [
+        20,
+        0
+      ],
+      "goal": [
+        20,
+        0
+      ],
+      "polarity": [
+        40,
+        0
+      ],
+      "no-trigger": [
+        26,
+        40
+      ],
+      "no-animate": [
+        0,
+        40
+      ]
+    },
+    "count_order": [
+      "state",
+      "events"
+    ]
+  },
+  "projection": {
+    "regions": 10,
+    "target_bytes_per_case": 2293,
+    "native_bytes_per_case": 2283,
+    "removed_padding_bytes": 10,
+    "caller_stack_excluded_bytes": 32,
+    "pointer_fields_only_relocated": true,
+    "full_target_ram_compared": true
+  },
+  "independent_review": {
+    "kind": "fresh-target-and-native",
+    "passed": true,
+    "blocking_concerns": 0,
+    "reviewed_hashes": 1896,
+    "native_builds": 4,
+    "abi_probe_separate": true
+  },
+  "review_fresh_native_calls_including_mutants": 360,
+  "invocation_log_hash_checks": 42,
+  "limits": [
+    "Domaine construit borné et états corrélés, pas domaine universel ni callers réels ou gameplay; pas séquences multi-frame.",
+    "Arrêt AVANT première instruction AnimateItem; aucun retour cible DoorControl prouvé, autres branches exclues.",
+    "AnimateItem natif observe entrée puis exception sans retour; corps production stub, pas service réel AnimateItem.",
+    "RAM cible finale complète sauf pile appelant; pas trace exhaustive des écritures transitoires.",
+    "Unicorn logiciel, aucune validation hardware indépendante.",
+    "Projection retire uniquement padding cible et reloge champs pointeurs déclarés; pas identité des layouts.",
+    "Adresses allocations enregistrées par harness frais, pas mesure indépendante par debugger.",
+    "i386 -O0 et defines archivés seulement; pas LP64, autres plateformes ou NDEBUG.",
+    "Les assertions de domaine candidat privé, pas politique de sécurité production.",
+    "Mutants du code normaux seulement; mutant goal touche aussi un site non atteint, pas mono-site global.",
+    "ASan+UBSan fail-fast baseline/candidat, detect_leaks désactivé; pas preuve leaks.",
+    "Pas intégration, activation registration, callback naturel, fullbuild, runtime ou GREEN global."
+  ],
+  "failed_attempts": [
+    "Producteur timeout après preuves; pas verdict implicite.",
+    "Premier span cible omet delay slot: setup RED, pas RED comportemental.",
+    "Premier link définition multiple items: build échoué, pas RED comportemental.",
+    "Première projection native erronée puis diagnostic conservé.",
+    "Scripts pré-correction non disponibles séparément: échecs archivés, pas reproduction prétendue.",
+    "HANDOFF producteur 00:59 obsolète conservé immuable; ledgers ultérieurs et revue fraîche prévalent.",
+    "Audit same-author non utilisé comme approbation indépendante."
+  ],
+  "preceding_dashboard_sha256": "75203801505616180d3ed635c737e898f6dba9b219baa60660d9aeb4fcddf595",
+  "next_story": "RE-803",
+  "next_frontier": {
+    "status": "planned-not-proven",
+    "repeat_closed_prefix_matrices": false,
+    "registration_allowed": false,
+    "smallest_real_proof": "AnimateItem: authentifier un minimum réel de corps/prérequis atteint, entrée/retour cible et dépendances réellement exercées; actual-TU RED comportemental avant candidat privé, GREEN borné normal/strict et revue indépendante. Dépendance absente = blocker, pas retour simulé; pas répétition des matrices de préfixe fermées."
+  }
+}

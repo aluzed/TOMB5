@@ -759,5 +759,10 @@
 <section id="re801"><h3>RE-801 — DoorControl lift : preuve privée exécutée</h3>
 <p>16 séquences corrélées, 96 appels CPU/RAM préservés, 8342 visites par rejeu; baseline actual-TU RED 96 échecs puis candidat privé GREEN normal/strict ASan+UBSan. Deux rejeux frais du premier reviewer; verdict final archivage, sans exécution fraîche. 11 mutants expected-output, pas mutants code; ledger copies réparé, projection 2293 octets.</p>
 <p>DoorControl production reste stub; aucune intégration, registration inactive, aucun runtime : pas de GREEN global. Prochaine RE-802 non-lift predicate/state planifiée/non prouvée; pas GO implicite. <a href="../stories/RE-801-private-door-control-lift-proof.md">Story et limites</a>.</p>
+<!-- start re802-private-door-prefix -->
+<section id="re802"><h3>RE-802 — Préfixe générique non-lift : preuve privée revue fraîche</h3>
+<p>40 cas, 20 actifs/20 inactifs, 12 changements timer, 2408 visites hooks et 120 événements. TriggerActive réel cible/native; baseline RED 40 événements/26 états, candidat 40/40 normal et strict ASan+UBSan. Cinq mutants du code en normal seulement; revue indépendante avec cible et compilations natives fraîches, non simplement archivale.</p>
+<p>Arrêt avant première instruction AnimateItem; observation native entrée puis exception sans retour. DoorControl et AnimateItem restent stub; ProcessClosedDoors bloqué, registration inactive, aucun runtime/fullbuild/gameplay : <strong>pas de GREEN global</strong>. Projection 2293/2283 octets, RAM finale sauf pile, pas trace exhaustive des stores. RE-803 : minimum réel AnimateItem, planifié/non prouvé, ne pas répéter préfixe fermé. <a href="../stories/RE-802-private-generic-door-prefix.md">Story et limites</a> · <a href="generated/re802-private-door-prefix.json">Métadonnées</a>.</p>
 </section>
+<!-- end re802-private-door-prefix --></section>
 <!-- end re801-private-door-control --><!-- end re800-integration --></section><!-- end re794 --></body></html>
