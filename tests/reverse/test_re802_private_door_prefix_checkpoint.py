@@ -51,7 +51,9 @@ def test_story_blocker_and_limits():
     text = BLOCKER.read_text()
     assert ('## État actuel — frontière RE-802' in text or
             ('## Checkpoint historique — frontière RE-802' in text and
-             '## État actuel — frontière RE-803' in text))
+             ('## État actuel — frontière RE-803' in text or
+              ('## Checkpoint historique — frontière RE-803' in text and
+               '## État actuel — frontière RE-804' in text))))
 def test_historical_bytes_and_named_section():
     b=DASH.read_bytes();assert b.count(START)==b.count(END)==1,'RED: section RE802 absente'
     a=b.index(START);z=b.index(END,a)+len(END)

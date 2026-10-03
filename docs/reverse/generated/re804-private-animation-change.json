@@ -1,0 +1,96 @@
+{
+  "schema": "re804-private-animation-change-v1",
+  "approval_scope": "private-bounded-fixtures-only",
+  "production_status": {
+    "DoorControl": "stub",
+    "AnimateItem": "stub",
+    "ProcessClosedDoors": "not-implemented",
+    "GetChange": "reset-defect-unpatched"
+  },
+  "source_integrated": false,
+  "registration_activated": false,
+  "runtime_performed": false,
+  "fullbuild_performed": false,
+  "global_green": false,
+  "production_ready": false,
+  "public_actual_tu_regression": false,
+  "exact_integration_review": false,
+  "general_stationary_proven": false,
+  "review_sha256": "9d2e382e77c4fcd14bcc2e9b94b6debe3458343fa6be90779780c8a669b6c3c1",
+  "candidate_sha256": "42e54b4cd1f0f6a4cc064a80a6a4d64dc9ebb3df45e093d45e7e2f3f0520d2df",
+  "helper_candidate_sha256": "e9d9ff631da7902105c6556844ef94faac210433f69fe3d1a4ea20bcfea33f34",
+  "target": {
+    "distinct_cases": 24,
+    "direct_GetChange": 12,
+    "AnimateItem_composition": 12,
+    "composition_helper_calls": 11,
+    "helper_entries_per_repetition": 23,
+    "visits_per_repetition": 2090,
+    "reviewer_fresh_replays": 2,
+    "buffer_bytes": 268
+  },
+  "native": {
+    "modes": [
+      "normal",
+      "strict-ASan-UBSan"
+    ],
+    "baseline": {
+      "build_exit": 0,
+      "run_exit": 1,
+      "helper_direct_failures": 1,
+      "AnimateItem_stub_failures": 12,
+      "total_failures": 13
+    },
+    "candidate": {
+      "build_exit": 0,
+      "run_exit": 0,
+      "pass_per_mode": 24
+    },
+    "detect_leaks": false
+  },
+  "sensitivity": {
+    "kind": "code-mutants",
+    "mode": "normal-only",
+    "failures": {
+      "no_reset": 2,
+      "exclusive_start": 8,
+      "wrong_link_frame": 12,
+      "missing_current_refresh": 6
+    }
+  },
+  "independent_review": {
+    "passed": true,
+    "blocking_concerns": 0,
+    "actual_tu_builds": 10,
+    "actual_tu_runs": 10,
+    "additional_abi_builds": 1,
+    "original_manifest_entries_verified": 313,
+    "original_files_unchanged": 314,
+    "predecessor_files_verified": 643
+  },
+  "limits": [
+    "Fixtures synthétiques stationnaires seulement; pas domaine universel ou routine complète.",
+    "Pas nouvelle validation frame_end héritée de RE803.",
+    "Commandes, son, effets, déplacement et gravité exclus.",
+    "Aucun DoorControl élargi ni ProcessClosedDoors validé.",
+    "Unicorn logiciel, pas hardware ou jeu.",
+    "Même moteur CPU et fixtures, oracle buffers indépendant seulement.",
+    "RAM finale hors pile autorisée; écritures transitoires non prouvées.",
+    "i386 C++11 O0 assertions actives, ni LP64 ni NDEBUG.",
+    "ASan sans leaks, UBSan fail-fast, pas sûreté globale du dépôt.",
+    "Instrumentation native entrée/sortie non capture ABI portable ni trace exhaustive.",
+    "Loader, registration, callback naturel, fullbuild/runtime/gameplay exclus; pas de GREEN global.",
+    "Reset GetChange privé prouvé, non production-ready avant régression publique actual-TU et revue exacte."
+  ],
+  "failed_attempts": [
+    "Commentaire source de localisation erroné; attribution résolue par appelant authentique, inspection initiale conservée.",
+    "Compteur mutant start-exclusive attendu 10→8 corrigé puis recompilé/rejoué; premier échec conservé, pas présenté GREEN."
+  ],
+  "preceding_dashboard_sha256": "cad5dd5a83eb8cddf932a476c70a14f0f829d88fe16ed90526f35b7ae3201fce",
+  "next_story": "RE-805",
+  "next_frontier": {
+    "status": "planned-not-proven",
+    "registration_allowed": false,
+    "smallest_real_proof": "Régression publique actual-TU GetChange du reset minimal, RED production puis candidat privé normal/strict et revue exacte du delta avant toute correction production; pas répétition des matrices closes."
+  }
+}

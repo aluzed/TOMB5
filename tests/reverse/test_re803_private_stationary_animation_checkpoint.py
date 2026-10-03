@@ -14,7 +14,20 @@ FROZEN={'GAME/CONTROL.C': '5a24abe8b574054875a1fd2e4d66499400cbbfa427d2b0a1f7aa3
 def metadata():
     assert META.exists(),'RED: métadonnées RE803 absentes'
     return json.loads(META.read_text())
+def dashboard_before_named_re804(b):
+    """Exclude only named RE804; retain exact RE803 and preceding bytes."""
+    start=b'<!-- start re804-private-animation-change -->'
+    end=b'<!-- end re804-private-animation-change -->'
+    if start in b or end in b:
+        assert b.count(start)==b.count(end)==1
+        a=b.index(start);assert end in b[a:]
+        z=b.index(end,a)+len(end)
+        b=b[:a]+b[z:]
+    assert hashlib.sha256(b).hexdigest()=='cad5dd5a83eb8cddf932a476c70a14f0f829d88fe16ed90526f35b7ae3201fce'
+    return b
+
 def dashboard_before_named_re803(b):
+    b=dashboard_before_named_re804(b)
     assert b.count(START)==b.count(END)==1,'RED: section RE803 absente'
     a=b.index(START);assert END in b[a:]
     z=b.index(END,a)+len(END)
@@ -52,7 +65,9 @@ def test_story_blocker_and_explicit_limits():
     t=STORY.read_text()
     for word in ('## Tracker','- [x]','- [ ]','synthétique','required_state','NDEBUG','LP64','Unicorn','sans saut','frame7'):
         assert word in t,word
-    assert '## État actuel — frontière RE-803' in BLOCKER.read_text()
+    assert ('## État actuel — frontière RE-803' in BLOCKER.read_text() or
+            ('## Checkpoint historique — frontière RE-803' in BLOCKER.read_text() and
+             '## État actuel — frontière RE-804' in BLOCKER.read_text()))
 def test_named_append_and_mutation_rejection():
     b=DASH.read_bytes();dashboard_before_named_re803(b)
     assert metadata()['preceding_dashboard_sha256']==PRECEDING
