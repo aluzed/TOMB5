@@ -30,6 +30,14 @@ def mutants(b):
  return [b+b'foreign',b+SECTION.encode(),b.replace(start,b'',1),b.replace(end,b'',1),b.replace(start,b'TEMP',1).replace(end,start,1).replace(b'TEMP',end,1),b.replace(b'RE-809',b'RE-xxx',1),b+b'<!-- start re818-unknown -->bad<!-- end re818-unknown -->',b.replace(b'projection2980',b'projection2981',1)]
 def test_append_only_and_predecessors():
  g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ # RE818 exact suffix only; preserve historical RE817 assertion on its old bytes.
+ start818=b'<!-- start re818-actual-tu-caller-prerequisite -->';end818=b'<!-- end re818-actual-tu-caller-prerequisite -->'
+ if start818 in b or end818 in b:
+  assert b.count(start818)==b.count(end818)==1
+  a818=b.index(start818)
+  assert hashlib.sha256(b[a818:]).hexdigest()=='133512b16df78502d62a52334174b04201d864b54165866985b5186b13b4ab8b'
+  b=b[:a818]
+  assert hashlib.sha256(b).hexdigest()=='ae791f9befe193f0370b68825cfe17d02616cc723661a8eaa07102caa2b75bc6'
  before=g['dashboard_before_re817'](b);assert hashlib.sha256(before).hexdigest()==PRECEDING and b==before+SECTION.encode()
  funcs=[g['dashboard_before_re817']]
  for n in NAMES:
