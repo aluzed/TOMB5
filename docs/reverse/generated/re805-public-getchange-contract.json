@@ -1,0 +1,42 @@
+{
+  "schema": "re805-public-getchange-v1",
+  "author": "AlexP",
+  "cases_per_mode": 1440,
+  "baseline_failures_per_mode": 48,
+  "candidate_failures_per_mode": 0,
+  "modes": [
+    "normal",
+    "strict-ASan-UBSan"
+  ],
+  "helper_definition": "SPEC_PSXPC_N/CONTROL_S.C",
+  "compiled_real_tus": [
+    "SPEC_PSXPC_N/CONTROL_S.C",
+    "GAME/ITEMS.C"
+  ],
+  "oracle": "synthetic-independent-lexicographic-pairs",
+  "upstream_review_sha256": "9d2e382e77c4fcd14bcc2e9b94b6debe3458343fa6be90779780c8a669b6c3c1",
+  "preceding_dashboard_sha256": "cc625c9a8ddae8d8b96d5b31c214624959c22e74f131a20602e8c32653a5bdb7",
+  "private_candidate_sha256": "d96de2bdfc96a676e84d56948013186c51fb2696f095704144d94f489626e1cf",
+  "baseline_helper_sha256": "a1f7e696b08476bdcd3f616cef569e2ac99c6a1764b9c9086ee0304f1dd6545c",
+  "fixture_sha256": "c907793ea90ad54ba5924c6aee4ae9e17feca9247d213e0e7dccd5b3cffb0c5a",
+  "production_modified": false,
+  "AnimateItem_activated": false,
+  "runtime_performed": false,
+  "fullbuild_performed": false,
+  "global_green": false,
+  "production_ready": false,
+  "target_matrix_replayed": false,
+  "public_actual_tu_regression": true,
+  "public_contract_expected_status": "RED-until-reviewed-production-integration",
+  "review_status": "exact-review-pending",
+  "limits": [
+    "i386 C++11 O0 only",
+    "Synthetic fixture contract, upstream target proof distinct",
+    "Installed public SDL2/GLEW and multilib sanitizer prerequisites",
+    "GAME/ITEMS.C compiled unchanged, not a GetChange definition or exercised caller",
+    "Complete item and three fixture tables plus global pointer invariance, not transient store trace",
+    "No loader, natural registration, game, hardware or generalized animation proof",
+    "number_changes fixed to three, ranges counts zero through three; domain not universal",
+    "ASan leaks disabled, UBSan fail-fast; no repository-wide safety claim"
+  ]
+}

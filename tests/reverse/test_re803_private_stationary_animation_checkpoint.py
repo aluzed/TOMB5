@@ -16,6 +16,14 @@ def metadata():
     return json.loads(META.read_text())
 def dashboard_before_named_re804(b):
     """Exclude only named RE804; retain exact RE803 and preceding bytes."""
+    # RE805 successor owns the exact full preceding-dashboard fingerprint.
+    start805=b'<!-- start re805-public-getchange-contract -->'
+    end805=b'<!-- end re805-public-getchange-contract -->'
+    if start805 in b or end805 in b:
+        assert b.count(start805)==b.count(end805)==1
+        a805=b.index(start805);assert end805 in b[a805:]
+        z805=b.index(end805,a805)+len(end805)
+        b=b[:a805]+b[z805:]
     start=b'<!-- start re804-private-animation-change -->'
     end=b'<!-- end re804-private-animation-change -->'
     if start in b or end in b:
