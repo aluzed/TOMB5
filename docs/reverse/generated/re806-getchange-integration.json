@@ -1,0 +1,85 @@
+{
+  "schema": "re806-getchange-integration-v1",
+  "author": "AlexP",
+  "integration_approved": true,
+  "source_integrated": true,
+  "source_sha256": "359970bfdd33ee5342a60c96dbe06be649028e26918250c290850b34a21fd8c1",
+  "integration_review_sha256": "c73d3dc4444a7b1b7880dfe05af1472a4fc171f9ca1fe10dbf4bebb35016c225",
+  "only_integrated_delta": "GetChange per-matching-change range counter reset",
+  "cases_per_mode": 1440,
+  "baseline_failures_per_mode": 48,
+  "current_failures_per_mode": 0,
+  "modes": [
+    "normal",
+    "strict-ASan-UBSan"
+  ],
+  "compiled_real_tus": [
+    "SPEC_PSXPC_N/CONTROL_S.C",
+    "GAME/ITEMS.C"
+  ],
+  "oracle": "synthetic-independent-lexicographic-pairs",
+  "preceding_dashboard_sha256": "8d5e908fe4f1d1411eea36e3909226fcdd4f214a43cd24253bfd72fb5cd044d6",
+  "independent_final_publication_review": "pending",
+  "fullbuild": {
+    "performed": true,
+    "initial_configure_exit": 1,
+    "configure_exit": 0,
+    "build_exit": 0,
+    "configuration": "fresh i386 Debug CMake Linux PSX_VERSION PSXPC_TEST USE_32_BIT_ADDR",
+    "dependency_resolution": "Initial GLEW discovery failed; explicit prior-cache i386 GLEW include/library used on retry. Public regression uses installed public headers only.",
+    "glew_library_sha256": "eb88e41b2a61d258aebbc8f7fac80a3b93e9d83782b7e0663f6f0675155c52e8",
+    "binary_sha256": "154c2544a93e854ffff650d7de6eab28fdee28831d57e30246507dc38e81c176",
+    "warnings_present": true,
+    "game_run": false
+  },
+  "limits": [
+    "Synthetic fixtures only, counts zero through three, three changes, five frames, two offsets, three states; no universal coverage.",
+    "i386 C++11 O0 public regression normal and strict ASan/UBSan, leak check disabled; no repository-wide safety guarantee.",
+    "GAME/ITEMS.C compiled but not exercised as a GetChange caller.",
+    "Historical RE805 RED refers to its pre-integration snapshot and is preserved byte-for-byte.",
+    "Fullbuild successful with compiler warnings; no game execution, no runtime or screenshot.",
+    "Publication PASS is not independent final publication review or commit approval."
+  ],
+  "AnimateItem_activated": false,
+  "DoorControl_activated": false,
+  "runtime_performed": false,
+  "gameplay_performed": false,
+  "global_green": false,
+  "production_ready": false,
+  "target_matrix_replayed": false,
+  "publication_worker_modified_production": false,
+  "expanded_publication_checks": {
+    "exit": 1,
+    "passed": 33,
+    "subtests_passed": 2,
+    "failed": 1,
+    "blocker": "RE804 historical frozen production hash expects pre-integration source; preserved unchanged"
+  },
+  "focused_publication_checks": {
+    "exit": 0,
+    "passed": 15,
+    "subtests_passed": 2
+  },
+  "provenance_guard_repair": {
+    "original_final_review": "FAIL-preserved-immutable",
+    "independent_repair_review": "pending",
+    "baseline_sha256": "a1f7e696b08476bdcd3f616cef569e2ac99c6a1764b9c9086ee0304f1dd6545c",
+    "candidate_sha256": "359970bfdd33ee5342a60c96dbe06be649028e26918250c290850b34a21fd8c1",
+    "method": "remove-only-unique-approved-reset-and-hash-reconstructed-baseline"
+  },
+  "expanded_publication_checks_context": "historical-before-provenance-repair",
+  "current_repaired_publication_checks": {
+    "reviewer_expanded": {
+      "exit": 0,
+      "passed": 34,
+      "subtests_passed": 2
+    },
+    "RE800_RE806_with_provenance": {
+      "exit": 0,
+      "passed": 54,
+      "subtests_passed": 2
+    },
+    "skipped": 0,
+    "extra_exclusions": []
+  }
+}

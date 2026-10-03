@@ -68,5 +68,34 @@ def test_public_bytes_safe():
     forbidden=r'0x[0-9a-fA-F]+|(?:FUN|DAT|LAB)_[0-9a-fA-F]{6,}|word_le_hex|payload_offset|data:image|item_raw|floor_raw|```(?:asm|mips|cpp|c)\b'
     for t in (META.read_text(),STORY.read_text(),BLOCKER.read_text(),section):
         assert not re.search(forbidden,t)
+def re806_baseline_from_approved_source(source, successor):
+    """Authenticate only RE806's approved bytes; reconstruct, never replace, RE804's pin.
+
+    The historical unchanged baseline remains valid in its own checkpoint context.
+    No private review/snapshot is a portable test input: its digest is provenance.
+    """
+    candidate='359970bfdd33ee5342a60c96dbe06be649028e26918250c290850b34a21fd8c1'
+    assert successor.get('schema')=='re806-getchange-integration-v1'
+    assert successor.get('integration_approved') is True
+    assert successor.get('source_integrated') is True
+    assert successor.get('source_sha256')==candidate
+    assert successor.get('integration_review_sha256')=='c73d3dc4444a7b1b7880dfe05af1472a4fc171f9ca1fe10dbf4bebb35016c225'
+    assert successor.get('only_integrated_delta')=='GetChange per-matching-change range counter reset'
+    assert hashlib.sha256(source).hexdigest()==candidate
+    before=(b'\t\t\t\tif (change->goal_anim_state == item->goal_anim_state)\n'
+            b'\t\t\t\t{\n')
+    reset=b'\t\t\t\t\tj = 0;\n'
+    after=b'\t\t\t\t\trange = &ranges[change->range_index];\n'
+    approved=before+reset+after
+    assert source.count(approved)==1, 'RE806 reset must be unique and in approved location'
+    baseline=source.replace(approved,before+after,1)
+    assert hashlib.sha256(baseline).hexdigest()==FROZEN['SPEC_PSXPC_N/CONTROL_S.C']
+    return baseline
+
 def test_frozen_predecessors_and_production():
-    for p,h in FROZEN.items():assert hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h,p
+    for p,h in FROZEN.items():
+        source=(ROOT/p).read_bytes()
+        if p=='SPEC_PSXPC_N/CONTROL_S.C' and hashlib.sha256(source).hexdigest()!=h:
+            successor=json.loads((ROOT/'docs/reverse/generated/re806-getchange-integration.json').read_text())
+            source=re806_baseline_from_approved_source(source,successor)
+        assert hashlib.sha256(source).hexdigest()==h,p

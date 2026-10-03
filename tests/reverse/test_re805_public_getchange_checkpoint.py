@@ -10,6 +10,14 @@ START=b'<!-- start re805-public-getchange-contract -->'
 END=b'<!-- end re805-public-getchange-contract -->'
 PRECEDING='cc625c9a8ddae8d8b96d5b31c214624959c22e74f131a20602e8c32653a5bdb7'
 def dashboard_before_named_re805(b):
+    # RE806 successor guards the entire preceding dashboard independently.
+    start806=b'<!-- start re806-getchange-integration -->'
+    end806=b'<!-- end re806-getchange-integration -->'
+    if start806 in b or end806 in b:
+        assert b.count(start806)==b.count(end806)==1
+        a806=b.index(start806);assert end806 in b[a806:]
+        z806=b.index(end806,a806)+len(end806)
+        b=b[:a806]+b[z806:]
     if START in b or END in b:
         assert b.count(START)==b.count(END)==1
         a=b.index(START);assert END in b[a:]

@@ -45,6 +45,7 @@ int GetChange(struct ITEM_INFO* item, struct ANIM_STRUCT* anim)//7D48C
 			{
 				if (change->goal_anim_state == item->goal_anim_state)
 				{
+					j = 0;
 					range = &ranges[change->range_index];
 					if (change->number_ranges > 0)
 					{
