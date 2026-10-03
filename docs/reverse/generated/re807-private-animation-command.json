@@ -1,0 +1,81 @@
+{
+  "schema": "re807-private-animation-command-v1",
+  "status": "progress",
+  "author": "AlexP",
+  "approval_scope": "private-bounded-fixtures-only",
+  "review_sha256": "08a0fde2ff8e2139dfe01f6d086f488912b134f9775e30d9dee7fe0675dd2c9a",
+  "candidate_sha256": "9a8e3bd10933ed163ee72a17d373ff575192e23a54f7f19ead515ed6ff4bef25",
+  "preceding_dashboard_sha256": "1b8fbec4f99ed0d80260ecc755acf6205dcb0cadeefe7c069eb254474fee2f96",
+  "independent_final_publication_review": "pending",
+  "observed": {
+    "cases": 6,
+    "command": 1,
+    "helper": "TranslateItem",
+    "target_returns": 6,
+    "target_hook_visits": 1080,
+    "complete_buffer_bytes": 16716,
+    "buffer_parts": {
+      "ITEM": 144,
+      "ANIM": 80,
+      "CHANGE": 12,
+      "RANGE": 32,
+      "COMMAND": 64,
+      "TRIG": 16384
+    },
+    "calls_total": 6,
+    "GetChange_linked": true,
+    "GetChange_exercised": false
+  },
+  "native": {
+    "modes": [
+      "normal",
+      "strict-ASan-UBSan"
+    ],
+    "baseline_failures_per_mode": 6,
+    "candidate_pass_per_mode": 6,
+    "omission_mutant_failures": 4,
+    "omission_control_pass_cases": [
+      0,
+      3
+    ],
+    "baseline_causal_scope": "whole-AnimateItem-stub-not-isolated-TranslateItem"
+  },
+  "incidents": {
+    "MEM_WRITE": "anomaly-reproduced-by-independent-review; declared-pass-code-and-read-hooks-only",
+    "original_firstbuild_stderr": "unavailable-sealed-producer-stderr-empty",
+    "fresh_missing_extern_diagnostic": "independently-reproduced-not-original"
+  },
+  "limits": [
+    "Six synthetic fixtures only; command1 and counts0..2; two animations; stationary non-gravity inputs.",
+    "Commands2/4/5/6, general movement, loaders, real gameplay corpus and whole-body reconstruction excluded.",
+    "GetChange genuinely linked and authenticated but number_changes0: not exercised by this proof.",
+    "Complete claimed buffer only: ITEM144 + ANIM80 + CHANGE12 + RANGE32 + COMMAND64 + TRIG16384.",
+    "Native pointers checked but not serialized; arbitrary native globals, heap and process RAM not covered.",
+    "Target final 2MiB RAM compared except caller stack36 bytes; transient stores and exact stack not proven.",
+    "MEM_WRITE hook anomaly reproduced independently: duplicate return-site visit and early loop decrement; no instrumentation-invariance or write-hook proof.",
+    "Original first-build stderr unavailable: sealed producer stderr empty. Failed-first snapshots and exit retained; fresh reviewer missing-extern diagnostic is not original.",
+    "Baseline RED compares whole AnimateItem stub; omission mutant alone discriminates four translation cases.",
+    "Private candidate asserts only scoped fixtures; no general command bounds/null safety and no production safety contract.",
+    "No activation, integration, registration, readiness, gameplay, fullbuild or global GREEN authorized by RE807.",
+    "Target evidence is archived reviewed proof, not a fresh replay by this metadata-publication worker."
+  ],
+  "next_story": "RE-808",
+  "next_frontier": {
+    "status": "planned-not-proven",
+    "discriminant": "command2 jump/gravity or another newly reached discriminant",
+    "repeat_closed_matrices": false,
+    "activation_allowed": false
+  },
+  "source_integrated": false,
+  "integration_approved": false,
+  "activation_approved": false,
+  "registration_activated": false,
+  "AnimateItem_activated": false,
+  "DoorControl_activated": false,
+  "runtime_performed": false,
+  "gameplay_performed": false,
+  "fullbuild_performed": false,
+  "global_green": false,
+  "production_ready": false,
+  "publication_worker_modified_production": false
+}

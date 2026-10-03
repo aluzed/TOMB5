@@ -11,6 +11,15 @@ END=b'<!-- end re806-getchange-integration -->'
 PRECEDING='8d5e908fe4f1d1411eea36e3909226fcdd4f214a43cd24253bfd72fb5cd044d6'
 SOURCE='359970bfdd33ee5342a60c96dbe06be649028e26918250c290850b34a21fd8c1'
 def dashboard_before_named_re806(b):
+    # RE807 successor owns an exact full preceding-dashboard guard.
+    start807=b'<!-- start re807-private-animation-command -->'
+    end807=b'<!-- end re807-private-animation-command -->'
+    if start807 in b or end807 in b:
+        assert b.count(start807)==b.count(end807)==1
+        a807=b.index(start807);assert end807 in b[a807:]
+        z807=b.index(end807,a807)+len(end807)
+        b=b[:a807]+b[z807:]
+        assert hashlib.sha256(b).hexdigest()=='1b8fbec4f99ed0d80260ecc755acf6205dcb0cadeefe7c069eb254474fee2f96'
     if START in b or END in b:
         assert b.count(START)==b.count(END)==1
         a=b.index(START);assert END in b[a:]
