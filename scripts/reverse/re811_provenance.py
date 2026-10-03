@@ -15,6 +15,14 @@ def historical_items(b):
  if hashlib.sha256(b).hexdigest()==BASELINE:return b
  return baseline_from_approved_source(b)
 def dashboard_before_re811(b):
+ # RE812 only: exclude the uniquely named successor, pin ALL preceding bytes.
+ start812=b'<!-- start re812-addactiveitem-characterization -->';end812=b'<!-- end re812-addactiveitem-characterization -->'
+ if start812 in b or end812 in b:
+  assert b.count(start812)==b.count(end812)==1
+  a812=b.index(start812);z812=b.index(end812,a812)+len(end812)
+  assert b[z812:]==b'\n'
+  b=b[:a812]+b[z812+1:]
+  assert hashlib.sha256(b).hexdigest()=='7629485a524ee5cf87041374b6e50acedbbe42b10dd18325b9ff088471b690ac'
  start=b'<!-- start re811-removeactiveitem-integration -->';end=b'<!-- end re811-removeactiveitem-integration -->'
  if start in b or end in b:
   assert b.count(start)==b.count(end)==1
