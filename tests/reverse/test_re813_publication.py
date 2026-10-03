@@ -32,7 +32,13 @@ def test_failclosed_all_fields_and_types():
  for bad in [{**good,'raw_opcode':'forbidden'},{k:v for k,v in good.items() if k!='cases'},{**good,'cases':4.0}]:
   with pytest.raises(ValueError):g['validate'](bad)
 def test_append_only_exact_inverse_and_named_predecessors():
- g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes();prior=g['dashboard_before_re813'](b)
+ g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ successor=runpy.run_path(str(R/'scripts/reverse/re814_publication.py'))
+ if successor['START'].encode() in b:
+  before=successor['dashboard_before_re814'](b)
+  assert b==before+successor['SECTION'].encode()
+  b=before
+ prior=g['dashboard_before_re813'](b)
  assert hashlib.sha256(prior).hexdigest()==g['PRECEDING']
  assert b==prior+g['SECTION'].encode()
  for m in [b+b'foreign',b+g['SECTION'].encode(),b.replace(g['END'].encode(),b'',1),b.replace(b'RE-809',b'RE-xxx',1),b+ b'<!-- start re814 --><!-- end re814 -->']:

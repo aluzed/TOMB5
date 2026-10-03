@@ -22,6 +22,14 @@ def render_csv():
  o=io.StringIO(newline='');row=csv_row();w=csv.DictWriter(o,fieldnames=list(row),lineterminator='\n');w.writeheader();w.writerow(row);return o.getvalue()
 CSV_TEXT=render_csv()
 def dashboard_before_re813(b):
+ # RE814 only: exact named suffix + inverse whole predecessor digest.
+ start814=b'<!-- start re814-bounded-continuation -->';end814=b'<!-- end re814-bounded-continuation -->'
+ if start814 in b or end814 in b:
+  assert b.count(start814)==b.count(end814)==1
+  a814=b.index(start814)
+  assert hashlib.sha256(b[a814:]).hexdigest()=='6f173a0ece3975d02b65e2a6b60ede0d85c6a7652874be7137a5b86d535c21ef'
+  b=b[:a814]
+  assert hashlib.sha256(b).hexdigest()=='5c7b6d809cf6ffc00890ed0de5ee9744bc62579e10a742c67c218a13e943b081'
  section=SECTION.encode()
  assert b.count(START.encode())==b.count(END.encode())==1
  assert b.endswith(section)

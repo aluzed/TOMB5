@@ -26,6 +26,11 @@ def test_failclosed_metadata_mutants():
         with pytest.raises(AssertionError): g['validate'](bad)
 def test_append_only_dashboard_and_failclosed_mutants():
     g=api(); b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+    successor814=runpy.run_path(str(R/'scripts/reverse/re814_publication.py'))
+    if successor814['START'].encode() in b:
+        before=successor814['dashboard_before_re814'](b)
+        assert b==before+successor814['SECTION'].encode()
+        b=before
     prior=g['dashboard_before_re812'](b)
     assert hashlib.sha256(prior).hexdigest()==g['PRECEDING']
     successor=runpy.run_path(str(R/'scripts/reverse/re813_publication.py'))

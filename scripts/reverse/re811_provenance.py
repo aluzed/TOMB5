@@ -15,6 +15,14 @@ def historical_items(b):
  if hashlib.sha256(b).hexdigest()==BASELINE:return b
  return baseline_from_approved_source(b)
 def dashboard_before_re811(b):
+ # RE814 only: exact named suffix + inverse whole predecessor digest.
+ start814=b'<!-- start re814-bounded-continuation -->';end814=b'<!-- end re814-bounded-continuation -->'
+ if start814 in b or end814 in b:
+  assert b.count(start814)==b.count(end814)==1
+  a814=b.index(start814)
+  assert hashlib.sha256(b[a814:]).hexdigest()=='6f173a0ece3975d02b65e2a6b60ede0d85c6a7652874be7137a5b86d535c21ef'
+  b=b[:a814]
+  assert hashlib.sha256(b).hexdigest()=='5c7b6d809cf6ffc00890ed0de5ee9744bc62579e10a742c67c218a13e943b081'
  # Only explicitly named RE813: exact suffix digest + inverse baseline.
  start813=b'<!-- start re813-conditional-producer-gap -->';end813=b'<!-- end re813-conditional-producer-gap -->'
  if start813 in b or end813 in b:
