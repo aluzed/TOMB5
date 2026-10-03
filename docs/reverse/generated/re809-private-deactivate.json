@@ -1,0 +1,68 @@
+{
+  "schema": "re809-private-deactivate-v1",
+  "status": "blocked",
+  "author": "AlexP",
+  "readiness": "blocked",
+  "review_sha256": "5dcae0ee07522d214d38323b90f6d70cae47d661f765db395980cab58839a67b",
+  "approval_scope": "private-archive-characterization-only",
+  "independent_final_publication_review": "pending",
+  "original_review_accepted_as_pass": false,
+  "original_review_sha256": "8d0f87dccb19cf9fd3136a5dbe5c6cb731977ac230cdcdff5cce90d8307099fd",
+  "preceding_dashboard_sha256": "2a10621f996faa5d05180b70f52a64d210eed7d6ab0cff46ce9cc214b1e691d3",
+  "observed": {
+    "real_returns": 12,
+    "hook_visits": 1098,
+    "complete_buffer_bytes": 17150,
+    "RemoveActiveItem_cases": 6,
+    "AnimateItem_opcode3_cases": 6
+  },
+  "native": {
+    "modes": [
+      "normal",
+      "strict-ASan-UBSan"
+    ],
+    "RemoveActiveItem_RED_per_mode": 2,
+    "RemoveActiveItem_RED_cases": [
+      "nonhead-middle",
+      "nonhead-tail"
+    ],
+    "AnimateItem_stub_RED_per_mode": 6,
+    "candidate_cmd3_created": false
+  },
+  "next_story": "RE-810",
+  "prerequisites": [
+    "BLOCKED-005-removeactiveitem-predecessor-link",
+    "RE-810-private-delta-proof",
+    "independent-review-before-integration"
+  ],
+  "limits": [
+    "Pas de CFG complet: aucune conclusion universelle sur opcode3 ni autre image/version.",
+    "AddActiveItem uniquement statique, aucune reachability naturelle/gameplay; fixtures construites acycliques0..3; inactive-present viole invariant producteur.",
+    "Buffers finaux et comparaison RAM compl\u00e8te; stack sauvegard\u00e9e par CPU compar\u00e9e \u00e0 archive mais non oracle ind\u00e9pendante; aucun acc\u00e8s m\u00e9moire transitoire trac\u00e9.",
+    "Native contr\u00f4le17150 octets/items4/head/anims/changes/ranges/commands/trig et pointeurs; pas int\u00e9gralit\u00e9 m\u00e9moire processus ni causalit\u00e9 de tous globals.",
+    "Strict ASan/UBSan est un RED comportemental sans diagnostic pour ces fixtures, pas absence universelle UB.",
+    "Sources fautives/build logs et d\u00e9clarations de verrou pr\u00e9serv\u00e9s; stderr original syntaxe manquant.",
+    "Aucune candidate cmd3 invent\u00e9e, aucune patch production/runtime jeu/stage/commit/push.",
+    "Actual canonical-lock deviation preserved; no evidence of content contamination: manifest, protected files and replay outputs match. This does not retroactively certify lock compliance.",
+    "Own scratch isolation is not an OS security sandbox. Preserved inputs/output hashes substantiate this bounded archive; no security containment approval.",
+    "Universal opcode3 absence is rejected, including the overbroad producer results limitation. Only six fixtures and their observed traversals are characterized; no complete CFG/callee/image claim is approved.",
+    "Original syntax stderr remains absent. Source and exit1 incident record are preserved; later diagnostic is not historical stderr. Full-log-preservation claim is not approved."
+  ],
+  "opcode3_scope": "ignored on executed dispatch paths only; no universal absence claim",
+  "incidents": {
+    "original_syntax_stderr": "missing; fresh diagnostic distinct",
+    "canonical_lock": "producer deviation and reviewer scratch not OS sandbox; no retroactive compliance",
+    "original_verdict": "rejected and preserved unchanged"
+  },
+  "source_integrated": false,
+  "integration_approved": false,
+  "activation_approved": false,
+  "production_correctness_approved": false,
+  "universal_opcode3_absence_approved": false,
+  "runtime_performed": false,
+  "gameplay_performed": false,
+  "fullbuild_performed": false,
+  "global_green": false,
+  "production_ready": false,
+  "target_matrix_replayed_by_publication": false
+}

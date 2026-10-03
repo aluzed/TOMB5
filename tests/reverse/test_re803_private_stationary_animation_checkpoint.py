@@ -16,6 +16,15 @@ def metadata():
     return json.loads(META.read_text())
 def dashboard_before_named_re804(b):
     """Exclude only named RE804; retain exact RE803 and preceding bytes."""
+    # Exclude only named RE809; pin ALL preceding dashboard bytes.
+    start809=b'<!-- start re809-private-deactivate -->'
+    end809=b'<!-- end re809-private-deactivate -->'
+    if start809 in b or end809 in b:
+        assert b.count(start809)==b.count(end809)==1
+        a809=b.index(start809);assert end809 in b[a809:]
+        z809=b.index(end809,a809)+len(end809)
+        b=b[:a809]+b[z809:]
+        assert hashlib.sha256(b).hexdigest()=='2a10621f996faa5d05180b70f52a64d210eed7d6ab0cff46ce9cc214b1e691d3'
     # Exclude only RE808 and authenticate the entire preceding dashboard.
     start808=b'<!-- start re808-private-animation-jump -->'
     end808=b'<!-- end re808-private-animation-jump -->'
