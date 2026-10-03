@@ -11,6 +11,7 @@ END=b'<!-- end re806-getchange-integration -->'
 PRECEDING='8d5e908fe4f1d1411eea36e3909226fcdd4f214a43cd24253bfd72fb5cd044d6'
 SOURCE='359970bfdd33ee5342a60c96dbe06be649028e26918250c290850b34a21fd8c1'
 def dashboard_before_named_re806(b):
+    b=runpy.run_path(str(ROOT/'scripts/reverse/re811_provenance.py'))['dashboard_before_re811'](b)
     # Exclude only named RE809; pin ALL preceding dashboard bytes.
     start809=b'<!-- start re809-private-deactivate -->'
     end809=b'<!-- end re809-private-deactivate -->'

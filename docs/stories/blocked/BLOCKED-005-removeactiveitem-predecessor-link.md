@@ -13,3 +13,6 @@ Le helper public réécrit le lien de l’item retiré au lieu du prédécesseur
 - [ ] Autorisation distincte nécessaire pour tout changement production après preuve et revue.
 
 Incidents/limites : verrou canonique dévié historiquement, scratch non sandbox; stderr original syntaxe absent, diagnostic frais distinct. Ce nouveau BLOCKED-005 ne restaure ni BLOCKED001 ni BLOCKED002 supprimés par utilisateur.
+
+## Fermeture bornée RE-811 — 2026-10-03
+Le constat original ci-dessus demeure historique inchangé. RE-810 revue indépendante technique PASS pour le helper seulement; RE-811 intègre uniquement le delta approuvé gardé i386 après RED74/106 normal/strict et GREEN106/106 public synthetic actual-TU. BLOCKED-005 fermé pour le défaut predecessor-link dans cette configuration seulement; revue publique indépendante pending. AnimateItem/DoorControl et producteurs naturels restent bloqués; pas de GREEN global ni runtime/gameplay.

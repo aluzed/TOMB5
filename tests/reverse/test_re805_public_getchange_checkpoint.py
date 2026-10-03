@@ -10,6 +10,7 @@ START=b'<!-- start re805-public-getchange-contract -->'
 END=b'<!-- end re805-public-getchange-contract -->'
 PRECEDING='cc625c9a8ddae8d8b96d5b31c214624959c22e74f131a20602e8c32653a5bdb7'
 def dashboard_before_named_re805(b):
+    b=runpy.run_path(str(ROOT/'scripts/reverse/re811_provenance.py'))['dashboard_before_re811'](b)
     # Exclude only named RE809; pin ALL preceding dashboard bytes.
     start809=b'<!-- start re809-private-deactivate -->'
     end809=b'<!-- end re809-private-deactivate -->'

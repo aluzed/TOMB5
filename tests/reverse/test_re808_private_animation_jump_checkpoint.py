@@ -11,6 +11,7 @@ END=b'<!-- end re808-private-animation-jump -->'
 PRECEDING='6c75650680b052c468ccea3e8b9861d18d5512878727b3c24b93b31460b2c3bd'
 REVIEW='9b2f8c0df5fb4df6c9ed368f7504b3c23d74bb0d04a528e642a0e5b33c7199f1'
 def dashboard_before_named_re808(b):
+    b=runpy.run_path(str(ROOT/'scripts/reverse/re811_provenance.py'))['dashboard_before_re811'](b)
     # Exclude only named RE809; pin ALL preceding dashboard bytes.
     start809=b'<!-- start re809-private-deactivate -->'
     end809=b'<!-- end re809-private-deactivate -->'

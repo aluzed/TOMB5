@@ -1,0 +1,90 @@
+{
+  "schema": "re811-removeactiveitem-integration-v1",
+  "author": "AlexP",
+  "source_integrated": true,
+  "integration_approved": true,
+  "integration_approval_scope": "exact-reviewed-two-expression-guarded-delta-only",
+  "technical_review_scope": "RE810-private-scoped-RemoveActiveItem-only",
+  "technical_review_sha256": "9439637fc6c6bc8ad47296e34d2be412872852507df6b3d3b7ed6659d8b4444b",
+  "independent_publication_review": "PASS_scoped",
+  "source_sha256": "4e4374916bf454fd577fb92d89e7160a1b818e5a744e9244ad89c44fbb0ef84f",
+  "baseline_sha256": "5e9d3337f1c49282520a822d8d9672185fca6ef6d5b681f845307c36c9b12a27",
+  "cases_per_mode": 106,
+  "baseline_failures_per_mode": 74,
+  "candidate_failures_per_mode": 0,
+  "modes": [
+    "normal",
+    "strict-ASan-UBSan"
+  ],
+  "configuration": "i386 C++11 O0 PSXPC_TEST=1 PSX_VERSION=1 USE_32_BIT_ADDR=1",
+  "oracle": "independent synthetic logical sequence filtering and full six ITEM_INFO buffers plus head comparison",
+  "public_buffer_bytes_per_case": 866,
+  "private_target_ordered_contract_fingerprint": "7d95be92e14f49dde3e71d995f57373cdd0556b0124803af3727a86e0ad6ddab",
+  "fingerprint_scope": "inherited RE810 target rows; public reviewer must independently authenticate; not public execution input",
+  "baseline_RED_before_source_patch": true,
+  "fullbuild": {
+    "exit": 0,
+    "type": "incremental-existing-configured-CMake-i386-game",
+    "argv": [
+      "cmake",
+      "--build",
+      "build/reverse/autonomy-20261003/re806-fullbuild",
+      "--parallel",
+      "4"
+    ],
+    "elf_class": "ELF32",
+    "machine": "Intel 80386",
+    "binary_sha256": "d904c4001e72f8aa8ce3cdbbfd75439da18d1a01959c0a5c86693f5411a76dbc",
+    "game_run": false,
+    "recompiled_tu": "GAME/ITEMS.C",
+    "linked_target": "TombRaiderChronicles_PSXPC_N",
+    "configuration_inherited_from": "RE806",
+    "configure_performed_this_ticket": false
+  },
+  "preceding_dashboard_sha256": "03f2851e4eb00274cc8d68b26648529a27f4a1e98ac6e255e61a440ca6863418",
+  "limits": [
+    "finite acyclic lists with sentinel; no malformed input or concurrency claim",
+    "inactive-present synthetic controls outside producer invariant",
+    "no alternative platform validation",
+    "native fixture is not gameplay"
+  ],
+  "frontier": "AnimateItem/DoorControl stubs and natural producer reachability",
+  "gameplay_performed": false,
+  "runtime_performed": false,
+  "global_green": false,
+  "production_ready": false,
+  "AnimateItem_activated": false,
+  "DoorControl_activated": false,
+  "target_matrix_replayed": false,
+  "regression_suite": {
+    "passed": 52,
+    "subtests_passed": 2,
+    "skipped": 0,
+    "exit": 0
+  },
+  "reviewer_target_matrix_replayed": true,
+  "current_publication_review": {
+    "verdict_path": "build/reverse/autonomy-20261003/re811-publication-review/verdict.json",
+    "verdict_sha256": "76e0814267b9f6e6a037c644b317443809ee808992b732677de2549fc0e8f5d8",
+    "proof_verdict_path": "build/reverse/autonomy-20261003/re811-publication-review/proof-verdict.json",
+    "proof_verdict_sha256": "f336e7336e0abb942ed7434c1598e50c9b4d874df3c486d543a670067e01ad77",
+    "scope": "exact-reviewed-18-author-hashes-only; reconciliation-awaits-final-independent-review",
+    "author_phase": {
+      "independent_publication_review": "pending",
+      "target_matrix_replayed": false
+    },
+    "target_cases": 106,
+    "target_events": 212,
+    "public_buffer_bytes": 866,
+    "full_memory_bytes": 2097152,
+    "build_validation": "archived-incremental-ledger-and-current-ELF32-hash-not-fresh-review-build",
+    "first_missing_link_log_preserved": false,
+    "regression_suite_scope": "historical independent review: 52 passed + 2 subtests; not a fresh reconciliation suite result",
+    "limits": [
+      "software ISA, not hardware",
+      "no alternative architectures or natural producer reachability acceptance",
+      "finite acyclic lists only; inactive-present synthetic controls outside producer invariant",
+      "no gameplay, runtime, global GREEN or production-ready; AnimateItem and DoorControl remain stubs"
+    ]
+  }
+}

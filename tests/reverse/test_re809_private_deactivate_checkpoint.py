@@ -12,6 +12,7 @@ END=b'<!-- end re809-private-deactivate -->'
 PRECEDING='2a10621f996faa5d05180b70f52a64d210eed7d6ab0cff46ce9cc214b1e691d3'
 REVIEW='5dcae0ee07522d214d38323b90f6d70cae47d661f765db395980cab58839a67b'
 def dashboard_before_named_re809(b):
+    b=runpy.run_path(str(ROOT/'scripts/reverse/re811_provenance.py'))['dashboard_before_re811'](b)
     if START in b or END in b:
         assert b.count(START)==b.count(END)==1
         a=b.index(START);assert END in b[a:]
@@ -61,6 +62,9 @@ def test_safe_story_blocker_and_honest_limits():
 
 def test_sources_and_user_deletions_preserved():
     frozen={'GAME/ITEMS.C':'5e9d3337f1c49282520a822d8d9672185fca6ef6d5b681f845307c36c9b12a27','GAME/CONTROL.C':'5a24abe8b574054875a1fd2e4d66499400cbbfa427d2b0a1f7aa3956000b4158','SPEC_PSXPC_N/CONTROL_S.C':'359970bfdd33ee5342a60c96dbe06be649028e26918250c290850b34a21fd8c1'}
-    for p,h in frozen.items():assert hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h,p
+    for p,h in frozen.items():
+        b=(ROOT/p).read_bytes()
+        if p=='GAME/ITEMS.C': b=runpy.run_path(str(ROOT/'scripts/reverse/re811_provenance.py'))['historical_items'](b)
+        assert hashlib.sha256(b).hexdigest()==h,p
     for p in ('BLOCKED-001-RE783-closure.md','BLOCKED-002-getfloor-ubsan-closure.md'):
         assert not (ROOT/'docs/stories/blocked'/p).exists()

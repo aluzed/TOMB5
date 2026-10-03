@@ -1,4 +1,5 @@
 """Portable RE803 publication contracts; no ignored proof dependency."""
+import runpy
 import hashlib, json, re
 from pathlib import Path
 import pytest
@@ -15,6 +16,7 @@ def metadata():
     assert META.exists(),'RED: métadonnées RE803 absentes'
     return json.loads(META.read_text())
 def dashboard_before_named_re804(b):
+    b=runpy.run_path(str(ROOT/'scripts/reverse/re811_provenance.py'))['dashboard_before_re811'](b)
     """Exclude only named RE804; retain exact RE803 and preceding bytes."""
     # Exclude only named RE809; pin ALL preceding dashboard bytes.
     start809=b'<!-- start re809-private-deactivate -->'

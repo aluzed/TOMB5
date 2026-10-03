@@ -209,9 +209,17 @@ void RemoveActiveItem(short item_num)//41E98, 422EC (F)
 		else if(next_item_active != -1)
 		{
 			short linknum;
+#if defined(__i386__) && PSXPC_TEST && PSX_VERSION && USE_32_BIT_ADDR
+			for (linknum = next_item_active; linknum != -1; linknum = items[linknum].next_active)
+#else
 			for (linknum = items[next_item_active].next_active; linknum != -1; linknum = items[linknum].next_active)
+#endif
 			{
+#if defined(__i386__) && PSXPC_TEST && PSX_VERSION && USE_32_BIT_ADDR
+				if (items[linknum].next_active == item_num)
+#else
 				if (linknum == item_num)
+#endif
 				{
 					items[linknum].next_active = items[item_num].next_active;
 					break;
