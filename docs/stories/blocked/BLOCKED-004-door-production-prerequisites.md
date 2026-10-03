@@ -32,3 +32,26 @@ InitialiseDoor RE-798 reste privé non intégré, domaines élargis/non-head/dif
 
 ## Preuves publiques sûres
 Voir RE-794 à RE-804 et `docs/reverse/generated/re802-private-door-prefix.json`. Comptes/readiness/hashes/symboles seulement; aucun dump/adresse/opcode/asset. Prochaine histoire **RE-805**, planifiée et non prouvée.
+
+## Checkpoint courant RE817 — evidence acceptance, non GO production
+
+RE815/816 livrés restent historiques gelés. RE817 récupération indépendante privée
+PRIVATE_ONLY_PASS distincte du timeout original NON CERTIFIÉ et de attempt01 rejetée.
+Initializer direct privé actual-TU normal/strict : baseline RED1 candidat GREEN0,
+cible994 visites/2992 octets, oracle projeté2980 et ledger11 discriminants par mode,
+deux mutants code rejetés. Allocation native82 vs cible92; allocateur double déclaré.
+Une fixture generic284 angle0 rooms0..3 portal2/sentinelle255 seulement.
+Voir [RE817](../RE-817-native-initializer-prerequisite.md), verdict et manifest épinglés.
+
+Acceptance : preuve privée du prerequisite initializer, pas registration ou InitialiseItem
+natifs, pas composition caller, allocateur réel ou domaine général. Publication finale
+pending revue parent séparée; aucune approbation intégration/activation/production.
+BLOCKED-003/004/006 restent ouverts; BLOCKED-001/002 ne sont pas recréés.
+Prochaine frontière RE818 non effectuée : composition conditionnelle producer/caller
+actual-native, callback et retours réels, oracle indépendant borné, baseline RED/candidat
+GREEN normal/strict, provenance exacte puis revue indépendante. Preuve domaine élargi
+et allocateur réel restent distinctes; ne pas rejouer les matrices closes.
+
+- [x] RE817 preuve privée récupération indépendante acceptée scoped.
+- [ ] Revue publication RE817 finale parent.
+- [ ] RE818 composition conditionnelle actual-native, domaine général et allocateur réel.

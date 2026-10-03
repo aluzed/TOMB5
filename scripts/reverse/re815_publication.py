@@ -20,6 +20,14 @@ def render_csv():
  out=io.StringIO(newline='');row=csv_row();w=csv.DictWriter(out,fieldnames=list(row),lineterminator='\n');w.writeheader();w.writerow(row);return out.getvalue()
 CSV_TEXT=render_csv()
 def dashboard_before_re815(b):
+ # Explicit RE817 only: exact suffix and entire preceding dashboard pinned.
+ start817=b'<!-- start re817-native-initializer-prerequisite -->';end817=b'<!-- end re817-native-initializer-prerequisite -->'
+ if start817 in b or end817 in b:
+  assert b.count(start817)==b.count(end817)==1
+  a817=b.index(start817)
+  assert hashlib.sha256(b[a817:]).hexdigest()=='8e6e79b7750bab3ef10b63ddab3a5a2330794ae35f3eb49ad46e9549be5a124a'
+  b=b[:a817]
+  assert hashlib.sha256(b).hexdigest()=='b100509e34a75f6a8590bcce38b5c9430e818c8661a32858a0a94facf8b4e071'
  # Explicit RE816 only: authenticate exact suffix AND complete RE815 inverse.
  start816=b'<!-- start re816-initializer-composition -->';end816=b'<!-- end re816-initializer-composition -->'
  if start816 in b or end816 in b:

@@ -33,6 +33,11 @@ def test_schema_fail_closed():
   with pytest.raises(ValueError):g['validate'](bad)
 def composed():
  b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ # Only named RE817: verify full exact suffix and preceding RE816 before test composition.
+ if b'<!-- start re817-native-initializer-prerequisite -->' in b or b'<!-- end re817-native-initializer-prerequisite -->' in b:
+  successor=runpy.run_path(str(R/'scripts/reverse/re817_publication.py'))
+  assert successor['PRECEDING']=='b100509e34a75f6a8590bcce38b5c9430e818c8661a32858a0a94facf8b4e071'
+  b=successor['dashboard_before_re817'](b)
  if SECTION.encode() not in b:b+=SECTION.encode()
  return b
 def mutants(b):
