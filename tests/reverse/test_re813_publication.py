@@ -33,6 +33,8 @@ def test_failclosed_all_fields_and_types():
   with pytest.raises(ValueError):g['validate'](bad)
 def test_append_only_exact_inverse_and_named_predecessors():
  g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ successor815=runpy.run_path(str(R/'scripts/reverse/re815_publication.py'))
+ if successor815['START'].encode() in b:b=successor815['dashboard_before_re815'](b)
  successor=runpy.run_path(str(R/'scripts/reverse/re814_publication.py'))
  if successor['START'].encode() in b:
   before=successor['dashboard_before_re814'](b)

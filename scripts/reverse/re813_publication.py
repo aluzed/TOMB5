@@ -22,6 +22,22 @@ def render_csv():
  o=io.StringIO(newline='');row=csv_row();w=csv.DictWriter(o,fieldnames=list(row),lineterminator='\n');w.writeheader();w.writerow(row);return o.getvalue()
 CSV_TEXT=render_csv()
 def dashboard_before_re813(b):
+ # Explicit RE816 only: authenticate exact suffix AND complete RE815 inverse.
+ start816=b'<!-- start re816-initializer-composition -->';end816=b'<!-- end re816-initializer-composition -->'
+ if start816 in b or end816 in b:
+  assert b.count(start816)==b.count(end816)==1
+  a816=b.index(start816)
+  assert hashlib.sha256(b[a816:]).hexdigest()=='a1496dc4941eabba8228a5d0be95971a1b61e45e7848890999e77c87c7358343'
+  b=b[:a816]
+  assert hashlib.sha256(b).hexdigest()=='a714b8ad5482e776c416b785919efba2a1d99bad56045e4f48d7c986c21cd427'
+ # Explicit RE815 only: exact suffix digest and inverse whole RE814 dashboard.
+ start815=b'<!-- start re815-natural-registration -->';end815=b'<!-- end re815-natural-registration -->'
+ if start815 in b or end815 in b:
+  assert b.count(start815)==b.count(end815)==1
+  a815=b.index(start815)
+  assert hashlib.sha256(b[a815:]).hexdigest()=='d826a4249ebcb42fe75dddc1aec5fe5c98e2d1b4f72f1fc998cbcb7d0626d3fe'
+  b=b[:a815]
+  assert hashlib.sha256(b).hexdigest()=='7e48382152c975f8e876cb2f6ed573a797707013c6be8184846d623ed25614bf'
  # RE814 only: exact named suffix + inverse whole predecessor digest.
  start814=b'<!-- start re814-bounded-continuation -->';end814=b'<!-- end re814-bounded-continuation -->'
  if start814 in b or end814 in b:

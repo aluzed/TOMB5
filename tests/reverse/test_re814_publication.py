@@ -35,7 +35,10 @@ def test_exact_schema_types_fail_closed():
  for bad in [{**good,'raw_opcode':'forbidden'},{k:v for k,v in good.items() if k!='cases'},{**good,'cases':8.0}]:
   with pytest.raises(ValueError):g['validate'](bad)
 def test_append_only_exact_inverse():
- g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes();prior=g['dashboard_before_re814'](b)
+ g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ successor=runpy.run_path(str(R/'scripts/reverse/re815_publication.py'))
+ if successor['START'].encode() in b:b=successor['dashboard_before_re815'](b)
+ prior=g['dashboard_before_re814'](b)
  assert hashlib.sha256(prior).hexdigest()==PRECEDING and b==prior+SECTION.encode()
  for m in [b+b'foreign',b+SECTION.encode(),b.replace(g['END'].encode(),b'',1),b.replace(b'RE-809',b'RE-xxx',1)]:
   with pytest.raises(AssertionError):g['dashboard_before_re814'](m)
