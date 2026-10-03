@@ -28,7 +28,7 @@ def test_generated_safe_outputs():
  assert '- [x]' in g['STORY'] and '- [ ]' in g['STORY']
  assert 'RE817' in g['FUNCTIONDOC'] and 'poison99' in g['FUNCTIONDOC']
 def test_append_inverse_guards_and_sensitive_mutants():
- g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes();g820=runpy.run_path(str(R/'scripts/reverse/re820_publication.py'));b=g820['dashboard_before_re820'](b)
  g819=runpy.run_path(str(R/'scripts/reverse/re819_publication.py'));b=g819['dashboard_before_re819'](b)
  before=g['dashboard_before_re818'](b);assert hashlib.sha256(before).hexdigest()==PRECEDING
  funcs=[g['dashboard_before_re818']]

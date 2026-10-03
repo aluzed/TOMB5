@@ -1,0 +1,62 @@
+{
+  "schema": "re820-sensitive-orientation-no-portal-v1",
+  "status": "PRIVATE_PRODUCER_FINDINGS_PENDING_INDEPENDENT_REVIEW",
+  "private_review": "PENDING_INDEPENDENT_REVIEW",
+  "public_review": "PENDING_REVIEW",
+  "integration": "BLOCKED",
+  "angles": [
+    0,
+    -32768,
+    16384,
+    -16384,
+    1
+  ],
+  "selected_cells": [
+    11,
+    13,
+    7,
+    17,
+    17
+  ],
+  "portal_present": false,
+  "flip_present": false,
+  "native_cases": 10,
+  "target_cases": 5,
+  "projection_bytes": 2980,
+  "whole_native_buffer_bytes": 1088324,
+  "native_request_bytes": 82,
+  "native_consumed_bytes": 84,
+  "target_request_consumed_bytes": 92,
+  "caller": "direct private initializer; not InitialiseItem composition",
+  "allocator": "real MALLOC.C native",
+  "events": [
+    "allocation",
+    "GetDoor",
+    "GetDoor",
+    "ShutThatDoor",
+    "ShutThatDoor"
+  ],
+  "ItemNewRoom_calls": 0,
+  "domain_refusal_exit": -4,
+  "domain_refusal_is_behavioral_red": false,
+  "behavioral_mutant_execution_exit": 0,
+  "behavioral_mutant_contract_exit": 1,
+  "mutant_different_bytes": [
+    11,
+    11
+  ],
+  "mutant_selected_cell": 11,
+  "mutant_expected_cell": 7,
+  "integration_approved": false,
+  "production_patch": false,
+  "new_caller_proven": false,
+  "natural_startup_proven": false,
+  "gameplay_proven": false,
+  "general_domain_proven": false,
+  "publication_review_approved": false,
+  "raw_abi_identity": false,
+  "hardware_proven": false,
+  "target_replay": "authentic software direct initializer, constructed finite fixture",
+  "producer_manifest_sha256": "ac7212364d45ec2ffe445c7d6d3452db09a94ce20ecc466c6e6f5b964deb097a",
+  "producer_seal_sha256": "1d19b57549412dd12001467ebaa9d0b17a51420a176b1b7672d7f8904255b7e0"
+}

@@ -22,6 +22,14 @@ def render_csv():
  o=io.StringIO(newline='');row=csv_row();w=csv.DictWriter(o,fieldnames=list(row),lineterminator='\n');w.writeheader();w.writerow(row);return o.getvalue()
 CSV_TEXT=render_csv()
 def dashboard_before_re814(b):
+ # RE820 exact authenticated suffix only; predecessor bytes stay pinned.
+ s820=b'<!-- start re820-sensitive-orientation-no-portal -->';e820=b'<!-- end re820-sensitive-orientation-no-portal -->'
+ if s820 in b or e820 in b:
+  assert b.count(s820)==b.count(e820)==1
+  a820=b.index(s820)
+  assert hashlib.sha256(b[a820:]).hexdigest()=='dd2090ebad0504ae6d2bd8713eb934d0bd8f2497b0fae5794dc90856fd63d163'
+  b=b[:a820]
+  assert hashlib.sha256(b).hexdigest()=='d4f0c17c6dbdd8c9066b17a0b482f1b48c3ad0b1c17cd86034fc629f945a9f24'
  # RE819 exact named suffix; full predecessor bytes remain pinned.
  s819=b'<!-- start re819-real-allocator-prerequisite -->';e819=b'<!-- end re819-real-allocator-prerequisite -->'
  if s819 in b or e819 in b:

@@ -29,7 +29,7 @@ def mutants(b):
  start=b'<!-- start re817-native-initializer-prerequisite -->';end=b'<!-- end re817-native-initializer-prerequisite -->'
  return [b+b'foreign',b+SECTION.encode(),b.replace(start,b'',1),b.replace(end,b'',1),b.replace(start,b'TEMP',1).replace(end,start,1).replace(b'TEMP',end,1),b.replace(b'RE-809',b'RE-xxx',1),b+b'<!-- start re818-unknown -->bad<!-- end re818-unknown -->',b.replace(b'projection2980',b'projection2981',1)]
 def test_append_only_and_predecessors():
- g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes();g820=runpy.run_path(str(R/'scripts/reverse/re820_publication.py'));b=g820['dashboard_before_re820'](b)
  g819=runpy.run_path(str(R/'scripts/reverse/re819_publication.py'));b=g819['dashboard_before_re819'](b)
  # RE818 exact suffix only; preserve historical RE817 assertion on its old bytes.
  start818=b'<!-- start re818-actual-tu-caller-prerequisite -->';end818=b'<!-- end re818-actual-tu-caller-prerequisite -->'

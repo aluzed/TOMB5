@@ -23,10 +23,21 @@ def render_csv():
 CSV_TEXT=render_csv()
 PROOF_JSON=json.dumps(validate(metadata()),ensure_ascii=False,indent=2)+'\n'
 def inverse_code(text,path):
+ import runpy
+ g820=runpy.run_path(str(ROOT/'scripts/reverse/re820_publication.py'))
+ text=g820['inverse_code'](text,path)
  for old,new in reversed(DELTAS[path]):
   assert text.count(new)==1;text=text.replace(new,old,1)
  return text
 def dashboard_before_re819(b):
+ # RE820 exact authenticated suffix only; predecessor bytes stay pinned.
+ s820=b'<!-- start re820-sensitive-orientation-no-portal -->';e820=b'<!-- end re820-sensitive-orientation-no-portal -->'
+ if s820 in b or e820 in b:
+  assert b.count(s820)==b.count(e820)==1
+  a820=b.index(s820)
+  assert hashlib.sha256(b[a820:]).hexdigest()=='dd2090ebad0504ae6d2bd8713eb934d0bd8f2497b0fae5794dc90856fd63d163'
+  b=b[:a820]
+  assert hashlib.sha256(b).hexdigest()=='d4f0c17c6dbdd8c9066b17a0b482f1b48c3ad0b1c17cd86034fc629f945a9f24'
  s=b'<!-- start re819-real-allocator-prerequisite -->';e=b'<!-- end re819-real-allocator-prerequisite -->'
  assert b.count(s)==b.count(e)==1 and b.endswith(SECTION.encode())
  prior=b[:-len(SECTION.encode())];assert hashlib.sha256(prior).hexdigest()==PRECEDING

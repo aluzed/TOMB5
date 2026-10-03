@@ -30,13 +30,13 @@ def test_safe_generated_artifacts():
  assert 'NON CERTIFIÉ' in g['STORY'] and 'sans déréférencement' in g['FUNCTIONDOC']
 @pytest.mark.parametrize('path',[p for p in OLD if p.startswith('scripts/')])
 def test_predecessor_exact_successor_acceptance(path):
- old=runpy.run_path(str(R/path));n=Path(path).name[:5];b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ old=runpy.run_path(str(R/path));n=Path(path).name[:5];b=(R/'docs/reverse/reconstruction-progress.html').read_bytes();g820=runpy.run_path(str(R/'scripts/reverse/re820_publication.py'));b=g820['dashboard_before_re820'](b)
  if not b.endswith(SECTION.encode()):b+=SECTION.encode()
  fn=old['dashboard_before_'+n];assert H(fn(b))==old['PRECEDING']
  for mutant in [b+b'foreign',b+SECTION.encode(),b.replace(b'RE-819',b'RE-xxx'),b.replace(b'RE-809',b'RE-xxx'),b.replace(b'<!-- end re819-real-allocator-prerequisite -->',b''),b+b'<!-- start re820-unknown -->x<!-- end re820-unknown -->']:
   with pytest.raises(AssertionError):fn(mutant)
 def test_append_only_dashboard_blocker_and_exact_inverse_code():
- g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes();assert H(g['dashboard_before_re819'](b))==PRECEDING
+ g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes();g820=runpy.run_path(str(R/'scripts/reverse/re820_publication.py'));b=g820['dashboard_before_re820'](b);assert H(g['dashboard_before_re819'](b))==PRECEDING
  for path,h in OLD.items():
   text=(R/path).read_text();assert H(g['inverse_code'](text,path).encode())==h
  c=(R/g['BLOCKER_PATH']).read_bytes();append=g['BLOCKER_APPEND'].encode()
