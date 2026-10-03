@@ -24,6 +24,14 @@ def render_csv():
     w=csv.DictWriter(o,fieldnames=list(row),lineterminator='\n');w.writeheader();w.writerow(row)
     return o.getvalue()
 def dashboard_before_re812(b):
+    # Only explicitly named RE813: exact suffix digest + inverse baseline.
+    start813=b'<!-- start re813-conditional-producer-gap -->';end813=b'<!-- end re813-conditional-producer-gap -->'
+    if start813 in b or end813 in b:
+        assert b.count(start813)==b.count(end813)==1
+        a813=b.index(start813)
+        assert hashlib.sha256(b[a813:]).hexdigest()=='1b17a1f1e76b2da1b5546202fd247559fbb52817c3f222895dada65ab652c3f6'
+        b=b[:a813]
+        assert hashlib.sha256(b).hexdigest()=='dd5ea56cc15c10cbe319154b2def1209b0e54d4ca017294ace0df5242097096d'
     start=START.encode();end=END.encode();section=SECTION.encode()
     assert b.count(start)==b.count(end)==1
     assert b.endswith(section)

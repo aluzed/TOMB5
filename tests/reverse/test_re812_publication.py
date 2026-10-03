@@ -28,6 +28,11 @@ def test_append_only_dashboard_and_failclosed_mutants():
     g=api(); b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
     prior=g['dashboard_before_re812'](b)
     assert hashlib.sha256(prior).hexdigest()==g['PRECEDING']
+    successor=runpy.run_path(str(R/'scripts/reverse/re813_publication.py'))
+    if successor['START'].encode() in b:
+        before=successor['dashboard_before_re813'](b)
+        assert b==before+successor['SECTION'].encode()
+        b=before
     assert b==prior+g['SECTION'].encode()
     start=g['START'].encode(); end=g['END'].encode()
     mutations=[b+b'foreign', b+g['SECTION'].encode(), b.replace(end,b'',1),b.replace(start,b'',1), b.replace(start,end,1),b.replace(b'RE-809',b'RE-xxx',1),b.replace(b'CURRENT RE811',b'ALTERED RE811',1),b.replace(b'PRIVATECHARACTERIZATIONPASS',b'production-ready',1)]
