@@ -19,6 +19,14 @@ def render_csv():
  out=io.StringIO(newline='');row=csv_row();w=csv.DictWriter(out,fieldnames=list(row),lineterminator='\n');w.writeheader();w.writerow(row);return out.getvalue()
 CSV_TEXT=render_csv()
 def dashboard_before_re816(b):
+ # RE819 exact named suffix; full predecessor bytes remain pinned.
+ s819=b'<!-- start re819-real-allocator-prerequisite -->';e819=b'<!-- end re819-real-allocator-prerequisite -->'
+ if s819 in b or e819 in b:
+  assert b.count(s819)==b.count(e819)==1
+  a819=b.index(s819)
+  assert hashlib.sha256(b[a819:]).hexdigest()=='255c6262960783172f0f7fe39198ae9dac9ec857c1dc4c7db21f8bed55b40dd8'
+  b=b[:a819]
+  assert hashlib.sha256(b).hexdigest()=='301e3235d55974210f54380ad3680ba05151cef7e95f208dd9d708656895f21c'
  # RE818 exact approved metadata suffix only; inverse delta preserves old guard.
  start818=b'<!-- start re818-actual-tu-caller-prerequisite -->';end818=b'<!-- end re818-actual-tu-caller-prerequisite -->'
  if start818 in b or end818 in b:

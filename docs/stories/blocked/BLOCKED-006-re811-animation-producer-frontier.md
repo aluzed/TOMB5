@@ -19,3 +19,16 @@ une fixture generic284 angle0 portal2/255. Timeout338 fichiers NON CERTIFIÉ.
 - [ ] Régression publique comportementale et revue d’intégration séparée.
 La preuve privée bornée ne coche pas les critères globaux ci-dessus. Aucune activation
 AnimateItem/DoorControl ni production-ready. Voir RE-818-actual-tu-caller-prerequisite.
+
+## RE819 — allocateur réel privé borné; blocker toujours ouvert
+MALLOC.C réel compilé/lié/exécuté dans composition SETUP privé → InitialiseItem
+production → DOOR privé → ITEMS/GETSTUFF/COLLIDE réels. Baseline double RED1
+82 contre84; candidat normal/strict GREEN0, mutant rounding RED1. Native84 vs
+cible92 ABI distinctes; projection2980/whole buffer1088324,17 événements/snapshots.
+Contrôles malloc/free cible frais3 séquences, natifs6, prefixes0/63/64; arrondi
+taille seul, pas réalignement pointeur. Caller ARCHIVE_RE816 via RE818, pas
+replay caller frais/startup/matériel/gameplay. Timeout240 fichiers NON CERTIFIÉ.
+- [ ] Provenance caller naturellement atteint et compatibilité ABI/layout.
+- [ ] Domaine caller général et régression comportementale publique.
+- [ ] Revue union publique exacte puis intégration séparée; aucune activation.
+PASS privé ne ferme pas le blocker; publication pending revue. Voir RE-819-real-allocator-prerequisite.

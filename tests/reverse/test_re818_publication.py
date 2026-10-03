@@ -29,10 +29,11 @@ def test_generated_safe_outputs():
  assert 'RE817' in g['FUNCTIONDOC'] and 'poison99' in g['FUNCTIONDOC']
 def test_append_inverse_guards_and_sensitive_mutants():
  g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ g819=runpy.run_path(str(R/'scripts/reverse/re819_publication.py'));b=g819['dashboard_before_re819'](b)
  before=g['dashboard_before_re818'](b);assert hashlib.sha256(before).hexdigest()==PRECEDING
  funcs=[g['dashboard_before_re818']]
  for n,h in OLD.items():
-  text=(R/('scripts/reverse/'+n+'.py')).read_text();block=g['PREDECESSOR_DELTA']
+  text=(R/('scripts/reverse/'+n+'.py')).read_text();text=g819['inverse_code'](text,'scripts/reverse/'+n+'.py');block=g['PREDECESSOR_DELTA']
   if n=='re812_publication':block=''.join('   '+l for l in block.splitlines(True))
   assert text.count(block)==1
   assert hashlib.sha256(text.replace(block,'',1).encode()).hexdigest()==h
@@ -43,11 +44,11 @@ def test_append_inverse_guards_and_sensitive_mutants():
   for m in mutants:
    with pytest.raises(AssertionError):fn(m)
 def test_blocker_append_preserves_history():
- g=api();b=(R/g['BLOCKER_PATH']).read_bytes();assert b.endswith(g['BLOCKER_APPEND'].encode())
+ g=api();b=(R/g['BLOCKER_PATH']).read_bytes();g819=runpy.run_path(str(R/'scripts/reverse/re819_publication.py'));suffix=g819['BLOCKER_APPEND'].encode();assert b.endswith(suffix);b=b[:-len(suffix)];assert b.endswith(g['BLOCKER_APPEND'].encode())
  assert hashlib.sha256(b[:-len(g['BLOCKER_APPEND'].encode())]).hexdigest()==g['BLOCKER_BEFORE']
 
 def test_re817_test_exact_inverse_delta():
- text=(R/'tests/reverse/test_re817_publication.py').read_text()
+ text=(R/'tests/reverse/test_re817_publication.py').read_text();g819=runpy.run_path(str(R/'scripts/reverse/re819_publication.py'));text=g819['inverse_code'](text,'tests/reverse/test_re817_publication.py')
  block=" # RE818 exact suffix only; preserve historical RE817 assertion on its old bytes.\n start818=b'<!-- start re818-actual-tu-caller-prerequisite -->';end818=b'<!-- end re818-actual-tu-caller-prerequisite -->'\n if start818 in b or end818 in b:\n  assert b.count(start818)==b.count(end818)==1\n  a818=b.index(start818)\n  assert hashlib.sha256(b[a818:]).hexdigest()=='133512b16df78502d62a52334174b04201d864b54165866985b5186b13b4ab8b'\n  b=b[:a818]\n  assert hashlib.sha256(b).hexdigest()=='ae791f9befe193f0370b68825cfe17d02616cc723661a8eaa07102caa2b75bc6'\n"
  assert text.count(block)==1
  assert hashlib.sha256(text.replace(block,'',1).encode()).hexdigest()=='f821d408655b88dbd1c949a616a07fb5c1eb0d12c53ed8657a3e3a04f404f133'
