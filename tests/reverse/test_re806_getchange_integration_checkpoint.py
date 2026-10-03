@@ -11,6 +11,15 @@ END=b'<!-- end re806-getchange-integration -->'
 PRECEDING='8d5e908fe4f1d1411eea36e3909226fcdd4f214a43cd24253bfd72fb5cd044d6'
 SOURCE='359970bfdd33ee5342a60c96dbe06be649028e26918250c290850b34a21fd8c1'
 def dashboard_before_named_re806(b):
+    # Exclude only RE808 and authenticate the entire preceding dashboard.
+    start808=b'<!-- start re808-private-animation-jump -->'
+    end808=b'<!-- end re808-private-animation-jump -->'
+    if start808 in b or end808 in b:
+        assert b.count(start808)==b.count(end808)==1
+        a808=b.index(start808);assert end808 in b[a808:]
+        z808=b.index(end808,a808)+len(end808)
+        b=b[:a808]+b[z808:]
+        assert hashlib.sha256(b).hexdigest()=='6c75650680b052c468ccea3e8b9861d18d5512878727b3c24b93b31460b2c3bd'
     # RE807 successor owns an exact full preceding-dashboard guard.
     start807=b'<!-- start re807-private-animation-command -->'
     end807=b'<!-- end re807-private-animation-command -->'

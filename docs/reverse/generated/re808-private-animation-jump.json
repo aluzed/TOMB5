@@ -1,0 +1,84 @@
+{
+  "schema": "re808-private-animation-jump-v1",
+  "status": "progress",
+  "author": "AlexP",
+  "approval_scope": "private-bounded-fixtures-only",
+  "review_sha256": "9b2f8c0df5fb4df6c9ed368f7504b3c23d74bb0d04a528e642a0e5b33c7199f1",
+  "review_report_sha256": "a6c3e951803cdfe6a72b69bb4470420e22f9efd5ad55de52aab62b7d687a6e47",
+  "preceding_dashboard_sha256": "6c75650680b052c468ccea3e8b9861d18d5512878727b3c24b93b31460b2c3bd",
+  "independent_final_publication_review": "pending",
+  "observed": {
+    "cases": 12,
+    "command": 2,
+    "target_returns": 12,
+    "target_hook_visits": 1543,
+    "complete_buffer_bytes": 16716,
+    "GetChange_exercised": false,
+    "frame_threshold": "incremented-frame > frame_end",
+    "ordered_events": [
+      "old-command2",
+      "link",
+      "gravity",
+      "return"
+    ]
+  },
+  "native": {
+    "modes": [
+      "normal",
+      "strict-ASan-UBSan"
+    ],
+    "baseline_failures_per_mode": 12,
+    "candidate_pass_per_mode": 12,
+    "mutant_failures": {
+      "omit-jump": 5,
+      "link-before": 2,
+      "drop-x-second": 5
+    },
+    "baseline_causal_scope": "whole-AnimateItem-stub"
+  },
+  "incidents": {
+    "producer_timeout_seconds": 600,
+    "historical_manifest_status": "IN_PROGRESS",
+    "historical_handoff_status": "EN COURS",
+    "producer_exit_log": "not-fabricated",
+    "reviewer_lock": "initial-sibling-lock-error-declared; canonical-lock-after-correction",
+    "reviewer_setup": "failed-snapshots-retained; original-stderr-in-tool-transcript-only"
+  },
+  "next_story": "RE-809",
+  "next_frontier": {
+    "status": "planned-not-proven",
+    "discriminant": "command3/removeactive or a subsequent newly reached dependency",
+    "repeat_closed_matrices": false,
+    "activation_allowed": false
+  },
+  "limits": [
+    "Twelve synthetic fixtures only, no authentic gameplay or startup corpus.",
+    "Private assert-bounded two-animation body; not whole AnimateItem reconstruction.",
+    "Frame advance at or below end is control; old command2 consumed only strictly beyond end.",
+    "Command2 sets signed fallspeed then speed and gravity while preserving adjacent flags; two ordered commands last wins.",
+    "Old commands precede link; new command2 skipped without reapplication.",
+    "Gravity signed threshold below128 adds6, otherwise1; narrowed fallspeed and unnarrowed Y intermediate differ.",
+    "Measured signed right shifts only, not universal portable-C arithmetic.",
+    "Authentic second longitudinal X contribution retained, not intuitively repaired; lateral velocity zero in these fixtures.",
+    "ITEM144 ANIM80 CHANGE12 RANGE32 COMMAND64 TRIG16384 complete compared bytes; arbitrary native globals and heap not covered.",
+    "Final target RAM compared excluding caller stack36; four declared GP substitutions, no exact transient-store or stack proof.",
+    "Code/read hooks only, no MEM_WRITE, instrumentation invariance or hardware correctness.",
+    "GetChange and command1 predecessor not exercised; commands4/5/6, nonzero velocity/acceleration and real corpus excluded.",
+    "Producer timeout600s historical HANDOFF EN COURS and manifest IN_PROGRESS remain untouched; current scoped reviewed checkpoint supersedes no historical bytes.",
+    "Fresh reviewer native evidence archived; publication verifies fingerprints without replaying old target matrices.",
+    "No integration, activation, gameplay, fullbuild, readiness or global GREEN approval."
+  ],
+  "source_integrated": false,
+  "integration_approved": false,
+  "activation_approved": false,
+  "registration_activated": false,
+  "AnimateItem_activated": false,
+  "DoorControl_activated": false,
+  "runtime_performed": false,
+  "gameplay_performed": false,
+  "fullbuild_performed": false,
+  "global_green": false,
+  "production_ready": false,
+  "publication_worker_modified_production": false,
+  "target_matrix_replayed_by_publication": false
+}

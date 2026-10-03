@@ -11,6 +11,15 @@ END=b'<!-- end re807-private-animation-command -->'
 PRECEDING='1b8fbec4f99ed0d80260ecc755acf6205dcb0cadeefe7c069eb254474fee2f96'
 REVIEW='08a0fde2ff8e2139dfe01f6d086f488912b134f9775e30d9dee7fe0675dd2c9a'
 def dashboard_before_named_re807(b):
+    # Exclude only RE808 and authenticate the entire preceding dashboard.
+    start808=b'<!-- start re808-private-animation-jump -->'
+    end808=b'<!-- end re808-private-animation-jump -->'
+    if start808 in b or end808 in b:
+        assert b.count(start808)==b.count(end808)==1
+        a808=b.index(start808);assert end808 in b[a808:]
+        z808=b.index(end808,a808)+len(end808)
+        b=b[:a808]+b[z808:]
+        assert hashlib.sha256(b).hexdigest()=='6c75650680b052c468ccea3e8b9861d18d5512878727b3c24b93b31460b2c3bd'
     if START in b or END in b:
         assert b.count(START)==b.count(END)==1
         a=b.index(START);assert END in b[a:]

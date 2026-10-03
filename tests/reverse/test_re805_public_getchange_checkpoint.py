@@ -10,6 +10,15 @@ START=b'<!-- start re805-public-getchange-contract -->'
 END=b'<!-- end re805-public-getchange-contract -->'
 PRECEDING='cc625c9a8ddae8d8b96d5b31c214624959c22e74f131a20602e8c32653a5bdb7'
 def dashboard_before_named_re805(b):
+    # Exclude only RE808 and authenticate the entire preceding dashboard.
+    start808=b'<!-- start re808-private-animation-jump -->'
+    end808=b'<!-- end re808-private-animation-jump -->'
+    if start808 in b or end808 in b:
+        assert b.count(start808)==b.count(end808)==1
+        a808=b.index(start808);assert end808 in b[a808:]
+        z808=b.index(end808,a808)+len(end808)
+        b=b[:a808]+b[z808:]
+        assert hashlib.sha256(b).hexdigest()=='6c75650680b052c468ccea3e8b9861d18d5512878727b3c24b93b31460b2c3bd'
     # RE807 successor owns an exact full preceding-dashboard guard.
     start807=b'<!-- start re807-private-animation-command -->'
     end807=b'<!-- end re807-private-animation-command -->'
