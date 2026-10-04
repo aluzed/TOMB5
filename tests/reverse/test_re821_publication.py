@@ -1,6 +1,7 @@
 """Portable RE821 documentary contract: metadata only, no private probe/import."""
 import hashlib
 import re
+import runpy
 from pathlib import Path
 
 import pytest
@@ -20,7 +21,19 @@ SECTION = '''\n<!-- RE821 PUBLICATION BEGIN -->
 '''
 
 
+def dashboard_before_re830(data):
+    # Only the exact authenticated RE830 successor, with pinned historical bytes.
+    if b'<!-- RE830 PUBLICATION' in data:
+        contract = runpy.run_path(str(ROOT / 'tests/reverse/test_re830_table_provenance_publication.py'))
+        before = contract['preceding_dashboard'](data)
+        assert hashlib.sha256(before).hexdigest() == '5b8c2a8776586b87a54d8774803cd0896b438d72ead7e024f1557978247c1608'
+        return before
+    assert hashlib.sha256(data).hexdigest() == '5b8c2a8776586b87a54d8774803cd0896b438d72ead7e024f1557978247c1608', 'RE830 successor malformed or history altered'
+    return data
+
+
 def preceding_dashboard(data):
+    data = dashboard_before_re830(data)
     suffix = SECTION.encode() + b'</html>'
     assert data.endswith(suffix), 'RE821 suffix absent or altered'
     assert data.count(b'<!-- RE821 PUBLICATION BEGIN -->') == 1
@@ -28,6 +41,20 @@ def preceding_dashboard(data):
     before = data[:-len(suffix)] + b'</html>'
     assert hashlib.sha256(before).hexdigest() == BEFORE
     return before
+
+
+@pytest.mark.parametrize('mutation', ['foreign', 'duplicate', 'altered', 'missing', 'history', 'unknown'])
+def test_re830_dashboard_successor_fail_closed(mutation):
+    contract = runpy.run_path(str(ROOT / 'tests/reverse/test_re830_table_provenance_publication.py'))
+    data = (ROOT / contract['DASHBOARD']).read_bytes()
+    addition = contract['SECTION'].encode()
+    assert dashboard_before_re830(data) == contract['preceding_dashboard'](data)
+    mutants = {'foreign': data+b'foreign', 'duplicate': data[:-7]+addition+b'</html>',
+               'altered': data.replace(addition, addition.replace(b'620', b'621')),
+               'missing': data.replace(b'<!-- RE830 PUBLICATION END -->', b''),
+               'history': b'foreign'+data, 'unknown': data+b'<!-- RE831 -->'}
+    with pytest.raises(AssertionError):
+        dashboard_before_re830(mutants[mutation])
 
 
 def test_re821_documentary_publication_and_exact_historical_inverse():
@@ -51,6 +78,7 @@ def test_re821_documentary_publication_and_exact_historical_inverse():
         assert phrase in text, phrase
     assert not re.search(r'0x[0-9a-fA-F]+|(?:FUN|DAT|LAB)_[0-9a-fA-F]{6,}|data:image|```(?:asm|mips|cpp|c)\b', text)
     data = (ROOT / 'docs/reverse/tomb5-progress-dashboard.html').read_bytes()
+    data = dashboard_before_re830(data)
     old = preceding_dashboard(data)
     assert old.endswith(b'</html>')
     # Check only the new active section, never borrow predecessor qualifications.

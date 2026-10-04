@@ -35,15 +35,32 @@ def test_predecessor_exact_successor_acceptance(path):
  fn=old['dashboard_before_'+n];assert H(fn(b))==old['PRECEDING']
  for mutant in [b+b'foreign',b+SECTION.encode(),b.replace(b'RE-819',b'RE-xxx'),b.replace(b'RE-809',b'RE-xxx'),b.replace(b'<!-- end re819-real-allocator-prerequisite -->',b''),b+b'<!-- start re820-unknown -->x<!-- end re820-unknown -->']:
   with pytest.raises(AssertionError):fn(mutant)
+def blocker_before_re830(data):
+ # Only the exact authenticated RE830 successor is reversible; no generic append.
+ if b'## RE830' in data:
+  contract=runpy.run_path(str(R/'tests/reverse/test_re830_table_provenance_publication.py'))
+  before=contract['preceding_blocker'](data)
+  assert H(before)=='a9c5a04d69c030a8e8c47915a345223e44a32eecadaa5c6cd5f7d20e8bbb4a59'
+  return before
+ assert H(data)=='a9c5a04d69c030a8e8c47915a345223e44a32eecadaa5c6cd5f7d20e8bbb4a59', 'RE830 successor malformed or history altered'
+ return data
 def test_append_only_dashboard_blocker_and_exact_inverse_code():
  g=api();b=(R/'docs/reverse/reconstruction-progress.html').read_bytes();g820=runpy.run_path(str(R/'scripts/reverse/re820_publication.py'));b=g820['dashboard_before_re820'](b);assert H(g['dashboard_before_re819'](b))==PRECEDING
  for path,h in OLD.items():
   text=(R/path).read_text();assert H(g['inverse_code'](text,path).encode())==h
- c=(R/g['BLOCKER_PATH']).read_bytes();append=g['BLOCKER_APPEND'].encode()
+ c=blocker_before_re830((R/g['BLOCKER_PATH']).read_bytes());append=g['BLOCKER_APPEND'].encode()
  assert c.endswith(append) and H(c[:-len(append)])==g['BLOCKER_BEFORE']
 def test_provenance_schema_portable():
  g=api();assert g['PRIVATE_PINS']=={n:EXPECTED['private_'+n.replace('.json','')+'_sha256'] for n in ['verdict.json','manifest.json','seal.json']}
  assert EXPECTED['private_verdict_sha256']=='65dca2fa90b05f0f77572d70b3e923c7f2df727f1ab5ba9f22667dec94859564'
+
+@pytest.mark.parametrize('mutation', ['foreign', 'duplicate', 'altered', 'missing', 'history', 'unknown'])
+def test_re830_blocker_successor_fail_closed(mutation):
+ contract=runpy.run_path(str(R/'tests/reverse/test_re830_table_provenance_publication.py'))
+ data=(R/contract['BLOCKER']).read_bytes(); addition=contract['APPEND'].encode()
+ assert blocker_before_re830(data)==contract['preceding_blocker'](data)
+ mutants={'foreign':data+b'foreign','duplicate':data+addition,'altered':data.replace(addition,addition.replace(b'620',b'621')),'missing':data.replace(b'## RE830',b'## RE83X'),'history':b'foreign'+data,'unknown':data+b'\n## RE831\nunknown\n'}
+ with pytest.raises(AssertionError):blocker_before_re830(mutants[mutation])
 
 @pytest.mark.parametrize('name',['verdict.json','manifest.json','seal.json'])
 def test_private_provenance_rejects_counterfeit_without_replay(tmp_path,name):
