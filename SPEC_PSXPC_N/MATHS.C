@@ -556,30 +556,30 @@ void SetRotation_I(int t0, int t1, int t2, int t3, int t4)
 
 void mRotZ(long rz)//76804 (F)
 {
-	int t0;
-	int t1;
-	int t2;
-	int t3;
-	int t4;
-	int t5;
-	int t6;
-	int t7;
-	int a0;
+	uint32_t t0;
+	uint32_t t1;
+	uint32_t t2;
+	uint32_t t3;
+	uint32_t t4;
+	uint32_t t5;
+	uint32_t t6;
+	uint32_t t7;
+	uint32_t a0;
 
-	rz = (rz >> 2) & 0x3FFC;
+	rz = ((uint32_t)rz >> 2) & 0x3FFC;
 
 	if (rz != 0)
 	{
 		//loc_7681C
-		t0 = (rcossin_tbl[rz >> 1] & 0xFFFF) | ((rcossin_tbl[rz >> 1 | 1] & 0xFFFF) << 16);
+		t0 = (rcossin_tbl[rz >> 1] & 0xFFFF) | ((uint32_t)(rcossin_tbl[rz >> 1 | 1] & 0xFFFF) << 16);
 		t1 = ((t0 >> 16) & 0xFFFF) | (t0 << 16);
 
 		VX0 = (t1 & 0xFFFF);
 		VY0 = ((t1 >> 16) & 0xFFFF);
 		VZ0 = 0;
 
-		t1 = ((R21 << 16) | (R13 & 0xFFFF)) & 0xFFFF;
-		t2 = ((R23 << 16) | (R22 & 0xFFFF)) & 0xFFFF0000;
+		t1 = (((uint32_t)R21 << 16) | (R13 & 0xFFFF)) & 0xFFFF;
+		t2 = (((uint32_t)R23 << 16) | (R22 & 0xFFFF)) & 0xFFFF0000;
 		t4 = R33;
 
 		docop2(0x486012);
@@ -611,7 +611,7 @@ void mRotZ(long rz)//76804 (F)
 		t2 |= t6;
 		t3 |= a0 << 16;
 
-		SetRotation(t0, t1, t2, t3, t4);
+		SetRotation(mRotX_signed32(t0), mRotX_signed32(t1), mRotX_signed32(t2), mRotX_signed32(t3), mRotX_signed32(t4));
 	}
 }
 
