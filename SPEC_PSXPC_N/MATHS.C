@@ -1,4 +1,5 @@
 #include "MATHS.H"
+#include <stdint.h>
 
 #include "LOAD_LEV.H"
 #include "SPECIFIC.H"
@@ -413,30 +414,37 @@ void mTranslateXYZ(long x, long y, long z)//7658C(<), 785D0(<) (!)
 	Matrix->tz = t2;
 }
 
+/* Convert a modular 32-bit word without an out-of-range signed cast.
+ * Packing below is unsigned; the register and matrix contract is unchanged. */
+static int32_t mRotX_signed32(uint32_t bits)
+{
+	return bits <= INT32_MAX ? (int32_t)bits : -1 - (int32_t)(UINT32_MAX - bits);
+}
+
 void mRotX(long rx)//7669C (F)
 {
-	int t0;
-	int t1;
-	int t2;
-	int t3;
-	int t4;
-	int t5;
-	int t6;
+	uint32_t t0;
+	uint32_t t1;
+	uint32_t t2;
+	uint32_t t3;
+	uint32_t t4;
+	uint32_t t5;
+	uint32_t t6;
 
-	rx = (rx >> 2) & 0x3FFC;
+	rx = ((uint32_t)rx >> 2) & 0x3FFC;
 
 	if (rx != 0)
 	{
 		//loc_766B4
-		t5 = (rcossin_tbl[rx >> 1] & 0xFFFF) | ((rcossin_tbl[rx >> 1 | 1] & 0xFFFF) << 16);
+		t5 = (rcossin_tbl[rx >> 1] & 0xFFFF) | ((uint32_t)(rcossin_tbl[rx >> 1 | 1] & 0xFFFF) << 16);
 
 		VX0 = (0xFFFF0000 & t5) & 0xFFFF;
 		VY0 = ((0xFFFF0000 & t5) >> 16) & 0xFFFF;
 		VZ0 = t5 & 0xFFFF;
 
-		t0 = ((R12 << 16) | (R11 & 0xFFFF)) & 0xFFFF;
-		t1 = ((R21 << 16) | (R13 & 0xFFFF)) & 0xFFFF0000;
-		t3 = ((R32 << 16) | (R31 & 0xFFFF)) & 0xFFFF;
+		t0 = (((uint32_t)R12 << 16) | (R11 & 0xFFFF)) & 0xFFFF;
+		t1 = (((uint32_t)R21 << 16) | (R13 & 0xFFFF)) & 0xFFFF0000;
+		t3 = (((uint32_t)R32 << 16) | (R31 & 0xFFFF)) & 0xFFFF;
 
 		docop2(0x486012);
 
@@ -463,7 +471,7 @@ void mRotX(long rx)//7669C (F)
 
 		t1 |= t5;
 		t2 |= t6 << 16;
-		SetRotation(t0, t1, t2, t3, t4);
+		SetRotation(mRotX_signed32(t0), mRotX_signed32(t1), mRotX_signed32(t2), mRotX_signed32(t3), mRotX_signed32(t4));
 	}
 }
 
