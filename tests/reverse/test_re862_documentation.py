@@ -6,6 +6,11 @@ PIN="df360d7af4f4c5eb4f6382354e5afdfb2d581786263a24a09b29f50d17f96259"
 BEGIN=b'<!-- start re862-mrotz-mvmva-defined -->'
 END=b'<!-- end re862-mrotz-mvmva-defined -->'
 def historical(data):
+ # Only named RE866 successor excluded; predecessor digest unchanged.
+ nb=b'<!-- start re866-mroty-integration -->';ne=b'<!-- end re866-mroty-integration -->'
+ if nb in data or ne in data:
+  assert data.count(nb)==data.count(ne)==1
+  data=data[:data.index(nb)]+data[data.index(ne)+len(ne):]
  assert data.count(BEGIN)==data.count(END)==1
  first=data.index(BEGIN);last=data.index(END)+len(END)
  return data[:first]+data[last:]

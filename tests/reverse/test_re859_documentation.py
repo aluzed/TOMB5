@@ -6,6 +6,11 @@ def test_re859_story_and_append_only_dashboard():
  assert 'RE858 global FAIL' in story and 'mRotZ' in story
  assert 'ELF64' in story and 'fpermissive' in story and '72' in story
  data=(R/'docs/reverse/reconstruction-progress.html').read_bytes()
+ # Only the named RE866 approved successor; never refresh the historical pin.
+ nb=b'<!-- start re866-mroty-integration -->';ne=b'<!-- end re866-mroty-integration -->'
+ if nb in data or ne in data:
+  assert data.count(nb)==data.count(ne)==1
+  data=data[:data.index(nb)]+data[data.index(ne)+len(ne):]
  # Exact approved RE862 successor only; predecessor hash stays unchanged.
  successor_begin=b'<!-- start re862-mrotz-mvmva-defined -->'
  successor_end=b'<!-- end re862-mrotz-mvmva-defined -->'
