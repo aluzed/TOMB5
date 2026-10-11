@@ -1,0 +1,92 @@
+{
+  "RE916": {
+    "consumer": {
+      "BIOS_Exec_dispatcher": "UNPROVEN",
+      "RA": "UNKNOWN",
+      "header_proves": "PC_SP_GP_NOT_RA",
+      "instruction_executed": false,
+      "operation": "SW_RA_VIA_AT_NOT_SP",
+      "raw_contract": "PRIVATE_ONLY_NO_ADDRESS_OFFSET_OPCODE_PUBLIC",
+      "width_bytes": 4
+    },
+    "diagnostic": "PASS_STRICT_STATIC_DEPENDENCY_ONLY",
+    "execution": {
+      "BIOS_SDK_return_double": 0,
+      "RA_injection": 0,
+      "fresh_CPU": 0,
+      "fresh_native_build_run": 0,
+      "fresh_target": 0,
+      "historical_RE914_visits": 1778375,
+      "historical_visits_not_fresh": true,
+      "positive_sector_injection": 0,
+      "startup_replay": 0
+    },
+    "functional_GREEN": 0,
+    "functional_passed": false,
+    "next": "Legitimate authenticated firmware with SHA model provenance boot chain OR authenticated POSTBIOS capture RA PC SP GP RAM boot chain; attribute dispatcher last RA producer before continuation; GPUSTAT Timer1 CD unresolved",
+    "producer": {
+      "Exec_LoadExec_stubs": 2,
+      "accepted_retry02_exit": 0,
+      "first_attempt_exit": 1,
+      "historical_name_search_files": 320530,
+      "historical_size_search_files": 307294,
+      "hit_files": 2,
+      "retry01_exit": 1,
+      "size_candidates": 17,
+      "source_files": 210,
+      "validator_mutants_rejected": 10
+    },
+    "reviewer": {
+      "VRAM_candidates": 5,
+      "concerns": [],
+      "heap_candidates": 12,
+      "independent_contract_controls_rejected": 8,
+      "logic_errors": [],
+      "quoting_failure": "BEFORE_CHECKER_PRESERVED",
+      "size_candidates_rehashed": 17,
+      "source_files_rescanned": 210,
+      "strict_passed": true,
+      "validator_mutants_rejected": 10
+    },
+    "search_limit": "BOUNDED_DECLARED_ROOTS_EXCLUSIONS_COLD_ARCHIVES_NOT_EXTRACTED_NOT_UNIVERSAL_ABSENCE",
+    "transport": {
+      "distinct_origins": true,
+      "producer_outer_seconds": 368.45,
+      "producer_task_seconds": 368.39,
+      "reviewer_outer_seconds": 358.48,
+      "reviewer_task_seconds": 358.43,
+      "source_readback_seconds": 360.32
+    }
+  },
+  "authentication": {
+    "re914-startup-hardware-provenance": {
+      "entries": 17,
+      "manifest_sha256": "355d7516262b1719ec6dcc47363523ecb1a2cc8cde00c9bbd9f8a0a981d3a614",
+      "seal_sha256": "6fa6f705d2b432661f28082cd637b404d484e17273933893612fcb0d8b6ff5c4",
+      "verdict_sha256": "61434fd898e98df40a81d7d9168834f308c952bdbd02a72b501a5fe1bffb6e17"
+    },
+    "re916-bios-exec": {
+      "entries": 38,
+      "manifest_sha256": "d9fa461bff03d32c30374fd1dc6f53ac7c54afbe3e5803f606c822ef74a0dd6b",
+      "seal_sha256": "9b885e55672eb7453bac61eee5c5e6df5fc785035c2f5b61e7367668e4a293a5",
+      "verdict_sha256": "ca0ffa82e9baba583fc3dcba29339c792ddf8646779b74725271a3001b407585"
+    },
+    "re916-review": {
+      "entries": 16,
+      "manifest_sha256": "6f4efda55f6dd392c81b862d219ab6cd277c416b53be98dccc660a38d50575b4",
+      "seal_sha256": "0424a3b20f96c126bef8e93be0357253f9330527049b27800e56a9e041a5be01",
+      "verdict_sha256": "61434fd898e98df40a81d7d9168834f308c952bdbd02a72b501a5fe1bffb6e17"
+    }
+  },
+  "authentication_scope": "RE916 producer38 reviewer16 and RE914 producer17 exact sets sizes SHA seals freshly authenticated; zero replay",
+  "fresh_execution_scope": "PUBLIC_METADATA_TESTS_ONLY",
+  "fresh_native": 0,
+  "fresh_target": 0,
+  "global_scope": "FAIL",
+  "integration": false,
+  "naturalcaller": "BLOCKED",
+  "procedure_scope": "FAIL",
+  "production_patch": false,
+  "publication_review": "PENDING_INDEPENDENT_EXACT_HASH_REVIEW",
+  "schema": "re917-bios-exec-dependency-diagnostic-publication-v1"
+}
