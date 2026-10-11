@@ -103,6 +103,13 @@ def preceding_blocker(data):
 
 
 def preceding_dashboard(data):
+    # RE909 exact authenticated successor; preserve contiguous older adapters.
+    if b'<!-- RE909 PUBLICATION' in data:
+        import runpy
+        try:
+            data = runpy.run_path(str(ROOT/'scripts/reverse/re909_publication.py'))['preceding_maintained'](data)
+        except ValueError as exc:
+            raise AssertionError('malformed RE909 successor') from exc
     # RE906 exact authenticated successor; preserve contiguous older adapters.
     if b'<!-- RE906 PUBLICATION' in data:
         import runpy

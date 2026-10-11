@@ -84,6 +84,9 @@ def original_compatibility(path,text):
  if path=='tests/reverse/test_re830_table_provenance_publication.py' and '# RE906 exact authenticated successor' in text:
   import runpy
   text=runpy.run_path(str(ROOT/'scripts/reverse/re906_publication.py'))['original_compatibility'](path,text)
+ if '# RE909 exact authenticated successor' in text:
+  import runpy
+  text=runpy.run_path(str(ROOT/'scripts/reverse/re909_publication.py'))['original_compatibility'](path,text)
  spec=COMPATIBILITY_DELTAS[path]
  for old,new in reversed(spec['replacements']):
   if text.count(new)!=1:raise ValueError('exact RE904 compatibility adapter required')
