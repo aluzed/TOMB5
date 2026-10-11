@@ -1,0 +1,3 @@
+ticket,role,target_prefixes,GetFrames_returns,native_prefixes,native_returns,integration,publication_review
+RE905,producer,7,1,1,0,false,PENDING_INDEPENDENT_EXACT_HASH_REVIEW
+RE905,reviewer,6,1,1,0,false,PENDING_INDEPENDENT_EXACT_HASH_REVIEW

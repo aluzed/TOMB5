@@ -35,7 +35,17 @@ def inverse(data,sha):
  if digest(before)!=sha:raise ValueError('exact predecessor bytes changed')
  return before
 def preceding_dashboard(data):return inverse(data,PRIOR_SHA)
-def preceding_maintained(data):return inverse(data,MAINTAINED_SHA)
+def preceding_maintained(data):
+ if b'<!-- RE906 PUBLICATION' in data:
+  import runpy
+  data=runpy.run_path(str(ROOT/'scripts/reverse/re906_publication.py'))['preceding_maintained'](data)
+ return inverse(data,MAINTAINED_SHA)
+def read_maintained():
+ data=(ROOT/MAINTAINED).read_bytes()
+ if b'<!-- RE906 PUBLICATION' in data:
+  import runpy
+  data=runpy.run_path(str(ROOT/'scripts/reverse/re906_publication.py'))['preceding_maintained'](data)
+ return data
 def maintained_before():
  b=(ROOT/PRIOR_MAINTAINED).read_bytes()
  if digest(b)!=MAINTAINED_SHA:raise ValueError('maintained historical fixture drift')
@@ -71,6 +81,9 @@ def render():
  for p,b in out.items():guard_output(p,b)
  return out
 def original_compatibility(path,text):
+ if path=='tests/reverse/test_re830_table_provenance_publication.py' and '# RE906 exact authenticated successor' in text:
+  import runpy
+  text=runpy.run_path(str(ROOT/'scripts/reverse/re906_publication.py'))['original_compatibility'](path,text)
  spec=COMPATIBILITY_DELTAS[path]
  for old,new in reversed(spec['replacements']):
   if text.count(new)!=1:raise ValueError('exact RE904 compatibility adapter required')
@@ -82,7 +95,7 @@ def compatibility_pins():
 def check():
  compatibility_pins()
  for p,b in render().items():
-  if (ROOT/p).read_bytes()!=b:raise ValueError('generated drift '+p)
+  if (read_maintained() if p==MAINTAINED else (ROOT/p).read_bytes())!=b:raise ValueError('generated drift '+p)
  for p in PUBLIC_PATHS:
   if p not in (DASHBOARD,MAINTAINED,PRIOR_MAINTAINED):guard_added(p,(ROOT/p).read_bytes())
  print('RE904 PUBLIC_METADATA_TESTS_ONLY PASS; exact-public-hash independent review PENDING')
