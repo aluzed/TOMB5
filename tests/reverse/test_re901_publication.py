@@ -43,7 +43,7 @@ def test_schema_mutants(change):
 def test_fixtures():
  m=api();out=m.render((ROOT/m.PRIOR_DASHBOARD).read_bytes());assert set(out)==set(m.OUTPUT_PATHS)
  assert out==m.render((ROOT/m.PRIOR_DASHBOARD).read_bytes())
- for p,b in out.items():assert (ROOT/p).read_bytes()==b;m.guard_output(p,b)
+ for p,b in out.items():assert (m.read_maintained() if p==m.MAINTAINED else (ROOT/p).read_bytes())==b;m.guard_output(p,b)
  assert m.preceding_dashboard(out[m.DASHBOARD])==(ROOT/m.PRIOR_DASHBOARD).read_bytes()
  assert m.preceding_maintained(out[m.MAINTAINED])==(ROOT/m.PRIOR_MAINTAINED).read_bytes()
  assert json.loads(out[m.JSON_PATH])==m.metadata();m.check()

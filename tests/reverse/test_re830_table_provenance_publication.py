@@ -103,6 +103,13 @@ def preceding_blocker(data):
 
 
 def preceding_dashboard(data):
+    # RE904 exact authenticated successor; preserve contiguous older adapters.
+    if b'<!-- RE904 PUBLICATION' in data:
+        import runpy
+        try:
+            data = runpy.run_path(str(ROOT / 'scripts/reverse/re904_publication.py'))['preceding_maintained'](data)
+        except ValueError as error:
+            raise AssertionError('RE904 successor malformed or predecessor changed') from error
     # RE901 exact authenticated append-only successor; historical guards unchanged.
     if b'<!-- RE901 PUBLICATION' in data:
         import runpy
