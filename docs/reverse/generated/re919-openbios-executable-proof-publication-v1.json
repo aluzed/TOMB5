@@ -1,0 +1,88 @@
+{
+  "RE918": {
+    "accepted_scope": "PRIVATE_OPENBIOS_ROUNDTRIP_AND_AUTHENTIC_GAME_RA_SAVE",
+    "firstFAIL": [
+      "Producer KSEG API physical-memory access error preserved; retry keeps CPU KSEG addresses.",
+      "Reviewer BOOT parser firstFAIL preserved; corrected parser retry distinct.",
+      "Historical global/procedure FAIL not rehabilitated."
+    ],
+    "frontier": "Constructed ABI caller -> unchanged MIT exec assembled ELF MIPS-I -> authentic game entry -> SW RA via AT executed -> immediate stop. Replacement backend RA, not Sony RA.",
+    "limits": [
+      "Four synthetic ABI domains: BSS empty/nonempty and selected/unselected stack; not complete ABI.",
+      "Each game_entry_prefixes=2 means ONE positive and ONE actual link mutant, not two positives.",
+      "Independent CPU positive counts are separate comparisons, not extra game target positives.",
+      "Constructed BIOS caller and initial RAM outside payload; no natural full boot, SDK return, CD success sector, gameplay or integration.",
+      "MIPS32 Unicorn immediate loads; no R3000 load-delay certification.",
+      "Synthetic RETURN fixture is not game return; real game stop immediately after RA store."
+    ],
+    "oracle": "Independent stdlib reconstruction from ISO and fresh binaries; full ordered visits, final RAM and32GPR. Software comparison, not hardware.",
+    "producer": {
+      "code_mutants_rejected": 4,
+      "game_code_mutants_rejected": 1,
+      "game_entry_prefixes": 2,
+      "game_mutant_target_visits": 1778397,
+      "game_positive_prefixes": 1,
+      "game_target_visits": 1778397,
+      "gpr_compared": 32,
+      "independent_game_cpu_prefixes": 1,
+      "roundtrips": 4,
+      "whole_ram_bytes_compared": 2097152
+    },
+    "reviewer": {
+      "code_mutants_rejected": 4,
+      "game_code_mutants_rejected": 1,
+      "game_entry_prefixes": 2,
+      "game_mutant_target_visits": 1778397,
+      "game_positive_prefixes": 1,
+      "game_target_visits": 1778397,
+      "gpr_compared": 32,
+      "independent_game_cpu_prefixes": 1,
+      "roundtrips": 4,
+      "whole_ram_bytes_compared": 2097152
+    },
+    "timing": {
+      "producer_game_seconds": 5.583026170730591,
+      "reviewer_closure_seconds": 328.76693964004517
+    }
+  },
+  "attribution": {
+    "copyright": [
+      "Copyright (c) 2020 PCSX-Redux authors"
+    ],
+    "license": "MIT",
+    "nugget_commit": "7ffc2b14b3ec4b912e7e79f6e31101ff3f24cc30",
+    "project": "PCSX-Redux / nugget OpenBIOS",
+    "redistributed_source": false,
+    "redux_commit": "c313b116e6a55786bc127c9b3a07a90b55d97c21",
+    "source_path": "src/mips/openbios/kernel/psxexec.s",
+    "source_sha256": "baa154b1eb86343f1fd468b17f46dab155fb836e023ca2d4eeedce2c3c73ef8c",
+    "source_unchanged": true,
+    "source_url": "https://github.com/pcsx-redux/nugget/blob/7ffc2b14b3ec4b912e7e79f6e31101ff3f24cc30/openbios/kernel/psxexec.s"
+  },
+  "authentication": {
+    "re918-openbios": {
+      "entries": 92,
+      "manifest_sha256": "093dc01dadd97038aef080264f77aac05e1607d2ca3bbb07330a4f78e912142a",
+      "seal_file_sha256": "a47cb98851a0e28b9da66f8a097158f82bd26fed03ddb936856985e0e38ba591",
+      "verdict_sha256": "342348ea06fa915a2f1a78e0f5350178f53c452cb5f290b0fe529b7218e3f46a"
+    },
+    "re918-review": {
+      "entries": 92,
+      "manifest_sha256": "09095261de2d785f41787f8ef93d214cbdf83300b64459c9b867b5744f605d9e",
+      "seal_file_sha256": "dfac3c0fa6b4f24add8273edccf8975fa2f851ad3388672ad207a1c1160a0d70",
+      "verdict_sha256": "f6f2321435d75b9ef95c9243b123f83f877d1903ffbbd48318eb365aceea336d"
+    }
+  },
+  "authentication_scope": "Publisher freshly authenticated both complete private92-member inventories; parent earlier verified same roots. No numerical replay.",
+  "backend_boundary": "OPENBIOS_REPLACEMENT_NOT_SONY_BIOS",
+  "fresh_execution_scope": "PUBLIC_METADATA_TESTS_ONLY",
+  "fresh_native": 0,
+  "fresh_target": 0,
+  "global_scope": "FAIL",
+  "integration": false,
+  "naturalcaller": "BLOCKED",
+  "procedure_scope": "FAIL",
+  "production_patch": false,
+  "publication_review": "PENDING_INDEPENDENT_EXACT_HASH_REVIEW",
+  "schema": "re919-openbios-executable-proof-publication-v1"
+}
