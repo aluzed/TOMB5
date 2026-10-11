@@ -44,9 +44,9 @@ def test_render_public_fixtures_and_inverse():
  m=api();before=(ROOT/m.PRIOR_DASHBOARD).read_bytes();out=m.render(before)
  assert out==m.render(before) and set(out)==set(m.OUTPUT_PATHS)
  assert m.preceding_dashboard(out[m.DASHBOARD])==before
- for p,b in out.items():assert (ROOT/p).read_bytes()==b;m.guard_output(p,b)
+ for p,b in out.items():assert (m.read_maintained() if p==m.MAINTAINED else (ROOT/p).read_bytes())==b;m.guard_output(p,b)
  assert json.loads(out[m.JSON_PATH])==m.metadata()
- maintained=(ROOT/m.MAINTAINED).read_bytes();assert m.preceding_maintained(maintained)==m.maintained_before()
+ maintained=m.read_maintained();assert m.preceding_maintained(maintained)==m.maintained_before()
  m.check()
 
 @pytest.mark.parametrize('change',['history','missing','duplicate','altered','trailing','unknown'])
@@ -84,7 +84,7 @@ def test_historical_guard_adapter_exact_delta():
 
 @pytest.mark.parametrize('change',['history','missing','duplicate','altered','trailing','unknown'])
 def test_maintained_inverse_mutants(change):
- m=api();data=(ROOT/m.MAINTAINED).read_bytes();s=m.SECTION.encode()
+ m=api();data=m.read_maintained();s=m.SECTION.encode()
  if change=='history':data=b'foreign'+data
  if change=='missing':data=data.replace(b'<!-- RE898 PUBLICATION END -->',b'')
  if change=='duplicate':data=data[:-7]+s+b'</html>'

@@ -97,15 +97,24 @@ def render(before):
 
 ADAPTER="    # RE898 exact authenticated successor only; all old RE830 guards retained.\n    if b'<!-- RE898 PUBLICATION' in data:\n        import runpy\n        successor = runpy.run_path(str(ROOT / 'scripts/reverse/re898_publication.py'))\n        try:\n            data = successor['preceding_maintained'](data)\n        except ValueError as error:\n            raise AssertionError('RE898 successor malformed or predecessor changed') from error\n"
 def original_test830(text):
+ if '# RE901 exact authenticated append-only successor' in text:
+  import runpy
+  text=runpy.run_path(str(ROOT/'scripts/reverse/re901_publication.py'))['original_compatibility']('tests/reverse/test_re830_table_provenance_publication.py',text)
  if text.count(ADAPTER)!=1:raise ValueError('exact unique historical adapter required')
  before=text.replace(ADAPTER,'',1)
  if digest(before.encode())!='a0a9350be61d985bc60cb22c25aceab02e0922f659596db80d66bc2b45df82b3':raise ValueError('historical guard weakened')
  return before
 
+def read_maintained():
+ b=(ROOT/MAINTAINED).read_bytes()
+ if b'<!-- RE901 PUBLICATION' in b:
+  import runpy
+  b=runpy.run_path(str(ROOT/'scripts/reverse/re901_publication.py'))['preceding_maintained'](b)
+ return b
 def check():
  original_test830((ROOT/'tests/reverse/test_re830_table_provenance_publication.py').read_text())
  for p,b in render((ROOT/PRIOR_DASHBOARD).read_bytes()).items():
-  if (ROOT/p).read_bytes()!=b:raise ValueError('generated drift '+p)
+  if (read_maintained() if p==MAINTAINED else (ROOT/p).read_bytes())!=b:raise ValueError('generated drift '+p)
  for p in PUBLIC_PATHS:
   if p not in (DASHBOARD,MAINTAINED) and 'test_re830' not in p:guard_added(p,(ROOT/p).read_bytes())
  assert digest((ROOT/'docs/reverse/tomb5-progress-dashboard-re830-v1.html').read_bytes())==MAINTAINED_SHA

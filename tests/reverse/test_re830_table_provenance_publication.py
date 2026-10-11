@@ -103,6 +103,13 @@ def preceding_blocker(data):
 
 
 def preceding_dashboard(data):
+    # RE901 exact authenticated append-only successor; historical guards unchanged.
+    if b'<!-- RE901 PUBLICATION' in data:
+        import runpy
+        try:
+            data = runpy.run_path(str(ROOT / 'scripts/reverse/re901_publication.py'))['preceding_maintained'](data)
+        except ValueError as error:
+            raise AssertionError('RE901 successor malformed or predecessor changed') from error
     # RE898 exact authenticated successor only; all old RE830 guards retained.
     if b'<!-- RE898 PUBLICATION' in data:
         import runpy
