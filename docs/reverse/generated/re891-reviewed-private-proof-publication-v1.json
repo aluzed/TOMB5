@@ -1,0 +1,242 @@
+{
+  "archived_private_results": [
+    {
+      "abi": "i386 O0 normal and fail-fast ASan UBSan actual MATHS SPHERES LIBGTE TUs",
+      "approved_verdict_sha256": "d19a201e8c2a9fdde08439f223bfb311dc805dd51c709e34ca1c000e483b13cd",
+      "caller_returned": false,
+      "candidate_sha256": "a23d973e7f99876092411ffe8e4c159670318fd1c8e6f2d15a5c1811af9377cb",
+      "content_scope": "PASS_PRIVATE_FINITE_FULLRAW_RE886",
+      "domain": "constructed flags2 fractions1/2/3 identity nonsaturation; zero compact angles only",
+      "execution_attribution": "ARCHIVED_PRIVATE_PRODUCER_AND_INDEPENDENT_REVIEWER",
+      "frontier": "stop before iPushMatrix body; caller never returned",
+      "fullraw_bytes": 2528,
+      "global_scope": "FAIL_HISTORIC_D9_AND_UNPROVEN_FRONTIERS",
+      "integration": false,
+      "private_delta": "three signed full32 IR1 IR2 IR3 writers in iTranslateXYZ2; all later composition candidate unchanged",
+      "procedure": "FAIL_HISTORICAL_LEDGER_AND_AUTHORING_INCIDENTS",
+      "producer_accepted": {
+        "baseline_red": 6,
+        "candidate_green": 6,
+        "causal_native": 12,
+        "cpu": 3,
+        "individual_mutant_native": 18,
+        "native": 42,
+        "target": 3
+      },
+      "reviewer_accepted": {
+        "baseline_red": 6,
+        "candidate_green": 6,
+        "cpu": 3,
+        "declarative": 3,
+        "native": 18,
+        "rollback_red": 6,
+        "target": 3
+      },
+      "ticket": "RE886"
+    },
+    {
+      "abi": "i386 O0 normal and fail-fast ASan UBSan actual MATHS SPHERES LIBGTE TUs",
+      "approved_verdict_sha256": "40951d551720e671ffc790d672f61dd41b14df00293414694406207b345d742d",
+      "caller_returned": false,
+      "candidate_sha256": "a23d973e7f99876092411ffe8e4c159670318fd1c8e6f2d15a5c1811af9377cb",
+      "content_scope": "PASS_PRIVATE_FINITE_IPUSH_RETURN",
+      "domain": "constructed flags2 fractions1/2/3 identity nonsaturation; zero compact angles only",
+      "execution_attribution": "ARCHIVED_PRIVATE_PRODUCER_AND_INDEPENDENT_REVIEWER",
+      "frontier": "real iPushMatrix tail-jump mPushMatrix returned; stop before bone iTranslateXYZ; caller never returned",
+      "fullraw_bytes": 2528,
+      "global_scope": "FAIL_HISTORIC_D9_AND_UNPROVEN_FRONTIERS",
+      "historical_failure": "four checker FAIL namespaces preserved; expired150s authoring holder not retrocertified",
+      "integration": false,
+      "procedure": "FAIL_HISTORICAL_LEDGER_AND_AUTHORING_INCIDENTS",
+      "producer_accepted": {
+        "candidate_green": 6,
+        "cpu": 3,
+        "declarative": 3,
+        "native": 12,
+        "pushstub_red": 6,
+        "target": 3
+      },
+      "reviewer_accepted": {
+        "candidate_green": 6,
+        "cpu": 3,
+        "declarative": 3,
+        "native": 12,
+        "pushstub_red": 6,
+        "target": 3
+      },
+      "reviewer_cumulative": {
+        "candidate_green": 24,
+        "completed_replays": 4,
+        "cpu": 12,
+        "native": 48,
+        "pushstub_red": 24,
+        "target": 12
+      },
+      "ticket": "RE887"
+    },
+    {
+      "abi": "i386 O0 normal and fail-fast ASan UBSan actual MATHS SPHERES LIBGTE TUs",
+      "approved_verdict_sha256": "25e152cffb4c0090218a8617c4dbfcaf86e87f1091cbb8c2d533f03266bb13cd",
+      "caller_returned": false,
+      "candidate_sha256": "a23d973e7f99876092411ffe8e4c159670318fd1c8e6f2d15a5c1811af9377cb",
+      "content_scope": "PASS_PRIVATE_FINITE_BONE_TRANSLATION_RETURN",
+      "domain": "constructed flags2 fractions1/2/3 identity nonsaturation; zero compact angles only",
+      "execution_attribution": "ARCHIVED_PRIVATE_PRODUCER_AND_INDEPENDENT_REVIEWER",
+      "frontier": "bone iTranslateXYZ returned; stop before primary compact bone rotation; caller never returned",
+      "fullraw_bytes": 2528,
+      "global_scope": "FAIL_HISTORIC_D9_AND_UNPROVEN_FRONTIERS",
+      "historical_failure": "initial checker FAIL retained; sealed aggregate false compared combined12 RED with6; each ablation group6 sensitive independently",
+      "integration": false,
+      "procedure": "FAIL_HISTORICAL_LEDGER_AND_AUTHORING_INCIDENTS",
+      "producer_accepted": {
+        "candidate_green": 6,
+        "cpu": 3,
+        "declarative": 3,
+        "native": 18,
+        "pushstub_red": 6,
+        "target": 3,
+        "translationstub_red": 6
+      },
+      "reviewer_accepted": {
+        "candidate_green": 6,
+        "cpu": 3,
+        "declarative": 3,
+        "native": 18,
+        "pushstub_red": 6,
+        "target": 3,
+        "translationstub_red": 6
+      },
+      "ticket": "RE888"
+    },
+    {
+      "abi": "i386 O0 normal and fail-fast ASan UBSan actual MATHS SPHERES LIBGTE TUs",
+      "approved_verdict_sha256": "4451340ccbe61b959ce1210ae08641be886c4813bd2bf0f73efb31de735895e7",
+      "caller_returned": false,
+      "candidate_sha256": "a23d973e7f99876092411ffe8e4c159670318fd1c8e6f2d15a5c1811af9377cb",
+      "content_scope": "PRIVATE_FINITE_PRIMARY_BONE_ZERO_COMPACT",
+      "domain": "constructed flags2 fractions1/2/3 identity nonsaturation; zero compact angles only",
+      "execution_attribution": "ARCHIVED_PRIVATE_PRODUCER_AND_INDEPENDENT_REVIEWER",
+      "frontier": "primary compact zero Y X Z returned; frames10 to12 short elements, four bytes; stop before secondary rotation; caller never returned",
+      "fullraw_bytes": 2528,
+      "global_scope": "FAIL_HISTORIC_D9_AND_UNPROVEN_FRONTIERS",
+      "historical_failure": "producer PIC checker FAIL and reviewer expectation FAIL preserved; zero rotation ablation sensitive only to pointer, not geometry",
+      "integration": false,
+      "procedure": "FAIL_HISTORICAL_LEDGER_AND_AUTHORING_INCIDENTS",
+      "producer_accepted": {
+        "candidate_green": 6,
+        "cpu": 3,
+        "declarative": 3,
+        "native": 18,
+        "pushstub_fullraw_red": 6,
+        "rotationstub_pointer_red": 6,
+        "target": 3
+      },
+      "producer_attempt_totals": {
+        "attempts": 2,
+        "cpu": 6,
+        "declarative": 6,
+        "native": 36,
+        "target": 6
+      },
+      "reviewer_accepted": {
+        "candidate_green": 6,
+        "cpu": 3,
+        "declarative": 3,
+        "native": 18,
+        "pushstub_fullraw_red": 6,
+        "rotationstub_fullraw_green": 6,
+        "rotationstub_pointer_red": 6,
+        "target": 3
+      },
+      "reviewer_additional_declarative": 3,
+      "ticket": "RE889"
+    },
+    {
+      "abi": "i386 O0 normal and fail-fast ASan UBSan actual MATHS SPHERES LIBGTE TUs",
+      "approved_verdict_sha256": "7f1f8f1ef622386f651091abf129b7091ae1113467d68c63fddf374eb33282bf",
+      "caller_returned": false,
+      "candidate_sha256": "a23d973e7f99876092411ffe8e4c159670318fd1c8e6f2d15a5c1811af9377cb",
+      "content_scope": "PASS_PRIVATE_FINITE_SECONDARY_COMPOSITION",
+      "corrected_review_rerun": false,
+      "domain": "constructed flags2 fractions1/2/3 identity nonsaturation; zero compact angles only",
+      "execution_attribution": "ARCHIVED_PRIVATE_PRODUCER_AND_INDEPENDENT_REVIEWER",
+      "frontier": "secondary compact zero Y X Z returned, frames22 to24 short elements four bytes; position translate zero returned; stop BEFORE InterpolateMatrix; caller never returned",
+      "fullraw_bytes": 2528,
+      "global_scope": "FAIL_HISTORIC_D9_AND_UNPROVEN_FRONTIERS",
+      "historical_failure": "first FAIL archives immutable; corrected independent archive checker clarification only, no extra target CPU native replay",
+      "integration": false,
+      "procedure": "FAIL_HISTORICAL_LEDGER_AND_AUTHORING_INCIDENTS",
+      "producer_accepted": {
+        "candidate_green": 6,
+        "cpu": 3,
+        "declarative": 3,
+        "native": 18,
+        "pushstub_fullraw_red": 6,
+        "rotationstub_pointer_red": 6,
+        "target": 3
+      },
+      "producer_attempt_native": [
+        1,
+        18,
+        18
+      ],
+      "producer_attempt_totals": {
+        "cpu": 9,
+        "declarative": 9,
+        "native": 37,
+        "target": 9
+      },
+      "reviewer_accepted": {
+        "candidate_green": 6,
+        "cpu": 3,
+        "declarative": 3,
+        "native": 18,
+        "pushstub_fullraw_red": 6,
+        "rotationstub_fullraw_green": 6,
+        "rotationstub_pointer_red": 6,
+        "target": 3
+      },
+      "ticket": "RE890"
+    }
+  ],
+  "fresh_execution_scope": "PUBLIC_METADATA_TESTS_ONLY",
+  "global_scope": "FAIL_HISTORIC_D9_AND_UNPROVEN_FRONTIERS",
+  "historic_d9": "FAIL_NON_REPLAYED",
+  "integration": false,
+  "next_objective": "bounded authentic InterpolateMatrix private proof; not whole caller return",
+  "next_ticket": "RE892",
+  "procedure": "FAIL_HISTORICAL_LEDGER_EXPIRED_AUTHORING_LEASES_AND_CHECKER_ARCHIVES",
+  "production_patch": false,
+  "projection": {
+    "adjacent_canaries": false,
+    "gte_bytes": 384,
+    "scalars_bytes": 32,
+    "separate_sentinels_bytes": 64,
+    "stacks_bytes": [
+      1024,
+      1024
+    ],
+    "whole_native_ram": false
+  },
+  "public_helpers_green": false,
+  "public_maths_scope": "unchanged mRotY previous integration only; private helpers unintegrated",
+  "publication_review": "PENDING_INDEPENDENT_EXACT_HASH_REVIEW",
+  "schema": "re891-reviewed-private-proof-publication-v1",
+  "target_cpu_comparison": "full RAM2MiB GTE96 words GPR32 HI LO ordered visits and transfers; inherited independent CPU freshly replayed in archives, not newly authored",
+  "unproved": [
+    "natural_startup",
+    "natural_dualstack_provenance",
+    "natural_camera",
+    "item.data",
+    "registration",
+    "hardware",
+    "gameplay",
+    "general_GTE",
+    "nonzero_rotation_geometry",
+    "complete_caller_return",
+    "O2_strict_aliasing",
+    "alternative_ABI",
+    "native_whole_RAM",
+    "transient_store_exhaustiveness"
+  ]
+}
