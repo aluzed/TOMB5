@@ -37,7 +37,7 @@ def test_unknown_fields():
  with pytest.raises(ValueError):m.validate(d)
 def test_generated():
  m=api();out=m.render();assert set(out)==set(m.OUTPUT_PATHS)
- for p,b in out.items():assert (ROOT/p).read_bytes()==b;m.guard_output(p,b)
+ for p,b in out.items():assert (m.read_maintained() if p==m.MAINTAINED else (ROOT/p).read_bytes())==b;m.guard_output(p,b)
  assert m.preceding_dashboard(out[m.DASHBOARD])==(ROOT/m.PRIOR_DASHBOARD).read_bytes()
  assert m.preceding_maintained(out[m.MAINTAINED])==(ROOT/m.PRIOR_MAINTAINED).read_bytes()
  m.check()
