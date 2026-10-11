@@ -103,6 +103,14 @@ def preceding_blocker(data):
 
 
 def preceding_dashboard(data):
+    # RE898 exact authenticated successor only; all old RE830 guards retained.
+    if b'<!-- RE898 PUBLICATION' in data:
+        import runpy
+        successor = runpy.run_path(str(ROOT / 'scripts/reverse/re898_publication.py'))
+        try:
+            data = successor['preceding_maintained'](data)
+        except ValueError as error:
+            raise AssertionError('RE898 successor malformed or predecessor changed') from error
     suffix = SECTION.encode() + b"</html>"
     assert data.endswith(suffix), "RED: RE830 dashboard section absent or altered"
     assert data.count(b"<!-- RE830 PUBLICATION BEGIN -->") == 1

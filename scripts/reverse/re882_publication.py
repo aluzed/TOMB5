@@ -15,7 +15,7 @@ import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
-PRIOR_DASHBOARD = 'docs/reverse/tomb5-progress-dashboard.html'
+PRIOR_DASHBOARD = 'docs/reverse/tomb5-progress-dashboard-re830-v1.html'
 DASHBOARD = 'docs/reverse/tomb5-progress-dashboard-re882-v1.html'
 REPORT = 'docs/reverse/functions/re882-reviewed-private-proof-publication.md'
 JSON_PATH = 'docs/reverse/generated/re882-reviewed-private-proof-publication-v1.json'
