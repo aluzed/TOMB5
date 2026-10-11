@@ -1,0 +1,116 @@
+# RE923 — publication metadata IRQ RE922
+
+## Progression
+- [x] Authentification complète size/SHA/seals et ensembles exacts112/33/52/51/11.
+- [x] TDD RED avant implémentation, tests metadata canonical/public-only.
+- [ ] PENDING_INDEPENDENT_EXACT_HASH_REVIEW ; worktree-only, aucun stage/commit/push.
+
+## Evidence
+RE922-PCsxRedux-IRQ-subset : références logicielles distinctes du hardware ; PCSX-Redux psxhw/r3000a GPL-2.0-or-later, OpenBIOS MIT. Copyright (C) 2023 PCSX-Redux authors (psxhw). Aucune source tierce redistribuée. Préfixe construit franchit I_MASK :1976495 instructions terminées,1976496 visites hook,4MMIO dont3supportés ; arrêt AVANT DMA_DP_CR écriture32bits non retirée. Retirement : instruction terminée avant hook suivant, pas microarchitecture. Producteur17tests216comparaisonsMMIO20prédicatsCPU ; reviewer compilation fraîche et3replays continus, oracle decoder indépendant RAM entière2097152octets32GPR1976496PC4MMIO,32lanes50failclosed. Ablation IRQ7retired supplémentaires. Aucun CP0 exécuté ;20prédicats distincts ne signifient pas20instructions CP0. A0 ablation peut atteindre jeu via B0 fallback ; pas preuve absence entrée.
+
+## Reviewhistory
+Original review et correction01 FAILED retenus. Correction02 passed=true mais quatre concerns NONEMPTY : REJECTED_CONCERNS_NONEMPTY ; prior_summary_false_claim=true, jamais rétroapprouvé. Clarification03 distincte SCOPED_PASS_ARCHIVE_ONLY, passed=true errors/concerns vides, zéro nouvelle replay numérique. Les quatre limitations originales sont conservées intégralement dans metadata. firstFAIL API/compile/braces et anciennes revues restent immuables.
+
+## Blockers
+Active IRQ fail-closed refusée : pas exception matérielle simulée universelle. ROM OpenBIOS héritée non recompilée RE922, ABI/RAM construits, loads immédiats Unicorn ; logiciel pas oracle hardware. Pas reset naturel, Sony BIOS/RA, CD, boot complet, gameplay ou intégration. Global FAIL/procedure FAIL historiques ; integration=false. BLOCKED-001/002 suppressions utilisateur, report/cache/assets/coldarchives/seals/RE893partial préservés. Frontière DMA_DP_CR non supportée ne reçoit aucune valeur succès fabriquée.
+
+## Acceptance
+- [x] Schéma exact récursif, mutants, guards metadata-only, inverse suffixe exact et adapters historiques hash-authentifiés.
+- [x] ZERO fresh target/native : seulement tests metadata, aucun replay numérique.
+- [ ] Revue indépendante exacte requise ; publication PASS ne vaut pas intégration.
+
+## Next
+RE924 : modèle DMA cohérent depuis références libres, preuve bornée séparée, pas production autorisée.
+
+{
+  "active_irq": "FAIL_CLOSED_REFUSED",
+  "archived_counts": {
+    "cp0_predicates": 20,
+    "fresh_continuous_runs": 3,
+    "fresh_tests": 17,
+    "irq_ablation_retired_delta": 7,
+    "mmio": 4,
+    "public_mmio_comparisons": 216,
+    "retired": 1976495,
+    "supported": 3,
+    "visits": 1976496
+  },
+  "attribution": {
+    "OpenBIOS_license": "MIT",
+    "copyright": "Copyright (C) 2023 PCSX-Redux authors",
+    "license": "GPL-2.0-or-later",
+    "nugget_commit": "7ffc2b14b3ec4b912e7e79f6e31101ff3f24cc30",
+    "pcsx_redux_commit": "c313b116e6a55786bc127c9b3a07a90b55d97c21",
+    "project": "PCSX-Redux / nugget OpenBIOS",
+    "source_url": "https://github.com/pcsx-redux/pcsx-redux/blob/c313b116e6a55786bc127c9b3a07a90b55d97c21/src/core/psxhw.cc"
+  },
+  "authentication": {
+    "re922-interrupt-mmio": {
+      "manifest_sha256": "3a7465def56d0074975152e05edd4d7807a23a84c0775d2503046156d72cc1c1",
+      "members": 112,
+      "seal_sha256": "5d2b37d4687bf165ebeed2ee2c6605f059a05a8a9727ab9045193d13447707cf",
+      "verdict_sha256": "664b7958a7e55f24b5b898f71cc49c25a794e3d23ee32c0ea590320664a3aea5"
+    },
+    "re922-review": {
+      "manifest_sha256": "3de2ba11543e9eb4b024d91d01494594bea2b5fb79fa4ebe6bcfc9014b41787f",
+      "members": 33,
+      "seal_sha256": "3aaebf3bf4755877cf0142262299558689ab80e5da57b6d2d90694d29f4808a0",
+      "verdict_sha256": "df7536d86a86a54319fe31f96e97497055fc91f87bdf604f531862cee03bf4c4"
+    },
+    "re922-review-clarification03": {
+      "manifest_sha256": "cdea1d8078807c0e191bc59c5041e4e6c701f5d656851714e79378dc53fe36b0",
+      "members": 11,
+      "seal_sha256": "a84f53edc785d7c613b926f6f1c65fe69749f0f22e87e687b73719cb0b0c7c4b",
+      "verdict_sha256": "b97f3ae3194b1a7a141f14e7b2351a4574e3d9dd9c513bad0260d3994b0ec23c"
+    },
+    "re922-review-correction01": {
+      "manifest_sha256": "24b2c029fe1d8245f5b1db7551011d937baaa4e14e8e1532b1926af1292b5311",
+      "members": 52,
+      "seal_sha256": "da9aff76d26528770d632da03807bdbba46635e5fdde48d24e4e2b494448521c",
+      "verdict_sha256": "d4cb2474e8aedc797d5d93c696188ad021529bd467a3d04779287037b5f9056e"
+    },
+    "re922-review-correction02": {
+      "manifest_sha256": "af7d3b786928465c1e6bd25f66b1f3946344b993b5129f62f4da1f241ddc980b",
+      "members": 51,
+      "seal_sha256": "91c18368336e36b0055ab2b9ea30a35281cf5a7bd40c27208862df2ce820aa72",
+      "verdict_sha256": "c563ea903c491596e665114e50b57edc7e5a0bf2563f4d4b54bfe489bc705e9d"
+    }
+  },
+  "backend_boundary": "RE922-PCsxRedux-IRQ-subset",
+  "fresh_execution_scope": "PUBLIC_METADATA_TESTS_ONLY",
+  "fresh_native": 0,
+  "fresh_target": 0,
+  "frontier": "DMA_DP_CR_32_UNSUPPORTED_ATTEMPT_NOT_RETIRED",
+  "global_scope": "FAIL",
+  "integration": false,
+  "limitations": [
+    "Global/procedure historiques FAIL conserv\u00e9s; integration=false.",
+    "ROM compil\u00e9e h\u00e9rit\u00e9e, non reconstruite; ABI/RAM construits, loads imm\u00e9diats Unicorn, pas reset/Sony/CD/gameplay/hardware.",
+    "GPL-2.0-or-later psxhw/r3000a; OpenBIOS MIT; aucun ajout production.",
+    "Retirement mesur\u00e9 par instruction termin\u00e9e avant hook suivant, pas preuve microarchitecturale."
+  ],
+  "naturalcaller": "BLOCKED",
+  "oracle": {
+    "executed_CP0_instructions": 0,
+    "fail_closed_controls": 50,
+    "gpr": 32,
+    "hardware_oracle": false,
+    "independent_decoder": true,
+    "independent_register_lanes": 32,
+    "mmio": 4,
+    "ordered_pc": 1976496,
+    "whole_ram_bytes": 2097152
+  },
+  "procedure_scope": "FAIL",
+  "production_patch": false,
+  "publication_review": "PENDING_INDEPENDENT_EXACT_HASH_REVIEW",
+  "review_history": {
+    "clarification03": "SCOPED_PASS_ARCHIVE_ONLY",
+    "clarification03_new_numerical_runs": 0,
+    "correction01": "FAILED_RETAINED",
+    "correction02": "REJECTED_CONCERNS_NONEMPTY",
+    "prior_summary_false_claim": true,
+    "review": "FAILED_RETAINED"
+  },
+  "schema": "re923-irq-proof-publication-v1"
+}
