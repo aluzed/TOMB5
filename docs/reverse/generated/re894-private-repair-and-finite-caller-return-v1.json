@@ -1,0 +1,152 @@
+{
+  "archived_private_results": [
+    {
+      "abi": "i386 O0 normal and fail-fast ASan UBSan actual MATHS SPHERES LIBGTE TUs",
+      "approved_verdict_sha256": "7b03420c8563a49cd45c98e44d2f743b88843098a93d5c8624a8e6ed1024a9e0",
+      "baseline_native": {
+        "green": 4,
+        "red": 2
+      },
+      "caller_returned": false,
+      "candidate_native_green": 6,
+      "candidate_sha256": "9002cac7b27566f572a8b744cabddc36431b0b00fae9599d6342f156a523ba88",
+      "content_scope": "PASS_PRIVATE_FINITE_INTERPOLATEMATRIX_REPAIR",
+      "domain": "constructed flags2 rate4 fractions1/2/3 identity nonsaturation bone7/-9/13 zero compact angles",
+      "execution_attribution": "ARCHIVED_PRIVATE_PRODUCER_AND_INDEPENDENT_REVIEWER",
+      "expression_scope": {
+        "algebra_inspected": 12,
+        "identity_rotation_zero_difference": 9,
+        "translation_sensitive": 3
+      },
+      "frontier": "InterpolateMatrix returned and positions written; stop BEFORE mCopyMatrix body, native exception is not caller return",
+      "fullraw_bytes": 2528,
+      "historical_failure": "initial mutant SyntaxError FAIL seal immutable; separate qualification correction does not add 30 native replays",
+      "integration": false,
+      "private_delta": "12 function-local fraction3 expressions secondary minus arithmetic-shifted difference; only three translations behaviorally sensitive in this identity domain",
+      "producer_accepted": {
+        "cpu": 3,
+        "cpu_mutants": 3,
+        "declarative": 3,
+        "native": 54,
+        "target": 3
+      },
+      "reviewer_accepted": {
+        "cpu": 3,
+        "cpu_mutants": 3,
+        "declarative": 3,
+        "native": 42,
+        "target": 3
+      },
+      "ticket": "RE892"
+    },
+    {
+      "abi": "i386 O0 normal and fail-fast ASan UBSan actual MATHS SPHERES LIBGTE TUs",
+      "ablation_scope": "copy and push sensitive to RAW only, interpolation sensitive to RAW and positions; pad upper word sensitive",
+      "approved_verdict_sha256": "7d9ec09df201b7ec50067511dc37bacd55cf3932ada7ae1f7147bfe83051595f",
+      "caller_returned": true,
+      "candidate_sha256": "9002cac7b27566f572a8b744cabddc36431b0b00fae9599d6342f156a523ba88",
+      "completion_verdict_sha256": "23bc5208ba55ba8c7f0440ca5d7fa101577da2b6daad4d403e1b88b9f9abeb2e",
+      "content_scope": "PASS_PRIVATE_FINITE_CONSTRUCTED_FULL_CALLER_RETURN",
+      "domain": "constructed flags2 rate4 fractions1/2/3 identity nonsaturation bone7/-9/13 zero compact angles",
+      "execution_attribution": "ARCHIVED_PRIVATE_PRODUCER_AND_INDEPENDENT_REVIEWER",
+      "frontier": "real GetJointAbsPosition mCopyMatrix body through shared tail and completed target return with restored RA/SP; native direct RET without exception, including six uninstrumented executions",
+      "fullraw_bytes": 2528,
+      "historical_failure": "first producer positions-push expectation FAIL; initial canonical ENOSPC review FAIL, recovery reporter FAIL and partial archive FAIL immutable; accepted tmpfs evidence persisted later in exact durable compressed archive, original volatile completion limitation retained",
+      "integration": false,
+      "positions": [
+        [
+          26,
+          -40,
+          54
+        ],
+        [
+          34,
+          -48,
+          62
+        ],
+        [
+          43,
+          -55,
+          71
+        ]
+      ],
+      "producer_accepted": {
+        "ablation_red": 18,
+        "candidate_green": 6,
+        "cpu": 3,
+        "cpu_mutants": 2,
+        "declarative": 3,
+        "initial_ram": 3,
+        "native": 30,
+        "pad_mutant_red": 6,
+        "target": 3
+      },
+      "reviewer_accepted": {
+        "ablation_red": 18,
+        "candidate_green": 6,
+        "cpu": 3,
+        "cpu_mutants": 2,
+        "declarative": 3,
+        "initial_ram": 3,
+        "native": 36,
+        "pad_mutant_red": 6,
+        "target": 3,
+        "uninstrumented_direct_return": 6
+      },
+      "ticket": "RE893"
+    }
+  ],
+  "durable_review_archive": {
+    "bytes": 4310312,
+    "original_declared_roots_retained": true,
+    "parent_inventory_entries": [
+      29,
+      16,
+      415,
+      6
+    ],
+    "path": "build/reverse/autonomy-20261011/re893-review-evidence-durable.tar.xz",
+    "publication_verification": "exact archive and two verdict member hashes only; full inventories authenticated by parent, not fresh publication raw audit",
+    "sha256": "b7fb2dd9e9be3e4fad2720bb538df2f123fe2ca8742a1aacbc2ea0b37c73f50d"
+  },
+  "fresh_execution_scope": "PUBLIC_METADATA_TESTS_ONLY",
+  "global_scope": "FAIL_HISTORIC_D9_NATURAL_NONZERO_GENERAL_UNPROVEN",
+  "historic_d9": "FAIL_NON_REPLAYED",
+  "integration": false,
+  "next_objective": "natural upstream caller provenance or separately bounded nonzero rotation domain; do not rerun closed finite matrices",
+  "next_ticket": "RE895",
+  "procedure": "FAIL_HISTORICAL_LEDGER_AUTHORING_CHECKER_AND_ENOSPC_INCIDENTS_PRESERVED",
+  "production_patch": false,
+  "projection": {
+    "adjacent_canaries": false,
+    "gte_bytes": 384,
+    "position_bytes": 12,
+    "scalars_bytes": 32,
+    "separate_sentinels_bytes": 64,
+    "stacks_bytes": [
+      1024,
+      1024
+    ],
+    "whole_native_ram": false
+  },
+  "public_helpers_green": false,
+  "public_maths_scope": "unchanged previous mRotY only; GetSpheres public stub and frame helpers private unintegrated",
+  "publication_review": "PENDING_INDEPENDENT_EXACT_HASH_REVIEW",
+  "schema": "re894-private-repair-and-finite-caller-return-v1",
+  "target_cpu_comparison": "full RAM2MiB GTE96 GPR32 HI LO ordered visits/transfers; inherited independent CPU replayed in archives not newly authored",
+  "unproved": [
+    "natural_startup",
+    "natural_dualstack_provenance",
+    "natural_camera",
+    "item.data",
+    "registration",
+    "hardware",
+    "gameplay",
+    "general_GTE",
+    "nonzero_rotation_geometry",
+    "O2_strict_aliasing",
+    "alternative_ABI",
+    "native_whole_RAM",
+    "transient_store_exhaustiveness"
+  ]
+}
