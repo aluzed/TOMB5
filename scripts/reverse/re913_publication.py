@@ -35,7 +35,17 @@ def inverse(data,sha):
  if digest(before)!=sha:raise ValueError('exact predecessor bytes changed')
  return before
 def preceding_dashboard(data):return inverse(data,PRIOR_SHA)
-def preceding_maintained(data):return inverse(data,MAINTAINED_SHA)
+def preceding_maintained(data):
+ if b'<!-- RE915 PUBLICATION' in data:
+  import runpy
+  data=runpy.run_path(str(ROOT/'scripts/reverse/re915_publication.py'))['preceding_maintained'](data)
+ return inverse(data,MAINTAINED_SHA)
+def read_maintained():
+ data=(ROOT/MAINTAINED).read_bytes()
+ if b'<!-- RE915 PUBLICATION' in data:
+  import runpy
+  data=runpy.run_path(str(ROOT/'scripts/reverse/re915_publication.py'))['preceding_maintained'](data)
+ return data
 def maintained_before():
  b=(ROOT/PRIOR_MAINTAINED).read_bytes()
  if digest(b)!=MAINTAINED_SHA:raise ValueError('maintained historical fixture drift')
@@ -78,7 +88,7 @@ def compatibility_pins():
 def check():
  compatibility_pins()
  for p,b in render().items():
-  if (ROOT/p).read_bytes()!=b:raise ValueError('generated drift '+p)
+  if (read_maintained() if p==MAINTAINED else (ROOT/p).read_bytes())!=b:raise ValueError('generated drift '+p)
  for p in PUBLIC_PATHS:
   if p not in (DASHBOARD,MAINTAINED,PRIOR_MAINTAINED):guard_added(p,(ROOT/p).read_bytes())
  print('RE913 PUBLIC_METADATA_TESTS_ONLY PASS; exact-public-hash independent review PENDING')
