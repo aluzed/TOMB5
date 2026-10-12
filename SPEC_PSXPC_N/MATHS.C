@@ -262,7 +262,7 @@ void mPushMatrix()//764D0(<), 78514(<) (F)
 	Matrix->m12 = R23;
 	Matrix->m20 = R31;
 	Matrix->m21 = R32;
-	Matrix->m22 = R33;
+	for (unsigned j = 0; j < 4; ++j) ((unsigned char*)Matrix)[16 + j] = ((const unsigned char*)&gteRegs.CP2C.p[4].d)[j];
 	Matrix->tx = TRX;
 	Matrix->ty = TRY;
 	Matrix->tz = TRZ;
@@ -995,7 +995,7 @@ void mLoadMatrix(struct MATRIX3D* m)//7699C(<), 789E0(<) (F)
 	R23 = m->m12;
 	R31 = m->m20;
 	R32 = m->m21;
-	R33 = m->m22;
+	for (unsigned j = 0; j < 4; ++j) ((unsigned char*)&gteRegs.CP2C.p[4].d)[j] = ((const unsigned char*)m)[16 + j];
 	TRX = m->tx;
 	TRY = m->ty;
 	TRZ = m->tz;
