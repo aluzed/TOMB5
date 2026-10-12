@@ -454,7 +454,7 @@ void mRotX(long rx)//7669C (F)
 
 		VX1 = t5;
 		VY1 = (t5 >> 16) & 0xFFFF;
-		VZ1 = t6;
+		gteRegs.CP2D.p[3].d = t6;
 
 		t4 = MAC1;
 		t2 = MAC2 & 0xFFFF;
@@ -700,7 +700,7 @@ void iRotX(int rx)
 	t6 = 0xFFFF0000 & t5;
 	VX0 = t6 & 0xFFFF;
 	VY0 = (t6 >> 16) & 0xFFFF;
-	VZ0 = t5;
+	gteRegs.CP2D.p[1].d = (uint32_t)t5;
 
 	t0 = (L11 & 0xFFFF) | (L12 << 16);
 	t1 = (L13 & 0xFFFF) | (L21 << 16);
@@ -708,12 +708,12 @@ void iRotX(int rx)
 
 	docop2(0x4A6012);
 	t6 = t5 >> 16;
-	t5 <<= 16;
+	t5 = mRotX_signed32((uint32_t)t5 << 16);
 	t5 = -t5;
 
 	VX1 = t5 & 0xFFFF;
 	VY1 = (t5 >> 16) & 0xFFFF;
-	VZ1 = t6;
+	gteRegs.CP2D.p[3].d = (uint32_t)t6;
 
 	t0 &= 0xFFFF;
 	t1 &= 0xFFFF0000;
