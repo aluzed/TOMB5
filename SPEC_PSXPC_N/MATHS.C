@@ -576,7 +576,7 @@ void mRotZ(long rz)//76804 (F)
 
 		VX0 = (t1 & 0xFFFF);
 		VY0 = ((t1 >> 16) & 0xFFFF);
-		VZ0 = 0;
+		gteRegs.CP2D.p[1].d = 0;
 
 		t1 = (((uint32_t)R21 << 16) | (R13 & 0xFFFF)) & 0xFFFF;
 		t2 = (((uint32_t)R23 << 16) | (R22 & 0xFFFF)) & 0xFFFF0000;
@@ -592,7 +592,7 @@ void mRotZ(long rz)//76804 (F)
 
 		VX1 = t0;
 		VY1 = (t0 >> 16) & 0xFFFF;
-		VZ1 = 0;
+		gteRegs.CP2D.p[3].d = 0;
 
 		t0 = MAC1 & 0xFFFF;
 		t5 = MAC2;
@@ -764,12 +764,12 @@ void iRotZ(int rz)//76F04
 	t0 = (rcossin_tbl[rz >> 1] & 0xFFFF) | ((rcossin_tbl[rz >> 1 | 1] & 0xFFFF) << 16);
 
 	t1 = t0 >> 16;
-	t2 = t0 << 16;
+	t2 = mRotX_signed32((uint32_t)t0 << 16);
 	t1 |= t2;
 
 	VX0 = t1 & 0xFFFF;
 	VY0 = (t1 >> 16) & 0xFFFF;
-	VZ0 = 0;
+	gteRegs.CP2D.p[1].d = 0;
 
 	t1 = (L13 & 0xFFFF) | (L21 << 16);
 	t2 = (L22 & 0xFFFF) | (L23 << 16);
@@ -785,7 +785,7 @@ void iRotZ(int rz)//76F04
 
 	VX1 = t0 & 0xFFFF;
 	VY1 = (t0 >> 16) & 0xFFFF;
-	VZ1 = 0;
+	gteRegs.CP2D.p[3].d = 0;
 
 	t1 &= 0xFFFF;
 
@@ -805,7 +805,7 @@ void iRotZ(int rz)//76F04
 	t6 = MAC2;
 	t8 = MAC3;
 
-	t5 <<= 16;
+	t5 = mRotX_signed32((uint32_t)t5 << 16);
 	t0 |= t5;
 	t6 &= 0xFFFF;
 	t2 |= t6;
