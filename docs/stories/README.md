@@ -140,3 +140,8 @@ Par dossier :
 - `TOOLS` : total `2`
 
 Note : ce snapshot est un indicateur heuristique basé sur les marqueurs du repo, pas une preuve d'équivalence binaire.
+
+## Incident actif — 12 octobre 2026
+
+- [BLOCKED-007 — refus fournisseur RE930](blocked/BLOCKED-007-re930-provider-refusal.md) — Status: `Blocked`. Unité refusée non reprise ; publication documentaire seulement, aucune nouvelle preuve CPU/build ni intégration.
+- [Dashboard incident RE930 versionné](../reverse/tomb5-progress-dashboard-re930-incident-v1.html) — distinct du dashboard RE929 maintained et de ses pins historiques.
