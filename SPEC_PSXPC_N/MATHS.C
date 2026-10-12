@@ -1083,7 +1083,7 @@ void iLoadMatrix(struct MATRIX3D* m)//771D8(<) (F)
 	L23 = m->m12;
 	L31 = m->m20;
 	L32 = m->m21;
-	L33 = m->m22;
+	for (unsigned j = 0; j < 4; ++j) ((unsigned char*)&gteRegs.CP2C.p[12].d)[j] = ((const unsigned char*)m)[16 + j];
 
 	RBK = m->tx;
 	GBK = m->ty;
@@ -1191,25 +1191,8 @@ void iPushMatrix0()//76D3C(<), ?(<) (F)
 
 void iPushMatrix()//76D3C(<), ?(<) (F)
 {
-	int t0 = (L11 & 0xFFFF) | (L12 << 16);
-	int t1 = (L13 & 0xFFFF) | (L21 << 16);
-	int t2 = (L22 & 0xFFFF) | (L23 << 16);
-	int t3 = (L31 & 0xFFFF) | (L32 << 16);
-	int t4 = L33;
-	int t5 = RBK;
-	int t6 = GBK;
-	int t7 = BBK;
-
 	++iMatrix;
-
-	((int*)iMatrix)[0] = t0;
-	((int*)iMatrix)[1] = t1;
-	((int*)iMatrix)[2] = t2;
-	((int*)iMatrix)[3] = t3;
-	((int*)iMatrix)[4] = t4;
-	((int*)iMatrix)[5] = t5;
-	((int*)iMatrix)[6] = t6;
-	((int*)iMatrix)[7] = t7;
+	for (unsigned j = 0; j < 32; ++j) ((unsigned char*)iMatrix)[j] = ((const unsigned char*)&gteRegs.CP2C)[32 + j];
 
 	mPushMatrix();
 }
