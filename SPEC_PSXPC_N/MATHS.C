@@ -1055,7 +1055,7 @@ void InterpolateMatrix()//77250(<)
 	}
 
 	//loc_7754C
-	R33 = m.m22;
+	const int r33_word = m.m22; for (unsigned j = 0; j < 4; ++j) ((unsigned char*)&gteRegs.CP2C.p[4].d)[j] = ((const unsigned char*)&r33_word)[j];
 	TRX = m.tx;
 	TRY = m.ty;
 	TRZ = m.tz;
