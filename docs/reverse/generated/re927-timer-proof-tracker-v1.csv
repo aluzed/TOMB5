@@ -1,0 +1,3 @@
+ticket,scope,status,integration,publication_review
+RE926,archived proof,PRIVATE_TIMER_CORRECTED_FINITE_ACCEPTED,false,PENDING_INDEPENDENT_REVIEW
+RE927,fresh metadata,PUBLIC_METADATA_TESTS_ONLY,false,PENDING_INDEPENDENT_REVIEW
