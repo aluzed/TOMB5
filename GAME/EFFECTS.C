@@ -551,7 +551,7 @@ void floor_shake_effect(struct ITEM_INFO* item)//39410, 39910 (F)
 
 void turn180_effect(struct ITEM_INFO* item)//393F4(<), 398F4(<) (F)
 {
-	item->pos.y_rot -= ANGLE(180);
+	item->pos.y_rot = (short)((unsigned short)item->pos.y_rot - 32768u);
 	item->pos.x_rot = -item->pos.x_rot;
 }
 
