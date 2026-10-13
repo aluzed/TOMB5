@@ -99,6 +99,29 @@ def metadata_contract():
         for marker in MARKERS:
             assert marker in text, (path, marker)
 
+BASELINE_SHA256 = 'cc943333afdcb2777a70f3f8db744257ab39004f2ae109f0787a97c6ac82c989'
+PROPOSED_SHA256 = '81928509ec45fe9c4a66d771886e131eac1bc6b91754fde116a49fb44fd0ce32'
+
+def frozen_baseline(original: bytes) -> bytes:
+    """Exact approved RE947 inverse; frozen RE945 characterization, never production edit."""
+    digest = hashlib.sha256(original).hexdigest()
+    if digest == BASELINE_SHA256:
+        return original
+    if digest != PROPOSED_SHA256:
+        raise ValueError('unapproved MISC source fingerprint: STOP')
+    text = original.decode()
+    include = '#include "MISC.H"\n#include <stdint.h>'
+    assert text.count(include) == 1
+    text = text.replace(include, '#include "MISC.H"', 1)
+    for n in (1, 2):
+        new = f'uint32_t state = (uint32_t)((uint64_t)(uint32_t)rand_{n} * UINT64_C(1103515245) + UINT64_C(12345));\n\trand_{n} = state <= UINT32_C(2147483647) ? (long)state : (long)((int64_t)state - INT64_C(4294967296));\n\treturn (long)((state >> 16) & UINT32_C(32767));'
+        old = f'rand_{n} = (rand_{n} * 0x41C64E6D) + 0x3039;\n\treturn (rand_{n} >> 16) ' + ('&' if n == 1 else '*') + ' 0x7FFF;'
+        assert text.count(new) == 1
+        text = text.replace(new, old, 1)
+    baseline = text.encode()
+    assert hashlib.sha256(baseline).hexdigest() == BASELINE_SHA256
+    return baseline
+
 def execute(path):
     with mutation_lock() as mutex:
         rec = Recorder(path)
@@ -121,7 +144,11 @@ def execute(path):
             assert rec.run(label+'-link', ff+[ROOT/'tests/reverse/re945_rng_actual_tu.cpp',obj,
                 '-Wl,--gc-sections,-z,defs','-o',exe])[0] == 0
             return exe
-        normal = build('normal', source)
+        baseline = frozen_baseline(original)
+        characterization_source = path/'MISC.C'
+        rec.write(characterization_source.name, baseline)
+        rec.record('source-provenance.json', dict(current_sha256=hashlib.sha256(original).hexdigest(), frozen_baseline_sha256=BASELINE_SHA256, approved_future_sha256=PROPOSED_SHA256, inverse_applied=baseline != original))
+        normal = build('normal', characterization_source)
         observations = []
         for seed in SEEDS:
             rc, out, err = rec.run('normal-'+str(seed), [normal, hex(seed)])
@@ -136,7 +163,7 @@ def execute(path):
         for i, args in enumerate(([], ['-1'], ['4294967296'], ['1x'], [''], ['1','2'])):
             rc, _, _ = rec.run('invalid-'+str(i), [normal]+args)
             assert rc == 2
-        strict = build('strict', source, True)
+        strict = build('strict', characterization_source, True)
         diagnostics = []
         for seed in SEEDS:
             rc, out, err = rec.run('strict-'+str(seed), [strict, hex(seed)])
@@ -147,7 +174,7 @@ def execute(path):
             else:
                 assert rc == 0 and not err and rows(out) == expected(seed)
         assert len(diagnostics) == 3
-        text = original.decode()
+        text = baseline.decode()
         expr = 'return (rand_2 >> 16) * 0x7FFF;'
         assert text.count(expr) == 1
         mutant = path/'mutant-MISC.C'

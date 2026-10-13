@@ -1,4 +1,5 @@
 #include "MISC.H"
+#include <stdint.h>
 #include "CONTROL.H"
 #include "CAMERA.H"
 #include "GPU.H"
@@ -515,8 +516,9 @@ void PrintGauge(int x, int y, int length)
 
 long GetRandomControl() //5E9F0, 926F8 (F)
 {
-	rand_1 = (rand_1 * 0x41C64E6D) + 0x3039;
-	return (rand_1 >> 16) & 0x7FFF;
+	uint32_t state = (uint32_t)((uint64_t)(uint32_t)rand_1 * UINT64_C(1103515245) + UINT64_C(12345));
+	rand_1 = state <= UINT32_C(2147483647) ? (long)state : (long)((int64_t)state - INT64_C(4294967296));
+	return (long)((state >> 16) & UINT32_C(32767));
 }
 
 void SeedRandomControl(long seed) //(F)
@@ -526,8 +528,9 @@ void SeedRandomControl(long seed) //(F)
 
 long GetRandomDraw() //5EA18, 5F6F8 (F)
 {
-	rand_2 = (rand_2 * 0x41C64E6D) + 0x3039;
-	return (rand_2 >> 16) * 0x7FFF;
+	uint32_t state = (uint32_t)((uint64_t)(uint32_t)rand_2 * UINT64_C(1103515245) + UINT64_C(12345));
+	rand_2 = state <= UINT32_C(2147483647) ? (long)state : (long)((int64_t)state - INT64_C(4294967296));
+	return (long)((state >> 16) & UINT32_C(32767));
 }
 
 void SeedRandomDraw(long seed) //(F)
