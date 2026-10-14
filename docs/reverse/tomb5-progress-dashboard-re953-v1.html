@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr"><meta charset="utf-8"><title>RE953 — CPU CD scheduler</title><body><h1>RE953 — metadata-only, PENDING</h1><pre># RE-953 — CPU / CD scheduler : checkpoint comportemental revu
+
+## Tracker
+
+| Étape | État |
+|---|---|
+| 11 : même CPU → branchTest entier → counters TU → device réel | PASS fini privé, revue fraîche archivée |
+| 12 : ack CD → schedule → cycles CPU → garde avant callback | PASS fini privé, revue fraîche archivée |
+| Contrat public | RED avant documents, GREEN documentaire seulement |
+| Gate indépendante de publication | PENDING |
+| Global strict / procédure / intégration | passed=false / INCOMPLETE / integration=false |
+
+production_patch=false. Aucun nouveau replay privé, aucun build natif et aucune intégration production. Revue fraîche signifie résultats déjà archivés, non réexécutés pour cette publication. Finite PASS indépendant ne vaut ni strict PASS ni publication approuvée.
+
+## Progrès comportementaux exacts
+
+11 : producteur CPU authentique, un même état CPU, corps branchTest complet, TU counters entière inchangée, genuine header avec -fno-access-control. 4000 blocs construits, 8000 fetches, 16000 cycles produits; événements 2148, 4292, 6440, 8584, 10732, 12876, 15024; prochain 17168. Device SDL dummy réel continu, wait effectivement atteint et progrès ultérieur, normal et UBSan failfast. Trois mutants no_call/no_update/late_gate : native exit0 puis AssertionError, pas crash. RED comportemental historique avant wiring; revue RED fraîche distincte archivée. CompileFAIL enum LogClass et initial normal FAIL conservés; normal_fast distinct, réserve de retention diagnostic partielle non effacée.
+
+12 : actual CD write0/write2/write3 ack → actual scheduleFifo/durationToCycles → actual CPU schedule → même CPU et cycles produits → branchTest complet efface bit CDRFIFO et appelle une garde d&#x27;exclusion avant genuine fifoScheduledCallback BODY. Target 26993, arrêt 26996, 6749 blocs, 13498 fetches, 13496 lectures matériel via providers, 12 événements, prochain 27898. Normal/UBSan failfast, cinq mutants no_ack/wrong_index/no_schedule/no_dispatch/duration_retry : native exit0 puis assertion. Premier duration+1 INSENSITIVE par quantification conservé, retry sensible distinct; Setting nested compileFAIL conservé. Command FIFO construite vide avec extrait genuine de classe : aucune commande produite, aucun callback body, runCommand ou CD success. Arrêt avant le corps, pas succès simulé.
+
+## Provenance et limites
+
+PCSX-Redux GPL-2.0-or-later, pin c313b116e6a55786bc127c9b3a07a90b55d97c21. Quatre racines author11/review11/author12/review12 authentifiées intégralement : 155 / 208 / 245 / 151 membres. Pins de manifests et hashes HANDOFF/acceptance/finite/strict dans metadata. CPU/CD ne sont pas TU/ABI entières : classes, MMIO, System settings/video, mémoire, extraits et adapters construits. Pas frontend naturel, hardware, Sony/startup/gameplay ni gain global OpenBIOS; frontière PC decimal 5488, clock 14777602, branchTest03 non certifiée inchangée. Warning narrowing upstream conservé. Pas d&#x27;injection cycles/deadlines/pending. Pas de copie source, opcode brut ou asset propriétaire dans la livraison.
+
+Réserves pré-ledger, retention partielle unité11, holders historiques et budgets historiques dépassés restent INCOMPLETE. Revue fraîche finie ne blanchit aucun refus historique. RE944 exclu, aucun contournement.
+
+## Nettoyage — ledger de conservation
+
+Zéro suppression, zéro mutation historique, zéro patch production. Quatre chemins publics nouveaux seulement; README sale, blockers supprimés/modifiés, parent007 et untracked préexistants préservés. Dashboard versionné successeur : inverse consiste uniquement à retirer les quatre nouveaux chemins; prédécesseur RE952 épinglé et inchangé. Owner parent vivant et contention repo vérifiés avant/après opérations, jamais acquis ni tué. Mutation mutex canonique par opération exécutable. Discovery outils pré-recorder et helpers hors dépôt non exhaustifs déclarés, sans rétrocertification. Export public sans build ni dépendance privée; résultats RED/GREEN, tests pertinents et mutations documentaires conservés privés. Cleanup mesuré, ledgers, verdict, delivery et HANDOFF finalisés avant manifest/seal; completion extérieure. Aucun stage/commit/push/reset/clean ni nouveau job.
+
+## Gate indépendante
+
+public_gate=PENDING : auto-vérification n&#x27;est pas approbation. Reviewer séparé à venir sur les quatre hashes exacts du delivery privé. Global strict passed=false, procédure INCOMPLETE et integration=false retenus.
+
+Prochaine dépendance : ACTUAL_CDRFIFO_CALLBACK_BODY_WITH_PRODUCED_COMMAND_FIFO_AND_NATURAL_FRONTEND_CONFIGURATION.
+
+</pre><p><a href="../stories/RE-953-cpu-cd-scheduler-checkpoint.md">Story</a> · <a href="generated/re953_cpu_cd_scheduler_checkpoint.json">Metadata</a> · <a href="../../tests/reverse/test_re953_cpu_cd_scheduler_checkpoint.py">Test public</a> · <a href="tomb5-progress-dashboard-re952-v1.html">Prédécesseur immuable</a></p></body></html>

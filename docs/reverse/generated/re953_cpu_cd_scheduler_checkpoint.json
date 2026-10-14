@@ -1,0 +1,175 @@
+{
+  "schema": "re953.cpu-cd-scheduler.checkpoint.v1",
+  "private_finite": "PASS",
+  "global_strict_passed": false,
+  "procedure": "INCOMPLETE",
+  "public_gate": "PENDING",
+  "integration": false,
+  "production_patch": false,
+  "new_cpu_replays": 0,
+  "new_native_builds": 0,
+  "cpu_frontier_unchanged": true,
+  "branchTest03_certified": false,
+  "source": {
+    "name": "PCSX-Redux",
+    "revision": "c313b116e6a55786bc127c9b3a07a90b55d97c21",
+    "license": "GPL-2.0-or-later",
+    "publication": "no source copied"
+  },
+  "authentication": [
+    {
+      "name": "cd-init-unit11",
+      "members": 155,
+      "manifest_sha256": "90cfa839fdb407495fb37c8755a8b02af92b8277b33b64c3f76a0d7457041259",
+      "selected_hashes": {
+        "HANDOFF.md": "45d626564ecd5a58a8049d727f112ba059bf93bc27d40241f506b0253987d70d",
+        "acceptance.json": "7db0d6999b02847a953ca2371d0b83e71c73cd2f9752ec5d8d511bb5877b91da",
+        "finite-verdict.json": "f89af0238df3afaef614480299583e1dbbc8d20db25b433423161373ac93405d",
+        "verdict.json": "048cf13b31477cdf1496b1c9b76b174422009418a561a860ec3b6d75bb839057"
+      }
+    },
+    {
+      "name": "cd-init-unit11-review",
+      "members": 208,
+      "manifest_sha256": "ead6feee09c6b9e119287bbd658f88c8cad52df7659a88e549ecabcabe0b8bd3",
+      "selected_hashes": {
+        "HANDOFF.md": "7a516c0901f3ffd390d2dad1274dfaa73fb3ff40143c0c4259ae71bea39ee393",
+        "acceptance.json": "aad992dca49525b6876526c54a9e878ca5f2531b4fe2a0eb40187f7e2eb47954",
+        "finite-verdict.json": "d620f15dee27b0d2f3e9283c0dfb1e21c4fc61456e815d0cf963002ff4ffa2b7",
+        "strict-verdict.json": "376ba6e3c7be1fc9c9162c0c4b1757f412eede9de6d5198e87d4c606d06a0ffa"
+      }
+    },
+    {
+      "name": "cd-init-unit12",
+      "members": 245,
+      "manifest_sha256": "3c2c748b8512df880316143b66aa62ad617c17f201cca396d12e8bfc045cd72b",
+      "selected_hashes": {
+        "HANDOFF.md": "26327f14e55af180a6b27e98b0b6f71b175374b5ec75ec6a3f1d558d49b81c97",
+        "acceptance.json": "61d8ed7dcc91a1702bae01a1be5e176b4aaa49e747350a07da188c40307e2005",
+        "finite-verdict.json": "d620f15dee27b0d2f3e9283c0dfb1e21c4fc61456e815d0cf963002ff4ffa2b7",
+        "strict-verdict.json": "3a73a768f20a1329343ff6838d8679c64b5806abf33761aff7de2f91b712718f"
+      }
+    },
+    {
+      "name": "cd-init-unit12-review",
+      "members": 151,
+      "manifest_sha256": "476024f41fce741187983fd40d79709b2ab24d4f522ef1db997cbd4e54096401",
+      "selected_hashes": {
+        "HANDOFF.md": "736b101c84563a8d638a29da4c7ce690fdc0cb163194f5fb75c1ea8eb2c4ee74",
+        "acceptance.json": "436bfea2e418f0da22465d5515543ecef9a9a3ecd9a40ce2a76cc4073a95d318",
+        "finite-verdict.json": "d620f15dee27b0d2f3e9283c0dfb1e21c4fc61456e815d0cf963002ff4ffa2b7",
+        "strict-verdict.json": "5178f320383a109988cec2795094dd141877cc43113aacdacf19a474f36c9615"
+      }
+    }
+  ],
+  "units": [
+    {
+      "unit": "11",
+      "finite": "PASS",
+      "strict_passed": false,
+      "blocks": 4000,
+      "fetches": 8000,
+      "produced_cycles": 16000,
+      "counter_events": [
+        2148,
+        4292,
+        6440,
+        8584,
+        10732,
+        12876,
+        15024
+      ],
+      "next_counter": 17168,
+      "modes": [
+        "normal",
+        "UBSan failfast"
+      ],
+      "assertion_mutants": [
+        "no_call",
+        "no_update",
+        "late_gate"
+      ],
+      "native_mutant_exit": 0,
+      "scope": "same CPU producer -> full branchTest body -> unchanged entire counters TU and genuine header -fno-access-control -> real continuous SDL dummy device and actual wait",
+      "preserved_failures": [
+        "initial enum LogClass compileFAIL",
+        "review initial normal FAIL and distinct normal_fast retry",
+        "partial diagnostic retention"
+      ],
+      "cycles_injected": false
+    },
+    {
+      "unit": "12",
+      "finite": "PASS",
+      "strict_passed": false,
+      "target": 26993,
+      "stop_cycles": 26996,
+      "blocks": 6749,
+      "fetches": 13498,
+      "hardware_provider_reads": 13496,
+      "counter_events": 12,
+      "next_counter": 27898,
+      "modes": [
+        "normal",
+        "UBSan failfast"
+      ],
+      "assertion_mutants": [
+        "no_ack",
+        "wrong_index",
+        "no_schedule",
+        "no_dispatch",
+        "duration_retry"
+      ],
+      "native_mutant_exit": 0,
+      "scope": "actual CD MMIO write ack -> actual scheduleFifo durationToCycles -> actual CPU schedule -> same CPU generated cycles -> full branchTest clears CDRFIFO bit and calls excluded guard before genuine fifoScheduledCallback BODY",
+      "command_fifo": "constructed empty genuine class excerpt",
+      "callback_body_executed": false,
+      "runCommand_executed": false,
+      "CD_success": false,
+      "preserved_failures": [
+        "initial Setting nested compileFAIL",
+        "duration+1 INSENSITIVE due to quantization; distinct duration_retry sensitive"
+      ],
+      "cycles_injected": false
+    }
+  ],
+  "constructed": [
+    "CPU class and memory",
+    "CD class and empty command FIFO",
+    "MMIO providers",
+    "System settings and video",
+    "source excerpts and adapters"
+  ],
+  "not_proven": [
+    "whole CPU TU ABI",
+    "whole CD TU ABI",
+    "natural frontend configuration",
+    "hardware",
+    "Sony startup",
+    "global OpenBIOS gain",
+    "gameplay",
+    "callback body",
+    "produced command FIFO"
+  ],
+  "historical_reservations": [
+    "pre-ledger discovery",
+    "unit11 partial diagnostic retention",
+    "historical holders",
+    "historical requested budget exceeded",
+    "RE944 excluded; no circumvention"
+  ],
+  "next_dependency": "ACTUAL_CDRFIFO_CALLBACK_BODY_WITH_PRODUCED_COMMAND_FIFO_AND_NATURAL_FRONTEND_CONFIGURATION",
+  "cleanup": {
+    "policy": "conservation",
+    "deletions": 0,
+    "production_changes": 0,
+    "historical_mutations": 0,
+    "private_traces": "kept private"
+  },
+  "dashboard": {
+    "predecessor": "docs/reverse/tomb5-progress-dashboard-re952-v1.html",
+    "predecessor_sha256": "c4e9fc9122a4ec611c76dd055c1100ab5e48e7c0c229860db052c5423cb9086a",
+    "inverse": "remove only new RE953 successor; predecessor bytes unchanged"
+  },
+  "authentication_scope": "all four complete roots authenticated read-only; no archived writer or private proof rerun"
+}
