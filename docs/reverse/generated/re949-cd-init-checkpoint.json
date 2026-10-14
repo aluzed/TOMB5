@@ -1,0 +1,28 @@
+{
+  "schema": "re949.cd-init.checkpoint.v1",
+  "integration": false,
+  "production_patch": false,
+  "global_acceptance": false,
+  "procedure": "INCOMPLETE",
+  "units": [
+    {
+      "name": "cd-init-unit01",
+      "finite_scope": "ACCEPTED",
+      "strict_review_passed": false,
+      "manifest_sha256": "26f67fa9fdb9ad3ba2a450717ebb744c65819c7c2060284fa108d339c3f6b6f6",
+      "members": 184,
+      "review_manifest_sha256": "8a2ac333144ab856a6bb26e35d51a7cad9f26ccf10d52b71affab1227129d415",
+      "review_members": 62
+    },
+    {
+      "name": "cd-init-unit02",
+      "finite_scope": "ACCEPTED",
+      "strict_review_passed": false,
+      "manifest_sha256": "16be771161e77e0391cdcd3839683fc19588905646492f25209ab7234005e1f4",
+      "members": 123,
+      "review_manifest_sha256": "1d22d234954369f4ff4ca5fa64732f297f91a9f78cbd9ca8e7e277c1a549e70b",
+      "review_members": 175
+    }
+  ],
+  "next_frontier": "CPU_TIMEBASE_AND_CDRFIFO_DISPATCH"
+}
