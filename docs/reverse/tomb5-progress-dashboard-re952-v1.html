@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr"><meta charset="utf-8"><title>RE952 — CPU counter device</title><body><h1>RE952 — checkpoint metadata-only</h1><pre># RE-952 — composition CPU → counter → device : checkpoint documentaire
+
+## Tracker
+
+| Étape | État |
+|---|---|
+| 08 : device réel vers counter entier, header genuine | PASS fini privé revu |
+| 09 : producteur CPU branchless debug | PASS fini privé, closure distincte |
+| 10 : branche/delay-slot nondebug et clock produit | PASS fini privé caractérisé |
+| Contrat public : RED puis GREEN | Auto-vérification documentaire seulement |
+| Gate indépendante des quatre hashes | PENDING |
+| Global strict / procédure / intégration | passed=false / INCOMPLETE / integration=false |
+
+production_patch=false. Zéro nouveau replay CPU et zéro build natif. Les trois PASS finis ne composent pas une certification globale. Frontière CPU globale inchangée ; branchTest03 non certifié. Aucun gain CPU naturel.
+
+## Contrats revus
+
+08 : SDL device dummy réel continu, settings JSON et delta CPU construits, audio extrait et header complet (pas TU audio entière), counter TU entière inchangée. Refus auteur conservé : header private/public modifié et schéma strict incomplet. Revue fraîche avec genuineheader et -fno-access-control : 4 normal + 4 UBSan failfast, 720 assertions et 2 mutants par assertion. Pas GUI/System/config/CPU producer naturel.
+
+09 : extraits CPU branchless byte-identiques, execBlock&lt;true,false&gt;, classe/header/mémoire/observateur adaptés. 30 instructions et 1140 assertions par build auteur, 5 normal + 5 strict ; revue indépendante : une paire fresh, 12 cas supplémentaires et 9 edges arithmétiques par mode. Ni debug=false ni branche validés dans 09. Refus initial reviewer 277 membres conservé ; closure distincte 296 membres PASS fini et strict false. Programme et états construits, pas TU/ABI CPU complète.
+
+10 : extraits BEQ/BNE pris/non-pris RAM/ROM, delay-slot ordonné, nondebug ; 8 cas par mode, 120 comparaisons auteur, revue fraîche normal/ASan+UBSan. no_transfer et no_cycle : exit0 puis AssertionError. wrong_target est mixte : 4 assertions et 4 SIGABRT, exclu du nombre des mutants uniformément sensibles par assertion. no_slot/wrong_condition : SIGABRT seulement, exclus. Échec de validation initiale des fonctions header réordonnées conservé ; chaque fonction finalement authentifiée séparément.
+
+Composition continue normal/UBSan : 846720 blocs de programme construit produisent réellement 1693440 fetches et 3386880 cycles à partir de clock zéro. Clock transporté directement vers façade adaptée consommée par counter TU entière avec genuineheader ; aucun cycle injecté ni seed goals/frames/pending. Device SDL réel continu Run avant/après update, callbacks et progrès ultérieur, fermeture finale. Oracle reviewer indépendant : quatre counters complets, hsync, prochain événement et ordre previousCycles commis avant wait, audioFrames après wait. no_forward/no_wait : exit0 puis vraies assertions. Branche auteur RED-first ; composition GREEN puis ablations = caractérisation, pas réparation upstream ni TDD correctif.
+
+## Limites et conservation
+
+Sources GPL-2.0-or-later privées, pin Redux c313b116e6a55786bc127c9b3a07a90b55d97c21 : aucune copie de source GPL ou raw protégé publiée. Métadonnées seules : comptes, pins, scopes ; traces gardées privées. Aucune GUI naturelle, configuration System naturelle, scheduler/callsite branchTest, startup global, CD success, gameplay ou hardware validés. Les budgets et gaps historiques bootstrap/transport/holder expiré restent INCOMPLETE : récupération et revue fraîche ne les blanchissent pas. Ancien prepublic mal parsé STALE/NONVALID conservé, seul corrected consommé. RE944 provider exclu.
+
+## Nettoyage — ledger de conservation
+
+Zéro suppression ; zéro mutation historique ; zéro patch production. Quatre chemins publics nouveaux seulement. README sale, blockers supprimés/modifiés et untracked préexistants préservés. Mutex canonical mutation par opération ; owner repo parent vérifié vivant et contention, jamais acquis ni tué. Discovery/transport outils pré-ledger non exhaustifs explicitement exclus de couverture. Inventaires mesurés privés enregistrent path/bytes/hash des exports et archives ; conservation des traces, résultats RED/GREEN et FAILs, export sans dépendance ignorée. Inventaire cleanup final, ledger, acceptance et HANDOFF avant seal ; completion hors seal. Aucun stage/commit/push/job.
+
+## Gate indépendante
+
+public_gate=PENDING. Auto-vérification ne remplace pas reviewer séparé sur les hashes exacts du manifest de livraison privé. Global strict passed=false, procédure INCOMPLETE, integration=false restent inchangés même si les tests documentaires passent.
+
+Prochaine dépendance : ACTUAL_CPU_BRANCHTEST_SCHEDULER_COUNTER_CALLSITE_AND_NATURAL_SYSTEM_CONFIG.
+
+</pre><p><a href="../stories/RE-952-cpu-counter-device-composition-checkpoint.md">Story</a> · <a href="generated/re952_cpu_counter_device_checkpoint.json">Metadata</a> · <a href="../../tests/reverse/test_re952_cpu_counter_device_checkpoint.py">Test public</a> · <a href="tomb5-progress-dashboard-re951-audio-provider-v1.html">Prédécesseur immuable</a></p></body></html>
