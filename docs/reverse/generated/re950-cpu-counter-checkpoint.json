@@ -1,0 +1,60 @@
+{
+  "schema": "re950.cpu-counter.checkpoint.v1",
+  "integration": false,
+  "production_patch": false,
+  "global_acceptance": false,
+  "procedure": "INCOMPLETE",
+  "publication_review": "PENDING",
+  "sources": [
+    {
+      "name": "PCSX-Redux",
+      "revision": "c313b116e6a55786bc127c9b3a07a90b55d97c21",
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "nugget",
+      "revision": "7ffc2b14b3ec4b912e7e79f6e31101ff3f24cc30",
+      "license": "MIT"
+    }
+  ],
+  "units": [
+    {
+      "name": "cd-init-unit03",
+      "finite_acceptance": true,
+      "strict_review_passed": false,
+      "manifest_sha256": "52bc1ee401d30b1a5b7c49c5d9ee28b51e20d94064321979aaf58b5b9ebfd25b",
+      "members": 167,
+      "review_manifest_sha256": "d9dfec121e1d0dcb157b2bd4261fbd6e00b03f3eefc171689517fd07aa1f767f",
+      "review_members": 226,
+      "tests": 6,
+      "arbitrations": 1200,
+      "producer_ticks": 15,
+      "reviewer_ticks": 24,
+      "mutants": 8,
+      "diagnostic_visits": 10,
+      "common_suffix_pcs": 314754,
+      "ram_bytes": 2097152
+    },
+    {
+      "name": "cd-init-unit04",
+      "finite_acceptance": true,
+      "strict_review_passed": false,
+      "manifest_sha256": "c1323b4cddbd61a88879d7f1e351ae68b935b602523ef01842c05aaeeedf3b65",
+      "members": 390,
+      "review_manifest_sha256": "b4e0f5df73ae90d62350484fd63764eb044870603b89b0bf24ee09238a8bf500",
+      "review_members": 408,
+      "tests": 8,
+      "asserted_projections": 693,
+      "matrix_projections": 112,
+      "long_projections": 581,
+      "long_archived": 583,
+      "initial_unasserted": 2,
+      "restored_counter_updates": 545,
+      "cpu_replays": 0,
+      "mutants": 8,
+      "missing_spu_exit": 3,
+      "missing_spu_stdout_empty": true
+    }
+  ],
+  "next_frontier": "SPU_CURRENT_FRAMES_REQUIRED_BEFORE_NEXT_COUNTER_SET"
+}
