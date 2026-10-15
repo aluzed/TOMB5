@@ -112,6 +112,17 @@ le driver n’installe pas de handler SIGTERM par défaut. Mort brutale, descend
 hors groupe ou nouvelle interruption pendant cleanup ne sont pas garantis.
 Voir [RE-957](../stories/RE-957-linux32-recorder-interruption.md).
 
+## Réservation des journaux — checkpoint RE-958
+
+Si un log existe déjà (fichier ou répertoire), le recorder le conserve et refuse
+le démarrage. Le nouveau JSON réservé consigne maintenant l’erreur, la fin et la
+durée ; aucun code de sortie natif n’est inventé sans enfant. Un JSON préexistant
+reste totalement inchangé. Les échecs de démarrage (exécutable/cwd absent) étaient
+déjà consignés : deux contrôles les caractérisent sans prétendre les corriger.
+La paire JSON/log n’est pas atomique ; erreurs de création JSON/écriture finale,
+disque plein et tiers modifiant le répertoire ne sont pas garantis ici.
+Voir [RE-958](../stories/RE-958-linux32-recorder-reservation.md).
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`

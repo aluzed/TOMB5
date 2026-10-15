@@ -43,8 +43,8 @@ def record(out, label, argv, cwd, timeout=300):
     with ledger.open('x') as f:
         json.dump(meta, f, indent=2)
     started = time.monotonic()
-    with (Path(out) / (label + '.log')).open('xb') as log:
-        try:
+    try:
+        with (Path(out) / (label + '.log')).open('xb') as log:
             p = subprocess.Popen(meta['argv'], cwd=cwd, stdout=log,
                                  stderr=subprocess.STDOUT, start_new_session=True)
             try:
@@ -62,12 +62,12 @@ def record(out, label, argv, cwd, timeout=300):
                     pass  # The group exited between wait() and cleanup.
                 meta['exit'] = p.wait()
                 raise
-        except OSError as exc:
-            meta['error'] = str(exc)
-            raise
-        finally:
-            meta.update(end=now(), elapsed_seconds=time.monotonic() - started)
-            ledger.write_text(json.dumps(meta, indent=2) + '\n')
+    except OSError as exc:
+        meta['error'] = str(exc)
+        raise
+    finally:
+        meta.update(end=now(), elapsed_seconds=time.monotonic() - started)
+        ledger.write_text(json.dumps(meta, indent=2) + '\n')
     if meta['exit']:
         raise subprocess.CalledProcessError(meta['exit'], meta['argv'])
     return meta
