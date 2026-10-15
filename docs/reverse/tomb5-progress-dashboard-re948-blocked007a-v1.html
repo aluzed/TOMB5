@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>TOMB5 — dashboard BLOCKED-007A (RE948)</title>
+<style>
+ body{font-family:system-ui,sans-serif;margin:2rem;color:#1b1b1b;background:#fafafa}
+ h1{font-size:1.3rem} table{border-collapse:collapse;margin:1rem 0;width:100%;max-width:900px}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;font-size:.9rem}
+ th{background:#eee} .pass{color:#0a7a25;font-weight:600} .no{color:#a11}
+ code{background:#eee;padding:.05rem .25rem;border-radius:3px}
+</style>
+</head>
+<body>
+<h1>TOMB5 — BLOCKED-007A (relais RE948) : implémentation lots A/B/C</h1>
+<p>État : <span class="pass">PASS bornés et revus indépendamment</span>. Production inchangée.
+<code>integration=false</code>, <code>production_patch=false</code>. Preuves privées sous
+<code>build/reverse/autonomy-20261014/</code> (ignoré par git).</p>
+<table>
+<tr><th>Lot</th><th>Résultat</th><th>Frontière de sortie</th><th>Revue</th><th>Seal producteur</th></tr>
+<tr><td>A — SPU minimal</td><td class="pass">PASS</td><td><code>DIVU</code> funct 27 à <code>0xbfc07668</code></td><td>PASS (<code>6c45849c…</code>)</td><td><code>2afb97b3…</code></td></tr>
+<tr><td>B — kernel, handler RAM, RFE</td><td class="pass">PASS</td><td>CD-ROM <code>0x1f801800</code> à <code>0x145c</code> (hors acceptation)</td><td>PASS (<code>a8909360…</code>)</td><td><code>689fe643…</code></td></tr>
+<tr><td>C — gate fidélité/intégration</td><td class="pass">PASS</td><td><code>integration=false</code>, <code>production_patch=false</code></td><td>PASS (<code>2beee4a4…</code>)</td><td><code>46e8b31d…</code></td></tr>
+</table>
+<h2>Chemin atteint (lot B)</h2>
+<p>Vecteur général RAM <code>0x80000080</code> → handler noyau <code>0x2700</code> → RFE <code>0x29d0</code>
+(deux syscalls), sans injection ; contrôles <code>--no-divu</code>/<code>--no-counters</code>/<code>--no-rfe</code>.</p>
+<h2>Contrôles négatifs</h2>
+<p>Lot A : <code>--no-spu</code> → <code>0xbfc07928</code>. Lot B : <code>--no-divu</code> → <code>0xbfc07668</code> ;
+<code>--no-counters</code> → <code>0x1f801104</code> ; <code>--no-rfe</code> → <code>0x29d0</code>.</p>
+<h2>Limites</h2>
+<p>Entrée construite (pas de reset matériel/Sony BIOS) ; compteurs réduits (aucun tick/IRQ) ; pas de
+load-delay/invalidation de cache/mirroring ; RAM non revendiquée byte-identique ; CD/GPU/audio/DMA non modélisés.
+BLOCKED-007 reste partiellement bloqué.</p>
+</body>
+</html>

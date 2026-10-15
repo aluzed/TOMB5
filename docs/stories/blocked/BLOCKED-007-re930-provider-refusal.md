@@ -37,3 +37,20 @@ RE928 a franchi SYSCALL et s'est arrêté AVANT le store BIU, via le vecteur ROM
 Fenêtre utilisateur du 11 octobre vers 23h21 : jusqu'au 2026-10-12T05:00:00+02:00 ; recherche 04h20, revues 04h40, livraison 04h50, locks libérés avant 04h55. Ce checkpoint ne révoque pas cette fenêtre et ne crée aucun job/successeur. Suppressions BLOCKED-001/002, report utilisateur, cache préexistant, assets/cold archives/first FAILs/seals/RE893 partial préservés.
 
 [Dashboard incident versionné](../../reverse/tomb5-progress-dashboard-re930-incident-v1.html). Le dashboard maintained RE929 et ses empreintes historiques restent inchangés.
+
+## RE930 — reprise technique bornée (2026-10-13)
+
+Autorisation : l'utilisateur a demandé la reprise technique réelle de ce ticket. Périmètre accepté : un fournisseur/modèle distinct reprend l'unité pinée ; aucune reformulation visant à contourner un filtre, aucun refus réouvert en place, aucun contournement. Le statut reste `Blocked` tant que les critères de réouverture ne sont pas tous satisfaits.
+
+Résultat borné PASS producteur : la frontière BIU/cache de RE928 (arrêt avant le store BIU_CONFIG) est franchie, et l'init froide/exception ROM s'exécute réellement (flushCache avec fenêtre cache isolé puis cache normal, initialisation des registres CP0, copie de données, effacement BSS, pile, registre de taille RAM, traces POST/EXP2). Exécutions fresh et restored reproduites, transitions BIU identiques, oracle BIU compilé concordant, contrôle négatif « cache isolé dès le départ » en échec de préfixe conservé.
+
+Frontière suivante honnête : initialisation SPU (registre SPU, demi-mot, depuis ROM) — premier périphérique matériel hors sous-ensemble authentifié. Handler noyau RAM et retour RFE naturel NON obtenus. integration=false, production_patch=false, FAIL global/procédure historiques maintenus.
+
+Preuves locales non versionnées : `build/reverse/autonomy-20261013/re930-biu-kernel/` — `execute.py` étendu (BIU_CONFIG, taille RAM, EXP2/POST, CP0 génériques), `fresh.json`/`restored.json`, contrôles négatifs, oracle `biu_witness.cc` compilé, `HANDOFF.md`, `scope.json`, `verdict.json`, `ledger.jsonl`, `manifest.json`, `seal.json`. Revue indépendante : PASS borné ; deux défauts de scellement (manifest/ledger, HANDOFF non couvert) détectés puis corrigés et re-scellés.
+
+- [x] Périmètre de résolution légitime accepté (fournisseur/modèle distinct ; pas de contournement).
+- [x] Frontière BIU/cache franchie avec preuve d'exécution réelle bornée et oracle BIU compilé.
+- [ ] Atteinte naturelle du handler noyau RAM / retour RFE (frontière suivante : SPU et périphériques).
+- [ ] Preuve et revue indépendantes distinct-auteur avant toute intégration.
+
+[Dashboard RE930 BIU/kernel versionné](../../reverse/tomb5-progress-dashboard-re930-biu-kernel-v1.html).

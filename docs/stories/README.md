@@ -143,5 +143,8 @@ Note : ce snapshot est un indicateur heuristique basé sur les marqueurs du repo
 
 ## Incident actif — 12 octobre 2026
 
-- [BLOCKED-007 — refus fournisseur RE930](blocked/BLOCKED-007-re930-provider-refusal.md) — Status: `Blocked`. Unité refusée non reprise ; publication documentaire seulement, aucune nouvelle preuve CPU/build ni intégration.
+- [BLOCKED-007 — refus fournisseur RE930](blocked/BLOCKED-007-re930-provider-refusal.md) — Status: `Blocked`. Reprise technique bornée autorisée le 13 octobre 2026 : frontière BIU/cache franchie avec preuve réelle localisée ; handler noyau RAM non atteint, frontière suivante SPU. Aucune intégration.
 - [Dashboard incident RE930 versionné](../reverse/tomb5-progress-dashboard-re930-incident-v1.html) — distinct du dashboard RE929 maintained et de ses pins historiques.
+- [Dashboard RE930 BIU/kernel versionné](../reverse/tomb5-progress-dashboard-re930-biu-kernel-v1.html) — reprise bornée du 13 octobre 2026, preuves locales non versionnées.
+- [RE-948 — implémentation BLOCKED-007A (SPU minimal, continuation kernel, handler RAM et RFE)](RE-948-blocked-007a-spu-kernel-rfe.md) — lots A/B/C livrés PASS bornés et revus indépendamment : frontière SPU franchie, handler noyau RAM `0x2700` et RFE `0x29d0` atteints naturellement, prochaine frontière CD-ROM (hors acceptation). `integration=false`, `production_patch=false` ; BLOCKED-007 reste partiellement bloqué.
+- [Dashboard BLOCKED-007A versionné](../reverse/tomb5-progress-dashboard-re948-blocked007a-v1.html) — implémentation du 14 octobre 2026, preuves locales non versionnées.
