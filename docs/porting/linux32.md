@@ -100,6 +100,18 @@ aucune validation visuelle du menu ou du gameplay n'est revendiquée.
 - Binaire ELF64/autre architecture : refus explicite ; ne pas tenter de promouvoir
   une compilation native64 en validation de ce port.
 
+## Interruption du recorder — checkpoint RE-957
+
+Une interruption Python pendant l’attente (`KeyboardInterrupt` ou `SystemExit`)
+ferme désormais le groupe enfant par SIGKILL, attend l’enfant direct et conserve
+son code de sortie dans le journal avant de propager l’exception originale.
+`interrupted` nomme la classe ; `timed_out` reste réservé au timeout du recorder.
+Deux tests sur de vrais sous-processus Python vérifient aussi le descendant,
+sans données de jeu. Le cas SystemExit utilise un handler SIGTERM de test :
+le driver n’installe pas de handler SIGTERM par défaut. Mort brutale, descendants
+hors groupe ou nouvelle interruption pendant cleanup ne sont pas garantis.
+Voir [RE-957](../stories/RE-957-linux32-recorder-interruption.md).
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`

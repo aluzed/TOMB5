@@ -49,9 +49,17 @@ def record(out, label, argv, cwd, timeout=300):
                                  stderr=subprocess.STDOUT, start_new_session=True)
             try:
                 meta['exit'] = p.wait(timeout=timeout)
-            except subprocess.TimeoutExpired:
-                meta['timed_out'] = True
-                os.killpg(p.pid, signal.SIGKILL)
+            except BaseException as exc:
+                # wait() may also be interrupted by Ctrl-C or SystemExit. The
+                # child owns a separate session: it must not outlive this log.
+                if isinstance(exc, subprocess.TimeoutExpired):
+                    meta['timed_out'] = True
+                else:
+                    meta['interrupted'] = type(exc).__name__
+                try:
+                    os.killpg(p.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass  # The group exited between wait() and cleanup.
                 meta['exit'] = p.wait()
                 raise
         except OSError as exc:
