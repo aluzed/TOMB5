@@ -123,6 +123,16 @@ La paire JSON/log n’est pas atomique ; erreurs de création JSON/écriture fin
 disque plein et tiers modifiant le répertoire ne sont pas garantis ici.
 Voir [RE-958](../stories/RE-958-linux32-recorder-reservation.md).
 
+## Labels du recorder — checkpoint RE-959
+
+L’API `record()` accepte uniquement un label de 1 à 128 caractères ASCII :
+lettre/chiffre initial, puis lettres, chiffres, point, tiret ou underscore.
+Ce nom est un basename, jamais un chemin relatif/absolu ; les valeurs invalides
+sont refusées avant création de fichier ou lancement d’enfant. Les labels
+constants de la CLI sont inchangés. Ce contrôle n’isole pas le répertoire contre
+un tiers concurrent et ne rend pas la paire JSON/log atomique.
+Voir [RE-959](../stories/RE-959-linux32-recorder-labels.md).
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`

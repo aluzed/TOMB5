@@ -36,6 +36,9 @@ def now():
 
 def record(out, label, argv, cwd, timeout=300):
     """Record real child status; kill its entire session on a bounded timeout."""
+    # A label is a portable basename, never a caller-selected output path.
+    if not isinstance(label, str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,127}', label):
+        raise ValueError('Recorder label must be 1-128 ASCII basename characters, starting with a letter or digit')
     meta = {'argv': list(map(str, argv)), 'cwd': str(cwd), 'start': now(),
             'timeout_seconds': timeout, 'timed_out': False}
     ledger = Path(out) / (label + '.json')
