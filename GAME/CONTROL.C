@@ -3282,6 +3282,9 @@ long GetWaterHeight(long x, long y, long z, short room_number)
 		if (data == 255)
 			break;
 
+		if (data < 0 || data >= number_rooms)
+			break;
+
 		r = &room[data];
 
 	} while (TRUE);
@@ -3774,6 +3777,8 @@ struct FLOOR_INFO* GetFloor(int x, int y, int z, short* room_number)//78954(<), 
 		floor = &r->floor[x_floor + y_floor * r->x_size];
 		next_room = GetDoor(floor);
 		if (next_room == 255)
+			break;
+		if (next_room < 0 || next_room >= number_rooms)
 			break;
 		*room_number = next_room;
 	}

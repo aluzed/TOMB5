@@ -110,6 +110,9 @@ long GetWaterDepth(long x, long y, long z, short room_number)//4CA38, 4CE9C
 		if (door == 255)
 			break;
 
+		if (door < 0 || door >= number_rooms)
+			break;
+
 		room_number = door;
 	} while (TRUE);
 

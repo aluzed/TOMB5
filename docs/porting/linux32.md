@@ -427,8 +427,8 @@ In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
 
 La recette principale a été jouée sur `build-o` (ELF32 i386, SHA256
 `595d3c4c41ac640587e292c75fa63bd81b9074228c7a40c91a630490be5f6d8e`).
-Le build final `build-v` (SHA256
-`fdeecaf52d5e0d7422d8fa3390236c782e61032690d61e19083c2e366eba783c`)
+Le build final `build-x` (SHA256
+`78b5ac0233b7e7fd9325a2c34e00a173b854ce93e17afa859a4bcf11b2468edd`)
 compile les mêmes sources que `build-q`, avec en plus l'indice de titre
 `F6: CONTINUE`, le garde-fou F5/F6 pendant l'éditeur, le retour visuel
 `Game saved`/`Game loaded`, le correctif de transition PORT-008 et les correctifs mémoire du niveau 6. Smoke titre
@@ -481,8 +481,8 @@ affectait `gfCurrentLevel = gfLevelComplete` puis **écrasait
 inconditionnellement** `gfCurrentLevel = 0`. Le test de niveau suivant était
 donc sans effet et toute fin de niveau renvoyait au titre. La branche a été
 corrigée : `gfCurrentLevel = 0` n'est exécuté que dans le `else` (démo,
-build à deux niveaux, fin de campagne). Le correctif est dans `build-v`
-(SHA256 `fdeecaf52d5e0d7422d8fa3390236c782e61032690d61e19083c2e366eba783c`).
+build à deux niveaux, fin de campagne). Le correctif est dans `build-x`
+(SHA256 `78b5ac0233b7e7fd9325a2c34e00a173b854ce93e17afa859a4bcf11b2468edd`).
 
 ### Recette de transition (déclenchement synthétique)
 
@@ -588,13 +588,18 @@ Cela protège toute donnée de niveau manquante lors d'un chargement direct. Le
 chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT) n'est pas
 caractérisé.
 
-Hypothèse non patchée pour le floor invalide : les boucles de `LARASWIM.C`
-(`r = &room[data]`) et `CONTROL.C` (`r = &room[data]`, `next_room`) suivent le
-numéro de salle renvoyé par `GetDoor` sans vérifier qu'il est `< number_rooms`.
-Un index de porte corrompu/hors bornes rendrait `r` invalide, puis
-`floor = &r->floor[...]` produirait l'adresse `0xfe4cb8d4`. Un garde
-`if (data < 0 || data >= number_rooms) break;` est le prochain correctif
-candidat, à valider sur la chaîne 1→14 avant intégration.
+Correctif candidat appliqué pour le floor invalide : les boucles de
+`LARASWIM.C` (`r = &room[data]`) et `CONTROL.C` (`r = &room[data]`,
+`next_room`) suivent le numéro de salle renvoyé par `GetDoor`. Elles vérifient
+maintenant `data/next_room < number_rooms` avant de calculer `r` ou de rendre
+la salle. Un index de porte corrompu/hors bornes ne peut plus produire
+`floor = &r->floor[...]` avec un `r` invalide (adresse observée
+`0xfe4cb8d4`). **Limite de validation** : la chaîne 1→14 n'a pas pu être
+rejouée jusqu'au déclenchement 15 dans cette fenêtre (les entrées `Cross` de
+démarrage du titre n'ont pas été acceptées par les derniers lancements) ; le
+garde est couvert par les suites existantes mais pas par une preuve de chaîne
+après correctif. À revalider avant de le considérer comme fermeture du
+blocage.
 
 ### Ce qui reste non validé
 
