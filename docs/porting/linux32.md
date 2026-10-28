@@ -588,6 +588,14 @@ Cela protège toute donnée de niveau manquante lors d'un chargement direct. Le
 chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT) n'est pas
 caractérisé.
 
+Hypothèse non patchée pour le floor invalide : les boucles de `LARASWIM.C`
+(`r = &room[data]`) et `CONTROL.C` (`r = &room[data]`, `next_room`) suivent le
+numéro de salle renvoyé par `GetDoor` sans vérifier qu'il est `< number_rooms`.
+Un index de porte corrompu/hors bornes rendrait `r` invalide, puis
+`floor = &r->floor[...]` produirait l'adresse `0xfe4cb8d4`. Un garde
+`if (data < 0 || data >= number_rooms) break;` est le prochain correctif
+candidat, à valider sur la chaîne 1→14 avant intégration.
+
 ### Ce qui reste non validé
 
 Le déclenchement est synthétique : il prouve la **mécanique de transition**,
