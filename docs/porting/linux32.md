@@ -573,8 +573,13 @@ ne passe plus par `GetDoor` : il casse désormais dans la lecture CD
 `S_LoadLevelFile(Name=15)`. Le crash `GetDoor` précédent était donc
 probablement un symptôme de la corruption de vertices, pas la cause racine.
 Le niveau 15 reste bloqué, sur un problème de lecture/offset CD à instruire.
-Preuves privées : `build/porting/port008-fullchain4-20261028/` (chaîne 1→14
-puis SIGSEGV) et `build/porting/port008-level15guard-20261028/` (CD/fseek).
+Sur l'image PAL `SLES_033.31`, le même saut direct 1→15 ne produit pas ce
+`SIGSEGV` mais rend une image de bruit non interprétable (moyenne 0,35), sans
+scène validée : le comportement dépend donc au moins de l'image/des offsets,
+et l'image PAL n'est pas la révision exacte du baseline. Aucun correctif code
+n'est revendiqué. Preuves privées : `build/porting/port008-fullchain4-20261028/`
+(chaîne 1→14 puis SIGSEGV), `port008-level15guard-20261028/` (CD/fseek) et
+`port008-level15pal-20261028/` (bruit PAL).
 
 ### Ce qui reste non validé
 
