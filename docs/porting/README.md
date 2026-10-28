@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-006 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
+
+Reprise v3 de l'état du niveau intégrée : PortSave écrit un bloc fixe de 8192 octets via SaveLevelData (flips, meshes statiques, caméras, items). SaveLevelData écrit désormais un mot nul pour les items inactifs, sinon la sauvegarde Rome faisait 286 octets et RestoreLevelData en lisait 586 (désynchronisation). Après correction, F5 à Rome sérialise 586 octets et le rechargement lit exactement 586 octets (caméras 259, items 586), scène propre. Les fichiers v2 de 466 octets restent lisibles mais sans état de niveau. TOMB5_AUTOLOAD=1 conservé comme hook QA. Build-bb SHA256 469d42764959dc9c9aec4984343af29976a7c0a9cd70bf263d3fe2f6de961389. Preuves : restorefull-debug2-20261029, final-bb-v3-20261029, restorefull-v2-20261029. tests/porting 497 PASS, tests/emulator 3677 PASS.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-006, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
 
 Artefact de reprise attribué et corrigé : la grande surface brune n'était pas liée à F6/AUTOLOAD/RestoreLevelData, elle apparaissait dès New Game à Rome. Bissection build-c (propre) vs build-s (artefact) puis cff51ec2 : les tableaux SkinVertNums/ScratchVertNums agrandis à 8192 octets cassaient l'hypothèse de contiguïté du chargeur, qui écrivait les 480 octets scratch à SkinVertNums+480 et laissait ScratchVertNums à zéro. GAME/SETUP.C recopie désormais le bloc scratch vers ScratchVertNums après la lecture contiguë (DEL_CDFS_Read avance par secteurs). Vérifié : New Game Rome propre, F6 RESTORE3 propre, niveau 6 chargé/rendu sans SIGSEGV, tests/porting 497 PASS, tests/emulator 3677 PASS. Build-au SHA256 dee0479c6000441af05b4d9724bb7b57605859eca2df0b74c0dbe920c32a467e. Preuves : master-fix-smoke-20261029, fix-objectdata-final-load-20261029, fix-objectdata-level6c-20261028.
