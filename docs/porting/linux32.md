@@ -500,6 +500,27 @@ Rome (aucune écriture de position ni de niveau). Résultat après le correctif 
   d'image 0,101, exit 0 —
   `build/porting/port008-newgame-regress-20261028/`).
 
+### Chaîne multi-niveaux
+
+Le même déclenchement contrôlé a été répété tous les 600 frames de jeu :
+`gfLevelComplete = gfCurrentLevel + 1` à 600/1200/1800/2400. Le moteur a
+enchaîné **1 → 2 → 3 → 4 → 5** sans retour au titre :
+
+| Niveau | Salle | Z | Scène observée |
+|---:|---:|---:|---|
+| 1 | 0 | 31232 | Rome |
+| 2 | 50 | 42496 | marchés / intérieur |
+| 3 | 20 | 52736 | cinématique neigeuse |
+| 4 | 99 | 29664 | scène industrielle |
+| 5 | 20 puis 23 | 42496 / 53760 | sous-marin |
+
+Chaque niveau reste stable sur des milliers de frames (jusqu'à 7500 frames
+cumulées), avec des scènes distinctes
+(`build/porting/port008-chain-20261028/01-level1.png` à `05-level5.png`).
+Cela valide la **mécanique de boucle** après correctif, pas une complétion
+jouée : les déclenchements sont injectés, aucun puzzle/porte/clé n'est résolu,
+aucun FMV de transition ni crédit n'est vérifié.
+
 ### Ce qui reste non validé
 
 Le déclenchement est synthétique : il prouve la **mécanique de transition**,
