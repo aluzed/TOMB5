@@ -431,7 +431,9 @@ Le build final `build-r` (SHA256
 `bda64f5c9f3030072bc2f05e0aa7bebfb11fd4a25e2ec6039ec3442f2b2aeb69`)
 compile les mêmes sources que `build-q`, avec en plus l'indice de titre
 `F6: CONTINUE`, le garde-fou F5/F6 pendant l'éditeur et le retour visuel
-`Game saved`/`Game loaded`. Scénario unique, 9 captures inspectées,
+`Game saved`/`Game loaded`. Smoke titre de `build-r` avec un fichier de
+sauvegarde présent : indice affiché, fermeture normale exit 0
+(`build/porting/build-r-smoke-20261028/`). Scénario unique, 9 captures inspectées,
 `application.json` exit 0 :
 
 1. titre ; `F6` charge `TOMB5.SAV` (salle 2, X 46592 Y 0 Z 35826) ;
