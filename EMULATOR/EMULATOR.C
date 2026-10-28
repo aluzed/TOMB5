@@ -2796,7 +2796,8 @@ void Emulator_DoPollEvent()
 
 				/* Reserved port quick save/load keys.  They are read before
 				 * the remappable keymap so they also work at the title. */
-				if (event.type == SDL_KEYDOWN && !event.key.repeat)
+				if (event.type == SDL_KEYDOWN && !event.key.repeat &&
+				    !InputUI_IsOpen())
 				{
 					if (nKey == SDL_SCANCODE_F5)
 					{

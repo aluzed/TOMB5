@@ -422,7 +422,9 @@ inspectées, `application.json` exit 0 :
 6. une frame sans entrée reste stable ; fermeture normale, exit 0.
 
 Preuves privées : `build/porting/final-smoke-20261028/` ; rejeu du chargement
-sur `build-o` dans `build/porting/port006d-20261028/`. Un fichier de
+sur `build-o` dans `build/porting/port006d-20261028/`. Le build ultérieur
+`build-p` (SHA256 `c1299824d6c2239db50685206edc97cc5b7725a27d6e4a519ebc3e4193c5eb96`)
+ajoute seulement le garde-fou F5/F6 quand l'éditeur de keymap est ouvert. Un fichier de
 sauvegarde corrompu (`BAD.SAV`, 16 octets) est refusé avec
 `[SAVE] invalid save header`, le titre continue et le processus sort à 0
 (`build/porting/port006-corrupt-20261028/`).
