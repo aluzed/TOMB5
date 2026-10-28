@@ -356,6 +356,11 @@ recharge la sauvegarde et reprend au même endroit.
   `sgRestoreGame()` restaure l'état de Lara, puis `PortSave_ApplyPending()`
   replace Lara (position, salle, animation), met à jour la salle et réinitialise
   la caméra.
+- **Preuve inter-niveaux** : chargement du niveau 4 par le raccourci QA
+  (`look`/L1 + New Game), `F5` → `level 4 room 99 X 35328 Y -4096 Z 29664` ;
+  relance, `F6` → même niveau, même salle, même position, scène identique
+  (`build/porting/port006-level4-20261028/`, RMSE 0,055 entre les deux captures).
+  `savegame.CurrentLevel` est donc bien utilisé au rechargement.
 - **Preuve réelle** : partie neuve, marche dans Rome, `F5` → log
   `[SAVE] wrote TOMB5.SAV: level 1 room 2 X 46592 Y 0 Z 35826` ; fermeture
   normale ; relance ; `F6` au titre → log
