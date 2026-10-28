@@ -1262,6 +1262,23 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 	}
 
 	//loc_10B58
+#if DISC_VERSION
+	/* The GAMEWAD only contains the real level files (indices TITLE+1 ..
+	 * TITLE+14 on the retail disc).  A synthetic or out-of-range level index
+	 * used to read the GAMEWAD header as if it were a level header, producing
+	 * a negative read size and a SIGSEGV in fseek.  Missing entries are now an
+	 * attributable condition: return to the title instead of crashing. */
+	if (Name + TITLE >= NUM_GAMEWAD_FILE_ENTRIES ||
+	    gwHeader.entries[Name + TITLE].fileSize == 0)
+	{
+		printf("[LEVEL] missing GAMEWAD entry %d for level %d; returning to title\n",
+		       Name + TITLE, Name);
+		gfStatus = 1;
+		gfCurrentLevel = 0;
+		return;
+	}
+#endif
+
 	S_LoadLevelFile(Name);
 
 #if PC_VERSION

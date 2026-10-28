@@ -427,8 +427,8 @@ In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
 
 La recette principale a été jouée sur `build-o` (ELF32 i386, SHA256
 `595d3c4c41ac640587e292c75fa63bd81b9074228c7a40c91a630490be5f6d8e`).
-Le build final `build-u` (SHA256
-`0866d3242a02d68e253c089c6933900585498ab607517dd83b2951df395b8fce`)
+Le build final `build-v` (SHA256
+`fdeecaf52d5e0d7422d8fa3390236c782e61032690d61e19083c2e366eba783c`)
 compile les mêmes sources que `build-q`, avec en plus l'indice de titre
 `F6: CONTINUE`, le garde-fou F5/F6 pendant l'éditeur, le retour visuel
 `Game saved`/`Game loaded`, le correctif de transition PORT-008 et les correctifs mémoire du niveau 6. Smoke titre
@@ -481,8 +481,8 @@ affectait `gfCurrentLevel = gfLevelComplete` puis **écrasait
 inconditionnellement** `gfCurrentLevel = 0`. Le test de niveau suivant était
 donc sans effet et toute fin de niveau renvoyait au titre. La branche a été
 corrigée : `gfCurrentLevel = 0` n'est exécuté que dans le `else` (démo,
-build à deux niveaux, fin de campagne). Le correctif est dans `build-u`
-(SHA256 `0866d3242a02d68e253c089c6933900585498ab607517dd83b2951df395b8fce`).
+build à deux niveaux, fin de campagne). Le correctif est dans `build-v`
+(SHA256 `fdeecaf52d5e0d7422d8fa3390236c782e61032690d61e19083c2e366eba783c`).
 
 ### Recette de transition (déclenchement synthétique)
 
@@ -556,30 +556,32 @@ s'enchaîne sans `SIGSEGV` (preuves : `port008-fullchain2-20261028/`,
 malformée : il protège la mémoire mais ne corrige pas le parseur de mesh
 lui-même ; des artefacts de vertices restent possibles sur ce niveau.
 
-### Blocage niveau 15 — `GetDoor` avec floor invalide
+### Fin de campagne et entrée GAMEWAD absente
 
-La chaîne 1→14 est stable, mais le passage au niveau 15 (RED_ALERT) casse :
+L'analyse directe du `GAMEWAD.OBJ` de l'image NTSC montre que les entrées
+`3..16` seulement contiennent des fichiers de niveau (14 niveaux) ; les entrées
+`17+` sont vides (`fileSize = 0`). Le `Gameflow` déclare pourtant `nLevels = 18`.
+Le déclenchement synthétique `gfLevelComplete = gfCurrentLevel + 1` après le
+niveau 14 demandait donc l'entrée 17, inexistante ; le lecteur retombait sur
+l'en-tête du GAMEWAD et produisait un en-tête de niveau invalide
+(`DEL_CDFS_Read size=-16388`, puis `fseek`/`SIGSEGV`). Le même phénomène
+explique le bruit PAL observé.
 
-```
-Program received signal SIGSEGV
-GetDoor (floor=0xfe4cb8d4) at SPEC_PSXPC_N/GETSTUFF.C:32
-  if (floor->index == 0)
-```
+`DoLevel` vérifie désormais l'entrée GAMEWAD avant `S_LoadLevelFile` : si
+`Name + TITLE` est hors bornes ou de taille nulle, il journalise
+`[LEVEL] missing GAMEWAD entry …`, remet `gfStatus = 1` / `gfCurrentLevel = 0`
+et retourne au titre. Recette :
 
-Le pointeur de floor est hors du tas. Après ajout des gardes de vertices aux
-quatre autres variantes de Lara (`LARA1.C` à `LARA4.C`), un saut direct 1→15
-ne passe plus par `GetDoor` : il casse désormais dans la lecture CD
-(`DEL_CDFS_Read size=-16388` → `CdControlB` → `fseek`), pendant
-`S_LoadLevelFile(Name=15)`. Le crash `GetDoor` précédent était donc
-probablement un symptôme de la corruption de vertices, pas la cause racine.
-Le niveau 15 reste bloqué, sur un problème de lecture/offset CD à instruire.
-Sur l'image PAL `SLES_033.31`, le même saut direct 1→15 ne produit pas ce
-`SIGSEGV` mais rend une image de bruit non interprétable (moyenne 0,35), sans
-scène validée : le comportement dépend donc au moins de l'image/des offsets,
-et l'image PAL n'est pas la révision exacte du baseline. Aucun correctif code
-n'est revendiqué. Preuves privées : `build/porting/port008-fullchain4-20261028/`
-(chaîne 1→14 puis SIGSEGV), `port008-level15guard-20261028/` (CD/fseek) et
-`port008-level15pal-20261028/` (bruit PAL).
+- saut direct 1→15 : log `missing GAMEWAD entry 17 for level 15; returning to
+  title`, aucun `SIGSEGV`, titre réaffiché
+  (`build/porting/port008-endguard-20261028/`) ;
+- régression 1→2 : TRAJAN_MARKETS se charge normalement avec Lara
+  (`build/porting/port008-valid2-20261028/`).
+
+Cela protège aussi toute donnée de niveau manquante. Le chemin de **fin de
+campagne réel** (crédits/FMV après RED_ALERT) n'est pas caractérisé : le
+déclenchement `+1` est synthétique et ne prouve pas que le jeu original
+affiche les crédits à ce moment.
 
 ### Ce qui reste non validé
 
@@ -588,7 +590,7 @@ pas une fin de niveau atteinte en jouant. Aucun FMV de transition, crédit de
 fin, boucle campagne complète ni sauvegarde de progression inter-niveaux n'est
 validé. Le raccourci QA `look`/L1 + New Game charge le niveau 4
 (`build/porting/port008-level4-20261028/`) ; `walk`/R1 retombe sur Rome. PORT-008
-reste partiel : 1→14 mécanique, blocage 15.
+reste partiel : chaîne mécanique 1→14 et retour titre sur entrée absente, fin de campagne réelle non caractérisée.
 
 ## Évidence du 18 septembre
 
