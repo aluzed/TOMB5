@@ -291,10 +291,13 @@ données NTSC, entrées XTest, 15 captures inspectées, fermeture
   retrouve le suivi. Captures `09-look-left.png` / `10-look-return.png` et
   `11-look-right.png` / `12-look-return2.png`.
 - **Perte de focus** : sur `SDL_WINDOWEVENT_FOCUS_LOST`, `SDL_ResetKeyboard()`
-  efface l'état clavier (touche relâchée hors fenêtre) pour éviter une action
-  bloquée. Non testé sur un vrai changement de bureau ; le cas « Shift resté
-  enfoncé dans le serveur X » a été rencontré pendant la recette et nettoyé
-  avec `xdotool keyup`, pas par le jeu.
+  efface l'état clavier. Test réel : `W` maintenu, une fenêtre `xmessage`
+  prend le focus, le `keyup` est perdu ; au retour, deux sauvegardes `F5`
+  espacées de 3 s donnent la même position (Z 34346), puis `W` produit un
+  déplacement (Z 35979, room 2). Le mouvement n'est donc pas resté bloqué
+  (`build/porting/port004-focus2-20261028/`). Le cas « Shift resté enfoncé
+  dans le serveur X » rencontré pendant la recette est distinct et a été
+  nettoyé avec `xdotool keyup`, pas par le jeu.
 - **Manette** : déconnexion/reconnexion passe désormais par
   `PadHandleControllerEvent` (instance id SDL, pas l'index joystick brut) et
   ferme le contrôleur sélectionné avant de retenter l'ouverture ; aucun
