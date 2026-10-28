@@ -53,6 +53,11 @@
 #include <string.h>
 #endif
 
+/* Byte size of the object/static tables in a level file.  The skin and
+ * scratch vertex blocks follow it, each 480 bytes. */
+#define LEVEL_OBJECT_DATA_SIZE (NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info))
+#define LEVEL_SKIN_BYTES 480
+
 #if PC_VERSION
 #include "INIT.H"
 #include "GAME.H"
@@ -1429,27 +1434,42 @@ void LoadLevel(FILE* nHandle)
 #if DISC_VERSION
 #if PSX_VERSION
 #if PSXPC_TEST
-	DEL_CDFS_Read((char*)&objects_raw, NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info) + 480 + 480);
+	DEL_CDFS_Read((char*)&objects_raw, LEVEL_OBJECT_DATA_SIZE + LEVEL_SKIN_BYTES * 2);
 #else
 	DEL_CDFS_Read((char*)&objects, NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info) + 480 + 480);
 #endif
 #elif PSXPC_VERSION
-	DEL_CDFS_Read((char*)&objects_raw, NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info) + 480 + 480);
+	DEL_CDFS_Read((char*)&objects_raw, LEVEL_OBJECT_DATA_SIZE + LEVEL_SKIN_BYTES * 2);
 #endif
 #else
 #if PSX_VERSION
 	PClseek(nHandle, level->offsetObjects, 0);
 #if PSXPC_TEST
-	FILE_Read((char*)&objects_raw, 1, NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info) + 480 + 480, nHandle);
+	FILE_Read((char*)&objects_raw, 1, LEVEL_OBJECT_DATA_SIZE + LEVEL_SKIN_BYTES * 2, nHandle);
 #else
 	FILE_Read((char*)&objects, 1, NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info) + 480 + 480, nHandle);
 #endif
 	PCclose(nHandle);
 #elif PSXPC_VERSION
 	fseek(nHandle, level->offsetObjects, SEEK_SET);
-	FILE_Read((char*)&objects_raw, 1, NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info) + 480 + 480, nHandle);
+	FILE_Read((char*)&objects_raw, 1, LEVEL_OBJECT_DATA_SIZE + LEVEL_SKIN_BYTES * 2, nHandle);
 	fclose(nHandle);
 #endif
+#endif
+
+#if (PSXPC_TEST || PSXPC_VERSION) && !PC_VERSION
+	/* The level file stores the object/static tables followed by a 480-byte
+	 * skin block and a 480-byte scratch block, and the loader reads them as
+	 * one contiguous stream.  Since the in-memory guard arrays are larger,
+	 * the scratch block lands at m_SkinVertNums + 480 instead of in
+	 * m_ScratchVertNums.  Move it to its real destination; otherwise the
+	 * scratch indices stay zero and Lara's matrices produce a huge polygon. */
+	if (sizeof(objects_raw.m_SkinVertNums) >= LEVEL_SKIN_BYTES * 2)
+	{
+		memmove(&objects_raw.m_ScratchVertNums[0],
+		        &objects_raw.m_SkinVertNums[LEVEL_SKIN_BYTES],
+		        LEVEL_SKIN_BYTES);
+	}
 #endif
 
 	for (i = 63; i >= 0; i--)
