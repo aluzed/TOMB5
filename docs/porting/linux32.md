@@ -442,6 +442,23 @@ les modifications légitimes de `GAME/CONTROL.C`, `GAME/CAMERA.C`, etc. les
 invalident. Ce ne sont pas des régressions runtime, et les archives
 historiques ne sont pas réécrites.
 
+## Boucle de niveau et campagne — non validé (PORT-008)
+
+PORT-008 demande de terminer le premier niveau puis de passer au suivant. Ce
+n'est pas démontré : la route Rome complète (clés, portes, puzzles, fins de
+niveau) n'a pas été jouée, et aucun déclencheur `gfLevelComplete` de fin de
+niveau n'a été exercé par du gameplay.
+
+Seul point observé : le raccourci QA déjà présent dans `TitleOptions` (maintenir
+`look`/L1 puis valider `New Game` met `gfLevelComplete = 4`) charge une scène
+industrielle distincte de Rome (`build/porting/port008-level4-20261028/`).
+Cela prouve qu'un autre niveau peut être chargé et rendu, **pas** qu'une boucle
+de niveau ou un passage campagne fonctionne. Une tentative avec `walk`/R1
+(attendu `gfLevelComplete = 11`) a rendu Rome, donc ce raccourci n'est pas
+considéré fiable sans instrumentation supplémentaire. Aucune sauvegarde/
+reprise inter-niveaux, aucun FMV de transition, aucun crédit de fin n'est
+validé. PORT-008 reste non commencé au sens de sa recette.
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`
