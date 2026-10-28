@@ -1,5 +1,9 @@
 #include "GAMEFLOW.H"
 
+#if PSXPC_TEST
+#include "INPUTUI.H"
+#endif
+
 #if defined(__EMSCRIPTEN__)
 #include <emscripten.h>
 #endif
@@ -886,6 +890,9 @@ void DoTitleGameLoop(void* arg)
 			PrintString(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) + 8, 3, &gfStringWad[gfStringOffset[STR_CONTROLLER_REMOVED]], (FF_BLINK | FF_CENTER));
 		}
 		//loc_1092C
+#if PSXPC_TEST
+		if (!InputUI_IsOpen())
+#endif
 		handle_cutseq_triggering(Name);
 
 		if (gfGameMode == 2)
@@ -1054,6 +1061,9 @@ void DoTitle(unsigned char Name, unsigned char Audio)//10604(<), 105C4(<) (F) (*
 		gfStatus = TitleOptions();
 		if (gfStatus != 0)
 			break;
+#if PSXPC_TEST
+		if (!InputUI_IsOpen())
+#endif
 		handle_cutseq_triggering(Name);
 		nframes = DrawPhaseGame();
 		gfStatus = ControlPhase(nframes, 0);
@@ -1126,6 +1136,9 @@ void DoTitle(unsigned char Name, unsigned char Audio)//10604(<), 105C4(<) (F) (*
 				PrintString(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) + 8, 3, &gfStringWad[gfStringOffset[STR_CONTROLLER_REMOVED]], (FF_BLINK | FF_CENTER));
 			}
 			//loc_1092C
+#if PSXPC_TEST
+			if (!InputUI_IsOpen())
+#endif
 			handle_cutseq_triggering(Name);
 
 			if (gfGameMode == 2)
@@ -1379,6 +1392,9 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 
 		//loc_10DC4
 		nframes = DrawPhaseGame();
+#if PSXPC_TEST
+		if (!InputUI_IsOpen())
+#endif
 		handle_cutseq_triggering(Name);
 
 		if (DEL_playingamefmv != 0)

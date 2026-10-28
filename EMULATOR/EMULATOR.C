@@ -10,6 +10,7 @@
 #include "LIBGPU.H"
 #include "LIBETC.H"
 #include "LIBPAD.H"
+#include "INPUTUI.H"
 #if !defined(__ANDROID__)
 #include <thread>
 #endif
@@ -2752,6 +2753,11 @@ void Emulator_DoPollEvent()
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
+		if (InputUI_HandleEvent(&event))
+		{
+			continue;
+		}
+
 		switch (event.type)
 		{
 			case SDL_CONTROLLERDEVICEADDED:

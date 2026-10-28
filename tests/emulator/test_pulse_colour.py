@@ -32,6 +32,10 @@ def pulse_binary(tmp_path_factory):
 // GCC test-only seam to the actual function-local static, in this same TU.
 // No copied function, modified production visibility, or production test hook.
 extern int input_send asm("_ZZ13S_UpdateInputvE4send");
+// This harness includes PSXINPUT.C without LIBPAD.C; the keymap seam is inert.
+int InputMap_IsActive(void) { return 0; }
+int InputMap_UsesControlOption(void) { return 0; }
+unsigned long InputMap_PollActions(void) { return 0; }
 CVECTOR FontShades[10][16];
 unsigned char PulseCnt, ScaleFlag;
 unsigned short GlobalCounter;

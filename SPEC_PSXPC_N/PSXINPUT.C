@@ -9,6 +9,7 @@
 #include "SOUND.H"
 #include "SPECIFIC.H"
 #include <LIBPAD.H>
+#include "INPUTMAP.H"
 #if PSXPC_TEST
 #include "EMULATOR_PRIVATE.H"
 #endif
@@ -235,44 +236,53 @@ void S_UpdateInput()//5F628(<), 6038C(<)
 		in |= IN_DESELECT;
 	}
 
-	if ((RawPad & IN_SQUARE))
+	if (InputMap_IsActive() && !InputMap_UsesControlOption())
 	{
-		in |= pad_cons[savegame.ControlOption].pad_square;
+		/* The user keymap is authoritative: physical inputs are mapped to
+		 * semantic actions, so the legacy PSX control schemes are bypassed. */
+		in |= InputMap_PollActions();
 	}
-
-	if ((RawPad & IN_CIRCLE))
+	else
 	{
-		in |= pad_cons[savegame.ControlOption].pad_circle;
-	}
+		if ((RawPad & IN_SQUARE))
+		{
+			in |= pad_cons[savegame.ControlOption].pad_square;
+		}
 
-	if ((RawPad & IN_TRIANGLE))
-	{
-		in |= pad_cons[savegame.ControlOption].pad_triangle;
-	}
+		if ((RawPad & IN_CIRCLE))
+		{
+			in |= pad_cons[savegame.ControlOption].pad_circle;
+		}
 
-	if ((RawPad & IN_CROSS))
-	{
-		in |= pad_cons[savegame.ControlOption].pad_cross;
-	}
+		if ((RawPad & IN_TRIANGLE))
+		{
+			in |= pad_cons[savegame.ControlOption].pad_triangle;
+		}
 
-	if ((RawPad & IN_L1))
-	{
-		in |= pad_cons[savegame.ControlOption].pad_L1;
-	}
+		if ((RawPad & IN_CROSS))
+		{
+			in |= pad_cons[savegame.ControlOption].pad_cross;
+		}
 
-	if ((RawPad & IN_L2))
-	{
-		in |= pad_cons[savegame.ControlOption].pad_L2;
-	}
+		if ((RawPad & IN_L1))
+		{
+			in |= pad_cons[savegame.ControlOption].pad_L1;
+		}
 
-	if ((RawPad & IN_R1))
-	{
-		in |= pad_cons[savegame.ControlOption].pad_R1;
-	}
+		if ((RawPad & IN_L2))
+		{
+			in |= pad_cons[savegame.ControlOption].pad_L2;
+		}
 
-	if ((RawPad & IN_R2))
-	{
-		in |= pad_cons[savegame.ControlOption].pad_R2;
+		if ((RawPad & IN_R1))
+		{
+			in |= pad_cons[savegame.ControlOption].pad_R1;
+		}
+
+		if ((RawPad & IN_R2))
+		{
+			in |= pad_cons[savegame.ControlOption].pad_R2;
+		}
 	}
 
 	//loc_5FA30

@@ -1,5 +1,9 @@
 #include "TITSEQ.H"
 
+#if PSXPC_TEST
+#include "INPUTUI.H"
+#endif
+
 #include "CD.H"
 #include "CONTROL.H"
 #include "DELTAPAK.H"
@@ -139,6 +143,14 @@ enum
 
 int TitleOptions(int Name)
 {
+#if PSXPC_TEST
+	InputUI_NotifyDraw();
+	if (InputUI_IsOpen())
+	{
+		return 0;
+	}
+#endif
+
 	int a1;
 #if DEBUG_VERSION
 	char buf[80];//0x18(sp)

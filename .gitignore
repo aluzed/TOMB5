@@ -52,5 +52,9 @@
 /TOMB5.BIN
 /TOMB5.CUE
 /build/reverse/*
+/build/porting/*
+/*.zip
+/INPUT.CFG
+/input.cfg
 __pycache__/
 *.pyc

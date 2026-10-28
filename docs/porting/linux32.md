@@ -133,6 +133,145 @@ constants de la CLI sont inchangés. Ce contrôle n’isole pas le répertoire c
 un tiers concurrent et ne rend pas la paire JSON/log atomique.
 Voir [RE-959](../stories/RE-959-linux32-recorder-labels.md).
 
+## Clone neuf — vérification du 27 octobre 2026
+
+Vérification non indépendante, sur un clone neuf de `b5411b6b`, sans les preuves
+privées historiques (`build/reverse/` est gitignoré et absent du clone).
+
+- **Prérequis manquants sur cet hôte** : pytest/pip, en-têtes C++ 32 bits
+  (`g++-multilib`), `GL/glu.h` (`libglu1-mesa-dev`) et les en-têtes GLEW.
+  Sans sudo, les paquets amd64 de développement ont été extraits dans un sysroot
+  local (`/tmp/opencode/sysroot`) et exposés via `CPLUS_INCLUDE_PATH` et
+  `LIBRARY_PATH` ; ce n'est pas une installation système documentée.
+  `build/porting/*` doit être gitignoré : la règle manquait dans le `.gitignore`
+  du clone, le driver refusait donc toute sortie. Règle ajoutée.
+- **Suites** : `tests/porting` 479 PASS ; `tests/emulator` 3 676 PASS.
+  `tests/reverse` : 4 349 PASS, 117 FAIL, 1 skip (`--ignore=tests/reverse/fixtures`,
+  car un fixture `run_test.py` consomme des arguments au chargement). Ces FAIL
+  sont documentaires/historiques : exports Ghidra privés absents
+  (`build/reverse/re007/...`, `ghidra-functions.csv`) et snapshots HTML/compteurs
+  non régénérés depuis les jalons RE-7xx/RE-9xx. Ils ne sont pas des régressions
+  du code de jeu et ne peuvent pas être rendus verts sans réécrire des archives
+  historiques.
+- **Builds** : deux builds ELF32 i386 neufs depuis le même commit avec GLEW 2.2.0
+  recompilé dans chaque sortie. SHA256 : `build-a`
+  `83949e680e079e55f9b13646617d737a1ff477aeb9609cc46fa68666a74d4897`,
+  `build-b` `99e32bcf5d22a1394c448c8aa51a2fd2fa5eb2c1f98e336827cc8f3ef58b6094`
+  (identité bit-à-bit non exigée).
+- **Données** : image PAL `SLES_033.31` et image NTSC `SLUS_013.11` toutes deux
+  converties en `TOMB5.CUE`/`TOMB5.BIN` (le nom d'origine avec espaces est refusé).
+  L'image NTSC extraite a le MD5 `353003caeb688458bb6e8b1c824a6bdc`, **différent**
+  de la référence documentée `4EF523E708D7A7D6571F39C6E47784F9` : ce n'est pas la
+  révision exacte du baseline. Les deux images atteignent le titre.
+- **Lancement** : capture du splash légal puis du menu titre (`New Game` /
+  `Special Features`) vers 35–50 s, fermeture par vrai `WM_DELETE_WINDOW`,
+  `application.json` exit 0 avant la borne, zéro erreur X.
+- **PORT-002 observé, trois lancements neufs** : `port002-20261027c/run1..3`
+  montrent le menu à 35 s ; `Down` sélectionne `Special Features`, `Up` revient
+  à `New Game` (captures et variance temporelle concordantes sur les trois).
+  `special-features-20261027/` montre l'ouverture par `Cross` puis le retour au
+  menu principal par `Triangle` (`03-special-features.png`, `04-back-main.png`).
+  `launch-newgame2..4` : `Cross` sur la sélection par défaut quitte le menu,
+  cinématique puis scène de Rome à 60 s, `application.json` exit 0 à chaque fois.
+  Vérification non indépendante, sans revue : aucun statut Done n'est attribué.
+- **Fenêtre d'interaction du titre** : après ~50 s, la séquence de cutscene /
+  `DEMO MODE` peut prendre la main et les touches sont ignorées. Faire les
+  interactions dans la fenêtre 30–50 s, ou relancer. Les runs où `Cross` a été
+  envoyé trop tard ont fini en `DEMO MODE`, pas dans une partie.
+- **Clavier AZERTY** : le scancode SDL compte, pas le keysym. `xdotool key z`
+  envoie le scancode `W` sur cet hôte AZERTY (donc pas `Triangle`) ; utiliser
+  `w` (position physique de Z) pour `Triangle`, `c` pour `Cross`, `z`/`x`/`v`
+  pour les autres boutons seulement sur un layout QWERTY. Flèches inchangées.
+- **Lecture de la sélection** : l'option sélectionnée utilise le style 1 (gris
+  pulsant), l'option non sélectionnée le style 2 (blanc). Un seuil de blancheur
+  sur une seule frame peut donc inverser la lecture ; une variance sur ~12
+  frames espacées de 0,15 s est fiable. Une pression trop courte peut aussi
+  être ignorée : préférer `keydown`, pause de 500 ms, puis `keyup`.
+- **HUD debug** : la scène affiche `Camera X/Y/Z` (`GAME/HEALTH.C`,
+  `#if 1//GH0ST_TESTING`). Ce n'est pas un défaut de portage, mais il devra être
+  retiré avant une recette visuelle propre.
+- **Piège de fermeture** : `xdotool windowclose` appelle `XDestroyWindow`, pas
+  `WM_DELETE_WINDOW`. Il détruit la fenêtre sous le client et produit
+  `GLXBadDrawable`/`BadWindow (XInputExtension)` puis exit 1. Il faut envoyer un
+  `ClientMessage` `WM_PROTOCOLS`/`WM_DELETE_WINDOW` (le menu contextuel d'un
+  gestionnaire de fenêtres fait cela). Ne pas interpréter l'exit 1 de
+  `windowclose` comme un défaut du jeu.
+
+## Keymap configurable — 28 octobre 2026
+
+Le port lit `INPUT.CFG` au démarrage. Ordre de résolution :
+`TOMB5_INPUT_CONFIG`, puis `INPUT.CFG` du répertoire courant, puis
+`input.cfg` du chemin préférentiel SDL (`SDL_GetPrefPath`). Si aucun fichier
+n'existe, un fichier complet est écrit dans le répertoire courant ; en cas
+d'échec d'écriture, le chemin préférentiel est utilisé. Journal :
+`[INPUT] Default configuration written to …` ou `[INPUT] Configuration loaded from …`.
+
+Format : deux colonnes par action et par device, `NONE` pour un slot vide.
+
+```ini
+[devices]
+keyboard = 1
+gamepad = 1
+gamepad_index = 0
+gamepad_guid =
+axis_deadzone = 0.50
+
+[gameplay]
+use_control_option = 0
+
+[keyboard]
+forward = W, UP
+action  = C, NONE
+
+[gamepad]
+forward = DPAD_UP, LEFTY-
+action  = A, NONE
+```
+
+- Actions : `forward`, `back`, `left`, `right`, `action`, `jump`, `draw`,
+  `roll`, `look`, `duck`, `walk`, `sprint`, `start`, `select`.
+- Les noms clavier sont des **scancodes SDL** : `W` désigne la position physique
+  QWERTY-W (touche Z sur AZERTY), donc le keymap est indépendant de la
+  disposition. `UP`/`DOWN`/`LEFT`/`RIGHT` sont les flèches.
+- Manette : boutons `A`, `B`, `X`, `Y`, `BACK`, `START`, `LEFTSHOULDER`,
+  `RIGHTSHOULDER`, `LEFTSTICK`, `RIGHTSTICK`, `DPAD_*` ; axes `LEFTX-/+`,
+  `LEFTY-/+`, `RIGHTX-/+`, `RIGHTY-/+`, `TRIGGERLEFT`, `TRIGGERRIGHT`.
+  `gamepad_index` est l’ordinal du contrôleur (0 = première manette SDL), pas
+  l’index joystick brut.
+- `use_control_option = 0` (défaut) rend le keymap autoritatif pour le gameplay ;
+  `1` conserve les cinq schémas PSX historiques (`savegame.ControlOption`).
+- Les bits PSX bruts restent produits pour les menus/titre : `action` → Cross,
+  `draw` → Triangle, directions → D-pad, `start`/`select` → Start/Select.
+
+### Éditeur en jeu (PORT-012)
+
+`F1` ouvre un éditeur modal depuis le titre ou une partie active. Flèches/D-pad
+choisissent l’action et la colonne (clavier 1/2, manette 1/2), `Entrée`/`A`
+passe en capture du prochain appui, `Échap` annule la capture ou ferme, `Tab`
+ouvre l’écran Devices (`keyboard`, `gamepad`, index, GUID), `R` restaure les
+défauts. Chaque modification écrit `INPUT.CFG` immédiatement ; le statut affiche
+`Saved …` ou l’erreur d’écriture. L’éditeur lit SDL directement, donc il reste
+utilisable même si le keymap est cassé. `ControlPhase` est gelé pendant
+l’édition ; le HUD debug `Camera X/Y/Z` est masqué. F1 n’est accepté que lorsque
+le chemin de dessin normal tourne (titre/jeu), pas pendant une FMV, l’inventaire
+ou le menu pause.
+
+L’écran affiche les **libellés de la disposition courante** (AZERTY : `Z`, `Q`,
+`W`), tandis que le fichier stocke les scancodes physiques (`W`, `A`, `Z`).
+
+Vérification locale : 17 tests keymap, suite porting 496 PASS, build `build-j`
+ELF32 i386 (SHA256 `30c014c2ca3ce1dac76dc932a529e2f8b9fb51a61444e82bc4cd1a46da233626`).
+`C` sur `New Game` atteint la scène de Rome
+(`build/porting/launch-inputmap-default`) ; avec `action = SPACE`,
+`Espace` la remplace et atteint la même scène
+(`build/porting/launch-inputmap-custom`). Modification via l’éditeur :
+`action` clavier 2 = `SPACE`, puis `Espace` atteint la scène
+(`ui-bind-e2e/03-level.png`) ; `left` clavier 2 = `A` écrit
+`INPUT.CFG` (`build/porting/ui-evidence-20261028/bound-left-A.png`). F1 en jeu et reprise :
+`build/porting/ui-evidence-20261028/gameplay-ui.png`, `gameplay-resumed.png`. Aucune manette physique
+testée ; pas de hot reload. Tickets :
+[PORT-009 à PORT-012](input/README.md).
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`

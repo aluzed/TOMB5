@@ -18,6 +18,7 @@
 #include "FXTRIG.H"
 #include "GAMEFLOW.H"
 #include "GPU.H"
+#include "INPUTUI.H"
 #include "HEALTH.H"
 #include "LARA.H"
 #include "OBJECTS.H"
@@ -190,6 +191,7 @@ long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 	}
 
 	//loc_643C4
+	InputUI_Draw();
 	GPU_EndScene();
 	camera.number_frames = S_DumpScreen();
 

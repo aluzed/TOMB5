@@ -79,6 +79,10 @@
 #include "SWITCH.H"
 #include "TWOGUN.H"
 
+#if PSXPC_TEST
+#include "INPUTUI.H"
+#endif
+
 #define MAX_FRAMES 10
 
 int flipeffect = -1;
@@ -424,6 +428,20 @@ void UpdateSky()
 
 long ControlPhase(long nframes, int demo_mode)//1D538(<), 1D6CC(!) //DO NOT TOUCH (PSX/PSXPC)
 {
+#if PSXPC_TEST
+	if (InputUI_IsOpen())
+	{
+		/* The input editor freezes the simulation while it is open.  Events
+		 * are still polled by VSync/Emulator_DoPollEvent. */
+		RawPad = 0;
+		RawEdge = 0;
+		input = 0;
+		dbinput = 0;
+		inputBusy = 0;
+		return 0;
+	}
+#endif
+
 #if PC_VERSION
 	S_Warn("PC CONTROLPHASE %d %d", nframes, demo_mode);
 
