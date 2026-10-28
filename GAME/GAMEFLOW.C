@@ -2,6 +2,7 @@
 
 #if PSXPC_TEST
 #include "INPUTUI.H"
+#include "PORTSAVE.H"
 #endif
 
 #if defined(__EMSCRIPTEN__)
@@ -1285,6 +1286,9 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 		sgRestoreGame();
 		gfRequiredStartPos = 0;
 		gfInitialiseGame = 0;
+#if PSXPC_TEST
+		PortSave_ApplyPending();
+#endif
 
 #if PC_VERSION
 		if (IsVolumetric())

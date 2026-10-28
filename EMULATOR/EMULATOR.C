@@ -11,6 +11,7 @@
 #include "LIBETC.H"
 #include "LIBPAD.H"
 #include "INPUTUI.H"
+#include "PORTSAVE.H"
 #if !defined(__ANDROID__)
 #include <thread>
 #endif
@@ -2792,6 +2793,22 @@ void Emulator_DoPollEvent()
 			case SDL_KEYUP:
 			{
 				int nKey = event.key.keysym.scancode;
+
+				/* Reserved port quick save/load keys.  They are read before
+				 * the remappable keymap so they also work at the title. */
+				if (event.type == SDL_KEYDOWN && !event.key.repeat)
+				{
+					if (nKey == SDL_SCANCODE_F5)
+					{
+						PortSave_RequestSave();
+						break;
+					}
+					if (nKey == SDL_SCANCODE_F6)
+					{
+						PortSave_RequestLoad();
+						break;
+					}
+				}
 
 				// lshift/right shift
 				if (nKey == SDL_SCANCODE_RSHIFT)

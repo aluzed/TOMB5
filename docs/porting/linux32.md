@@ -339,6 +339,46 @@ caractérisation `GetHeight`/`ItemPushLara` de RE-770/771 reste ouverte. Ce lot
 ne corrige pas le callback de hauteur et ne prétend pas à une équivalence
 binaire.
 
+## Sauvegarde rapide et reprise — 28 octobre 2026 (PORT-006)
+
+La sauvegarde mémoire PSX (`MemCard*`) n'est pas implémentée pour PSXPC_N et
+`RestoreLevelData` reste un stub. Le port fournit donc une **sauvegarde rapide
+de port** : `F5` en jeu écrit `TOMB5.SAV` (ou `TOMB5_SAVE_PATH`), `F6` au titre
+recharge la sauvegarde et reprend au même endroit.
+
+- **Format** : en-tête magique `T5P2`, version 2, `savegame_info` complet
+  (inventaire, santé, stats, niveau), position/rotation/salle/état d'animation
+  de Lara, checksum FNV-1a. Fichier de 466 octets.
+- **Écriture** : `SaveLaraData()` rafraîchit `savegame.Lara` ; `F5` est capté
+  avant le keymap (touche réservée) et consommé une seule fois par frame.
+- **Lecture** : `F6` au titre appelle `PortSave_Read`, puis `TitleOptions`
+  retourne 2 ; le gameflow recharge `savegame.CurrentLevel` en mode 4,
+  `sgRestoreGame()` restaure l'état de Lara, puis `PortSave_ApplyPending()`
+  replace Lara (position, salle, animation), met à jour la salle et réinitialise
+  la caméra.
+- **Preuve réelle** : partie neuve, marche dans Rome, `F5` → log
+  `[SAVE] wrote TOMB5.SAV: level 1 room 2 X 46592 Y 0 Z 35826` ; fermeture
+  normale ; relance ; `F6` au titre → log
+  `[SAVE] loaded ...` puis `[SAVE] applied saved position: room 2 X 46592 Y 0 Z 35826`,
+  scène identique à la capture d'avant fermeture (`03-after-save.png` vs
+  `02-loaded.png`, moyennes 0,068 / 0,070). `application` exit 0 dans les deux
+  phases. Rejeu du seul chargement sur le build final `build-m` (SHA256
+  `2421b302a9e136b9e0fcee5475dd887f2ccf8d4ef4c8c71d3aba524f9ec94865`) : même
+  position appliquée (`build/porting/port006c-20261028/`). Preuves privées :
+  `build/porting/port006-20261028/`, `port006b-20261028/`.
+
+### Limites PORT-006
+
+- `RestoreLevelData` n'est pas implémenté : les objets, portes, pickups et
+  interrupteurs du niveau repartent de l'état initial ; seuls Lara et son
+  inventaire/santé sont restaurés. Ce n'est pas une reprise d'état complet.
+- Pas de sauvegarde via carte mémoire PSX ni via le menu d'inventaire ; `F5`/`F6`
+  sont des touches réservées non remappables. Pas de chargement en jeu (le
+  chargement n'est traité qu'au titre), pas de slots multiples, pas de
+  sauvegarde pendant une FMV/menu.
+- Un fichier absent/corrompu est refusé avec un log et le titre continue.
+  L'écriture n'est pas atomique (pas de fichier temporaire + rename).
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`

@@ -81,6 +81,7 @@
 
 #if PSXPC_TEST
 #include "INPUTUI.H"
+#include "PORTSAVE.H"
 #endif
 
 #define MAX_FRAMES 10
@@ -928,6 +929,19 @@ long ControlPhase(long nframes, int demo_mode)//1D538(<), 1D6CC(!) //DO NOT TOUC
 		GlobalCounter++;
 		UpdateSky();
 		S_UpdateInput();
+
+#if PSXPC_TEST
+		if (PortSave_TakeSaveRequest())
+		{
+			PortSave_Write();
+		}
+		/* Loads are only applied by TitleOptions; do not consume the request
+		 * while the title loop is also running ControlPhase. */
+		if (gfGameMode == 0 && PortSave_TakeLoadRequest())
+		{
+			printf("[SAVE] load ignored during gameplay; press F6 at the title\n");
+		}
+#endif
 
 		if (bDisableLaraControl)
 		{

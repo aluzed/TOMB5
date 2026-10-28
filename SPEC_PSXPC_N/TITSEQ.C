@@ -2,6 +2,7 @@
 
 #if PSXPC_TEST
 #include "INPUTUI.H"
+#include "PORTSAVE.H"
 #endif
 
 #include "CD.H"
@@ -148,6 +149,15 @@ int TitleOptions(int Name)
 	if (InputUI_IsOpen())
 	{
 		return 0;
+	}
+
+	if (PortSave_TakeLoadRequest())
+	{
+		if (PortSave_Read())
+		{
+			FromTitle = 1;
+			return 2;
+		}
 	}
 #endif
 
