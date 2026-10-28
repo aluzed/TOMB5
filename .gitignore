@@ -56,5 +56,7 @@
 /*.zip
 /INPUT.CFG
 /input.cfg
+/TOMB5.SAV
+/*.SAV
 __pycache__/
 *.pyc
