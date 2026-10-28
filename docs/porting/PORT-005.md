@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-10-28
+
+PORT-005 — **In progress**. Autorisation bornée jusqu’au 2026-10-28T15:00:00+01:00. Linux32 provisoire.
+
+Route bornée sur build-l avec positions relevées par point d'arrêt GDB sur UpdateLaraRoom : salle 0 (X46592 Z31232) → salle 2 (Z34964..38853, Y 0→256) → salle 62 (Z38913, Y -1792) → salle 61 (Z40645, Y -274), sans téléportation X/Z. Mur : 12 s de marche bloquées contre une paroi, saut avec W accroche le rebord, pas de traversée. Poussée latérale de 3 s sans déplacement. Pause/Resume reprend au même endroit. Limites : route unique, pas de pente raide/eau, échantillonnage GDB, pas d'équivalence GetHeight cible ; RE-770/771 restent ouvertes. Preuves privées : build/porting/port005b-20261028.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-09-20
 
 PORT-004, PORT-005 — **In progress**. Autorisation bornée jusqu’au 2026-09-20T12:00:00+02:00. Linux32 provisoire.

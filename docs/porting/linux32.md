@@ -305,6 +305,40 @@ données NTSC, entrées XTest, 15 captures inspectées, fermeture
   pas d'équivalence binaire. La caméra combat, les collisions étendues et le
   remappage caméra restent hors de ce ticket.
 
+## Déplacement solide et salles — 28 octobre 2026 (PORT-005)
+
+Route bornée en scène ouverte sur `build-l` (même binaire ELF32 i386 que
+PORT-004), entrées XTest, positions relevées par un point d'arrêt GDB sur
+`UpdateLaraRoom` (échantillon toutes les 30 visites + changement de salle).
+Preuves privées : `build/porting/port005b-20261028/` (`gdb.log`, captures).
+
+| Étape | Salle | X | Y | Z |
+|---|---:|---:|---:|---:|
+| Départ, immobile | 0 | 46592 | 0 | 31232 |
+| Marche dans le couloir | 2 | 46592 | 0 | 34964 |
+| Marche (sol surélevé) | 2 | 46592 | 256 | 37721 |
+| Marche | 2 | 46592 | 256 | 38853 |
+| Saut/accroche au mur | 62 | 46592 | -1792 | 38913 |
+| Reprise dans la cour | 61 | 46592 | -274 | 40645 |
+
+- **Portails** : trois changements de salle observés (0 → 2 → 62 → 61) sans
+  téléportation de X/Z ; la caméra suit et la géométrie reste cohérente.
+- **Mur** : après 12 s de marche, Lara est bloquée contre une paroi
+  (`05-walk8.png`, `06-walk12.png` identiques) ; un saut avec `W` maintenu
+  déclenche l'accroche au rebord, pas une traversée.
+- **Saut/atterrissage** : la hauteur `Y` passe de 256 à -1792 puis -274 avec
+  `floor` cohérent (-1792 / 256) ; pas de chute hors géométrie observée.
+- **Mur latéral** : rotation puis poussée de 3 s, position et image inchangées
+  (`10-push-wall.png` / `11-after-push.png`).
+- **Pause/reprise** : `Entrée` ouvre le menu pause, `Resume` rend le contrôle ;
+  la scène reprend au même endroit.
+
+Limites : route unique, pas de pente raide ni d'eau, pas de comparaison
+`GetHeight` cible, échantillonnage GDB et non une trace matérielle ; la
+caractérisation `GetHeight`/`ItemPushLara` de RE-770/771 reste ouverte. Ce lot
+ne corrige pas le callback de hauteur et ne prétend pas à une équivalence
+binaire.
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`
