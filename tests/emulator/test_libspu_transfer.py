@@ -1124,3 +1124,42 @@ def test_set_common_attr_applies_only_the_masked_external_input_fields(tmp_path)
         cwd=REPO,
     )
     subprocess.run([str(executable)], check=True)
+
+
+def test_set_key_off_all_clears_key_state(tmp_path):
+    source = tmp_path / "spu_stop_all_harness.cpp"
+    executable = tmp_path / "spu_stop_all_harness"
+    source.write_text(
+        """
+        #include <assert.h>
+        #include "LIBSPU.H"
+        extern int _spu_keystat;
+
+        int main(void) {
+            SpuSetKey(SPU_ON, SPU_00CH | SPU_05CH);
+            assert((_spu_keystat & (SPU_00CH | SPU_05CH)) != 0);
+
+            SpuSetKey(SPU_OFF, SPU_ALLCH);
+            assert(_spu_keystat == 0);
+            return 0;
+        }
+        """
+    )
+    subprocess.run(
+        [
+            "g++",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-Wl,--gc-sections",
+            "-I/usr/include/SDL2",
+            "-I",
+            str(REPO / "EMULATOR"),
+            str(source),
+            str(REPO / "EMULATOR" / "LIBSPU.C"),
+            "-o",
+            str(executable),
+        ],
+        check=True,
+        cwd=REPO,
+    )
+    subprocess.run([str(executable)], check=True)

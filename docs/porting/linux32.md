@@ -379,6 +379,33 @@ recharge la sauvegarde et reprend au même endroit.
 - Un fichier absent/corrompu est refusé avec un log et le titre continue.
   L'écriture n'est pas atomique (pas de fichier temporaire + rename).
 
+## Audio — arrêt propre, pas de sortie audible (PORT-007, partiel)
+
+Le code PSXPC_N n'a **aucun backend de sortie audio hôte** : ni SDL_Audio, ni
+ALSA/Pulse/OpenAL, ni mixage SPU vers un tampon. Les appels `SpuSetKey`,
+`SPU_Play` et `S_CDPlay` alimentent un état émulé, mais rien n'est envoyé à une
+carte son. Le critère « audible » de PORT-007 ne peut donc pas être validé sur
+cet hôte, même avec un périphérique HDMI présent ; il faudrait écrire le mixage
+SPU/CD et ouvrir un device, puis une écoute humaine. Ticket **bloqué** sur ce
+backend, pas sur une correction ponctuelle.
+
+Ce qui a été corrigé dans ce lot (arrêt propre, sans revendication d'audibilité) :
+
+- `SPU_StopAll` libère toutes les voix (`SpuSetKey(SPU_OFF, SPU_ALLCH)`) et
+  reconstruit la liste des canaux libres ; auparavant c'était `UNIMPLEMENTED()`
+  et l'état key-on survivait à l'arrêt.
+- `S_SoundStopSample` libère le canal demandé, `S_SoundStopAllSamples` appelle
+  `SPU_StopAll`, `S_SetReverbType` mémorise le type courant.
+- Test hôte ajouté : `SpuSetKey(SPU_OFF, SPU_ALLCH)` remet `_spu_keystat` à zéro
+  (`tests/emulator/test_libspu_transfer.py`).
+- Smoke titre : `build-k` atteint le menu, aucune ligne
+  `[SPU_StopAll] - Unimplemented!`, fermeture normale exit 0
+  (`build/porting/audio-smoke-20261028/`).
+
+Limites : aucun test d'écoute, aucun changement de volume vérifié, pause/retour
+titre non instrumentés pour l'audio, musique CD/XA non mixée. PORT-007 reste
+In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`

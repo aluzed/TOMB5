@@ -71,7 +71,23 @@ long SPU_AllocChannel()//915B0, 935F4 (F)
 
 void SPU_StopAll()
 {
-	UNIMPLEMENTED();
+	int channel;
+
+	/* Release every SPU voice and rebuild the free-channel list.  Without
+	 * this the emulated key-on state survives a return to the title even
+	 * though the game has stopped the corresponding sound slots. */
+	SpuSetKey(SPU_OFF, SPU_ALLCH);
+
+	for (channel = 0; channel < MAX_SOUND_SLOTS; channel++)
+	{
+		LabSampleType[channel] = 0;
+	}
+
+	LnFreeChannels = 0;
+	for (channel = 0; channel < MAX_SOUND_SLOTS; channel++)
+	{
+		LabFreeChannel[LnFreeChannels++] = channel;
+	}
 }
 
 void SPU_FreeChannel(int channel_index)//91668, 936AC (F)
@@ -82,17 +98,33 @@ void SPU_FreeChannel(int channel_index)//91668, 936AC (F)
 
 void S_SoundStopSample(int handle)
 {
-	UNIMPLEMENTED();
+	if (GtSFXEnabled == 0)
+	{
+		return;
+	}
+
+	if (handle >= 0 && handle < MAX_SOUND_SLOTS && LabSampleType[handle] != 0)
+	{
+		SPU_FreeChannel(handle);
+	}
 }
 
 void S_SetReverbType(int reverb)
 {
-	UNIMPLEMENTED();
+	if (reverb != CurrentReverb)
+	{
+		CurrentReverb = reverb;
+	}
 }
 
 void S_SoundStopAllSamples()
 {
-	UNIMPLEMENTED();
+	if (GtSFXEnabled == 0)
+	{
+		return;
+	}
+
+	SPU_StopAll();
 }
 
 void SOUND_EndScene()
