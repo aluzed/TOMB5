@@ -521,6 +521,29 @@ Cela valide la **mécanique de boucle** après correctif, pas une complétion
 jouée : les déclenchements sont injectés, aucun puzzle/porte/clé n'est résolu,
 aucun FMV de transition ni crédit n'est vérifié.
 
+### Blocage niveau 6 — pointeur de textures invalide
+
+Le chaînage s'arrête au niveau 6 par un `SIGSEGV` reproductible :
+
+```
+sub_658L5 (meshp=…, s5=0xc100ff, s6=…) at SPEC_PSXPC_N/LARA5.C:834
+  t4 = ((int*)t5)[2];
+#1 sub_2CL5 (item=…) at LARA5.C:1416   // DrawLaraL5
+#2 DrawLaraL5 () at LARA5.C:1727
+```
+
+État au crash : `psxtextinfo = 0xc100ff`, `a22 = 0xc100ff`, alors que les
+pointeurs valides du niveau sont dans `malloc_buffer` (`0x567…`). Le saut
+**direct** 1 → 6 (`gfLevelComplete = 6`) reproduit le même crash, donc ce n'est
+pas un état laissé par les transitions précédentes : l'initialisation des
+textures du niveau 6 produit un pointeur hors tas, et le rendu du mesh de Lara
+le déréférence. Preuves privées :
+`build/porting/port008-fullchain-20261028/` (chaîne 1→5 puis crash) et
+`build/porting/port008-level6diag2-20261028/` (état et backtrace). Causes
+possibles non tranchées : `textureInfoLength`/relocalisation spécifique au
+niveau 6, format de mesh/texture TR5 non couvert. Aucun patch spéculatif n'est
+appliqué ; c'est le prochain blocage à instruire pour la campagne complète.
+
 ### Ce qui reste non validé
 
 Le déclenchement est synthétique : il prouve la **mécanique de transition**,
