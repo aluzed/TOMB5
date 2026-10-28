@@ -427,13 +427,14 @@ In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
 
 La recette principale a été jouée sur `build-o` (ELF32 i386, SHA256
 `595d3c4c41ac640587e292c75fa63bd81b9074228c7a40c91a630490be5f6d8e`).
-Le build final `build-r` (SHA256
-`bda64f5c9f3030072bc2f05e0aa7bebfb11fd4a25e2ec6039ec3442f2b2aeb69`)
+Le build final `build-s` (SHA256
+`a34430c76aeeb8a61213fbfc30745079f75c1ca91c93ff0592a302d654200f31`)
 compile les mêmes sources que `build-q`, avec en plus l'indice de titre
-`F6: CONTINUE`, le garde-fou F5/F6 pendant l'éditeur et le retour visuel
-`Game saved`/`Game loaded`. Smoke titre de `build-r` avec un fichier de
-sauvegarde présent : indice affiché, fermeture normale exit 0
-(`build/porting/build-r-smoke-20261028/`). Scénario unique, 9 captures inspectées,
+`F6: CONTINUE`, le garde-fou F5/F6 pendant l'éditeur, le retour visuel
+`Game saved`/`Game loaded` et le correctif de transition PORT-008. Smoke titre
+de `build-r` (même code hors transition) avec un fichier de sauvegarde présent :
+indice affiché, fermeture normale exit 0 (`build/porting/build-r-smoke-20261028/`).
+Scénario unique, 9 captures inspectées,
 `application.json` exit 0 :
 
 1. titre ; `F6` charge `TOMB5.SAV` (salle 2, X 46592 Y 0 Z 35826) ;
@@ -466,22 +467,47 @@ les modifications légitimes de `GAME/CONTROL.C`, `GAME/CAMERA.C`, etc. les
 invalident. Ce ne sont pas des régressions runtime, et les archives
 historiques ne sont pas réécrites.
 
-## Boucle de niveau et campagne — non validé (PORT-008)
+## Boucle de niveau et campagne — transition corrigée (PORT-008, partiel)
 
-PORT-008 demande de terminer le premier niveau puis de passer au suivant. Ce
-n'est pas démontré : la route Rome complète (clés, portes, puzzles, fins de
-niveau) n'a pas été jouée, et aucun déclencheur `gfLevelComplete` de fin de
-niveau n'a été exercé par du gameplay.
+PORT-008 demande de terminer le premier niveau puis de passer au suivant. La
+route Rome complète (clés, portes, puzzles, fin de niveau) n'a **pas** été
+jouée par du gameplay, donc le critère utilisateur n'est pas encore validé.
+Mais un vrai défaut du chemin de transition a été trouvé et corrigé.
 
-Seul point observé : le raccourci QA déjà présent dans `TitleOptions` (maintenir
-`look`/L1 puis valider `New Game` met `gfLevelComplete = 4`) charge une scène
-industrielle distincte de Rome (`build/porting/port008-level4-20261028/`).
-Cela prouve qu'un autre niveau peut être chargé et rendu, **pas** qu'une boucle
-de niveau ou un passage campagne fonctionne. Une tentative avec `walk`/R1
-(attendu `gfLevelComplete = 11`) a rendu Rome, donc ce raccourci n'est pas
-considéré fiable sans instrumentation supplémentaire. Aucune sauvegarde/
-reprise inter-niveaux, aucun FMV de transition, aucun crédit de fin n'est
-validé. PORT-008 reste non commencé au sens de sa recette.
+### Défaut trouvé et corrigé
+
+Dans `GAME/GAMEFLOW.C`, après `gfStatus == 3` (niveau terminé), le code
+affectait `gfCurrentLevel = gfLevelComplete` puis **écrasait
+inconditionnellement** `gfCurrentLevel = 0`. Le test de niveau suivant était
+donc sans effet et toute fin de niveau renvoyait au titre. La branche a été
+corrigée : `gfCurrentLevel = 0` n'est exécuté que dans le `else` (démo,
+build à deux niveaux, fin de campagne). Le correctif est dans `build-s`
+(SHA256 `a34430c76aeeb8a61213fbfc30745079f75c1ca91c93ff0592a302d654200f31`).
+
+### Recette de transition (déclenchement synthétique)
+
+Sous GDB, `gfLevelComplete = 2` est posé après 600 frames de jeu réel dans
+Rome (aucune écriture de position ni de niveau). Résultat après le correctif :
+
+- `GAMEPLAY_FRAMES 1800 level 2 room 50 Z 42496` puis milliers de frames
+  stables au niveau 2, cutseq `name: 2` ;
+- la scène de TRAJAN_MARKETS est rendue avec Lara
+  (`build/porting/port008-transition2-20261028/03-next.png`,
+  `04-next-later.png`) ;
+- sans le correctif, la même injection renvoyait au titre puis en DEMO MODE
+  (`build/porting/port008-transition-20261028/`) ;
+- régression New Game : Rome se charge toujours (cutseq `name: 1`, moyenne
+  d'image 0,101, exit 0 —
+  `build/porting/port008-newgame-regress-20261028/`).
+
+### Ce qui reste non validé
+
+Le déclenchement est synthétique : il prouve la **mécanique de transition**,
+pas une fin de niveau atteinte en jouant. Aucun FMV de transition, crédit de
+fin, boucle campagne complète ni sauvegarde de progression inter-niveaux n'est
+validé. Le raccourci QA `look`/L1 + New Game charge le niveau 4
+(`build/porting/port008-level4-20261028/`) ; `walk`/R1 retombe sur Rome. PORT-008
+reste partiel.
 
 ## Évidence du 18 septembre
 

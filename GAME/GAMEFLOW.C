@@ -241,8 +241,15 @@ void DoGameflow()//10F5C(<), 10FD8(<)
 							//loc_11460
 							gfCurrentLevel = gfLevelComplete;
 						}
-						//loc_113CC
-						gfCurrentLevel = 0;
+						else
+						{
+							//loc_113CC
+							/* Demo discs / the two-level build / the end of the
+							 * campaign return to the title.  The previous
+							 * unconditional assignment also discarded a valid
+							 * next level and always returned to the title. */
+							gfCurrentLevel = 0;
+						}
 					}
 					else if (gfStatus == 4)
 					{
