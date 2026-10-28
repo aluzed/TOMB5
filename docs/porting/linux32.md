@@ -364,6 +364,10 @@ recharge la sauvegarde et reprend au même endroit.
   relance, `F6` → même niveau, même salle, même position, scène identique
   (`build/porting/port006-level4-20261028/`, RMSE 0,055 entre les deux captures).
   `savegame.CurrentLevel` est donc bien utilisé au rechargement.
+- **Découverte** : si `TOMB5.SAV` existe, le titre affiche `F6: CONTINUE`
+  sous le menu ; le texte disparaît quand le fichier est absent
+  (`build/porting/title-hint-20261028/01-with-save.png` /
+  `02-without-save.png`).
 - **Retour visuel** : `F5` affiche `Game saved` centré en bas de l'écran
   pendant 90 frames (~3 s), puis disparaît ; `F6`/application affiche
   `Game loaded`. Vérifié sur `build-q`
@@ -423,9 +427,10 @@ In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
 
 La recette principale a été jouée sur `build-o` (ELF32 i386, SHA256
 `595d3c4c41ac640587e292c75fa63bd81b9074228c7a40c91a630490be5f6d8e`).
-Le build final `build-q` (SHA256
-`82f493b9d37822e7ab8add7f07a26d4e7c7f580094e4f7ced2539eeb1357950b`)
-ajoute le garde-fou F5/F6 pendant l'éditeur et le retour visuel
+Le build final `build-r` (SHA256
+`bda64f5c9f3030072bc2f05e0aa7bebfb11fd4a25e2ec6039ec3442f2b2aeb69`)
+compile les mêmes sources que `build-q`, avec en plus l'indice de titre
+`F6: CONTINUE`, le garde-fou F5/F6 pendant l'éditeur et le retour visuel
 `Game saved`/`Game loaded`. Scénario unique, 9 captures inspectées,
 `application.json` exit 0 :
 

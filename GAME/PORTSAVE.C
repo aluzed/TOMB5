@@ -207,6 +207,17 @@ int PortSave_Write(void)
 	return 1;
 }
 
+int PortSave_Exists(void)
+{
+	FILE* file = fopen(PortSave_Path(), "rb");
+	if (file == NULL)
+	{
+		return 0;
+	}
+	fclose(file);
+	return 1;
+}
+
 int PortSave_Read(void)
 {
 	PortSaveRecord record;

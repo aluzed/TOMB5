@@ -24,6 +24,7 @@ extern int PortSave_TakeLoadRequest(void);
 
 extern int PortSave_Write(void);
 extern int PortSave_Read(void);
+extern int PortSave_Exists(void);
 
 /* Called once after a level has been loaded in response to PortSave_Read(). */
 extern void PortSave_ApplyPending(void);

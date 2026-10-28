@@ -588,6 +588,13 @@ int TitleOptions(int Name)
 		}
 	}//loc_764
 
+#if PSXPC_TEST
+	if (PortSave_Exists())
+	{
+		PrintString(256, 232, 0, (char*)"F6: CONTINUE", FF_CENTER);
+	}
+#endif
+
 	if ((RawEdge & IN_DPAD_UP) && byte_46 != 0)
 	{
 		SoundEffect(SFX_MENU_SELECT, NULL, 2);
