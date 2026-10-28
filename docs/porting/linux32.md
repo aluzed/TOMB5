@@ -408,8 +408,8 @@ In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
 
 ## Recette intégrée finale — 28 octobre 2026
 
-Build `build-n` (ELF32 i386, SHA256
-`3ef179831dee2a403f09da778f271e752f0b647642b35db25e87c1e568b7ea69`),
+Build `build-o` (ELF32 i386, SHA256
+`595d3c4c41ac640587e292c75fa63bd81b9074228c7a40c91a630490be5f6d8e`),
 sources à l'état du dernier commit de la journée. Scénario unique, 9 captures
 inspectées, `application.json` exit 0 :
 
@@ -421,7 +421,8 @@ inspectées, `application.json` exit 0 :
 5. `Entrée` ouvre le menu pause, `Resume` reprend ;
 6. une frame sans entrée reste stable ; fermeture normale, exit 0.
 
-Preuves privées : `build/porting/final-smoke-20261028/`. Un fichier de
+Preuves privées : `build/porting/final-smoke-20261028/` ; rejeu du chargement
+sur `build-o` dans `build/porting/port006d-20261028/`. Un fichier de
 sauvegarde corrompu (`BAD.SAV`, 16 octets) est refusé avec
 `[SAVE] invalid save header`, le titre continue et le processus sort à 0
 (`build/porting/port006-corrupt-20261028/`).
@@ -431,9 +432,10 @@ complète des objets de niveau (`RestoreLevelData` stub), ni la campagne, ni la
 manette physique. PORT-008 (boucle du premier niveau et passage au suivant)
 reste non commencé.
 
-État des suites au même commit : `tests/porting` 496 PASS, `tests/emulator`
+État des suites au même commit : `tests/porting` 497 PASS, `tests/emulator`
 3677 PASS. `tests/reverse` : 4341 PASS, 125 FAIL, 1 skip, 1100 subtests PASS
-(`--ignore=tests/reverse/fixtures`). Huit FAIL supplémentaires par rapport au
+(`--ignore=tests/reverse/fixtures`). Le test hôte `tests/porting/test_portsave.py` couvre le round-trip, l'application
+de la position, le rejet du checksum et du magic. Huit FAIL supplémentaires par rapport au
 clone viennent de contrats documentaires qui gèlent des hashes de sources
 (RE-803/804/807/808/809, RE-164, RE-357) ou des octets de dashboard (RE-820) :
 les modifications légitimes de `GAME/CONTROL.C`, `GAME/CAMERA.C`, etc. les

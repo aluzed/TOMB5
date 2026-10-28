@@ -245,7 +245,7 @@ void PortSave_ApplyPending(void)
 	JustLoaded = 1;
 	pending_valid = 0;
 
-	printf("[SAVE] applied saved position: room %d X %d Y %d Z %d\n",
+	printf("[SAVE] applied saved position: room %d X %ld Y %ld Z %ld\n",
 	       lara_item->room_number, lara_item->pos.x_pos, lara_item->pos.y_pos,
 	       lara_item->pos.z_pos);
 }
