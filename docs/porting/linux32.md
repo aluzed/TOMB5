@@ -406,6 +406,31 @@ Limites : aucun test d'écoute, aucun changement de volume vérifié, pause/reto
 titre non instrumentés pour l'audio, musique CD/XA non mixée. PORT-007 reste
 In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
 
+## Recette intégrée finale — 28 octobre 2026
+
+Build `build-n` (ELF32 i386, SHA256
+`3ef179831dee2a403f09da778f271e752f0b647642b35db25e87c1e568b7ea69`),
+sources à l'état du dernier commit de la journée. Scénario unique, 9 captures
+inspectées, `application.json` exit 0 :
+
+1. titre ; `F6` charge `TOMB5.SAV` (salle 2, X 46592 Y 0 Z 35826) ;
+2. la scène reprend à la position sauvegardée ;
+3. `Shift`+`Left` déplace la caméra de regard, le relâchement revient au suivi ;
+4. `W` avance, `F5` écrit une nouvelle sauvegarde (salle 2, X 46592 Y 256
+   Z 38831) ;
+5. `Entrée` ouvre le menu pause, `Resume` reprend ;
+6. une frame sans entrée reste stable ; fermeture normale, exit 0.
+
+Preuves privées : `build/porting/final-smoke-20261028/`. Un fichier de
+sauvegarde corrompu (`BAD.SAV`, 16 octets) est refusé avec
+`[SAVE] invalid save header`, le titre continue et le processus sort à 0
+(`build/porting/port006-corrupt-20261028/`).
+
+Cette recette ne valide ni l'audio (aucun backend de sortie), ni la reprise
+complète des objets de niveau (`RestoreLevelData` stub), ni la campagne, ni la
+manette physique. PORT-008 (boucle du premier niveau et passage au suivant)
+reste non commencé.
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`
