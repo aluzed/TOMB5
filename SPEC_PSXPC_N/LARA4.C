@@ -482,6 +482,7 @@ void sub_1358L4(int x, int y, int z)//(F)
 void sub_C1CL4(int a0)//(F)
 {
     int* a00 = (int*)&tsv_buffer[(((a0 << 1) + a0) << 2)];
+    int* limit = (int*)&tsv_buffer[1024];
     char* a1 = (char*)&SkinVertNums[(((a0 << 1) + a0) << 2)];
 	char v0 = 0;
 	int* a2 = NULL;
@@ -495,6 +496,11 @@ void sub_C1CL4(int a0)//(F)
 
         if (v0 >= 0)
         {
+            if (a00 + 2 > limit)
+            {
+                break;
+            }
+
             a2 = &scratchPad[v0 << 1];
             a3 = (short*)&dword_2C[v0];
             a00[0] = a2[0];
@@ -513,6 +519,7 @@ void sub_C1CL4(int a0)//(F)
 void sub_C6CL4(int a0)//(F)
 {
     int* a00 = (int*)&tsv_buffer[(((a0 << 1) + a0) << 2)];
+    int* limit = (int*)&tsv_buffer[1024];
     char* a2 = (char*)&ScratchVertNums[(((a0 << 1) + a0) << 2)];
 	char v0 = 0;
 	int* a1 = NULL;
@@ -526,6 +533,11 @@ void sub_C6CL4(int a0)//(F)
         //
         if (v0 >= 0)
         {
+            if (a00 + 2 > limit)
+            {
+                break;
+            }
+
             a1 = &scratchPad[v0 << 1];
             t3 = (short*)&dword_2C[v0];
             a1[0] = a00[0];

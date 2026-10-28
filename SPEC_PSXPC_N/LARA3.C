@@ -247,6 +247,7 @@ void sub_C1CL3(int a0)
 	char v0 = 0;
 	int* a2 = NULL;
     int* a00 = (int*)&tsv_buffer[(((a0 << 1) + a0) << 2)];
+    int* limit = (int*)&tsv_buffer[1024];
     char* a1 = (char*)&SkinVertNums[(((a0 << 1) + a0) << 2)];
 
     do
@@ -256,6 +257,11 @@ void sub_C1CL3(int a0)
 
         if (v0 >= 0)
         {
+            if (a00 + 2 > limit)
+            {
+                break;
+            }
+
             a2 = &scratchPad[v0 << 1];
             a00[0] = a2[0];
             a00[1] = a2[1];
@@ -274,6 +280,7 @@ void sub_C6CL3(int a0)
 	char v0 = 0;
 	int* a1 = NULL;
     int* a00 = (int*)&tsv_buffer[(((a0 << 1) + a0) << 2)];
+    int* limit = (int*)&tsv_buffer[1024];
     char* a2 = (char*)&ScratchVertNums[(((a0 << 1) + a0) << 2)];
 
     //loc_C88
@@ -284,6 +291,11 @@ void sub_C6CL3(int a0)
         //
         if (v0 >= 0)
         {
+            if (a00 + 2 > limit)
+            {
+                break;
+            }
+
             a1 = &scratchPad[v0 << 1];
             a1[0] = a00[0];
             a1[1] = a00[1];

@@ -277,6 +277,7 @@ void sub_C1CL5(int a0)
 void sub_C6CL5(int a0)
 {
     int* a00 = (int*)&tsv_buffer[(((a0 << 1) + a0) << 2)];
+    int* limit = (int*)&tsv_buffer[1024];
     char* a2 = (char*)&ScratchVertNums[(((a0 << 1) + a0) << 2)];
 
     //loc_C88
@@ -287,6 +288,11 @@ void sub_C6CL5(int a0)
         //
         if (v0 >= 0)
         {
+            if (a00 + 2 > limit)
+            {
+                break;
+            }
+
             int* a1 = &scratchPad[v0 << 1];
             a1[0] = a00[0];
             a1[1] = a00[1];

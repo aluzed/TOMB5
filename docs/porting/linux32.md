@@ -427,8 +427,8 @@ In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
 
 La recette principale a été jouée sur `build-o` (ELF32 i386, SHA256
 `595d3c4c41ac640587e292c75fa63bd81b9074228c7a40c91a630490be5f6d8e`).
-Le build final `build-t` (SHA256
-`1272d6c7ab932b85fcd3005de9dafb40f9e0714954fa80fc91182ae1d477e2fc`)
+Le build final `build-u` (SHA256
+`0866d3242a02d68e253c089c6933900585498ab607517dd83b2951df395b8fce`)
 compile les mêmes sources que `build-q`, avec en plus l'indice de titre
 `F6: CONTINUE`, le garde-fou F5/F6 pendant l'éditeur, le retour visuel
 `Game saved`/`Game loaded`, le correctif de transition PORT-008 et les correctifs mémoire du niveau 6. Smoke titre
@@ -481,8 +481,8 @@ affectait `gfCurrentLevel = gfLevelComplete` puis **écrasait
 inconditionnellement** `gfCurrentLevel = 0`. Le test de niveau suivant était
 donc sans effet et toute fin de niveau renvoyait au titre. La branche a été
 corrigée : `gfCurrentLevel = 0` n'est exécuté que dans le `else` (démo,
-build à deux niveaux, fin de campagne). Le correctif est dans `build-t`
-(SHA256 `1272d6c7ab932b85fcd3005de9dafb40f9e0714954fa80fc91182ae1d477e2fc`).
+build à deux niveaux, fin de campagne). Le correctif est dans `build-u`
+(SHA256 `0866d3242a02d68e253c089c6933900585498ab607517dd83b2951df395b8fce`).
 
 ### Recette de transition (déclenchement synthétique)
 
@@ -566,11 +566,15 @@ GetDoor (floor=0xfe4cb8d4) at SPEC_PSXPC_N/GETSTUFF.C:32
   if (floor->index == 0)
 ```
 
-Le pointeur de floor est hors du tas. Ce n'est pas le crash du niveau 6
-(corrigé) ; c'est le blocage suivant du chaînage campagne. Il n'a pas été
-instruit plus avant dans cette fenêtre. Preuve privée :
-`build/porting/port008-fullchain4-20261028/` (14 captures de niveaux, puis
-SIGSEGV).
+Le pointeur de floor est hors du tas. Après ajout des gardes de vertices aux
+quatre autres variantes de Lara (`LARA1.C` à `LARA4.C`), un saut direct 1→15
+ne passe plus par `GetDoor` : il casse désormais dans la lecture CD
+(`DEL_CDFS_Read size=-16388` → `CdControlB` → `fseek`), pendant
+`S_LoadLevelFile(Name=15)`. Le crash `GetDoor` précédent était donc
+probablement un symptôme de la corruption de vertices, pas la cause racine.
+Le niveau 15 reste bloqué, sur un problème de lecture/offset CD à instruire.
+Preuves privées : `build/porting/port008-fullchain4-20261028/` (chaîne 1→14
+puis SIGSEGV) et `build/porting/port008-level15guard-20261028/` (CD/fseek).
 
 ### Ce qui reste non validé
 
