@@ -406,10 +406,13 @@ recharge la sauvegarde et reprend au même endroit.
   **caméra de reprise** qui reste au point de départ ou à ~100 unités derrière
   Lara au lieu de se replacer en suivi ; la géométrie proche (mur/arche)
   envahit l'écran. Retirer `InitialiseCamera()` éloigne la caméra mais ne
-  rétablit pas le suivi. Piste suivante : forcer `camera.type = CHASE_CAMERA`
-  et laisser `ChaseCamera`/`CameraCollisionBounds` recalculer une position
-  valide après `PortSave_ApplyPending`. L'état objets/portes n'est pas vérifié.
-  Ne pas considérer cette branche comme intégrée.
+  rétablit pas le suivi. Tests complémentaires négatifs : forcer
+  `CHASE_CAMERA`, `target_distance = 512`, appeler `ChaseCamera`, puis recaler
+  `camera.pos.room_number`, `camera.target.room_number` et
+  `last_target.room_number` sur la salle de Lara ne change pas l'artefact. La
+  cause n'est donc pas la distance ni la salle de caméra ; restent à instruire
+  le dessin de room/géométrie ou un mesh restauré. L'état objets/portes n'est
+  pas vérifié. Ne pas considérer cette branche comme intégrée.
 - Pas de sauvegarde via carte mémoire PSX ni via le menu d'inventaire ; `F5`/`F6`
   sont des touches réservées non remappables. Pas de chargement en jeu (le
   chargement n'est traité qu'au titre), pas de slots multiples, pas de
