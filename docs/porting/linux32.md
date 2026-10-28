@@ -431,7 +431,7 @@ Le build final `build-t` (SHA256
 `1272d6c7ab932b85fcd3005de9dafb40f9e0714954fa80fc91182ae1d477e2fc`)
 compile les mêmes sources que `build-q`, avec en plus l'indice de titre
 `F6: CONTINUE`, le garde-fou F5/F6 pendant l'éditeur, le retour visuel
-`Game saved`/`Game loaded` et le correctif de transition PORT-008. Smoke titre
+`Game saved`/`Game loaded`, le correctif de transition PORT-008 et les correctifs mémoire du niveau 6. Smoke titre
 de `build-r` (même code hors transition) avec un fichier de sauvegarde présent :
 indice affiché, fermeture normale exit 0 (`build/porting/build-r-smoke-20261028/`).
 Scénario unique, 9 captures inspectées,
@@ -556,6 +556,22 @@ s'enchaîne sans `SIGSEGV` (preuves : `port008-fullchain2-20261028/`,
 malformée : il protège la mémoire mais ne corrige pas le parseur de mesh
 lui-même ; des artefacts de vertices restent possibles sur ce niveau.
 
+### Blocage niveau 15 — `GetDoor` avec floor invalide
+
+La chaîne 1→14 est stable, mais le passage au niveau 15 (RED_ALERT) casse :
+
+```
+Program received signal SIGSEGV
+GetDoor (floor=0xfe4cb8d4) at SPEC_PSXPC_N/GETSTUFF.C:32
+  if (floor->index == 0)
+```
+
+Le pointeur de floor est hors du tas. Ce n'est pas le crash du niveau 6
+(corrigé) ; c'est le blocage suivant du chaînage campagne. Il n'a pas été
+instruit plus avant dans cette fenêtre. Preuve privée :
+`build/porting/port008-fullchain4-20261028/` (14 captures de niveaux, puis
+SIGSEGV).
+
 ### Ce qui reste non validé
 
 Le déclenchement est synthétique : il prouve la **mécanique de transition**,
@@ -563,7 +579,7 @@ pas une fin de niveau atteinte en jouant. Aucun FMV de transition, crédit de
 fin, boucle campagne complète ni sauvegarde de progression inter-niveaux n'est
 validé. Le raccourci QA `look`/L1 + New Game charge le niveau 4
 (`build/porting/port008-level4-20261028/`) ; `walk`/R1 retombe sur Rome. PORT-008
-reste partiel.
+reste partiel : 1→14 mécanique, blocage 15.
 
 ## Évidence du 18 septembre
 
