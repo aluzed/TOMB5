@@ -32,6 +32,7 @@
 
 #include <LIBETC.H>
 #include <stdio.h>//deleteme
+#include <stdlib.h>
 #include "PROFILE.H"
 
 #if! DISC_VERSION
@@ -149,6 +150,19 @@ int TitleOptions(int Name)
 	if (InputUI_IsOpen())
 	{
 		return 0;
+	}
+
+	{
+		static int autoload_tried = 0;
+		if (!autoload_tried && getenv("TOMB5_AUTOLOAD") != NULL && PortSave_Exists())
+		{
+			autoload_tried = 1;
+			if (PortSave_Read())
+			{
+				FromTitle = 1;
+				return 2;
+			}
+		}
 	}
 
 	if (PortSave_TakeLoadRequest())

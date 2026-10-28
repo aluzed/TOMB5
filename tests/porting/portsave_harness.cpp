@@ -10,6 +10,8 @@
 
 struct savegame_info savegame;
 struct lara_info lara;
+char* MGSaveGamePtr;
+static char level_blob[8192];
 struct ITEM_INFO* lara_item;
 unsigned char gfCurrentLevel = 1;
 unsigned long GameTimer = 1234;
@@ -18,6 +20,17 @@ char JustLoaded = 0;
 void SaveLaraData()
 {
 	/* Keep savegame.Lara zeroed for the harness. */
+}
+
+int SaveLevelDataToBuffer(char* buffer, int size)
+{
+	(void)size;
+	/* Exercise the level-data slot without depending on the level loader. */
+	if (buffer != NULL && size > (int)sizeof(struct savegame_info))
+	{
+		buffer[sizeof(struct savegame_info)] = 0x5A;
+	}
+	return 1;
 }
 
 void UpdateLaraRoom(struct ITEM_INFO* item, int height)
@@ -40,6 +53,8 @@ int main(int argc, char** argv)
 	assert(argc == 2);
 	snprintf(path, sizeof(path), "%s", argv[1]);
 	setenv("TOMB5_SAVE_PATH", path, 1);
+	MGSaveGamePtr = level_blob;
+	memset(MGSaveGamePtr, 0, sizeof(level_blob));
 
 	memset(&item, 0, sizeof(item));
 	lara_item = &item;

@@ -349,21 +349,26 @@ binaire.
 
 ## Sauvegarde rapide et reprise — 28 octobre 2026 (PORT-006)
 
-La sauvegarde mémoire PSX (`MemCard*`) n'est pas implémentée pour PSXPC_N et
-`RestoreLevelData` reste un stub. Le port fournit donc une **sauvegarde rapide
-de port** : `F5` en jeu écrit `TOMB5.SAV` (ou `TOMB5_SAVE_PATH`), `F6` au titre
-recharge la sauvegarde et reprend au même endroit.
+La sauvegarde mémoire PSX (`MemCard*`) n'est pas implémentée pour PSXPC_N. Le
+port fournit une **sauvegarde rapide de port** : `F5` en jeu écrit `TOMB5.SAV`
+(ou `TOMB5_SAVE_PATH`), `F6` au titre recharge la sauvegarde et reprend au même
+endroit. Depuis le 29 octobre, le format v3 inclut aussi l'état du niveau
+(`SaveLevelData`/`RestoreLevelData`).
 
-- **Format** : en-tête magique `T5P2`, version 2, `savegame_info` complet
-  (inventaire, santé, stats, niveau), position/rotation/salle/état d'animation
-  de Lara, checksum FNV-1a. Fichier de 466 octets.
+- **Format v3** : en-tête magique `T5P2`, version 3, `savegame_info` complet
+  (inventaire, santé, stats, niveau), bloc de 8192 octets pour l'état du niveau
+  (flips, meshes statiques, caméras, items), position/rotation/salle/état
+  d'animation de Lara, checksum FNV-1a. Fichier de 8658 octets. Les fichiers v2
+  de 466 octets restent lisibles, mais ne contiennent pas l'état du niveau.
 - **Écriture** : `SaveLaraData()` rafraîchit `savegame.Lara` ; `F5` est capté
   avant le keymap (touche réservée) et consommé une seule fois par frame.
-- **Lecture** : `F6` au titre appelle `PortSave_Read`, puis `TitleOptions`
-  retourne 2 ; le gameflow recharge `savegame.CurrentLevel` en mode 4,
-  `sgRestoreGame()` restaure l'état de Lara, puis `PortSave_ApplyPending()`
-  replace Lara (position, salle, animation), met à jour la salle et réinitialise
-  la caméra.
+- **Lecture** : `F6` au titre appelle `PortSave_Read`, qui recopie le bloc de
+  niveau dans `MGSaveGamePtr`, puis `TitleOptions` retourne 2 ; le gameflow
+  recharge `savegame.CurrentLevel` en mode 4, `sgRestoreGame()` exécute
+  `RestoreLevelData` puis `RestoreLaraData`, et `PortSave_ApplyPending()` replace
+  Lara (position, salle, animation), met à jour la salle et réinitialise la
+  caméra. `TOMB5_AUTOLOAD=1` permet de déclencher la même lecture sans timing
+  F6 (utilisé par les tests).
 - **Preuve inter-niveaux** : chargement du niveau 4 par le raccourci QA
   (`look`/L1 + New Game), `F5` → `level 4 room 99 X 35328 Y -4096 Z 29664` ;
   relance, `F6` → même niveau, même salle, même position, scène identique
@@ -388,19 +393,25 @@ recharge la sauvegarde et reprend au même endroit.
   `2421b302a9e136b9e0fcee5475dd887f2ccf8d4ef4c8c71d3aba524f9ec94865`) : même
   position appliquée (`build/porting/port006c-20261028/`). Preuves privées :
   `build/porting/port006-20261028/`, `port006b-20261028/`.
+- **Preuve v3 (état du niveau)** : `F5` à Rome écrit 586 octets de niveau
+  (bloc de 8192) ; au rechargement, les compteurs de lecture sont identiques
+  (caméras à 259 octets, items à 586) et la scène est propre
+  (`build/porting/restorefull-debug2-20261029/`). `RESTORE3.SAV` (v2) reste
+  accepté et se recharge sans état de niveau (`restorefull-v2-20261029/`).
+  Le désarmement de `flipeffect` après restauration évite
+  `turn180_effect(NULL)`.
 
 ### Limites PORT-006
 
-- `RestoreLevelData` n'est pas implémenté sur `master` : les objets, portes,
-  pickups et interrupteurs du niveau repartent de l'état initial ; seuls Lara
-  et son inventaire/santé sont restaurés. Ce n'est pas une reprise d'état
-  complet. Une implémentation symétrique de `SaveLevelData` existe sur la
-  branche locale `wip/restoreleveldata` (commits `118487c5`/`86a540e9`),
-  compilée et couverte par les suites. `TOMB5_AUTOLOAD=1` déclenche
-  `RestoreLevelData` + `PortSave_ApplyPending` sans `SIGSEGV` (après
-  désarmement de `flipeffect`, qui appelait `turn180_effect(NULL)`), et le
-  niveau 1 se charge. Cette branche n'est pas intégrée et doit être rebasée sur
-  le correctif ci-dessous avant évaluation.
+- L'état du niveau est sauvegardé dans un bloc fixe de 8192 octets. Si la
+  sérialisation d'un niveau dépasse cette taille, `F5` échoue explicitement au
+  lieu d'écrire un fichier tronqué. Les fichiers v2 restent lisibles mais ne
+  restaurent que Lara et l'inventaire, pas les objets/portes/flips.
+- `RestoreLevelData` restaure les champs réellement sérialisés par
+  `SaveLevelData` (flips, meshes statiques, caméras, items : position, salle,
+  animation, flags, points de vie). Les `item_flags`, `timer` et
+  `trigger_flags` ne sont pas encore écrits par `SaveLevelData`; ils ne sont
+  donc pas restaurés.
 - **Artefact visuel de reprise — cause trouvée et corrigée (29 octobre)** :
   la grande surface brune qui suivait la caméra n'était **pas** causée par
   `F6`, `AUTOLOAD` ou `RestoreLevelData` : elle apparaissait dès une partie
@@ -481,10 +492,10 @@ de sauvegarde corrompu (`BAD.SAV`, 16 octets) est refusé avec
 `[SAVE] invalid save header`, le titre continue et le processus sort à 0
 (`build/porting/port006-corrupt-20261028/`).
 
-Cette recette ne valide ni l'audio (aucun backend de sortie), ni la reprise
-complète des objets de niveau (`RestoreLevelData` stub), ni la campagne, ni la
-manette physique. PORT-008 (boucle du premier niveau et passage au suivant)
-reste non commencé.
+Cette recette historique ne validait pas la reprise complète des objets de
+niveau. Depuis le 29 octobre, le format v3 et `RestoreLevelData` restaurent
+l'état du niveau (voir PORT-006). Restent non validés : l'audio (aucun backend
+de sortie), la campagne et la manette physique.
 
 État des suites au même commit : `tests/porting` 497 PASS, `tests/emulator`
 3677 PASS. `tests/reverse` : 4341 PASS, 125 FAIL, 1 skip, 1100 subtests PASS

@@ -29,9 +29,25 @@
 #include "SPOTCAM.H"
 #include "LARA.H"
 
+#include <stdlib.h>
+
+/* Declared for PC_VERSION in ITEMS.H, but implemented by the PSXPC_N backend. */
+extern void ItemNewRoom(short item_num, short room_number);
+
 #if PSX_VERSION || PSXPC_VERSION || SAT_VERSION
 #include "MISC.H"
 #endif
+
+static int PortSaveDebugEnabled(void)
+{
+	static int enabled = -1;
+	if (enabled < 0)
+	{
+		enabled = getenv("TOMB5_SAVE_DEBUG") != NULL;
+	}
+	return enabled;
+}
+
 
 #if PSXPC_TEST
 #include <stdint.h>
@@ -45,6 +61,7 @@ char JustLoaded = 0; // offset 0xA14AD
 char* MGSaveGamePtr; // offset 0xA3924
 static int SGcount; // offset 0xA391C
 static char* SGpoint; // offset 0xA3920
+static int SGlimit = 0;
 struct savegame_info savegame;
 
 #define Write(a, b) WriteSG((char*)a, b)
@@ -81,11 +98,210 @@ void sgSaveGame()//55AF8(<), 55F5C(<)
 
 void RestoreLevelData(int FullSave)//54B08, 54F6C
 {
-	UNIMPLEMENTED();
+	int i;
+	int j;
+	int k;
+	int flags;
+	short word;
+	unsigned char byte;
+	short new_room;
+	struct ITEM_INFO* item;
+
+	ReadSG((char*)&FmvSceneTriggered, 4);
+	ReadSG((char*)&GLOBAL_lastinvitem, 4);
+
+	ReadSG((char*)&word, 2);
+	for (i = 0; i < 10; i++)
+	{
+		flip_stats[i] = (word >> i) & 1;
+	}
+
+	for (i = 0; i < 10; i++)
+	{
+		ReadSG((char*)&word, 2);
+		flipmap[i] = word << 8;
+	}
+
+	ReadSG((char*)&flipeffect, 4);
+	/* flipeffect is a one-shot trigger: restoring it would call the effect
+	 * routine with a NULL item on the next frame (observed: flipeffect=0 ->
+	 * turn180_effect(NULL) SIGSEGV).  Consume the field but disarm it. */
+	flipeffect = -1;
+	ReadSG((char*)&fliptimer, 4);
+	ReadSG((char*)&flip_status, 4);
+	ReadSG(cd_flags, 136);
+	ReadSG((char*)&CurrentAtmosphere, 1);
+
+	/* Static-mesh flags are packed with the same bit order as SaveLevelData:
+	 * only static numbers 50..59 are serialised, 16 bits per word. */
+	word = 0;
+	k = 0;
+	for (i = 0; i < number_rooms; i++)
+	{
+		for (j = 0; j < room[i].num_meshes; j++)
+		{
+			if (room[i].mesh[j].static_number >= 50 &&
+			    room[i].mesh[j].static_number <= 59)
+			{
+				if (k == 0)
+				{
+					ReadSG((char*)&word, 2);
+				}
+				room[i].mesh[j].Flags = (room[i].mesh[j].Flags & ~1) |
+				                        ((word >> k) & 1);
+				k++;
+				if (k == 16)
+				{
+					k = 0;
+				}
+			}
+		}
+	}
+
+	ReadSG((char*)&CurrentSequence, 1);
+	ReadSG((char*)&byte, 1);
+	for (i = 0; i < 6; i++)
+	{
+		SequenceUsed[i] = (byte >> i) & 1;
+	}
+
+	for (i = 0; i < number_cameras; i++)
+	{
+		ReadSG((char*)&camera.fixed[i].flags, 2);
+	}
+
+	for (i = 0; i < number_spotcams; i++)
+	{
+		ReadSG((char*)&SpotCam[i].flags, 2);
+	}
+
+	if (PortSaveDebugEnabled())
+	{
+		printf("[SAVE] restore camera end at %d bytes\n", SGcount);
+	}
+
+	item = &items[0];
+	for (i = 0; i < level_items; i++, item++)
+	{
+		struct object_info* obj;
+
+		ReadSG((char*)&word, 2);
+
+		if (word == 0x2000)
+		{
+			item->flags |= IFLAG_KILLED | IFLAG_INVISIBLE;
+			item->status = ITEM_INVISIBLE;
+			continue;
+		}
+
+		if (!(word & 0x8000))
+		{
+			continue;
+		}
+
+		obj = &objects[item->object_number];
+		new_room = item->room_number;
+
+		if (obj->save_position)
+		{
+			short packed;
+
+			ReadSG((char*)&packed, 2);
+			item->pos.x_pos = (packed << 1) | ((word & 4) ? 1 : 0);
+			ReadSG((char*)&packed, 2);
+			item->pos.y_pos = (packed << 1) | ((word & 8) ? 1 : 0);
+			ReadSG((char*)&packed, 2);
+			item->pos.z_pos = (packed << 1) | ((word & 0x10) ? 1 : 0);
+
+			ReadSG((char*)&byte, 1);
+			new_room = byte;
+			ReadSG((char*)&item->pos.y_rot, 2);
+
+			item->pos.x_rot = 0;
+			item->pos.z_rot = 0;
+			item->speed = 0;
+			item->fallspeed = 0;
+
+			if (word & 1)
+			{
+				ReadSG((char*)&item->pos.x_rot, 2);
+			}
+			if (word & 2)
+			{
+				ReadSG((char*)&item->pos.z_rot, 2);
+			}
+			if (word & 0x20)
+			{
+				ReadSG((char*)&item->speed, 2);
+			}
+			if (word & 0x40)
+			{
+				ReadSG((char*)&item->fallspeed, 2);
+			}
+		}
+
+		if (obj->save_anim)
+		{
+			ReadSG((char*)&item->current_anim_state, 2);
+			ReadSG((char*)&item->goal_anim_state, 2);
+			ReadSG((char*)&item->required_anim_state, 2);
+
+			if (item->object_number == LARA)
+			{
+				ReadSG((char*)&item->anim_number, 2);
+			}
+			else
+			{
+				ReadSG((char*)&byte, 1);
+				item->anim_number = obj->anim_index + byte;
+			}
+
+			ReadSG((char*)&item->frame_number, 2);
+		}
+
+		if (word & 0x4000)
+		{
+			ReadSG((char*)&item->hit_points, 2);
+		}
+
+		if (obj->save_flags)
+		{
+			ReadSG((char*)&flags, 4);
+			item->flags = (short)(flags & 0xFFFF);
+			item->active = (flags >> 16) & 1;
+			item->status = (flags >> 17) & 3;
+			item->gravity_status = (flags >> 19) & 1;
+			item->hit_status = (flags >> 20) & 1;
+			item->collidable = (flags >> 21) & 1;
+			item->looked_at = (flags >> 22) & 1;
+			item->dynamic_light = (flags >> 23) & 1;
+			item->poisoned = (flags >> 24) & 1;
+			item->ai_bits = (flags >> 25) & 0x1F;
+			item->really_active = (flags >> 30) & 1;
+		}
+
+		if (obj->save_position && new_room != item->room_number)
+		{
+			ItemNewRoom(i, new_room);
+		}
+	}
+
+	if (PortSaveDebugEnabled())
+	{
+		printf("[SAVE] restore items end at %d bytes\n", SGcount);
+	}
 }
 
 void WriteSG(char* pointer, int size)//536A0, 53B04 (F)
 {
+	if (SGlimit > 0 && SGcount + size > SGlimit)
+	{
+		/* The destination buffer is full.  Keep counting so the caller can
+		 * detect the overflow, but do not write past the buffer. */
+		SGcount += size;
+		return;
+	}
+
 	SGcount += size;
 
 	if (size > 0)
@@ -95,6 +311,32 @@ void WriteSG(char* pointer, int size)//536A0, 53B04 (F)
 			*SGpoint++ = *pointer++;
 		}
 	}
+}
+
+int SaveLevelDataToBuffer(char* buffer, int size)// port helper
+{
+	char* old = MGSaveGamePtr;
+	int written;
+
+	if (buffer == NULL || size <= (int)sizeof(struct savegame_info))
+	{
+		return -1;
+	}
+
+	MGSaveGamePtr = buffer;
+	SGpoint = &MGSaveGamePtr[sizeof(struct savegame_info)];
+	SGcount = 0;
+	SGlimit = size - (int)sizeof(struct savegame_info);
+	SaveLevelData(1);
+	written = SGcount;
+	SGlimit = 0;
+	MGSaveGamePtr = old;
+
+	if (written > size - (int)sizeof(struct savegame_info))
+	{
+		return -1;
+	}
+	return written;
 }
 
 void SaveLevelData(int FullSave)//53AAC, 53F10
@@ -171,6 +413,11 @@ void SaveLevelData(int FullSave)//53AAC, 53F10
 		Write(&SpotCam[i].flags, 2);
 	}
 	
+	if (PortSaveDebugEnabled())
+	{
+		printf("[SAVE] save camera end at %d bytes\n", SGcount);
+	}
+
 	struct ITEM_INFO* item = &items[0];
 	for(i = 0; i < level_items; i++, item++)
 	{
@@ -289,7 +536,19 @@ void SaveLevelData(int FullSave)//53AAC, 53F10
 				Write(&flags, 4);
 			}
 		}
+		else
+		{
+			/* Inactive items still occupy one word in the stream so the
+			 * reader can walk the item array without a separate count. */
+			word = 0;
+			Write(&word, 2);
+		}
 
+	}
+
+	if (PortSaveDebugEnabled())
+	{
+		printf("[SAVE] save items end at %d bytes\n", SGcount);
 	}
 
 }

@@ -12,6 +12,7 @@ extern void sgRestoreGame();
 extern void sgSaveGame();
 extern void RestoreLevelData(int FullSave);
 extern void SaveLevelData(int FullSave);
+extern int SaveLevelDataToBuffer(char* buffer, int size);
 extern void RestoreLaraData(int FullSave);
 extern void SaveLaraData();
 extern int CheckSumValid(char* buffer);
