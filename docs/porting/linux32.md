@@ -431,6 +431,15 @@ complète des objets de niveau (`RestoreLevelData` stub), ni la campagne, ni la
 manette physique. PORT-008 (boucle du premier niveau et passage au suivant)
 reste non commencé.
 
+État des suites au même commit : `tests/porting` 496 PASS, `tests/emulator`
+3677 PASS. `tests/reverse` : 4341 PASS, 125 FAIL, 1 skip, 1100 subtests PASS
+(`--ignore=tests/reverse/fixtures`). Huit FAIL supplémentaires par rapport au
+clone viennent de contrats documentaires qui gèlent des hashes de sources
+(RE-803/804/807/808/809, RE-164, RE-357) ou des octets de dashboard (RE-820) :
+les modifications légitimes de `GAME/CONTROL.C`, `GAME/CAMERA.C`, etc. les
+invalident. Ce ne sont pas des régressions runtime, et les archives
+historiques ne sont pas réécrites.
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`
