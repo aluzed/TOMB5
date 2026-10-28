@@ -400,8 +400,11 @@ recharge la sauvegarde et reprend au même endroit.
   `RestoreLevelData` + `PortSave_ApplyPending` sans `SIGSEGV` (après
   désarmement de `flipeffect`, qui appelait `turn180_effect(NULL)`), et le
   niveau 1 se charge. Un artefact visuel (grande surface brune devant la
-  caméra) reste à instruire ; l'état objets/portes n'est pas vérifié. Ne pas
-  considérer cette branche comme intégrée.
+  caméra) reste à instruire : il persiste en désactivant items, mesh
+  statiques, flipmaps, flip_stats et séquences, ce qui suggère un problème du
+  chemin `AUTOLOAD` (chargement immédiat depuis le contexte titre) plutôt
+  qu'un champ isolé. L'état objets/portes n'est pas vérifié. Ne pas considérer
+  cette branche comme intégrée.
 - Pas de sauvegarde via carte mémoire PSX ni via le menu d'inventaire ; `F5`/`F6`
   sont des touches réservées non remappables. Pas de chargement en jeu (le
   chargement n'est traité qu'au titre), pas de slots multiples, pas de
