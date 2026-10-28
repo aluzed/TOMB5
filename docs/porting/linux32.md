@@ -587,8 +587,9 @@ Après le garde `GetDoor`, la **chaîne complète** 1→14 puis déclenchement 1
 ne casse plus : deux runs indépendants sur `build-x` atteignent le niveau 14,
 déclenchent la fin, puis reviennent au titre (`Handle cutseq triggering name:
 0`, aucun `SIGSEGV`) — `build/porting/port008-fullchain15-20261028/` et
-`port008-fullchain-title-20261028/`. Le crash `GetDoor(0xfe4cb8d4)` n'est plus
-reproduit. La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du
+`port008-fullchain-title-20261028/`, ainsi qu'une capture du fond de titre
+(`port008-fullchain-proof-20261028/01-after-level14.png`). Le crash
+`GetDoor(0xfe4cb8d4)` n'est plus reproduit. La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du
 retour titre (le gameflow peut le faire avant `DoLevel(15)`) ; elle reste
 validée séparément par le saut direct 1→15.
 
