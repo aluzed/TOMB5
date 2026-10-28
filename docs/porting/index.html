@@ -599,7 +599,7 @@ Retrouver une partie sauvegardée après fermeture complète de l’application.
 
 ## Faits existants — base eac6d930
 
-LoadGame/SaveGame existent côté PSXPC_N ; RestoreLevelData est un stub dans GAME/SAVEGAME.C. La présence des menus ne vaut pas restauration du monde. Le stockage carte mémoire passe par EMULATOR/LIBMCRD.C.
+LoadGame/SaveGame existent côté PSXPC_N ; RestoreLevelData est implémenté dans GAME/SAVEGAME.C pour la sauvegarde rapide v3 (bloc de niveau de 8192 octets). La présence des menus ne vaut pas restauration du monde. Le stockage carte mémoire passe par EMULATOR/LIBMCRD.C.
 
 ## Portée
 
