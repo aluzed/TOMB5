@@ -176,8 +176,13 @@ privées historiques (`build/reverse/` est gitignoré et absent du clone).
   Vérification non indépendante, sans revue : aucun statut Done n'est attribué.
 - **Fenêtre d'interaction du titre** : après ~50 s, la séquence de cutscene /
   `DEMO MODE` peut prendre la main et les touches sont ignorées. Faire les
-  interactions dans la fenêtre 30–50 s, ou relancer. Les runs où `Cross` a été
+  interactions dans la fenêtre 30–45 s, ou relancer. Les runs où `Cross` a été
   envoyé trop tard ont fini en `DEMO MODE`, pas dans une partie.
+- **Focus X11 (Xvfb, 28 octobre)** : `xdotool windowactivate --sync <id>` peut
+  retourner 0 sans donner le focus (le focus reste sur une autre fenêtre) ;
+  `xdotool getwindowfocus` le révèle. Utiliser `xdotool windowfocus --sync
+  <id>` puis vérifier que l'ID obtenu est celui de `MAIN` avant d'envoyer une
+  touche. C'est la cause des derniers échecs d'automatisation du titre.
 - **Clavier AZERTY** : le scancode SDL compte, pas le keysym. `xdotool key z`
   envoie le scancode `W` sur cet hôte AZERTY (donc pas `Triangle`) ; utiliser
   `w` (position physique de Z) pour `Triangle`, `c` pour `Cross`, `z`/`x`/`v`
