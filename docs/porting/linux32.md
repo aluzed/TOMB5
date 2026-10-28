@@ -427,8 +427,8 @@ In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
 
 La recette principale a été jouée sur `build-o` (ELF32 i386, SHA256
 `595d3c4c41ac640587e292c75fa63bd81b9074228c7a40c91a630490be5f6d8e`).
-Le build final `build-s` (SHA256
-`a34430c76aeeb8a61213fbfc30745079f75c1ca91c93ff0592a302d654200f31`)
+Le build final `build-t` (SHA256
+`1272d6c7ab932b85fcd3005de9dafb40f9e0714954fa80fc91182ae1d477e2fc`)
 compile les mêmes sources que `build-q`, avec en plus l'indice de titre
 `F6: CONTINUE`, le garde-fou F5/F6 pendant l'éditeur, le retour visuel
 `Game saved`/`Game loaded` et le correctif de transition PORT-008. Smoke titre
@@ -481,8 +481,8 @@ affectait `gfCurrentLevel = gfLevelComplete` puis **écrasait
 inconditionnellement** `gfCurrentLevel = 0`. Le test de niveau suivant était
 donc sans effet et toute fin de niveau renvoyait au titre. La branche a été
 corrigée : `gfCurrentLevel = 0` n'est exécuté que dans le `else` (démo,
-build à deux niveaux, fin de campagne). Le correctif est dans `build-s`
-(SHA256 `a34430c76aeeb8a61213fbfc30745079f75c1ca91c93ff0592a302d654200f31`).
+build à deux niveaux, fin de campagne). Le correctif est dans `build-t`
+(SHA256 `1272d6c7ab932b85fcd3005de9dafb40f9e0714954fa80fc91182ae1d477e2fc`).
 
 ### Recette de transition (déclenchement synthétique)
 
@@ -503,46 +503,58 @@ Rome (aucune écriture de position ni de niveau). Résultat après le correctif 
 ### Chaîne multi-niveaux
 
 Le même déclenchement contrôlé a été répété tous les 600 frames de jeu :
-`gfLevelComplete = gfCurrentLevel + 1` à 600/1200/1800/2400. Le moteur a
-enchaîné **1 → 2 → 3 → 4 → 5** sans retour au titre :
+`gfLevelComplete = gfCurrentLevel + 1`. Après le correctif du niveau 6 (voir
+ci-dessous), le moteur enchaîne **1 → 2 → … → 14** sans retour au titre :
 
-| Niveau | Salle | Z | Scène observée |
-|---:|---:|---:|---|
-| 1 | 0 | 31232 | Rome |
-| 2 | 50 | 42496 | marchés / intérieur |
-| 3 | 20 | 52736 | cinématique neigeuse |
-| 4 | 99 | 29664 | scène industrielle |
-| 5 | 20 puis 23 | 42496 / 53760 | sous-marin |
+| Niveau | Salle | Z |
+|---:|---:|---:|
+| 1 | 0 | 31232 |
+| 2 | 50 | 42496 |
+| 3 | 20 | 52736 |
+| 4 | 99 | 29664 |
+| 5 | 20 puis 23 | 42496 / 53760 |
+| 6 | 123 | 50688 |
+| 7 | 2 | 79360 |
+| 8 | 70 | 32256 |
+| 9 | 5 | 28160 |
+| 10 | 20 | 37376 |
+| 11 | 3 | 38400 |
+| 12 | 129 | 46592 |
+| 13 | 3 | 67072 |
+| 14 | 8 | 77312 |
 
-Chaque niveau reste stable sur des milliers de frames (jusqu'à 7500 frames
-cumulées), avec des scènes distinctes
-(`build/porting/port008-chain-20261028/01-level1.png` à `05-level5.png`).
-Cela valide la **mécanique de boucle** après correctif, pas une complétion
-jouée : les déclenchements sont injectés, aucun puzzle/porte/clé n'est résolu,
-aucun FMV de transition ni crédit n'est vérifié.
+Chaque niveau reste stable sur des milliers de frames, avec des scènes
+distinctes (`build/porting/port008-fullchain3-20261028/01-level1.png` à
+`14-level14.png`). Cela valide la **mécanique de boucle** après correctif, pas
+une complétion jouée : les déclenchements sont injectés, aucun
+puzzle/porte/clé n'est résolu, aucun FMV de transition ni crédit n'est
+vérifié.
 
-### Blocage niveau 6 — pointeur de textures invalide
+### Niveau 6 — corruption mémoire trouvée et corrigée
 
-Le chaînage s'arrête au niveau 6 par un `SIGSEGV` reproductible :
+Le crash `SIGSEGV` au niveau 6 était dû à une corruption mémoire, pas à la
+boucle de transition. AddressSanitizer (build 32 bits) a localisé deux
+dépassements :
 
-```
-sub_658L5 (meshp=…, s5=0xc100ff, s6=…) at SPEC_PSXPC_N/LARA5.C:834
-  t4 = ((int*)t5)[2];
-#1 sub_2CL5 (item=…) at LARA5.C:1416   // DrawLaraL5
-#2 DrawLaraL5 () at LARA5.C:1727
-```
+- `EMULATOR/LIBGPU.C` (`ClearOTagR`) écrivait au-delà de
+  `GadwOrderingTables` : en mode 32 bits, chaque entrée d'ordering table fait
+  deux mots, mais la seconde table était décalée de `nOTSize` et `nOTSize`
+  valait `sizeof/8` (formule 16 bits). Correction : décalage
+  `nOTSize * POLYGON_BUFFER_MULT` et `nOTSize = sizeof / (8 * MULT)` aux deux
+  appels de chargement.
+- `SPEC_PSXPC_N/LARA5.C` (`sub_C1CL5`) : la liste de vertices de
+  `SkinVertNums` n'a pas de sentinelle négative pour ce mesh, la boucle écrit
+  alors sans borne dans `tsv_buffer` (4096 octets) et finit par écraser
+  `psxtextinfo` (`0xc100ff`). Corrections : `tsv_buffer` porté à 1024 `TSV`
+  (8192 octets), `SkinVertNums`/`ScratchVertNums` à 8192 octets, et borne
+  explicite sur `tsv_buffer` dans `sub_C1CL5`.
 
-État au crash : `psxtextinfo = 0xc100ff`, `a22 = 0xc100ff`, alors que les
-pointeurs valides du niveau sont dans `malloc_buffer` (`0x567…`). Le saut
-**direct** 1 → 6 (`gfLevelComplete = 6`) reproduit le même crash, donc ce n'est
-pas un état laissé par les transitions précédentes : l'initialisation des
-textures du niveau 6 produit un pointeur hors tas, et le rendu du mesh de Lara
-le déréférence. Preuves privées :
-`build/porting/port008-fullchain-20261028/` (chaîne 1→5 puis crash) et
-`build/porting/port008-level6diag2-20261028/` (état et backtrace). Causes
-possibles non tranchées : `textureInfoLength`/relocalisation spécifique au
-niveau 6, format de mesh/texture TR5 non couvert. Aucun patch spéculatif n'est
-appliqué ; c'est le prochain blocage à instruire pour la campagne complète.
+Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
+1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**
+s'enchaîne sans `SIGSEGV` (preuves : `port008-fullchain2-20261028/`,
+`port008-fullchain3-20261028/`). Le garde-fou tronque une éventuelle liste
+malformée : il protège la mémoire mais ne corrige pas le parseur de mesh
+lui-même ; des artefacts de vertices restent possibles sur ce niveau.
 
 ### Ce qui reste non validé
 

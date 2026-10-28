@@ -52,8 +52,8 @@ struct object_container
 {
 	struct object_info m_objects[NUMBER_OBJECTS];
 	struct static_info m_static_objects[NUMBER_STATIC_OBJECTS];
-	char m_SkinVertNums[480];
-	char m_ScratchVertNums[480];
+	char m_SkinVertNums[8192];
+	char m_ScratchVertNums[8192];
 };
 #endif
 

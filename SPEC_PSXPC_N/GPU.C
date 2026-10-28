@@ -32,7 +32,11 @@ unsigned long GadwPolygonBuffers[52260 * POLYGON_BUFFER_MULT];
 void GPU_UseOrderingTables(unsigned long* pBuffers, int nOTSize)//5DF68(<), 5F1C8(<) (D) (ND)
 {
 	db.order_table[0] = (unsigned long*)((unsigned long)&pBuffers[0]);
-	db.order_table[1] = (unsigned long*)((unsigned long)&pBuffers[nOTSize]);
+	/* In 32-bit-address mode each ordering-table entry occupies two words
+	 * (address + length), so the second table starts after 2 * nOTSize words.
+	 * Using nOTSize made ClearOTagR run past GadwOrderingTables and corrupt the
+	 * adjacent polygon/global data. */
+	db.order_table[1] = (unsigned long*)((unsigned long)&pBuffers[nOTSize * POLYGON_BUFFER_MULT]);
 
 	db.nOTSize = nOTSize;
 

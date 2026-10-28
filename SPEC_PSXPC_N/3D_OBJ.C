@@ -4,7 +4,7 @@
 #include "GPU.H"
 #include "MISC.H"
 
-struct TSV tsv_buffer[512];
+struct TSV tsv_buffer[1024];
 
 void CreateMonoScreen()//5F450(<), 60130(<) (F) (*) (D)
 {

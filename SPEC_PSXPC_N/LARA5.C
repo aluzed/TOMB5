@@ -240,6 +240,7 @@ void sub_C1CL5(int a0)
 {
     int* a00 = (int*)&tsv_buffer[(((a0 << 1) + a0) << 2)];
     char* a1 = (char*)&SkinVertNums[(((a0 << 1) + a0) << 2)];
+    int* limit = (int*)&tsv_buffer[1024];
 
     do
     {
@@ -250,6 +251,17 @@ void sub_C1CL5(int a0)
         if (v0 >= 0)
         {
             int* a2 = &scratchPad[v0 << 1];
+
+            /* The PSX code relies on a negative sentinel at the end of the
+             * per-node vertex list.  A malformed/unsupported mesh can omit it
+             * and the loop then writes past tsv_buffer, corrupting globals
+             * (observed on level 6: psxtextinfo became 0xc100ff).  Stop at the
+             * scratch-buffer boundary instead of corrupting memory. */
+            if (a00 + 2 > limit)
+            {
+                break;
+            }
+
             a00[0] = a2[0];
             a00[1] = a2[1];
             a00 += 2;
