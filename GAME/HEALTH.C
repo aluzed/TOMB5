@@ -13,9 +13,6 @@
 #if PSX_VERSION
 #include "PSXINPUT.H"
 #include "TEXT_S.H"
-#if PSXPC_TEST
-#include "INPUTUI.H"
-#endif
 #endif
 #if PSXPC_VERSION
 #include "PSXPCINPUT.H"
@@ -236,15 +233,6 @@ void DrawGameInfo(int timed)//3AD68(<), 3B268(<)
 (SCREEN_WIDTH / 2, 24, 0, &sbuf[0], FF_CENTER);
 #endif
 
-#if 1//GH0ST_TESTING
-#if PSXPC_TEST
-	if (!InputUI_IsOpen())
-#endif
-	{
-		sprintf(&buf[0], "Camera X: %d Y: %d Z: %d", camera.pos.x, camera.pos.y, camera.pos.z);
-		PrintString(SCREEN_WIDTH / 2, 32, 0, &buf[0], FF_CENTER);
-	}
-#endif
 		if (gfGameMode != 1)
 		{
 

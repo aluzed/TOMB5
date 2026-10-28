@@ -1595,7 +1595,44 @@ void CalculateCamera()//27DA0(<), 27FAC(!)
 
 void LookCamera(struct ITEM_INFO* item)
 {
-	UNIMPLEMENTED();
+	struct PHD_VECTOR head;
+	short room_number;
+
+	/* The MIPS routine has not been decompiled.  This port-level version keeps
+	 * the look feature usable: anchor the target on Lara's head, follow the
+	 * head/torso rotations, and reuse the collision-aware chase rig at a
+	 * closer distance.  It is not claimed to be target-equivalent. */
+	head.x = 0;
+	head.y = 0;
+	head.z = 0;
+	GetLaraJointPos(&head, LJ_HEAD);
+
+	camera.target.x = head.z;
+	camera.target.y = head.y;
+	camera.target.z = head.x;
+
+	room_number = item->room_number;
+	GetFloor(camera.target.x, camera.target.y, camera.target.z, &room_number);
+	camera.target.room_number = room_number;
+
+	if (lara.head_x_rot == 0 && lara.head_y_rot == 0 &&
+	    lara.torso_x_rot == 0 && lara.torso_y_rot == 0)
+	{
+		/* Head returned to neutral: hand control back to the chase camera. */
+		camera.target_angle = 0;
+		camera.target_elevation = 0;
+		camera.target_distance = 1536;
+		camera.type = CHASE_CAMERA;
+		camera.speed = 10;
+		ChaseCamera(item);
+		return;
+	}
+
+	camera.target_angle = lara.torso_y_rot + lara.head_y_rot;
+	camera.target_elevation = lara.torso_x_rot + lara.head_x_rot;
+	camera.target_distance = 1024;
+
+	ChaseCamera(item);
 }
 
 void CombatCamera(struct ITEM_INFO* item)//26838(<), 26A48(<)

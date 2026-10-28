@@ -71,6 +71,28 @@ Le prochain travail sûr est une preuve de conservation de matrice sur la TU
 réelle et la cible, puis l'extension cohérente du regard depuis ses préconditions
 observées. Ne pas transformer les préfixes synthétiques en recette du jeu.
 
+## Implémentation de port du 28 octobre 2026
+
+La routine MIPS reste non décompilée ; cette section décrit une implémentation
+**de port**, pas une équivalence cible. `GAME/CAMERA.C` ancre désormais la cible
+sur le joint de tête (`LJ_HEAD`, conversion `x=z`, `z=x` comme le fait déjà le
+code de caméra fixe), reprend `lara.torso_y_rot + lara.head_y_rot` et
+`lara.torso_x_rot + lara.head_x_rot`, puis réutilise `ChaseCamera` à 1024 unités
+au lieu de 1536. Quand les rotations de tête et de torse reviennent à zéro, la
+caméra rend la main au type `CHASE_CAMERA` et à la distance 1536.
+
+Recette réelle sur `build-l` (ELF32 i386, SHA256
+`3b686385c9c64609e24b6bf49b93bb551298f35bb8df2ba9ff43304b584a4747`) :
+`Shift`+`Left` déplace la vue autour de Lara, `Shift`+`Right` dans l'autre sens,
+et les deux retours réaffichent la scène de suivi (captures
+`build/porting/port004-final-l-20261028/09-look-left.png` à `12-look-return2.png`).
+Le HUD debug `Camera X/Y/Z` a été retiré dans le même lot.
+
+Limites : pas de comparaison angle par angle avec la cible, pas de caméra
+combat, pas de gestion de plafond/obstacle spécifique au regard au-delà de
+`ChaseCamera`/`CameraCollisionBounds`. Les préconditions GTE et la restauration
+de matrice restent ouvertes ; cette implémentation ne les clôt pas.
+
 ## Tracker et provenance
 
 - [x] Préconditions réelles du regard et matrices joint observées sans injection.

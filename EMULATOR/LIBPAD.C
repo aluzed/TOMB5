@@ -411,6 +411,45 @@ int InputMap_ApplyGamepadConfig(void)
 	return 1;
 }
 
+void PadHandleControllerEvent(int type, int which)
+{
+#if defined(SDL2)
+	if (type == SDL_CONTROLLERDEVICEADDED)
+	{
+		/* Only the configured/preferred controller is used; a newly added
+		 * device is opened when none is currently selected. */
+		if (g_selectedPad == NULL && g_inputMap.gamepad_enabled)
+		{
+			g_selectedPad = input_open_gamepad();
+			padHandle[0] = g_selectedPad;
+		}
+	}
+	else if (type == SDL_CONTROLLERDEVICEREMOVED)
+	{
+		if (g_selectedPad != NULL)
+		{
+			SDL_Joystick* joystick = SDL_GameControllerGetJoystick(g_selectedPad);
+			SDL_JoystickID instance = joystick ? SDL_JoystickInstanceID(joystick) : -1;
+			if ((int)instance == which)
+			{
+				SDL_GameControllerClose(g_selectedPad);
+				g_selectedPad = NULL;
+				padHandle[0] = NULL;
+				/* Try to recover with another connected controller. */
+				if (g_inputMap.gamepad_enabled)
+				{
+					g_selectedPad = input_open_gamepad();
+					padHandle[0] = g_selectedPad;
+				}
+			}
+		}
+	}
+#else
+	(void)type;
+	(void)which;
+#endif
+}
+
 int InputMap_UpdateDevices(int keyboard_enabled, int gamepad_enabled, int gamepad_index)
 {
 	int saved;
@@ -573,7 +612,7 @@ int PadGetState(int port)
 #if _DEBUG || 1
 	return PadStateStable;//FIXME should check if keyboard is connected
 #endif
-	if (!(SDL_GameControllerGetAttached(padHandle[port])))
+	if (padHandle[port] == NULL || !(SDL_GameControllerGetAttached(padHandle[port])))
 	{
 		return PadStateDiscon;
 	}

@@ -7,7 +7,10 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def test_september20_active_milestone_is_bounded():
     data = json.loads((ROOT / 'docs/porting/backlog.json').read_text())
-    active = data['runtime_milestones'][-1]
+    # Later milestones are append-only; this contract stays attached to the
+    # September 20 observation it documents.
+    active = next(m for m in data['runtime_milestones']
+                  if m['date'] == '2026-09-20')
     assert active['date'] == '2026-09-20'
     assert active['authorization_until'] == '2026-09-20T12:00:00+02:00'
     assert active['status'] == 'In progress'

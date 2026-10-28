@@ -2761,10 +2761,8 @@ void Emulator_DoPollEvent()
 		switch (event.type)
 		{
 			case SDL_CONTROLLERDEVICEADDED:
-				padHandle[event.jbutton.which] = SDL_GameControllerOpen(event.cdevice.which);
-				break;
 			case SDL_CONTROLLERDEVICEREMOVED:
-				SDL_GameControllerClose(padHandle[event.cdevice.which]);
+				PadHandleControllerEvent(event.type, event.cdevice.which);
 				break;
 			case SDL_QUIT:
 				Emulator_ShutDown();
@@ -2776,6 +2774,14 @@ void Emulator_DoPollEvent()
 					windowWidth = event.window.data1;
 					windowHeight = event.window.data2;
 					Emulator_ResetDevice();
+					break;
+				case SDL_WINDOWEVENT_FOCUS_LOST:
+					/* A key released while the window is unfocused may never
+					 * generate SDL_KEYUP. Clear SDL's internal keyboard state so
+					 * movement/action bits do not stay stuck on return. */
+#if SDL_VERSION_ATLEAST(2, 0, 22)
+					SDL_ResetKeyboard();
+#endif
 					break;
 				case SDL_WINDOWEVENT_CLOSE:
 					Emulator_ShutDown();

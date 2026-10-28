@@ -272,6 +272,39 @@ ELF32 i386 (SHA256 `30c014c2ca3ce1dac76dc932a529e2f8b9fb51a61444e82bc4cd1a46da23
 testée ; pas de hot reload. Tickets :
 [PORT-009 à PORT-012](input/README.md).
 
+## Commandes et caméra — 28 octobre 2026 (PORT-004)
+
+Séquence réelle sur le binaire `build-l` (ELF32 i386, SHA256
+`3b686385c9c64609e24b6bf49b93bb551298f35bb8df2ba9ff43304b584a4747`),
+données NTSC, entrées XTest, 15 captures inspectées, fermeture
+`WM_DELETE_WINDOW`, `application.json` exit 0. Preuves privées :
+`build/porting/port004-final-l-20261028/`.
+
+- **HUD debug retiré** : `Camera X/Y/Z` (`GAME/HEALTH.C`) n'est plus dessiné ;
+  la scène de Rome est lisible sans surimpression.
+- **Commandes** : `W`/flèche haut avance, relâchement immédiat ; `Left`/`Right`
+  tournent le corps ; `X` saute ; `C` agit ; `Entrée` ouvre le menu pause,
+  `Resume` (`C`) reprend la simulation ; une frame sans entrée ne montre aucun
+  mouvement résiduel.
+- **Regard** : `Shift` + `Left`/`Right` oriente la tête et déplace la caméra
+  autour de Lara ; au relâchement, la tête revient au neutre et la caméra
+  retrouve le suivi. Captures `09-look-left.png` / `10-look-return.png` et
+  `11-look-right.png` / `12-look-return2.png`.
+- **Perte de focus** : sur `SDL_WINDOWEVENT_FOCUS_LOST`, `SDL_ResetKeyboard()`
+  efface l'état clavier (touche relâchée hors fenêtre) pour éviter une action
+  bloquée. Non testé sur un vrai changement de bureau ; le cas « Shift resté
+  enfoncé dans le serveur X » a été rencontré pendant la recette et nettoyé
+  avec `xdotool keyup`, pas par le jeu.
+- **Manette** : déconnexion/reconnexion passe désormais par
+  `PadHandleControllerEvent` (instance id SDL, pas l'index joystick brut) et
+  ferme le contrôleur sélectionné avant de retenter l'ouverture ; aucun
+  contrôleur physique sur cet hôte.
+- **Limites** : `LookCamera` est une implémentation de port fonctionnelle
+  (cible = joint de tête, angle tête/torse, rig de poursuite à 1024 unités),
+  **pas** une reproduction de la routine MIPS ; comparaison visuelle seulement,
+  pas d'équivalence binaire. La caméra combat, les collisions étendues et le
+  remappage caméra restent hors de ce ticket.
+
 ## Évidence du 18 septembre
 
 Bundle privé : `build/reverse/autonomy-20260918-0830/`. Deux builds neufs `build-a`
