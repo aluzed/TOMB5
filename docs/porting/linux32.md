@@ -396,23 +396,28 @@ recharge la sauvegarde et reprend au même endroit.
   et son inventaire/santé sont restaurés. Ce n'est pas une reprise d'état
   complet. Une implémentation symétrique de `SaveLevelData` existe sur la
   branche locale `wip/restoreleveldata` (commits `118487c5`/`86a540e9`),
-  compilée et couverte par les suites. `TOMB5_AUTOLOAD=1` déclenche maintenant
+  compilée et couverte par les suites. `TOMB5_AUTOLOAD=1` déclenche
   `RestoreLevelData` + `PortSave_ApplyPending` sans `SIGSEGV` (après
   désarmement de `flipeffect`, qui appelait `turn180_effect(NULL)`), et le
-  niveau 1 se charge. Un artefact visuel (grande surface brune devant la
-  caméra) reste à instruire : il persiste en désactivant items, mesh
-  statiques, flipmaps, flip_stats et séquences, et apparaît aussi avec
-  `TOMB5_AUTOLOAD` seul. Ce n'est donc pas le parseur : les tests montrent une
-  **caméra de reprise** qui reste au point de départ ou à ~100 unités derrière
-  Lara au lieu de se replacer en suivi ; la géométrie proche (mur/arche)
-  envahit l'écran. Retirer `InitialiseCamera()` éloigne la caméra mais ne
-  rétablit pas le suivi. Tests complémentaires négatifs : forcer
-  `CHASE_CAMERA`, `target_distance = 512`, appeler `ChaseCamera`, puis recaler
-  `camera.pos.room_number`, `camera.target.room_number` et
-  `last_target.room_number` sur la salle de Lara ne change pas l'artefact. La
-  cause n'est donc pas la distance ni la salle de caméra ; restent à instruire
-  le dessin de room/géométrie ou un mesh restauré. L'état objets/portes n'est
-  pas vérifié. Ne pas considérer cette branche comme intégrée.
+  niveau 1 se charge. Cette branche n'est pas intégrée et doit être rebasée sur
+  le correctif ci-dessous avant évaluation.
+- **Artefact visuel de reprise — cause trouvée et corrigée (29 octobre)** :
+  la grande surface brune qui suivait la caméra n'était **pas** causée par
+  `F6`, `AUTOLOAD` ou `RestoreLevelData` : elle apparaissait dès une partie
+  neuve à Rome, sans aucune sauvegarde. La bissection des binaires donne
+  `build-c` (07:23) propre et `build-s` (12:42) avec l'artefact ; la différence
+  est l'agrandissement des tableaux de garde `SkinVertNums`/`ScratchVertNums`
+  à 8192 octets. Le chargeur lit les tables objects/static puis 480 octets de
+  skin et 480 octets de scratch dans un **flux contigu** ; avec les tableaux
+  agrandis, le bloc scratch atterrissait à `SkinVertNums + 480`,
+  `ScratchVertNums` restait à zéro, et les matrices de Lara produisaient un
+  polygone immense. `GAME/SETUP.C` recopie désormais le bloc scratch vers
+  `ScratchVertNums` après la lecture ; la lecture CD reste contiguë car
+  `DEL_CDFS_Read` avance par secteurs. Preuves : partie neuve à Rome propre
+  (`build/porting/master-fix-smoke-20261029/`), `F6` sur `RESTORE3.SAV` propre
+  (`build/porting/fix-objectdata-final-load-20261029/`), niveau 6 chargé et
+  rendu sans `SIGSEGV`. Build final `build-au` ELF32 i386, SHA256
+  `dee0479c6000441af05b4d9724bb7b57605859eca2df0b74c0dbe920c32a467e`.
 - Pas de sauvegarde via carte mémoire PSX ni via le menu d'inventaire ; `F5`/`F6`
   sont des touches réservées non remappables. Pas de chargement en jeu (le
   chargement n'est traité qu'au titre), pas de slots multiples, pas de
@@ -572,6 +577,10 @@ dépassements :
   `psxtextinfo` (`0xc100ff`). Corrections : `tsv_buffer` porté à 1024 `TSV`
   (8192 octets), `SkinVertNums`/`ScratchVertNums` à 8192 octets, et borne
   explicite sur `tsv_buffer` dans `sub_C1CL5`.
+- `GAME/SETUP.C` : le bloc scratch de 480 octets est replacé dans
+  `ScratchVertNums` après la lecture contiguë objects/static/skin/scratch. Sans
+  ce replacement, les tableaux agrandis laissaient `ScratchVertNums` à zéro et
+  produisaient l'artefact de Rome décrit dans PORT-006.
 
 Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
 1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**
