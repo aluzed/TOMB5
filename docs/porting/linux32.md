@@ -583,37 +583,29 @@ et retourne au titre. Recette :
 - régression 1→2 : TRAJAN_MARKETS se charge normalement avec Lara
   (`build/porting/port008-valid2-20261028/`).
 
-En revanche, la **chaîne complète** 1→14 puis déclenchement 15 casse encore
-dans `GetDoor(floor=0xfe4cb8d4)` (`GETSTUFF.C:32`) **avant** d'atteindre
-`DoLevel(15)` : une trace `DoLevel` montre `Name=1` puis `Name=14`, jamais
-`Name=15` (`build/porting/port008-dolevel14-20261028/`). La garde GAMEWAD est
-donc correcte mais inatteignable dans ce chemin ; le blocage suivant est un
-pointeur de floor invalide pendant le niveau 14, pas la lecture du niveau 15.
-Cela protège toute donnée de niveau manquante lors d'un chargement direct. Le
-chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT) n'est pas
-caractérisé.
+Après le garde `GetDoor`, la **chaîne complète** 1→14 puis déclenchement 15
+ne casse plus : deux runs indépendants sur `build-x` atteignent le niveau 14,
+déclenchent la fin, puis reviennent au titre (`Handle cutseq triggering name:
+0`, aucun `SIGSEGV`) — `build/porting/port008-fullchain15-20261028/` et
+`port008-fullchain-title-20261028/`. Le crash `GetDoor(0xfe4cb8d4)` n'est plus
+reproduit. La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du
+retour titre (le gameflow peut le faire avant `DoLevel(15)`) ; elle reste
+validée séparément par le saut direct 1→15.
 
-Correctif candidat appliqué pour le floor invalide : les boucles de
-`LARASWIM.C` (`r = &room[data]`) et `CONTROL.C` (`r = &room[data]`,
-`next_room`) suivent le numéro de salle renvoyé par `GetDoor`. Elles vérifient
-maintenant `data/next_room < number_rooms` avant de calculer `r` ou de rendre
-la salle. Un index de porte corrompu/hors bornes ne peut plus produire
-`floor = &r->floor[...]` avec un `r` invalide (adresse observée
-`0xfe4cb8d4`). **Limite de validation** : la chaîne 1→14 n'a pas pu être
-rejouée jusqu'au déclenchement 15 dans cette fenêtre (les entrées `Cross` de
-démarrage du titre n'ont pas été acceptées par les derniers lancements) ; le
-garde est couvert par les suites existantes mais pas par une preuve de chaîne
-après correctif. À revalider avant de le considérer comme fermeture du
-blocage.
+Cela protège aussi toute donnée de niveau manquante lors d'un chargement
+direct. Le chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT)
+n'est pas caractérisé : le déclenchement est synthétique et le retour au titre
+n'est pas une preuve des crédits originaux.
 
 ### Ce qui reste non validé
 
-Le déclenchement est synthétique : il prouve la **mécanique de transition**,
-pas une fin de niveau atteinte en jouant. Aucun FMV de transition, crédit de
-fin, boucle campagne complète ni sauvegarde de progression inter-niveaux n'est
+Le déclenchement est synthétique : il prouve la **mécanique de transition**
+et la boucle 1→14→titre, pas une fin de niveau atteinte en jouant. Aucun FMV de
+transition, crédit de fin ni sauvegarde de progression inter-niveaux n'est
 validé. Le raccourci QA `look`/L1 + New Game charge le niveau 4
-(`build/porting/port008-level4-20261028/`) ; `walk`/R1 retombe sur Rome. PORT-008
-reste partiel : chaîne mécanique 1→14, garde GAMEWAD pour un chargement direct absent, puis crash GetDoor au niveau 14 avant la transition; fin de campagne réelle non caractérisée.
+(`build/porting/port008-level4-20261028/`) ; `walk`/R1 retombe sur Rome.
+PORT-008 reste partiel : boucle mécanique 1→14→titre et garde GAMEWAD validées,
+mais fin de campagne réelle (crédits/FMV) non caractérisée.
 
 ## Évidence du 18 septembre
 
