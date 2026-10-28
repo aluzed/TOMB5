@@ -578,10 +578,15 @@ et retourne au titre. Recette :
 - régression 1→2 : TRAJAN_MARKETS se charge normalement avec Lara
   (`build/porting/port008-valid2-20261028/`).
 
-Cela protège aussi toute donnée de niveau manquante. Le chemin de **fin de
-campagne réel** (crédits/FMV après RED_ALERT) n'est pas caractérisé : le
-déclenchement `+1` est synthétique et ne prouve pas que le jeu original
-affiche les crédits à ce moment.
+En revanche, la **chaîne complète** 1→14 puis déclenchement 15 casse encore
+dans `GetDoor(floor=0xfe4cb8d4)` (`GETSTUFF.C:32`) **avant** d'atteindre
+`DoLevel(15)` : une trace `DoLevel` montre `Name=1` puis `Name=14`, jamais
+`Name=15` (`build/porting/port008-dolevel14-20261028/`). La garde GAMEWAD est
+donc correcte mais inatteignable dans ce chemin ; le blocage suivant est un
+pointeur de floor invalide pendant le niveau 14, pas la lecture du niveau 15.
+Cela protège toute donnée de niveau manquante lors d'un chargement direct. Le
+chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT) n'est pas
+caractérisé.
 
 ### Ce qui reste non validé
 
@@ -590,7 +595,7 @@ pas une fin de niveau atteinte en jouant. Aucun FMV de transition, crédit de
 fin, boucle campagne complète ni sauvegarde de progression inter-niveaux n'est
 validé. Le raccourci QA `look`/L1 + New Game charge le niveau 4
 (`build/porting/port008-level4-20261028/`) ; `walk`/R1 retombe sur Rome. PORT-008
-reste partiel : chaîne mécanique 1→14 et retour titre sur entrée absente, fin de campagne réelle non caractérisée.
+reste partiel : chaîne mécanique 1→14, garde GAMEWAD pour un chargement direct absent, puis crash GetDoor au niveau 14 avant la transition; fin de campagne réelle non caractérisée.
 
 ## Évidence du 18 septembre
 
