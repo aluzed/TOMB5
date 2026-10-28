@@ -391,9 +391,14 @@ recharge la sauvegarde et reprend au même endroit.
 
 ### Limites PORT-006
 
-- `RestoreLevelData` n'est pas implémenté : les objets, portes, pickups et
-  interrupteurs du niveau repartent de l'état initial ; seuls Lara et son
-  inventaire/santé sont restaurés. Ce n'est pas une reprise d'état complet.
+- `RestoreLevelData` n'est pas implémenté sur `master` : les objets, portes,
+  pickups et interrupteurs du niveau repartent de l'état initial ; seuls Lara
+  et son inventaire/santé sont restaurés. Ce n'est pas une reprise d'état
+  complet. Une implémentation symétrique de `SaveLevelData` existe sur la
+  branche locale `wip/restoreleveldata` (commit `118487c5`), compilée et
+  couverte par les suites, mais **non validée en chargement runtime** à cause
+  de l'instabilité de l'automatisation du titre ; ne pas la considérer comme
+  intégrée.
 - Pas de sauvegarde via carte mémoire PSX ni via le menu d'inventaire ; `F5`/`F6`
   sont des touches réservées non remappables. Pas de chargement en jeu (le
   chargement n'est traité qu'au titre), pas de slots multiples, pas de
