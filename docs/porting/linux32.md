@@ -395,10 +395,13 @@ recharge la sauvegarde et reprend au même endroit.
   pickups et interrupteurs du niveau repartent de l'état initial ; seuls Lara
   et son inventaire/santé sont restaurés. Ce n'est pas une reprise d'état
   complet. Une implémentation symétrique de `SaveLevelData` existe sur la
-  branche locale `wip/restoreleveldata` (commit `118487c5`), compilée et
-  couverte par les suites, mais **non validée en chargement runtime** à cause
-  de l'instabilité de l'automatisation du titre ; ne pas la considérer comme
-  intégrée.
+  branche locale `wip/restoreleveldata` (commits `118487c5`/`86a540e9`),
+  compilée et couverte par les suites. `TOMB5_AUTOLOAD=1` déclenche maintenant
+  `RestoreLevelData` + `PortSave_ApplyPending` sans `SIGSEGV` (après
+  désarmement de `flipeffect`, qui appelait `turn180_effect(NULL)`), et le
+  niveau 1 se charge. Un artefact visuel (grande surface brune devant la
+  caméra) reste à instruire ; l'état objets/portes n'est pas vérifié. Ne pas
+  considérer cette branche comme intégrée.
 - Pas de sauvegarde via carte mémoire PSX ni via le menu d'inventaire ; `F5`/`F6`
   sont des touches réservées non remappables. Pas de chargement en jeu (le
   chargement n'est traité qu'au titre), pas de slots multiples, pas de
