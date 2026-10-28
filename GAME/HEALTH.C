@@ -13,6 +13,9 @@
 #if PSX_VERSION
 #include "PSXINPUT.H"
 #include "TEXT_S.H"
+#if PSXPC_TEST
+#include "PORTSAVE.H"
+#endif
 #endif
 #if PSXPC_VERSION
 #include "PSXPCINPUT.H"
@@ -274,6 +277,15 @@ void DrawGameInfo(int timed)//3AD68(<), 3B268(<)
 			}//loc_3B0A0
 		}//loc_3B0A0
 	}//loc_3B0A0
+
+#if PSXPC_TEST
+	if (PortSave_MessageTime() > 0)
+	{
+		PrintString(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 48, 0,
+		            (char*)PortSave_Message(), FF_CENTER);
+		PortSave_TickMessage();
+	}
+#endif
 
 #endif
 }

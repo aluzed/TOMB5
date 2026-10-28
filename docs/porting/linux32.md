@@ -361,6 +361,11 @@ recharge la sauvegarde et reprend au même endroit.
   relance, `F6` → même niveau, même salle, même position, scène identique
   (`build/porting/port006-level4-20261028/`, RMSE 0,055 entre les deux captures).
   `savegame.CurrentLevel` est donc bien utilisé au rechargement.
+- **Retour visuel** : `F5` affiche `Game saved` centré en bas de l'écran
+  pendant 90 frames (~3 s), puis disparaît ; `F6`/application affiche
+  `Game loaded`. Vérifié sur `build-q`
+  (`build/porting/save-message-q-20261028/02-saved-message.png`,
+  `03-after-message.png`).
 - **Preuve réelle** : partie neuve, marche dans Rome, `F5` → log
   `[SAVE] wrote TOMB5.SAV: level 1 room 2 X 46592 Y 0 Z 35826` ; fermeture
   normale ; relance ; `F6` au titre → log
@@ -413,10 +418,13 @@ In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
 
 ## Recette intégrée finale — 28 octobre 2026
 
-Build `build-o` (ELF32 i386, SHA256
-`595d3c4c41ac640587e292c75fa63bd81b9074228c7a40c91a630490be5f6d8e`),
-sources à l'état du dernier commit de la journée. Scénario unique, 9 captures
-inspectées, `application.json` exit 0 :
+La recette principale a été jouée sur `build-o` (ELF32 i386, SHA256
+`595d3c4c41ac640587e292c75fa63bd81b9074228c7a40c91a630490be5f6d8e`).
+Le build final `build-q` (SHA256
+`82f493b9d37822e7ab8add7f07a26d4e7c7f580094e4f7ced2539eeb1357950b`)
+ajoute le garde-fou F5/F6 pendant l'éditeur et le retour visuel
+`Game saved`/`Game loaded`. Scénario unique, 9 captures inspectées,
+`application.json` exit 0 :
 
 1. titre ; `F6` charge `TOMB5.SAV` (salle 2, X 46592 Y 0 Z 35826) ;
 2. la scène reprend à la position sauvegardée ;
@@ -427,10 +435,9 @@ inspectées, `application.json` exit 0 :
 6. une frame sans entrée reste stable ; fermeture normale, exit 0.
 
 Preuves privées : `build/porting/final-smoke-20261028/` ; rejeu du chargement
-sur `build-o` dans `build/porting/port006d-20261028/`. Le build ultérieur
-`build-p` (SHA256 `c1299824d6c2239db50685206edc97cc5b7725a27d6e4a519ebc3e4193c5eb96`)
-ajoute seulement le garde-fou F5/F6 quand l'éditeur de keymap est ouvert. Un fichier de
-sauvegarde corrompu (`BAD.SAV`, 16 octets) est refusé avec
+sur `build-o` dans `build/porting/port006d-20261028/`. Le retour visuel est
+vérifié sur `build-q` dans `build/porting/save-message-q-20261028/`. Un fichier
+de sauvegarde corrompu (`BAD.SAV`, 16 octets) est refusé avec
 `[SAVE] invalid save header`, le titre continue et le processus sort à 0
 (`build/porting/port006-corrupt-20261028/`).
 

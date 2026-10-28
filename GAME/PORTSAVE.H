@@ -30,6 +30,11 @@ extern void PortSave_ApplyPending(void);
 
 extern const char* PortSave_Path(void);
 
+/* Short on-screen feedback ("Game saved" / "Game loaded"). */
+extern const char* PortSave_Message(void);
+extern int PortSave_MessageTime(void);
+extern void PortSave_TickMessage(void);
+
 #ifdef __cplusplus
 }
 #endif

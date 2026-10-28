@@ -50,6 +50,32 @@ static int load_requested = 0;
 static int pending_valid = 0;
 static PortSaveRecord pending_record;
 static char port_save_path[1024];
+static const char* port_save_message = "";
+static int port_save_message_time = 0;
+
+const char* PortSave_Message(void)
+{
+	return port_save_message;
+}
+
+int PortSave_MessageTime(void)
+{
+	return port_save_message_time;
+}
+
+void PortSave_TickMessage(void)
+{
+	if (port_save_message_time > 0)
+	{
+		port_save_message_time--;
+	}
+}
+
+static void PortSave_ShowMessage(const char* message, int frames)
+{
+	port_save_message = message;
+	port_save_message_time = frames;
+}
 
 const char* PortSave_Path(void)
 {
@@ -160,6 +186,7 @@ int PortSave_Write(void)
 	if (file == NULL)
 	{
 		printf("[SAVE] cannot open %s\n", PortSave_Path());
+		PortSave_ShowMessage("Save failed", 90);
 		return 0;
 	}
 
@@ -169,8 +196,11 @@ int PortSave_Write(void)
 	if (written != 1)
 	{
 		printf("[SAVE] write failed for %s\n", PortSave_Path());
+		PortSave_ShowMessage("Save failed", 90);
 		return 0;
 	}
+
+	PortSave_ShowMessage("Game saved", 90);
 
 	printf("[SAVE] wrote %s: level %d room %d X %d Y %d Z %d\n",
 	       PortSave_Path(), gfCurrentLevel, record.room, record.x, record.y, record.z);
@@ -210,6 +240,7 @@ int PortSave_Read(void)
 	pending_record = record;
 	pending_valid = 1;
 
+	PortSave_ShowMessage("Game loaded", 90);
 	printf("[SAVE] loaded %s: level %d room %d X %d Y %d Z %d\n",
 	       PortSave_Path(), savegame.CurrentLevel, record.room, record.x, record.y, record.z);
 	return 1;
