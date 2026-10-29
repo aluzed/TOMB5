@@ -4,6 +4,14 @@ Cadrage de travail **provisoire**, pas une décision définitive de plateforme. 
 recette construit les sources du checkout ; elle ne télécharge aucun jeu. Un
 build réussi ou une sortie zéro ne valide ni menu ni gameplay.
 
+**État au 29 octobre 2026** : le backend Linux32 (rendu, entrées, sauvegarde
+rapide, audio SDL) est stable et testé, mais la campagne réelle est bloquée par
+un manque **hérité de la décompilation** : `ObjectObjects`/`TrapObjects`
+n'installent pas les gestionnaires des objets et les handlers pickup/collision/
+switch/door sont des stubs. Aucun pickup ni interaction n'est possible. Détail
+et preuve GDB : section « Cause racine héritée : objets runtime non initialisés »
+plus bas.
+
 ## Environnement et dépendances
 
 Recette exécutée le 18 septembre 2026 sur Linux x86-64, GCC/G++ 13.2,
