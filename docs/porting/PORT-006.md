@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-006 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
+Mise à niveau v3→v4 au niveau 2 : L2.SAV (v3, level 2 room 50 X 91648 Y 0 Z 42496) chargé par F6, puis F5 réécrit le même fichier en v4 (606 octets de niveau, +12 octets d'état d'items). Relance et F6 restaurent le niveau 2, room 50, X 91648 Y 0 Z 42496, scène identique (moyennes 0,0885 / 0,0885). Preuve build/porting/level2-v4-20261029/. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b; tests/porting 497 PASS, tests/emulator 3677 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-006, PORT-007 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
 
 Correctifs de revue : pitch SPU_Play sans division /64 (4096/32256 cohérents), registre de volume courant +6 renseigné à key-on/key-off pour que SpuGetKeyStatus ne libère plus les voix immédiatement, lecture du bloc niveau bornée à 8192 et numéros de salle validés avant ItemNewRoom/UpdateLaraRoom, SGpoint/SGcount restaurés après SaveLevelDataToBuffer. ASan nouvelle partie + F5 + rechargement v4 et niveau 2 propres. PCM audio actif 94–99 s pendant la marche. Build-cg SHA256 824ea2ea0e5f3e75e24c01680c1b897061e6c1ef98ae9471a80995be7f21fd2d; tests/porting 497 PASS, tests/emulator 3677 PASS.

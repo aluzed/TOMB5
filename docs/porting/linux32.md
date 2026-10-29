@@ -408,6 +408,11 @@ endroit. Depuis le 29 octobre, le format v4 inclut aussi l'état du niveau
   niveau 2 (room 50, X 91648 Y 0 Z 42496, 594 octets de niveau), rechargement
   par `TOMB5_AUTOLOAD` → même niveau/salle/position et scène identique
   (`build/porting/level2-save-20261029/`, `level2-load-20261029/`).
+  Mise à niveau v3→v4 au niveau 2 (29 octobre) : `L2.SAV` chargé par `F6`,
+  puis `F5` réécrit le même fichier en v4 (606 octets de niveau, +12 octets
+  d'état d'items), relance et `F6` restaurent le niveau 2, room 50,
+  X 91648 Y 0 Z 42496 avec une scène identique (moyennes 0,0885 / 0,0885 ;
+  `build/porting/level2-v4-20261029/`).
 
 ### Limites PORT-006
 
