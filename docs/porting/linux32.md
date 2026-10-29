@@ -688,6 +688,12 @@ nouvelle erreur (`build/porting/asan-run2-20261029/`). Les parcours ASan
   (`asan-run4-20261029/`, `asan-load2-20261029/`, `asan-run5-20261029/`,
   `asan-load3-20261029/`, `asan-run6-20261029/`). Un soak ASan de 6 min avec
   entrées aléatoires ne signale aucune erreur (`asan-soak-20261029/`).
+  ASan PAL + manette virtuelle (29 octobre, `ASAN_OPTIONS=detect_leaks=0`) :
+  New Game, détection du contrôleur et déplacement au stick, exit 0, aucune
+  erreur AddressSanitizer (`pal-asan2-20261029/`). Avec LeakSanitizer actif,
+  le même parcours signale 189 290 octets dans `libnvidia-glcore.so` (piles
+  d'allocation du driver GL, aucune frame du port) : ce n'est pas une fuite du
+  jeu, mais un bruit du driver (`pal-asan-20261029/`).
 
 Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
 1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**
