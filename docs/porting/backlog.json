@@ -991,6 +991,15 @@
       ],
       "status": "In progress",
       "summary": "Combat minimal : PistolHandler implémenté (hitscan cône ±60°, HitTarget, munitions, SFX_LARA_FIRE, flash). Preuve GDB : chien forcé à hp=100/intelligent=1, 6 tirs font passer hp à 64. Limite : les ennemis de niveau ne sont pas initialisés (hp=-16384, pas d'IA/contrôle), donc chiens/Larson restent inertes ; BaddyObjects et contrôles ennemis à compléter. Build-gameplay10 SHA256 51efd1a024a13ff39c0e942076d2a754dd5da8a689f01190ad344ce266b33152; tests 4174 PASS. Aucun Done."
+    },
+    {
+      "date": "2026-10-29",
+      "authorization_until": "2026-10-31T12:00:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Ennemis niveau 1 initialisés après InitialiseItem : DOG hp10, LARSON hp100, MAFIA/MAFIA2 hp40, intelligent=1, status non invisible. Preuve GDB : chien réel hp10 touché par PistolHandler, hp passe à 4. Limite : pas d'IA déplacement/attaque, CreatureCollision stub, ennemis statiques. Build-gameplay11 SHA256 4bd9aa4515872d351a602a3be8ec071becbec2a21b5f95a63e22e61a0d9f812b; tests 4174 PASS. Aucun Done."
     }
   ]
 }

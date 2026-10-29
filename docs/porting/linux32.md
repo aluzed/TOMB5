@@ -864,8 +864,8 @@ décompilation.
 
 ### Boucle de gameplay — première couche (29 octobre 2026)
 
-Implémenté dans les sources (build `build-gameplay10`, SHA256
-`51efd1a024a13ff39c0e942076d2a754dd5da8a689f01190ad344ce266b33152`) :
+Implémenté dans les sources (build `build-gameplay11`, SHA256
+`4bd9aa4515872d351a602a3be8ec071becbec2a21b5f95a63e22e61a0d9f812b`) :
 
 - `SPEC_PSXPC_N/COLLIDE_S.C` : `PortCollideItems()` parcourt les items de la
   salle et appelle `objects[object_number].collision` après la géométrie.
@@ -903,6 +903,13 @@ Preuves runtime (GDB, niveau 1, téléportation de test) :
   Lara de room 0 X46592 Z31232 à room 2 X46592 Z38830 en 8 s
   (`play-move2-20261029/`) ; `w` est le scancode de `draw` en AZERTY et
   déclenche la vue noire des armes, pas la marche.
+
+Ennemis de niveau 1 : `PortSetupGameplayEnemies()` initialise après
+`InitialiseItem` les `DOG` (hp 10), `LARSON` (hp 100) et `MAFIA`/`MAFIA2`
+(hp 40) comme intelligents et non invisibles. Preuve GDB : chien réel hp=10,
+deux tirs de pistolet le font passer à hp=4 (`combat_real.out`). Les ennemis
+restent **statiques** : pas d’IA de déplacement/attaque, `CreatureCollision`
+est encore stub.
 
 Tir minimal : `PistolHandler` fait un hitscan (cible intelligente la plus
 proche dans le cône ±60°, portée `weapons[].target_dist`), applique
