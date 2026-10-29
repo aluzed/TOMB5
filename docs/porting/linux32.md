@@ -716,6 +716,55 @@ direct. Le chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT)
 n'est pas caractérisé : le déclenchement est synthétique et le retour au titre
 n'est pas une preuve des crédits originaux.
 
+### Cause racine héritée : objets runtime non initialisés (29 octobre 2026)
+
+La campagne réelle n'est pas seulement « non jouée » : avec les sources
+actuelles, elle est **impossible**, car les gestionnaires d'interaction des
+objets ne sont jamais installés. Preuve runtime sous GDB après chargement du
+niveau 1 (151 items), au premier `DrawRooms` :
+
+```
+objects[339] (SHOTGUN_AMMO1_ITEM) collision = nil
+objects[286] (DOOR_TYPE2)          collision = nil
+objects[258] (KEY_HOLE1)           collision = nil
+objects[172] (PUZZLE_ITEM1)        collision = nil
+objects[266] (SWITCH_TYPE1)        collision = nil
+objects[326] (DOUBLE_DOORS)        collision = nil
+objects[242] (PUZZLE_HOLE1)        collision = nil
+objects[0]   (LARA)                control   = nil
+```
+
+Source (`build/porting/objcoll-20261029/`) : `build/porting/objcoll-20261029/gdb.log`.
+Cause dans les sources :
+
+- `GAME/SETUP.C:901` `InitialiseObjects()` met `collision`, `control`,
+  `initialise`, `draw_routine` à `NULL` pour les 461 objets, puis appelle
+  `BaddyObjects()`, `ObjectObjects()` et `TrapObjects()`.
+- `GAME/SETUP.C:626` `BaddyObjects()` n'installe `CreatureCollision` que pour
+  quelques créatures (SAS, gardes, etc.).
+- `GAME/SETUP.C:1752` `ObjectObjects()` est incomplet : il ne traite que
+  `LARA` et un fragment de `SAS` (commentaire `LARA temporary hack (this
+  function is incomplete)`). Aucun pickup, porte, interrupteur, clé, puzzle
+  ou décor n'y reçoit de `collision`/`control`.
+- `GAME/SETUP.C:1747` `TrapObjects()` est vide ; `GAME/SETUP.C:909` remet
+  déjà tous les `collision` à `NULL`.
+- Les fonctions appelées par ces objets sont elles-mêmes des stubs :
+  `PickUpCollision` (`GAME/PICKUP.C:235`), `KeyHoleCollision`
+  (`GAME/PICKUP.C:230`), `PuzzleHoleCollision` (`GAME/PICKUP.C:217`),
+  `TestLaraPosition`/`MoveLaraPosition`/`TestBoundsCollide`/`ItemPushLara`/
+  `GetCollidedObjects` (`GAME/COLLIDE.C:424-450`), `DoorControl`
+  (`GAME/DOOR.C:236`), `SwitchCollision`/`SwitchControl`
+  (`GAME/SWITCH.C:346-352`), `CreatureCollision`/`LaraBaddieCollision`
+  (`GAME/COLLIDE.C:380-387`).
+
+Conséquence : aucun pickup, keyhole, puzzle, levier, porte à clé/crowbar ou
+ennemi ne peut réagir à Lara. Le déplacement, les déclencheurs de plancher et
+la boucle de niveau fonctionnent, mais les interactions nécessaires à la
+résolution de Rome (et de tous les niveaux) sont absentes. Ce n'est **pas** une
+régression Linux32 : le même état existe en amont de la décompilation ; c'est
+un travail de reconstruction gameplay (RE), soumis aux gates
+`docs/stories/BLOCKED-004*` et aux tickets reverse, pas un correctif de port.
+
 ### Ce qui reste non validé
 
 Le déclenchement est synthétique : il prouve la **mécanique de transition**
@@ -724,7 +773,10 @@ transition, crédit de fin ni sauvegarde de progression inter-niveaux n'est
 validé. Le raccourci QA `look`/L1 + New Game charge le niveau 4
 (`build/porting/port008-level4-20261028/`) ; `walk`/R1 retombe sur Rome.
 PORT-008 reste partiel : boucle mécanique 1→14→titre et garde GAMEWAD validées,
-mais fin de campagne réelle (crédits/FMV) non caractérisée.
+mais fin de campagne réelle (crédits/FMV) non caractérisée. La cause racine est
+la non-initialisation des gestionnaires d'objets décrite ci-dessus : tant que
+`ObjectObjects`/`TrapObjects` et les handlers pickup/collision/switch/door ne
+sont pas reconstruits, aucune campagne réelle n'est exécutable.
 
 ## Évidence du 18 septembre
 
