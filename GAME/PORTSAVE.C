@@ -15,7 +15,8 @@
 #include <string.h>
 
 #define PORTSAVE_MAGIC "T5P2"
-#define PORTSAVE_VERSION 3u
+#define PORTSAVE_VERSION 4u
+#define PORTSAVE_V3_VERSION 3u
 #define PORTSAVE_LEGACY_VERSION 2u
 #define PORTSAVE_LEVEL_DATA_SIZE 8192
 
@@ -312,7 +313,7 @@ int PortSave_Read(void)
 	fseek(file, 0, SEEK_SET);
 
 	memset(&record, 0, sizeof(record));
-	if (version == PORTSAVE_VERSION)
+	if (version == PORTSAVE_VERSION || version == PORTSAVE_V3_VERSION)
 	{
 		read = fread(&record, sizeof(record), 1, file);
 		fclose(file);
@@ -321,6 +322,7 @@ int PortSave_Read(void)
 			printf("[SAVE] checksum mismatch in %s\n", PortSave_Path());
 			return 0;
 		}
+		PortSave_LevelFormat = (version == PORTSAVE_VERSION) ? 4 : 3;
 	}
 	else if (version == PORTSAVE_LEGACY_VERSION)
 	{
@@ -349,6 +351,7 @@ int PortSave_Read(void)
 		record.speed = legacy.speed;
 		record.fallspeed = legacy.fallspeed;
 		record.hit_points = legacy.hit_points;
+		PortSave_LevelFormat = 3;
 	}
 	else
 	{

@@ -16,6 +16,7 @@ struct ITEM_INFO* lara_item;
 unsigned char gfCurrentLevel = 1;
 unsigned long GameTimer = 1234;
 char JustLoaded = 0;
+int PortSave_LevelFormat = 4;
 
 void SaveLaraData()
 {

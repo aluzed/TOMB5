@@ -58,6 +58,7 @@ typedef unsigned int uintptr_t;
 
 char FromTitle = 0; // offset 0xA14AC
 char JustLoaded = 0; // offset 0xA14AD
+int PortSave_LevelFormat = 4;
 char* MGSaveGamePtr; // offset 0xA3924
 static int SGcount; // offset 0xA391C
 static char* SGpoint; // offset 0xA3920
@@ -257,6 +258,22 @@ void RestoreLevelData(int FullSave)//54B08, 54F6C
 			}
 
 			ReadSG((char*)&item->frame_number, 2);
+		}
+
+		if (PortSave_LevelFormat >= 4)
+		{
+			if (word & 0x80)
+				ReadSG((char*)&item->item_flags[0], 2);
+			if (word & 0x100)
+				ReadSG((char*)&item->item_flags[1], 2);
+			if (word & 0x200)
+				ReadSG((char*)&item->item_flags[2], 2);
+			if (word & 0x400)
+				ReadSG((char*)&item->item_flags[3], 2);
+			if (word & 0x800)
+				ReadSG((char*)&item->timer, 2);
+			if (word & 0x1000)
+				ReadSG((char*)&item->trigger_flags, 2);
 		}
 
 		if (word & 0x4000)
@@ -517,6 +534,19 @@ void SaveLevelData(int FullSave)//53AAC, 53F10
 
 				Write(&item->frame_number, 2);
 			}
+
+			if (word & 0x80)
+				Write(&item->item_flags[0], 2);
+			if (word & 0x100)
+				Write(&item->item_flags[1], 2);
+			if (word & 0x200)
+				Write(&item->item_flags[2], 2);
+			if (word & 0x400)
+				Write(&item->item_flags[3], 2);
+			if (word & 0x800)
+				Write(&item->timer, 2);
+			if (word & 0x1000)
+				Write(&item->trigger_flags, 2);
 
 			if (word & 0x4000)
 				Write(&item->hit_points, 2);

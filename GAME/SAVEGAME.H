@@ -5,6 +5,7 @@
 
 extern char FromTitle;
 extern char JustLoaded;
+extern int PortSave_LevelFormat;
 extern char* MGSaveGamePtr;
 extern struct savegame_info savegame;
 
