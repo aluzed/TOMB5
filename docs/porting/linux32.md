@@ -481,15 +481,15 @@ uniquement pendant la marche, `build/porting/final-audio-bn-20261029/`).
 Les voix `SF_LOOP` redémarrent au lieu de se couper; contrôle
 `build/porting/final-audio-loop-20261029/` (RMS 1265), sur `build-cd`
 `build/porting/final-audio-cd-20261029/` (RMS 1285), et sur `build-cg`
-`build/porting/final-audio-cg-20261029/` (PCM actif 94–99 s pendant la marche,
-pitch corrigé).
+`build/porting/final-audio-cg-20261029/` et `audio-long3-20261029/` (PCM actif
+en continu pendant 30 s de marche, pitch corrigé).
 `SDL_AUDIODRIVER=dummy` ouvre le device sans crash
 (`final-audio-dummy-20261029/`). Tests : `tests/porting` 497 PASS,
 `tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
 `809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9` ;
 build final combiné (reprise v4, écriture atomique, audio/pitch/volume,
-correctif strings gameflow et bornes de restauration) `build-cg` SHA256
-`824ea2ea0e5f3e75e24c01680c1b897061e6c1ef98ae9471a80995be7f21fd2d`.
+correctif strings gameflow et bornes de restauration) `build-ci` SHA256
+`85d62b54254f75cd62267757b4dc64e775c26fbd61e80f5ec03cffedf13bb8a1`.
 
 Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
 reverb/loop approximés, pas de test de volume nul/catégories, pause et retour
@@ -642,7 +642,7 @@ nouvelle erreur (`build/porting/asan-run2-20261029/`). Les parcours ASan
   rechargement v3 du niveau 2 (`asan-level2-20261029/`). Après les correctifs
   pitch/volume courant et bornes de lecture, les parcours ASan nouvelle
   partie + `F5` puis rechargement v4 sont propres
-  (`asan-run4-20261029/`, `asan-load2-20261029/`).
+  (`asan-run4-20261029/`, `asan-load2-20261029/`, `asan-run5-20261029/`).
 
 Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
 1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**
