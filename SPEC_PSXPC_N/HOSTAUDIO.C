@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <LIBSPU.H>
+#include "SPUSOUND.H"
 
 #include <stdio.h>
 #include <string.h>
@@ -14,6 +15,8 @@
 typedef struct HostVoice
 {
 	int active;
+	int loop;
+	unsigned int start;
 	unsigned int pos;
 	int block_pos;
 	int ended;
@@ -81,6 +84,8 @@ static void HostAudio_ResetVoice(HostVoice* voice, unsigned short* regs, int ind
 	}
 
 	voice->active = 1;
+	voice->loop = (LabSampleType[index] == 2);
+	voice->start = start;
 	voice->pos = start;
 	voice->block_pos = 28;
 	voice->phase = 1.0;
@@ -108,6 +113,16 @@ static int HostAudio_NextSample(HostVoice* voice, int index)
 
 		if (voice->ended || voice->pos + 16 > (unsigned int)ram_size)
 		{
+			if (voice->loop)
+			{
+				voice->pos = voice->start;
+				voice->ended = 0;
+				voice->block_pos = 28;
+				voice->prev1 = 0;
+				voice->prev2 = 0;
+				continue;
+			}
+
 			voice->active = 0;
 			SpuSetKey(0, 1u << index);
 			return 0;
