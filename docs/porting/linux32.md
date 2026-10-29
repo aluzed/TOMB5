@@ -904,6 +904,12 @@ Preuves runtime (GDB, niveau 1, téléportation de test) :
   (`play-move2-20261029/`) ; `w` est le scancode de `draw` en AZERTY et
   déclenche la vue noire des armes, pas la marche.
 
+Collisions créatures : `CreatureCollision` pousse Lara hors des bounds et
+`LaraBaddieCollision` inflige 5 points de dégâts par 45 frames à moins de
+512 unités, avec `SFX_LARA_INJURY_RND`. Preuve : Lara passe de 1000 à 825 PV
+en restant ~3 s près du chien (`tp_dog.out`). Les ennemis restent toutefois
+**statiques** (pas de déplacement/attaque).
+
 Ennemis de niveau 1 : `PortSetupGameplayEnemies()` initialise après
 `InitialiseItem` les `DOG` (hp 10), `LARSON` (hp 100) et `MAFIA`/`MAFIA2`
 (hp 40) comme intelligents et non invisibles. Preuve GDB : chien réel hp=10,
