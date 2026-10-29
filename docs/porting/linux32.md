@@ -623,7 +623,9 @@ AddressSanitizer 32 bits a signalé `memcpy-param-overlap` dans
 `gfStringOffset` vers une adresse plus basse chevauchait la source. Les cinq
 copies concernées utilisent désormais `memmove`, ce qui conserve le résultat
 attendu sans comportement indéfini. Une partie neuve à Rome passe ASan sans
-nouvelle erreur (`build/porting/asan-run2-20261029/`).
+nouvelle erreur (`build/porting/asan-run2-20261029/`). Les parcours ASan
+  nouvelle partie + `F5` puis rechargement `F6`/`AUTOLOAD` ne signalent aucune
+  erreur (`asan-run3-20261029/`, `asan-load-20261029/`).
 
 Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
 1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**
