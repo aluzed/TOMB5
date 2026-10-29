@@ -920,6 +920,12 @@ non initialisés (`hit_points=-16384`, pas d’IA/contrôle), donc les chiens et
 Larson sont encore inertes ; il faut compléter `BaddyObjects`/les contrôles
 ennemis.
 
+Serrure de la fontaine : au trou de clé `room 59` (`item 25`), avec
+`KEY_ITEM1` injectée par GDB, `TestLaraPosition=1` ; après `Action`, Lara
+joue l’animation d’insertion et la zone de la grille change
+(`play-keygate-20261029/01-before.png` / `02-after.png`), avec un Doberman
+visible. La clé est normalement à trouver plus tard dans le niveau.
+
 Repérage (téléportation de test, **pas** un parcours joué) : la **cour de la
 fontaine** est la `room 59` autour de `X54000 Z41000 Y256` ; un Doberman et
 la grille verrouillée y sont visibles (`play-tp59-20261029/01.png`). La
