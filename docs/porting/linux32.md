@@ -479,6 +479,10 @@ humaine ni d'une fidélité SPU complète.
 - `SoundFXVolume` est appliqué au master du callback. Mise à zéro forcée par
   GDB : le PCM reste entièrement nul pendant la marche
   (`build/porting/mute-20261029/`).
+- `S_SoundSetPanAndVolume`/`S_SoundSetPitch`/`GetPanVolume` sont implémentés
+  (pan/volume/pitch des slots positionnels) au lieu de rester
+  `Unimplemented`; `audio-cl-20261029/` ne contient plus ces messages et
+  produit du PCM pendant la marche.
 
 Preuves : avec `SDL_AUDIODRIVER=disk`, une partie neuve à Rome puis 8 s de
 marche produit un PCM stéréo non nul (21,1 Mo, RMS ~977, échantillons actifs
@@ -493,8 +497,8 @@ en continu pendant 30 s de marche, pitch corrigé).
 `tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
 `809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9` ;
 build final combiné (reprise v4, écriture atomique, audio/pitch/volume,
-correctif strings gameflow et bornes de restauration) `build-ck` SHA256
-`154e6ba61ec3a600ea88153e1440095e034c8129a00c17651779f18476919679`.
+correctif strings gameflow et bornes de restauration) `build-cl` SHA256
+`4418ad896dc9582458f601a0eb7ae49106146e09ff79fd3ce82e718e3d32a3fc`.
 
 Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
 reverb/loop approximés, pas de test de volume nul/catégories, pause et retour
@@ -648,7 +652,7 @@ nouvelle erreur (`build/porting/asan-run2-20261029/`). Les parcours ASan
   pitch/volume courant et bornes de lecture, les parcours ASan nouvelle
   partie + `F5` puis rechargement v4 sont propres
   (`asan-run4-20261029/`, `asan-load2-20261029/`, `asan-run5-20261029/`,
-  `asan-load3-20261029/`).
+  `asan-load3-20261029/`, `asan-run6-20261029/`).
 
 Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
 1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**

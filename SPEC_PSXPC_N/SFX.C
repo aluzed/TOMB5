@@ -3,6 +3,9 @@
 #include "SOUND.H"
 #include "SPUSOUND.H"
 #include "SPECIFIC.H"
+#include "CAMERA.H"
+#include "LOAD_LEV.H"
+#include "MATHS.H"
 
 #include <LIBSPU.H>
 
@@ -278,16 +281,80 @@ int S_SoundPlaySample(int a0, int a1, int a2, int a3, int arg_10)//91480(<), ?
 
 void S_SoundSetPitch(int handle, int nPitch)
 {
-	UNIMPLEMENTED();
+	if (handle < 0 || handle >= MAX_SOUND_SLOTS)
+	{
+		return;
+	}
+
+	if (nPitch <= 0)
+	{
+		nPitch = 0x1000;
+	}
+
+	sva.mask = 0x10;
+	sva.voice = 1 << handle;
+	sva.pitch = (short)nPitch;
+	SpuSetVoiceAttr(&sva);
 }
 
 int S_SoundSetPanAndVolume(int nhandle, int nPan, int nVolume, int distance)
 {
-	UNIMPLEMENTED();
+	int volume;
+	int left;
+	int right;
+
+	(void)distance;
+
+	if (nhandle < 0 || nhandle >= MAX_SOUND_SLOTS)
+	{
+		return -1;
+	}
+
+	volume = nVolume & 0x7FFF;
+	if (volume > 127)
+	{
+		volume >>= 7;
+	}
+	if (volume > 127)
+	{
+		volume = 127;
+	}
+
+	left = volume;
+	right = volume;
+	nPan = (short)nPan;
+	if (nPan > 0)
+	{
+		left = (volume * (32768 - nPan)) >> 15;
+	}
+	else if (nPan < 0)
+	{
+		right = (volume * (32768 + nPan)) >> 15;
+	}
+
+	sva.mask = 0x3;
+	sva.voice = 1 << nhandle;
+	sva.volume.left = (short)left;
+	sva.volume.right = (short)right;
+	SpuSetVoiceAttr(&sva);
 	return 0;
 }
 
 void GetPanVolume(struct SoundSlot* slot)
 {
-	UNIMPLEMENTED();
+	int dx;
+	int dz;
+
+	if (slot == NULL)
+	{
+		return;
+	}
+
+	dx = slot->pos.x - camera.pos.x;
+	dz = slot->pos.z - camera.pos.z;
+	if (dx != 0 || dz != 0)
+	{
+		slot->nPan = 16 * CamRot.vy + phd_atan_asm(dz, dx);
+	}
+	slot->nVolume = slot->OrigVolume;
 }
