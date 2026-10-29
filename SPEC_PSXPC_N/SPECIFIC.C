@@ -29,7 +29,7 @@
 #include <LIBSPU.H>
 #include <LIBAPI.H>
 #include <STRINGS.H>
-static struct REQUESTER PauseReq = { STR_PAUSED,  8, 3, 0, 5, 0, 0, 0, 0, { STR_RESUME, STR_QUIT,  STR_GAME_SETTINGS, 0, 0 } };
+static struct REQUESTER PauseReq = { STR_PAUSED,  8, 3, 0, 5, 0, 0, 0, 0, { STR_RESUME, STR_GAME_SETTINGS, STR_QUIT, 0, 0 } };
 static struct REQUESTER AdjustReq = { STR_USE_DIRECTIONAL_BUTTONS, 8, 0, 0, 0, 0, 0, 0, 0,{ 0, 0, 0, 0, 0 } };
 static struct REQUESTER QuitReq = { STR_CONFIRM_QUIT, 8, 2, 1, 2, 0, 0, 0, 0,{ STR_YES, STR_NO, 0, 0, 0 } };
 static struct REQUESTER StatisticsReq = { STR_STATISTICS, 8, 1, 1, 5, 0, 0, 0, 1,{ STR_ELLIPSIS_BIS, 0, 0, 0, 0 } };
@@ -281,6 +281,17 @@ int DoPauseMenu()//60F34(<), 61A68(<) (F)
 			}
 
 			PauseMenuNum = result + 1;
+
+			/* Pause order is Resume, Game Settings, Quit; keep the
+			 * existing dispatch (case 2 = Quit, case 3 = Settings). */
+			if (PauseMenuNum == 2)
+			{
+				PauseMenuNum = 3;
+			}
+			else if (PauseMenuNum == 3)
+			{
+				PauseMenuNum = 2;
+			}
 
 		}//loc_61B68
 		prompt = 2;

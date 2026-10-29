@@ -354,8 +354,12 @@ Preuves privées : `build/porting/port005b-20261028/` (`gdb.log`, captures).
   `floor` cohérent (-1792 / 256) ; pas de chute hors géométrie observée.
 - **Mur latéral** : rotation puis poussée de 3 s, position et image inchangées
   (`10-push-wall.png` / `11-after-push.png`).
-- **Pause/reprise** : `Entrée` ouvre le menu pause, `Resume` rend le contrôle ;
-  la scène reprend au même endroit.
+- **Pause/reprise** : `Entrée` ouvre le menu pause ; l'ordre est désormais
+  `Resume`, `Game Settings`, `Quit` (Game Settings au-dessus de Quit).
+  `Resume` rend le contrôle, `Game Settings` ouvre l'écran de réglages et
+  `Quit` ouvre la confirmation « Are you sure you want to quit ? ». Vérifié
+  au clavier (`build/porting/pause-order-kbd-20261029/`,
+  `build/porting/pause-quit-20261029/`) ; la scène reprend au même endroit.
 
 Limites : route unique, pas de pente raide ni d'eau, pas de comparaison
 `GetHeight` cible, échantillonnage GDB et non une trace matérielle ; la
