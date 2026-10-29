@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
+
+Chaîne finale sur les sources build-ci avec hook QA TOMB5_CHAIN_TEST (non intégré) : 1→2→…→14 puis Handle cutseq name: 0, sans SIGSEGV. Preuve final-chain-cj-20261029/chain.log. Déclenchements synthétiques, aucune complétion jouée/crédits.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-006, PORT-007, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
 
 Build-cd final : v4 (item_flags/timer/trigger_flags, v3/v2 compatibles), écriture atomique, audio SDL/SPU, memmove gameflow validé ASan. Vérifié : Rome v4/v2, niveau 2 v3, PCM audio pendant la marche, ASan nouvelle partie + F5 + F6 sans erreur, chaîne 1→14→titre sans SIGSEGV (hook QA). Build-cd SHA256 b5deda7ed9e0b655d4e335116b76a278f058841b3065d590565da574b3e8a162. tests/porting 497 PASS, tests/emulator 3677 PASS. Restent non validés : campagne réelle/crédits, écoute humaine/CD-XA, manette.
