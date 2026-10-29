@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-004 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
+Ordre du menu pause revalidé à la manette virtuelle : le D-pad doit être émis via les axes hat (ABS_HAT0Y), pas via BTN_DPAD_* que SDL ignore pour le mapping Xbox 360. Avec haty=+1, Game Settings est surligné puis A ouvre l'écran de réglages (moyenne 0,0895). Preuve build/porting/pause-gamepad2-20261029/. Ce n'est pas un défaut du port : les manettes réelles exposent le D-pad en hat. Build-pause SHA256 870166e1030a5399d88271eec135e66e59bbedff03ad485ca9f1827acaba1ae8. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-001 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
 
 Débordement SqrtTable trouvé par ASan pendant un soak PAL + manette : global-buffer-overflow dans mSqrt (MATHS.C:152), appelé par sub_2CL1 (LARA1.C:1555) avec un argument négatif. Correctif : clamp des entrées négatives à 0 dans mSqrt/mSqrt_2/phd_sqrt_asm/phd_sqrt_asm_CH/mSqrt_L et accès borné PortSqrtLookup() (0..209) dans MATHS.C/MATHS.H/LIGHT.C/CALCHAIR.C. Vérification GDB/ASan : toutes les variantes retournent 0 pour -1, mSqrt(INT_MAX)=46152, aucun rapport ASan ; soak ASan PAL + manette 571 s sans erreur (pal-asan-soak3-20261029/), crash initial documenté dans pal-asan-soak-20261029/. Smoke normal build-guard2 : scène de Rome rendue (guard-smoke2-20261029/). tests 4174 PASS. Build-pause SHA256 870166e1030a5399d88271eec135e66e59bbedff03ad485ca9f1827acaba1ae8. Aucun Done.

@@ -359,7 +359,9 @@ Preuves privées : `build/porting/port005b-20261028/` (`gdb.log`, captures).
   `Resume` rend le contrôle, `Game Settings` ouvre l'écran de réglages et
   `Quit` ouvre la confirmation « Are you sure you want to quit ? ». Vérifié
   au clavier (`build/porting/pause-order-kbd-20261029/`,
-  `build/porting/pause-quit-20261029/`) ; la scène reprend au même endroit.
+  `build/porting/pause-quit-20261029/`) et à la manette virtuelle (D-pad via
+  axes hat : `Game Settings` surligné, `A` ouvre les réglages ;
+  `build/porting/pause-gamepad2-20261029/`) ; la scène reprend au même endroit.
 
 Limites : route unique, pas de pente raide ni d'eau, pas de comparaison
 `GetHeight` cible, échantillonnage GDB et non une trace matérielle ; la

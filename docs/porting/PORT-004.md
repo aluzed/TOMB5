@@ -2,6 +2,16 @@
 
 PORT-004 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
 
+Ordre du menu pause revalidé à la manette virtuelle : le D-pad doit être émis via les axes hat (ABS_HAT0Y), pas via BTN_DPAD_* que SDL ignore pour le mapping Xbox 360. Avec haty=+1, Game Settings est surligné puis A ouvre l'écran de réglages (moyenne 0,0895). Preuve build/porting/pause-gamepad2-20261029/. Ce n'est pas un défaut du port : les manettes réelles exposent le D-pad en hat. Build-pause SHA256 870166e1030a5399d88271eec135e66e59bbedff03ad485ca9f1827acaba1ae8. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
+PORT-004 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
 Menu pause réordonné : Resume, Game Settings, Quit (Game Settings au-dessus de Quit). Le dispatch existant est conservé (case 2 = Quit, case 3 = Settings) par échange explicite 2↔3 après Requester. Vérifié au clavier : Game Settings ouvre bien SFX/Music/Configure Controls/Screen Adjust/Automatic Targeting ; Quit ouvre la confirmation « Are you sure you want to quit ? ». Preuves pause-order-kbd-20261029/ et pause-quit-20261029/. Build-pause SHA256 870166e1030a5399d88271eec135e66e59bbedff03ad485ca9f1827acaba1ae8; tests/porting+emulator 4174 PASS. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).
