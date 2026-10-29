@@ -6,8 +6,13 @@
 #include "LARA.H"
 #include "OBJECTS.H"
 #include "SETUP.H"
+#include "MATHS.H"
 #include "SOUND.H"
 #include "SPECIFIC.H"
+
+#if !PC_VERSION
+extern void ItemNewRoom(short item_num, short room_number);
+#endif
 #include "STYPES.H"
 #include <stddef.h>
 #include "TOMB4FX.H"
@@ -417,8 +422,40 @@ void LaraBaddieCollision(struct ITEM_INFO* laraitem, struct COLL_INFO* coll)//29
 		dx = item->pos.x_pos - laraitem->pos.x_pos;
 		dz = item->pos.z_pos - laraitem->pos.z_pos;
 
-		if (ABS(dx) > 512 || ABS(dz) > 512 || ABS(item->pos.y_pos - laraitem->pos.y_pos) > 512)
+		if (ABS(dx) >= 4096 || ABS(dz) >= 4096 ||
+			ABS(item->pos.y_pos - laraitem->pos.y_pos) > 1024)
 		{
+			continue;
+		}
+
+		if (ABS(dx) > 512 || ABS(dz) > 512)
+		{
+			long angle = phd_atan_asm(-dx, -dz);
+			short room_number = item->room_number;
+			struct FLOOR_INFO* floor;
+			short height;
+
+			item->pos.y_rot = (short)angle;
+			item->pos.x_pos += (SIN(angle) * 16) >> W2V_SHIFT;
+			item->pos.z_pos += (COS(angle) * 16) >> W2V_SHIFT;
+
+			floor = GetFloor(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, &room_number);
+
+			if (floor != NULL)
+			{
+				height = GetHeight(floor, item->pos.x_pos, item->pos.y_pos, item->pos.z_pos);
+
+				if (height != -32512)
+				{
+					item->pos.y_pos = height;
+				}
+
+				if (room_number != item->room_number)
+				{
+					ItemNewRoom(i, room_number);
+				}
+			}
+
 			continue;
 		}
 
