@@ -906,10 +906,11 @@ Preuves runtime (GDB, niveau 1, téléportation de test) :
 
 Animations d’objets : `AnimateItem` avance `frame_number`, utilise
 `GetChange`/`changes`/`ranges` pour changer d’animation quand
-`goal_anim_state` diffère, puis boucle sur `frame_end`. Les **commandes**
-d’animation (sons, effets, translations) ne sont pas encore exécutées ;
-les transitions de frames sont donc partielles mais les changements
-d’animation fonctionnent.
+`goal_anim_state` diffère, puis boucle sur `frame_end`. Les commandes
+`5` (son à une frame) et `6` (effet à une frame) sont exécutées ; les
+commandes `1` (translation) avancent seulement le pointeur sans déplacer
+l’objet, et `2`/`3` sont sautées. Les transitions de frames et les
+sons/effets d’animation fonctionnent donc partiellement.
 
 Collisions créatures : `CreatureCollision` pousse Lara hors des bounds.
 `LaraBaddieCollision` fait désormais **poursuivre** les créatures
