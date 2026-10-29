@@ -493,8 +493,8 @@ en continu pendant 30 s de marche, pitch corrigé).
 `tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
 `809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9` ;
 build final combiné (reprise v4, écriture atomique, audio/pitch/volume,
-correctif strings gameflow et bornes de restauration) `build-ci` SHA256
-`85d62b54254f75cd62267757b4dc64e775c26fbd61e80f5ec03cffedf13bb8a1`.
+correctif strings gameflow et bornes de restauration) `build-ck` SHA256
+`154e6ba61ec3a600ea88153e1440095e034c8129a00c17651779f18476919679`.
 
 Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
 reverb/loop approximés, pas de test de volume nul/catégories, pause et retour

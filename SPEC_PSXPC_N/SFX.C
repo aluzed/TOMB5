@@ -10,6 +10,11 @@ long SPU_Play(long sample_index, short volume_left, short volume_right, short pi
 {
 	long channel;
 
+	if (sample_index < 0 || sample_index >= MAX_NUM_SOUND_EFFECTS)
+	{
+		return -2;
+	}
+
 	sva.volume.left = volume_left;
 	sva.volume.right = volume_right;
 	if (pitch <= 0)
