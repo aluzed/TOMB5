@@ -910,8 +910,10 @@ Animations d’objets : `AnimateItem` avance `frame_number`, utilise
 `5` (son à une frame) et `6` (effet à une frame) sont exécutées ; la
 commande `1` (translation) déplace l’objet via `TranslateItem` puis met à
 jour sa salle/`GetFloor` ; `2` applique `gravity_status`/`fallspeed`/`speed` ;
-`3` remet l’arme de Lara à l’état neutre. Les transitions de frames,
-translations, gravité et sons/effets d’animation fonctionnent partiellement.
+`3` remet l’arme de Lara à l’état neutre. Les objets en `gravity_status`
+tombent (`fallspeed += 6`) avec atterrissage sur `GetHeight` et mise à jour
+de salle. Les transitions de frames, translations, gravité et sons/effets
+d’animation fonctionnent partiellement.
 
 Collisions créatures : `CreatureCollision` pousse Lara hors des bounds.
 `LaraBaddieCollision` fait désormais **poursuivre** les créatures

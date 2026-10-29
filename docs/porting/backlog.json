@@ -1090,6 +1090,15 @@
       ],
       "status": "In progress",
       "summary": "AnimateItem traite aussi la commande 2 (gravity_status/fallspeed/speed) et 3 (remise de l'arme de Lara à l'état neutre). Démarrage vérifié. Toutes les commandes connues 1/2/3/5/6 sont maintenant prises en charge ; physique de chute continue non ajoutée. Build-gameplay21 SHA256 c9904bcb4eb304d2c28950736a76e7e8367b6667cb62461722fe69d5deb317bb; tests 4174 PASS. Aucun Done."
+    },
+    {
+      "date": "2026-10-29",
+      "authorization_until": "2026-10-31T12:00:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Gravité continue des objets : en gravity_status, fallspeed += 6, chute de pos.y, atterrissage sur GetHeight, arrêt de la gravité et mise à jour de salle. Démarrage vérifié. Build-gameplay22 SHA256 37feac205848424df8c855a31cbb40ed74dc38079060a6f5c0dc54b273879ccc; tests 4174 PASS. Aucun Done."
     }
   ]
 }
