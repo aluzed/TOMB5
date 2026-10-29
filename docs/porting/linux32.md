@@ -842,13 +842,12 @@ Cause dans les sources :
   (`GAME/DOOR.C:236`), `SwitchCollision`/`SwitchControl`
   (`GAME/SWITCH.C:346-352`), `CreatureCollision`/`LaraBaddieCollision`
   (`GAME/COLLIDE.C:380-387`).
-- Conséquence visible sur les armes : `CombatCamera`
-  (`GAME/CAMERA.C:1638`) a son corps sous `#if 0 || PC_VERSION` et tombe sur
-  `UNIMPLEMENTED`. Dès que Lara sort les armes (`Y` sur la manette), la vue 3D
-  devient entièrement noire (HUD encore dessiné) ; rengainer (`Y` à nouveau)
-  restaure la scène. Reproduit sur NTSC : moyennes 0,1018 → 0 → 0,1025, 63
-  appels `CombatCamera` (`build/porting/vpad-draw-20261029/`). Le combat aux
-  armes est donc lui aussi inutilisable en l'état.
+- `CombatCamera` (`GAME/CAMERA.C:1638`) a toujours son corps sous
+  `#if 0 || PC_VERSION`, mais le port utilise désormais `ChaseCamera(item)`
+  en repli. Sortir les armes (`Y` manette) ne noircit plus la vue : moyennes
+  0,1012 / 0,1012 / 0,1018 avant/armes/rengainé
+  (`build/porting/gameplay-draw-fix-20261029/`). Le comportement de visée
+  automatique du combat reste absent.
 
 Depuis le 29 octobre, une **première couche d'interactions** est implémentée
 dans le port (voir la section « Boucle de gameplay — première couche » plus
