@@ -832,6 +832,15 @@
       ],
       "status": "In progress",
       "summary": "PAL (SLES_033.31) : New Game confirmé (cutseq name 1, allée de Rome) en maintenant C ~350 ms après un menu interactif vers 45 s ; un tap court est perdu à 50 Hz et laisse partir en DEMO MODE. Sauvegarde PAL round-trip : F5 à level 1 room 0 X 46592 Y 0 Z 31232 écrit 586 octets de niveau, relance + F6 restaure la même position et une scène identique (moyennes 0,1006 / 0,1009). Preuves pal-timing3-20261029/ et pal-save4-20261029/. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done."
+    },
+    {
+      "date": "2026-10-29",
+      "authorization_until": "2026-10-29T12:00:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "PAL (SLES_033.31) : transition 1→2 validée par injection GDB de gfLevelComplete=2 après 600 frames de niveau 1. Cutseq name: 2 (1657 occurrences), scène TRAJAN_MARKETS rendue, aucun SIGSEGV. Preuve build/porting/pal-transition-20261029/. Déclenchement synthétique, pas une complétion jouée. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done."
     }
   ]
 }

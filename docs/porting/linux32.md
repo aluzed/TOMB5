@@ -746,7 +746,11 @@ peut être perdu à 50 Hz et laisser le titre partir en DEMO MODE
 (`pal-timing3-20261029/`). Sauvegarde PAL validée : `F5` à level 1 room 0
 X 46592 Y 0 Z 31232 écrit 586 octets de niveau, relance + `F6` restaure la
 même position et une scène identique (moyennes 0,1006 / 0,1009 ;
-`build/porting/pal-save4-20261029/`).
+`build/porting/pal-save4-20261029/`). Transition PAL 1→2 validée par injection
+GDB de `gfLevelComplete=2` après 600 frames de niveau 1 : cutseq `name: 2`
+(1657 occurrences), scène TRAJAN_MARKETS rendue, aucun `SIGSEGV`
+(`build/porting/pal-transition-20261029/`) — déclenchement synthétique, pas une
+complétion jouée.
 
 Cela protège aussi toute donnée de niveau manquante lors d'un chargement
 direct. Le chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT)
