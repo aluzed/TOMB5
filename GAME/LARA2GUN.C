@@ -14,6 +14,9 @@
 #include "EFFECTS.H"
 #include "CONTROL.H"
 #include "SOUND.H"
+#include "BOX.H"
+#include "ITEMS.H"
+#include "MATHS.H"
 
 static struct PISTOL_DEF PistolTable[4] =
 {
@@ -30,7 +33,92 @@ void AnimatePistols(int weapon_type)
 
 void PistolHandler(int weapon_type)
 {
-	UNIMPLEMENTED();
+	static int cooldown = 0;
+	struct ITEM_INFO* target = NULL;
+	long best_distance = 0x7FFFFFFF;
+	int i;
+
+	if (cooldown > 0)
+	{
+		cooldown--;
+		return;
+	}
+
+	if (!(input & IN_ACTION))
+	{
+		return;
+	}
+
+	if (weapon_type != WEAPON_PISTOLS)
+	{
+		short* ammo = get_current_ammo_pointer(weapon_type);
+
+		if (ammo == NULL || *ammo <= 0)
+		{
+			lara.request_gun_type = WEAPON_PISTOLS;
+			return;
+		}
+
+		(*ammo)--;
+	}
+
+	for (i = 0; i < level_items; i++)
+	{
+		struct ITEM_INFO* item = &items[i];
+		long dx;
+		long dz;
+		long distance;
+		long angle;
+		long diff;
+
+		if (item == lara_item || item->hit_points <= 0 ||
+			item->status == ITEM_INVISIBLE ||
+			!objects[item->object_number].intelligent)
+		{
+			continue;
+		}
+
+		dx = item->pos.x_pos - lara_item->pos.x_pos;
+		dz = item->pos.z_pos - lara_item->pos.z_pos;
+		distance = dx * dx + dz * dz;
+
+		if (distance > (long)weapons[weapon_type].target_dist * weapons[weapon_type].target_dist)
+		{
+			continue;
+		}
+
+		angle = phd_atan_asm(dx, dz);
+		diff = angle - lara_item->pos.y_rot;
+
+		while (diff > 32768) diff -= 65536;
+		while (diff < -32768) diff += 65536;
+
+		if (ABS(diff) > 10920 || distance >= best_distance)
+		{
+			continue;
+		}
+
+		best_distance = distance;
+		target = item;
+	}
+
+	lara.has_fired = 1;
+	lara.Fired = 1;
+	lara.right_arm.flash_gun = weapons[weapon_type].flash_time;
+	lara.left_arm.flash_gun = weapons[weapon_type].flash_time;
+	SoundEffect(SFX_LARA_FIRE, &lara_item->pos, SFX_DEFAULT);
+
+	if (target != NULL)
+	{
+		HitTarget(target, NULL, weapons[weapon_type].damage, 0);
+
+		if (target->hit_points <= 0)
+		{
+			CreatureDie((short)(target - items), 0);
+		}
+	}
+
+	cooldown = weapons[weapon_type].recoil_frame != 0 ? weapons[weapon_type].recoil_frame : 6;
 }
 
 void undraw_pistol_mesh_right(int weapon_type)//44968(<), 44DCC(<) (F)
