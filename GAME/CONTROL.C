@@ -4562,9 +4562,19 @@ void AnimateItem(struct ITEM_INFO* item)
 			}
 			else if (data == 2)
 			{
+				item->gravity_status = 1;
+				item->fallspeed = command[0];
+				item->speed = command[1];
 				command += 2;
 			}
-			else if (data != 3)
+			else if (data == 3)
+			{
+				if (lara.gun_status != 5)
+				{
+					lara.gun_status = 0;
+				}
+			}
+			else
 			{
 				break;
 			}
