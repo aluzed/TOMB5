@@ -413,8 +413,10 @@ endroit. Depuis le 29 octobre, le format v4 inclut aussi l'état du niveau
 
 - L'état du niveau est sauvegardé dans un bloc fixe de 8192 octets. Si la
   sérialisation d'un niveau dépasse cette taille, `F5` échoue explicitement au
-  lieu d'écrire un fichier tronqué. Les fichiers v2 restent lisibles mais ne
-  restaurent que Lara et l'inventaire, pas les objets/portes/flips.
+  lieu d'écrire un fichier tronqué. `ReadSG` est borné à ce bloc et
+  `RestoreLevelData`/`PortSave_ApplyPending` vérifient les numéros de salle
+  avant `ItemNewRoom`/`UpdateLaraRoom`. Les fichiers v2 restent lisibles mais
+  ne restaurent que Lara et l'inventaire, pas les objets/portes/flips.
 - `RestoreLevelData` restaure les champs sérialisés par `SaveLevelData`
   (flips, meshes statiques, caméras, items : position, salle, animation,
   flags, points de vie, `item_flags`, `timer`, `trigger_flags` en v4). Les
@@ -467,20 +469,27 @@ humaine ni d'une fidélité SPU complète.
 - `PlaySample` conserve sa frontière historique à 7 arguments (contrat hôte),
   mais utilise le vrai index d'échantillon, le pitch et le pan signé pour
   fabriquer gauche/droite; l'ancien code passait le pitch comme volume droit.
+- `SPU_Play` ne divise plus le pitch par 64 : les valeurs 4096/32256 observées
+  sont maintenant des fréquences cohérentes (pas de ralentissement 1/64).
+- `SpuSetKey` renseigne le registre de volume courant `+6` (0x3FFF à
+  key-on, 0 à key-off); sans cela `SpuGetKeyStatus` renvoyait « terminé » et
+  le jeu libérait les voix immédiatement.
 
 Preuves : avec `SDL_AUDIODRIVER=disk`, une partie neuve à Rome puis 8 s de
 marche produit un PCM stéréo non nul (21,1 Mo, RMS ~977, échantillons actifs
 uniquement pendant la marche, `build/porting/final-audio-bn-20261029/`).
 Les voix `SF_LOOP` redémarrent au lieu de se couper; contrôle
-`build/porting/final-audio-loop-20261029/` (RMS 1265), et sur `build-cd`
-`build/porting/final-audio-cd-20261029/` (RMS 1285).
+`build/porting/final-audio-loop-20261029/` (RMS 1265), sur `build-cd`
+`build/porting/final-audio-cd-20261029/` (RMS 1285), et sur `build-cg`
+`build/porting/final-audio-cg-20261029/` (PCM actif 94–99 s pendant la marche,
+pitch corrigé).
 `SDL_AUDIODRIVER=dummy` ouvre le device sans crash
 (`final-audio-dummy-20261029/`). Tests : `tests/porting` 497 PASS,
 `tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
 `809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9` ;
-build final combiné (reprise v4, écriture atomique, audio/boucles/volume FX,
-correctif strings gameflow) `build-cd` SHA256
-`b5deda7ed9e0b655d4e335116b76a278f058841b3065d590565da574b3e8a162`.
+build final combiné (reprise v4, écriture atomique, audio/pitch/volume,
+correctif strings gameflow et bornes de restauration) `build-cg` SHA256
+`824ea2ea0e5f3e75e24c01680c1b897061e6c1ef98ae9471a80995be7f21fd2d`.
 
 Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
 reverb/loop approximés, pas de test de volume nul/catégories, pause et retour
@@ -630,7 +639,10 @@ attendu sans comportement indéfini. Une partie neuve à Rome passe ASan sans
 nouvelle erreur (`build/porting/asan-run2-20261029/`). Les parcours ASan
   nouvelle partie + `F5` puis rechargement `F6`/`AUTOLOAD` ne signalent aucune
   erreur (`asan-run3-20261029/`, `asan-load-20261029/`), y compris le
-  rechargement v3 du niveau 2 (`asan-level2-20261029/`).
+  rechargement v3 du niveau 2 (`asan-level2-20261029/`). Après les correctifs
+  pitch/volume courant et bornes de lecture, les parcours ASan nouvelle
+  partie + `F5` puis rechargement v4 sont propres
+  (`asan-run4-20261029/`, `asan-load2-20261029/`).
 
 Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
 1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**

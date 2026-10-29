@@ -17,6 +17,7 @@ unsigned char gfCurrentLevel = 1;
 unsigned long GameTimer = 1234;
 char JustLoaded = 0;
 int PortSave_LevelFormat = 4;
+short number_rooms = 100;
 
 void SaveLaraData()
 {

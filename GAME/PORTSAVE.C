@@ -23,6 +23,7 @@
 /* Declared in GAME/COLLIDE.H for PC_VERSION only, but implemented by the
  * PSXPC_N backend (SPEC_PSXPC_N/COLLIDE_S.C). */
 extern void UpdateLaraRoom(struct ITEM_INFO* item, int height);
+extern short number_rooms;
 
 #pragma pack(push, 1)
 /* Version 2 records (466 bytes) are still accepted so existing quick saves
@@ -393,6 +394,14 @@ void PortSave_ApplyPending(void)
 	}
 
 	record = &pending_record;
+	if (record->room < 0 || record->room >= number_rooms)
+	{
+		printf("[SAVE] invalid saved room %d (level has %d rooms); load ignored\n",
+		       record->room, number_rooms);
+		pending_valid = 0;
+		return;
+	}
+
 	lara_item->pos.x_pos = record->x;
 	lara_item->pos.y_pos = record->y;
 	lara_item->pos.z_pos = record->z;

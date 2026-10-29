@@ -12,7 +12,11 @@ long SPU_Play(long sample_index, short volume_left, short volume_right, short pi
 
 	sva.volume.left = volume_left;
 	sva.volume.right = volume_right;
-	sva.pitch = pitch >> 6;
+	if (pitch <= 0)
+	{
+		pitch = 0x1000;
+	}
+	sva.pitch = pitch;
 	sva.addr = LadwSampleAddr[sample_index];
 
 	if (sample_index < LnSamplesLoaded)

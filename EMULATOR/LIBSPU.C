@@ -565,6 +565,16 @@ void SpuSetKey(long on_off, unsigned long voice_bit)
     voice_bit &= 0xFFFFFF;
     int a2 = voice_bit >> 16;
 
+    for (int host_voice = 0; host_voice < 24; host_voice++)
+    {
+        if (voice_bit & (1u << host_voice))
+        {
+            /* Current envelope volume: non-zero keeps SpuGetKeyStatus at
+             * "key on"; zero marks the voice finished for the game. */
+            _spu_RXX[(host_voice << 3) + 6] = on_off != 0 ? 0x3FFF : 0;
+        }
+    }
+
     if (on_off != 0)
     {
         if (on_off != SPU_ON)

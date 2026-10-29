@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-006, PORT-007 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
+
+Correctifs de revue : pitch SPU_Play sans division /64 (4096/32256 cohérents), registre de volume courant +6 renseigné à key-on/key-off pour que SpuGetKeyStatus ne libère plus les voix immédiatement, lecture du bloc niveau bornée à 8192 et numéros de salle validés avant ItemNewRoom/UpdateLaraRoom, SGpoint/SGcount restaurés après SaveLevelDataToBuffer. ASan nouvelle partie + F5 + rechargement v4 et niveau 2 propres. PCM audio actif 94–99 s pendant la marche. Build-cg SHA256 824ea2ea0e5f3e75e24c01680c1b897061e6c1ef98ae9471a80995be7f21fd2d; tests/porting 497 PASS, tests/emulator 3677 PASS.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-006, PORT-007, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
 
 Build-cd final : v4 (item_flags/timer/trigger_flags, v3/v2 compatibles), écriture atomique, audio SDL/SPU, memmove gameflow validé ASan. Vérifié : Rome v4/v2, niveau 2 v3, PCM audio pendant la marche, ASan nouvelle partie + F5 + F6 sans erreur, chaîne 1→14→titre sans SIGSEGV (hook QA). Build-cd SHA256 b5deda7ed9e0b655d4e335116b76a278f058841b3065d590565da574b3e8a162. tests/porting 497 PASS, tests/emulator 3677 PASS. Restent non validés : campagne réelle/crédits, écoute humaine/CD-XA, manette.

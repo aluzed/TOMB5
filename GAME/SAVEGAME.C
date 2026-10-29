@@ -63,6 +63,7 @@ char* MGSaveGamePtr; // offset 0xA3924
 static int SGcount; // offset 0xA391C
 static char* SGpoint; // offset 0xA3920
 static int SGlimit = 0;
+static int SGread_limit = 0;
 struct savegame_info savegame;
 
 #define Write(a, b) WriteSG((char*)a, b)
@@ -74,7 +75,9 @@ void sgRestoreGame()//55B88, 55FEC (F)
 	GameTimer = savegame.Game.Timer;
 	gfCurrentLevel = savegame.CurrentLevel;
 
+	SGread_limit = 8192 - (int)sizeof(struct savegame_info);
 	RestoreLevelData(1);
+	SGread_limit = 0;
 	RestoreLaraData(1);
 }
 
@@ -297,7 +300,8 @@ void RestoreLevelData(int FullSave)//54B08, 54F6C
 			item->really_active = (flags >> 30) & 1;
 		}
 
-		if (obj->save_position && new_room != item->room_number)
+		if (obj->save_position && new_room >= 0 && new_room < number_rooms &&
+		    new_room != item->room_number)
 		{
 			ItemNewRoom(i, new_room);
 		}
@@ -333,6 +337,8 @@ void WriteSG(char* pointer, int size)//536A0, 53B04 (F)
 int SaveLevelDataToBuffer(char* buffer, int size)// port helper
 {
 	char* old = MGSaveGamePtr;
+	char* old_point = SGpoint;
+	int old_count = SGcount;
 	int written;
 
 	if (buffer == NULL || size <= (int)sizeof(struct savegame_info))
@@ -347,6 +353,8 @@ int SaveLevelDataToBuffer(char* buffer, int size)// port helper
 	SaveLevelData(1);
 	written = SGcount;
 	SGlimit = 0;
+	SGpoint = old_point;
+	SGcount = old_count;
 	MGSaveGamePtr = old;
 
 	if (written > size - (int)sizeof(struct savegame_info))
@@ -690,6 +698,12 @@ int CheckSumValid(char* buffer)//53720(<), 53B84(<) (F)
 
 void ReadSG(char* pointer, int size)//536E0, 53B44 (F)
 {
+	if (SGread_limit > 0 && SGcount + size > SGread_limit)
+	{
+		SGcount += size;
+		return;
+	}
+
 	SGcount += size;
 	
 	if (size > 0)
