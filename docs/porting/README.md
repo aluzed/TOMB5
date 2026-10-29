@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
 
+Poursuite et attaque des créatures : LaraBaddieCollision déplace les ennemis intelligents jusqu'à 4096 unités (16 u/frame, GetFloor/GetHeight/ItemNewRoom) et inflige 5 PV/45 frames à moins de 512 unités. Preuve : chien à ~1000 unités rejoint Lara, PV 1000→700 (play-ai3-20261029/). Aucun blocage au démarrage ; l'approche par control/AddActiveItem avait bloqué le splash et a été abandonnée. Créatures sans animation (AnimateItem stub) ni pathfinding. Build-gameplay16 SHA256 7729307bd024561d30a385f9264c543dd8eb81df32457a2a2e5d17dfd41ea638; tests 4174 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
+
 Collisions créatures : CreatureCollision pousse Lara hors des bounds, LaraBaddieCollision inflige 5 PV/45 frames à moins de 512 unités avec SFX_LARA_INJURY_RND. Preuve GDB : Lara 1000→825 PV en ~3 s près du chien (tp_dog.out). Ennemis toujours statiques, sans déplacement/attaque. Build-gameplay13 SHA256 12e7474f28f935e15f39fc079b3f228de2716cc041b5b68c35c115f4a6e8aaaf; tests 4174 PASS. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).
