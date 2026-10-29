@@ -455,8 +455,13 @@ endroit. Depuis le 29 octobre, le format v4 inclut aussi l'état du niveau
   rendu sans `SIGSEGV`. Build final `build-au` ELF32 i386, SHA256
   `dee0479c6000441af05b4d9724bb7b57605859eca2df0b74c0dbe920c32a467e`.
 - Pas de sauvegarde via carte mémoire PSX ni via le menu d'inventaire ; `F5`/`F6`
-  sont des touches réservées non remappables. Pas de chargement en jeu (le
-  chargement n'est traité qu'au titre), pas de slots multiples, pas de
+  sont des touches réservées non remappables. Le chemin natif est absent à deux
+  niveaux : `SaveGame` `case 12` est désactivé par `#if 0` dans
+  `SPEC_PSXPC_N/LOADSAVE.C:566` (il ne fait qu'afficher `SaveErrorReq`), et
+  `MemCardCreateFile`/`MemCardWriteFile`/`MemCardWriteData`/`MemCardFormat`
+  restent vides dans `EMULATOR/LIBMCRD.C:208-237`. Le menu PSX ne peut donc pas
+  écrire ; `F5`/`F6` restent la seule voie supportée. Pas de chargement en jeu
+  (le chargement n'est traité qu'au titre), pas de slots multiples, pas de
   sauvegarde pendant une FMV/menu.
 - Un fichier absent/corrompu est refusé avec un log et le titre continue.
   L'écriture est atomique : `F5` écrit `<sauvegarde>.tmp`, vérifie l'écriture,
@@ -497,6 +502,13 @@ humaine ni d'une fidélité SPU complète.
   `Unimplemented`; `audio-cl-20261029/` ne contient plus ces messages et
   produit du PCM pendant la marche. `GetPanVolume` ne remplace pas le volume
   atténué par `OrigVolume` : seule la position panoramique est recalculée.
+- **Musique/voix XA non décodées** : l'image NTSC contient bien les 17
+  fichiers `\XA1.XA;1` à `\XA17.XA;1` et 118 822 secteurs Mode2/Form2 audio
+  (submode `0x64`) sur 277 280 secteurs. Mais `EMULATOR/LIBCD.C` lit les
+  secteurs XA sans les décoder (`RM_XA_AUDIO` recopie des octets bruts) et
+  `SPEC_PSXPC_N/HOSTAUDIO.C` ne reçoit que les VAG/SPU : `S_CDPlay` ne produit
+  donc aucun son CD/XA. Scan reproductible :
+  `build/porting/xa-scan-20261029/scan.txt`.
 
 Preuves : avec `SDL_AUDIODRIVER=disk`, une partie neuve à Rome puis 8 s de
 marche produit un PCM stéréo non nul (21,1 Mo, RMS ~977, échantillons actifs
