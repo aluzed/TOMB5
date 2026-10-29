@@ -2,6 +2,16 @@
 
 PORT-004, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
 
+Portes : PortInitialiseDoor() alloue DOOR_DATA, mémorise le FLOOR_INFO d'origine et ouvre la cellule de plancher. Vérifié GDB sur l'item 24 : data non NULL, Opened=1, floor box=135 (passable). Le maillage de porte reste statique. Déplacement réel validé avec les scancodes AZERTY : z=avant fait passer Lara de room 0 X46592 Z31232 à room 2 X46592 Z38830 en 8 s (play-move2-20261029/). Attention : w est le scancode draw en AZERTY, pas forward. Build-gameplay8 SHA256 559827c17f132301cabb942179dd56bfe61b15d6cbd23a926aeaab29b5aa299e; tests 4174 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
+PORT-004, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
+
 Première couche gameplay : dispatch des collisions d'objets (PortCollideItems), TestBoundsCollide/TestLaraPosition/MoveLaraPosition/ItemPushLara, PickUpCollision, KeyHoleCollision, PuzzleHoleCollision, SwitchCollision/SwitchControl, DoorControl, DoubleDoorCollision, PushPullKickDoorCollision, et PortSetupGameplayObjects(). Preuves GDB niveau 1 : pickup objet 339 ajouté une seule fois (ammo 0→36, item invisible), serrure avec clé (TestLaraPosition=1 + IN_ACTION), switch (TestLaraPosition=1), smoke Nouvelle partie sans SIGSEGV. Limites : pas d'InitialiseDoor (portes non ouvrables géométriquement), ennemis/combat stubs, objets spéciaux non couverts, campagne non jouée. Build-gameplay7 SHA256 294177084e2e14951db1604f5be410f99b44713f78f8d5319d2503b9e0b88898. tests/porting+emulator 4174 PASS. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).

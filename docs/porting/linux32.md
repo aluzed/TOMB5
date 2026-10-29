@@ -865,8 +865,8 @@ décompilation.
 
 ### Boucle de gameplay — première couche (29 octobre 2026)
 
-Implémenté dans les sources (build `build-gameplay7`, SHA256
-`294177084e2e14951db1604f5be410f99b44713f78f8d5319d2503b9e0b88898`) :
+Implémenté dans les sources (build `build-gameplay8`, SHA256
+`559827c17f132301cabb942179dd56bfe61b15d6cbd23a926aeaab29b5aa299e`) :
 
 - `SPEC_PSXPC_N/COLLIDE_S.C` : `PortCollideItems()` parcourt les items de la
   salle et appelle `objects[object_number].collision` après la géométrie.
@@ -877,7 +877,9 @@ Implémenté dans les sources (build `build-gameplay7`, SHA256
   `KillItem`), `KeyHoleCollision`, `PuzzleHoleCollision` avec les bounds et
   positions existants.
 - `GAME/DOOR.C` : `DoorControl`, `DoubleDoorCollision`,
-  `PushPullKickDoorCollision`.
+  `PushPullKickDoorCollision`, et `PortInitialiseDoor()` (allocation
+  `DOOR_DATA`, mémorisation du `FLOOR_INFO` d'origine, ouverture de la
+  cellule de plancher ; les maillages de porte ne bougent pas encore).
 - `GAME/SWITCH.C` : `SwitchCollision`, `SwitchControl`,
   `TurnSwitchControl`.
 - `GAME/SETUP.C` : `PortSetupGameplayObjects()` assigne les handlers aux
@@ -895,10 +897,18 @@ Preuves runtime (GDB, niveau 1, téléportation de test) :
 - fumée normale : Nouvelle partie, déplacement, aucune `SIGSEGV`
   (`gameplay-smoke-20261029/`).
 
-Limites immédiates : pas d'`InitialiseDoor` (donc pas d'ouverture
-géométrique des portes), ennemis/combat toujours stubs, objets spéciaux
-(`CrowDoveSwitch`, `SearchObject`, `UnderwaterDoor`, `SequenceDoor`) non
-couverts, et campagne réelle non jouée.
+- porte : `DoorControl(24)` initialise `DOOR_DATA` à la volée, passe
+  `Opened=1` et restaure un `FLOOR_INFO` avec `box=135` (passable)
+  (`door_init.out`) ; le maillage statique n'est pas déplacé.
+- déplacement réel avec les **scancodes AZERTY** : `z` (avant) fait passer
+  Lara de room 0 X46592 Z31232 à room 2 X46592 Z38830 en 8 s
+  (`play-move2-20261029/`) ; `w` est le scancode de `draw` en AZERTY et
+  déclenche la vue noire des armes, pas la marche.
+
+Limites immédiates : le maillage des portes reste statique
+(`PortInitialiseDoor` n'ouvre que le plancher), ennemis/combat toujours
+stubs, objets spéciaux (`CrowDoveSwitch`, `SearchObject`, `UnderwaterDoor`,
+`SequenceDoor`) non couverts, et campagne réelle non jouée.
 
 ### Ce qui reste non validé
 
