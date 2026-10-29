@@ -463,8 +463,10 @@ marche produit un PCM stéréo non nul (21,1 Mo, RMS ~977, échantillons actifs
 uniquement pendant la marche, `build/porting/final-audio-bn-20261029/`).
 `SDL_AUDIODRIVER=dummy` ouvre le device sans crash
 (`final-audio-dummy-20261029/`). Tests : `tests/porting` 497 PASS,
-`tests/emulator` 3677 PASS. Build `build-bn` SHA256
-`809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9`.
+`tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
+`809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9` ;
+build final combiné (reprise v3 + audio) `build-bo` SHA256
+`4581a5d458d7e6f3b698d40589229a9e6f6c36a313d351515fbb2782ed0def6f`.
 
 Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
 reverb/loop approximés, pas de test de volume nul/catégories, pause et retour
@@ -639,8 +641,10 @@ déclenchent la fin, puis reviennent au titre (`Handle cutseq triggering name:
 0`, aucun `SIGSEGV`) — `build/porting/port008-fullchain15-20261028/` et
 `port008-fullchain-title-20261028/`, ainsi qu'une capture du fond de titre
 (`port008-fullchain-proof-20261028/01-after-level14.png`). Le crash
-`GetDoor(0xfe4cb8d4)` n'est plus reproduit. La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du
-retour titre (le gameflow peut le faire avant `DoLevel(15)`) ; elle reste
+`GetDoor(0xfe4cb8d4)` n'est plus reproduit. Une nouvelle chaîne après le
+correctif de contiguïté scratch atteint de nouveau 1→14 puis le niveau 0/titre
+sans `SIGSEGV` (`build/porting/port008-fullchain-fix-20261029/gdb-chain.log`).
+La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du retour titre (le gameflow peut le faire avant `DoLevel(15)`) ; elle reste
 validée séparément par le saut direct 1→15.
 
 Cela protège aussi toute donnée de niveau manquante lors d'un chargement
