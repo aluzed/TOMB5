@@ -733,6 +733,11 @@ La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du retour ti
 validée séparément par le saut direct 1→15. Un soak de 13 minutes sur
 build-cm avec entrées aléatoires (marche, recul, strafe, saut, audio dummy)
 ne produit ni `SIGSEGV` ni erreur fatale (`build/porting/soak-20261029/`).
+Soak RSS de 15 minutes sur build-cm (mêmes entrées, échantillonnage
+`/proc/<pid>/VmRSS` toutes les 30 s) : 47 échantillons, 75 112 → 75 560 Ko
+(+448 Ko, plateau dès 150 s jusqu'à 871 s), états `R`/`S`, aucune erreur
+fatale, exit 0 ; captures à 300 s (inventaire) et 600 s (allée de Rome)
+(`build/porting/soak-rss-20261029/`).
 Smoke PAL (`build/porting/data`, SLES_033.31) sur build-cm : scène de Rome
 rendue, audio initialisé, aucune erreur (`final-pal-20261029/`).
 

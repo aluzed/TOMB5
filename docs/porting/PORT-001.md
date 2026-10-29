@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-10-29
+
+PORT-001 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
+Soak RSS de 15 minutes sur build-cm avec entrées aléatoires et audio dummy : 47 échantillons VmRSS, 75112 → 75560 Ko (+448 Ko, plateau dès 150 s jusqu'à 871 s), états R/S, aucune erreur fatale, exit 0 ; captures à 300 s (inventaire) et 600 s (allée de Rome). Preuve build/porting/soak-rss-20261029/. Tests complets relancés : 4174 PASS avec CPLUS_INCLUDE_PATH/LIBRARY_PATH 32 bits ; sans ces variables les harnais C++ échouent sur bits/c++config.h (prérequis d'environnement). Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-10-27
 
 PORT-001, PORT-002, PORT-003 — **In progress**. Autorisation bornée jusqu’au 2026-10-27T23:59:00+01:00. Linux32 provisoire.
