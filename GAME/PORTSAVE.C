@@ -182,6 +182,7 @@ int PortSave_Write(void)
 	FILE* file;
 	size_t written;
 	int level_bytes;
+	char temp_path[1100];
 
 	if (lara_item == NULL)
 	{
@@ -231,20 +232,35 @@ int PortSave_Write(void)
 	record.hit_points = lara_item->hit_points;
 	record.checksum = PortSave_RecordChecksum(&record);
 
-	file = fopen(PortSave_Path(), "wb");
+	if (snprintf(temp_path, sizeof(temp_path), "%s.tmp", PortSave_Path()) >= (int)sizeof(temp_path))
+	{
+		printf("[SAVE] save path too long for %s\n", PortSave_Path());
+		PortSave_ShowMessage("Save failed", 90);
+		return 0;
+	}
+
+	file = fopen(temp_path, "wb");
 	if (file == NULL)
 	{
-		printf("[SAVE] cannot open %s\n", PortSave_Path());
+		printf("[SAVE] cannot open %s\n", temp_path);
 		PortSave_ShowMessage("Save failed", 90);
 		return 0;
 	}
 
 	written = fwrite(&record, sizeof(record), 1, file);
-	fclose(file);
-
-	if (written != 1)
+	if (fclose(file) != 0 || written != 1)
 	{
-		printf("[SAVE] write failed for %s\n", PortSave_Path());
+		printf("[SAVE] write failed for %s\n", temp_path);
+		remove(temp_path);
+		PortSave_ShowMessage("Save failed", 90);
+		return 0;
+	}
+
+	/* Keep the previous save intact until the new record is complete. */
+	if (rename(temp_path, PortSave_Path()) != 0)
+	{
+		printf("[SAVE] cannot replace %s\n", PortSave_Path());
+		remove(temp_path);
 		PortSave_ShowMessage("Save failed", 90);
 		return 0;
 	}

@@ -437,7 +437,9 @@ endroit. Depuis le 29 octobre, le format v3 inclut aussi l'état du niveau
   chargement n'est traité qu'au titre), pas de slots multiples, pas de
   sauvegarde pendant une FMV/menu.
 - Un fichier absent/corrompu est refusé avec un log et le titre continue.
-  L'écriture n'est pas atomique (pas de fichier temporaire + rename).
+  L'écriture est atomique : `F5` écrit `<sauvegarde>.tmp`, vérifie l'écriture,
+  puis `rename` remplace l'ancienne sauvegarde; un échec laisse l'ancienne
+  intacte.
 
 ## Audio — backend SDL et mixage SPU (PORT-007, en progrès)
 
