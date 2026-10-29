@@ -941,6 +941,16 @@ static void PortSetupGameplayObjects(void)
 			objects[i].collision = &DoorCollision;
 			objects[i].control = &DoorControl;
 		}
+		else if (i == DOUBLE_DOORS)
+		{
+			objects[i].collision = &DoubleDoorCollision;
+			objects[i].control = &PushPullKickDoorControl;
+		}
+		else if (i >= PUSHPULL_DOOR1 && i <= KICK_DOOR2)
+		{
+			objects[i].collision = &PushPullKickDoorCollision;
+			objects[i].control = &PushPullKickDoorControl;
+		}
 		else if (i == TURN_SWITCH)
 		{
 			objects[i].collision = &TurnSwitchCollision;

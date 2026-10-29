@@ -121,12 +121,81 @@ void UnderwaterDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_IN
 
 void DoubleDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//2B854, 2BB7C
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_num];
+
+	if ((input & IN_ACTION) &&
+		l->current_anim_state == STATE_LARA_STOP &&
+		l->anim_number == ANIMATION_LARA_STAY_IDLE &&
+		!l->gravity_status && lara.gun_status == LG_NO_ARMS &&
+		TestLaraPosition(PushPullKickDoorBounds, item, l) &&
+		MoveLaraPosition(&DoubleDoorPos, item, l))
+	{
+		l->anim_number = ANIMATION_LARA_DOUBLEDOORS_PUSH;
+		l->frame_number = anims[ANIMATION_LARA_DOUBLEDOORS_PUSH].frame_base;
+		l->current_anim_state = STATE_LARA_DOUBLEDOORS_PUSH;
+		lara.gun_status = LG_HANDS_BUSY;
+		lara.IsMoving = 0;
+
+		item->status = ITEM_ACTIVE;
+		item->goal_anim_state = 1;
+		AddActiveItem(item_num);
+		return;
+	}
+
+	ObjectCollision(item_num, l, coll);
 }
 
 void PushPullKickDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//2B5A0, 2B8C8
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_num];
+	struct PHD_VECTOR* pos;
+	int anim;
+	int state;
+
+	if (!(input & IN_ACTION) ||
+		l->current_anim_state != STATE_LARA_STOP ||
+		l->anim_number != ANIMATION_LARA_STAY_IDLE ||
+		l->gravity_status || lara.gun_status != LG_NO_ARMS ||
+		!TestLaraPosition(PushPullKickDoorBounds, item, l))
+	{
+		ObjectCollision(item_num, l, coll);
+		return;
+	}
+
+	if (item->object_number == KICK_DOOR1 || item->object_number == KICK_DOOR2)
+	{
+		pos = &KickDoorPos;
+		anim = ANIMATION_LARA_DOOR_KICK;
+		state = STATE_LARA_MISC_CONTROL;
+	}
+	else if (item->object_number == PUSHPULL_DOOR1)
+	{
+		pos = &PullDoorPos;
+		anim = ANIMATION_LARA_DOOR_OPEN_BACK;
+		state = STATE_LARA_MISC_CONTROL;
+	}
+	else
+	{
+		pos = &PushDoorPos;
+		anim = ANIMATION_LARA_DOOR_OPEN_FORWARD;
+		state = STATE_LARA_MISC_CONTROL;
+	}
+
+	if (MoveLaraPosition(pos, item, l))
+	{
+		l->anim_number = anim;
+		l->frame_number = anims[anim].frame_base;
+		l->current_anim_state = state;
+		lara.gun_status = LG_HANDS_BUSY;
+		lara.IsMoving = 0;
+
+		item->status = ITEM_ACTIVE;
+		item->goal_anim_state = 1;
+		AddActiveItem(item_num);
+		return;
+	}
+
+	ObjectCollision(item_num, l, coll);
 }
 
 void PushPullKickDoorControl(short item_number)//2B508(<), 2B830 (F)
