@@ -927,10 +927,13 @@ la grille verrouillée y sont visibles (`play-tp59-20261029/01.png`). La
 (`play-tp69-20261029/`). La route jouée jusqu’à cette cour reste à établir.
 
 Parcours réel effectué sans téléportation (29 octobre) :
-`room 0` (départ) → `room 2` (cour) → `room 11` (zone **Opera Backstage**,
-caisse en bois et passerelle visibles) → `room 3` → `room 44`. Les flèches
-`Up/Down/Left/Right` sont les entrées fiables (les lettres AZERTY `q`/`d`
-donnent des rotations ambiguës dans les tests automatisés). Preuves :
+`room 0` (départ) → `room 2` (cour) → **`room 59` (cour de la fontaine,
+fontaine visible, X55074 Z38072)** → `room 16` (ruelle sud, grille/barreaux,
+X54373 Z44029). Autre branche : `room 0` → `room 2` → `room 11` (zone
+**Opera Backstage**, caisse en bois et passerelle) → `room 3` → `room 44`.
+Les flèches `Up/Down/Left/Right` sont les entrées fiables (les lettres AZERTY
+`q`/`d` donnent des rotations ambiguës dans les tests automatisés). Preuves :
+`play-east-fountain-20261029/`, `play-courtyard-20261029/`,
 `play-room1-20261029/`, `play-train-20261029/`.
 
 Limites immédiates : le maillage des portes reste statique
