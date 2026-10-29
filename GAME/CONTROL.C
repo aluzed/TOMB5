@@ -4444,7 +4444,41 @@ int check_xray_machine_trigger()// (F)
 
 void AnimateItem(struct ITEM_INFO* item)
 {
-	UNIMPLEMENTED();
+	struct ANIM_STRUCT* anim;
+
+	if (item == NULL || item->anim_number < 0)
+	{
+		return;
+	}
+
+	anim = &anims[item->anim_number];
+
+	if (anim->frame_end < anim->frame_base)
+	{
+		return;
+	}
+
+	if (item->frame_number < anim->frame_base)
+	{
+		item->frame_number = anim->frame_base;
+	}
+
+	item->frame_number++;
+
+	if (item->frame_number > anim->frame_end)
+	{
+		if (item->goal_anim_state != item->current_anim_state &&
+			anim->jump_anim_num >= 0)
+		{
+			item->anim_number = anim->jump_anim_num;
+			item->frame_number = anims[item->anim_number].frame_base;
+			item->current_anim_state = anims[item->anim_number].current_anim_state;
+		}
+		else
+		{
+			item->frame_number = anim->frame_base;
+		}
+	}
 }
 
 void UpdateSpiders()
