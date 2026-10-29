@@ -1717,7 +1717,10 @@ void CombatCamera(struct ITEM_INFO* item)//26838(<), 26A48(<)
 
 	//loc_269A0 (TODO)
 #else
-	UNIMPLEMENTED();
+	/* The PSX combat camera body is not reconstructed yet.  Falling back to
+	 * the chase camera keeps the world visible when weapons are drawn; the
+	 * previous empty stub left the 3D view black. */
+	ChaseCamera(item);
 #endif
 }
 
