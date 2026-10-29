@@ -898,6 +898,43 @@ void BaddyObjects()//?, B5328
 	}//loc_20A4
 }
 
+static void PortSetupGameplayEnemies(void)
+{
+	int i;
+
+	for (i = 0; i < level_items; i++)
+	{
+		short object_number = items[i].object_number;
+		short hit_points = 0;
+
+		switch (object_number)
+		{
+		case DOG:
+		case DOG_MIP:
+			hit_points = 10;
+			break;
+		case LARSON:
+		case LARSON_MIP:
+			hit_points = 100;
+			break;
+		case MAFIA:
+		case MAFIA_MIP:
+		case MAFIA2:
+		case MAFIA2_MIP:
+			hit_points = 40;
+			break;
+		default:
+			continue;
+		}
+
+		objects[object_number].intelligent = 1;
+		objects[object_number].hit_points = hit_points;
+		items[i].hit_points = hit_points;
+		items[i].status = ITEM_INACTIVE;
+		items[i].collidable = 1;
+	}
+}
+
 static void PortSetupGameplayObjects(void)
 {
 	int i;
@@ -1619,6 +1656,8 @@ void LoadLevel(FILE* nHandle)
 		{
 			InitialiseItem(i);
 		}
+
+		PortSetupGameplayEnemies();
 	}
 	//loc_A5C
 	SetupGame();
