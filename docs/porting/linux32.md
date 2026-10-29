@@ -474,9 +474,9 @@ Les voix `SF_LOOP` redémarrent au lieu de se couper; contrôle
 (`final-audio-dummy-20261029/`). Tests : `tests/porting` 497 PASS,
 `tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
 `809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9` ;
-build final combiné (reprise v4, écriture atomique, audio/boucles/volume FX)
-`build-cc` SHA256
-`63b12a331747deffe06a235e08cd78d08250f02174fca8992f5be50d5faba823`.
+build final combiné (reprise v4, écriture atomique, audio/boucles/volume FX,
+correctif strings gameflow) `build-cd` SHA256
+`b5deda7ed9e0b655d4e335116b76a278f058841b3065d590565da574b3e8a162`.
 
 Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
 reverb/loop approximés, pas de test de volume nul/catégories, pause et retour
@@ -615,6 +615,15 @@ dépassements :
   `ScratchVertNums` après la lecture contiguë objects/static/skin/scratch. Sans
   ce replacement, les tableaux agrandis laissaient `ScratchVertNums` à zéro et
   produisaient l'artefact de Rome décrit dans PORT-006.
+
+### Strings gameflow — chevauchement mémoire corrigé
+
+AddressSanitizer 32 bits a signalé `memcpy-param-overlap` dans
+`LoadGameflow` (`GAME/GAMEFLOW.C:621`) : le déplacement du bloc de chaînes
+`gfStringOffset` vers une adresse plus basse chevauchait la source. Les cinq
+copies concernées utilisent désormais `memmove`, ce qui conserve le résultat
+attendu sans comportement indéfini. Une partie neuve à Rome passe ASan sans
+nouvelle erreur (`build/porting/asan-run2-20261029/`).
 
 Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
 1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**

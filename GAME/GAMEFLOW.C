@@ -618,24 +618,24 @@ void LoadGameflow()//102E0(<), 102B0(<) (F)
 
 #if PSX_VERSION || PSXPC_VERSION
 
-	memcpy(&gfStringOffset[0], &gfStringOffset[sizeof(struct STRINGHEADER) / sizeof(unsigned short)], (sh.nStrings + sh.nPSXStrings) * sizeof(unsigned short));
+	memmove(&gfStringOffset[0], &gfStringOffset[sizeof(struct STRINGHEADER) / sizeof(unsigned short)], (sh.nStrings + sh.nPSXStrings) * sizeof(unsigned short));
 
 	gfStringWad = (char*)&gfStringOffset[sh.nStrings + sh.nPSXStrings];
 
 #if BETA_VERSION
-	memcpy(&gfStringOffset[sh.nStrings + sh.nPSXStrings], &gfStringOffset[317], sh.StringWadLen + sh.PSXStringWadLen);
+	memmove(&gfStringOffset[sh.nStrings + sh.nPSXStrings], &gfStringOffset[317], sh.StringWadLen + sh.PSXStringWadLen);
 #else
-	memcpy(&gfStringOffset[sh.nStrings + sh.nPSXStrings], &gfStringOffset[315], sh.StringWadLen + sh.PSXStringWadLen);
+	memmove(&gfStringOffset[sh.nStrings + sh.nPSXStrings], &gfStringOffset[315], sh.StringWadLen + sh.PSXStringWadLen);
 #endif
 
 	gfScriptLen += (((sh.nStrings + sh.nPSXStrings * sizeof(unsigned short)) + sh.StringWadLen + sh.PSXStringWadLen + 3) & -4);
 
 #else
-	memcpy(&gfStringOffset[0], &gfStringOffset[sizeof(struct STRINGHEADER) / sizeof(unsigned short)], (sh.nStrings + sh.nPSXStrings + sh.nPCStrings) * sizeof(unsigned short));
+	memmove(&gfStringOffset[0], &gfStringOffset[sizeof(struct STRINGHEADER) / sizeof(unsigned short)], (sh.nStrings + sh.nPSXStrings + sh.nPCStrings) * sizeof(unsigned short));
 
 	gfStringWad = (char*)&gfStringOffset[sh.nStrings + sh.nPSXStrings + sh.nPCStrings];
 
-	memcpy(&gfStringOffset[sh.nStrings + sh.nPSXStrings + sh.nPCStrings], &gfStringOffset[315], sh.StringWadLen + sh.PSXStringWadLen + sh.PCStringWadLen);///@TODO check 315 const for PC
+	memmove(&gfStringOffset[sh.nStrings + sh.nPSXStrings + sh.nPCStrings], &gfStringOffset[315], sh.StringWadLen + sh.PSXStringWadLen + sh.PCStringWadLen);///@TODO check 315 const for PC
 
 #endif
 

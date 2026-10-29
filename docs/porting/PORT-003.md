@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-10-29
+
+PORT-003 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
+
+ASan 32 bits a trouvé un memcpy-param-overlap dans LoadGameflow: le déplacement du bloc gfStringOffset chevauchait la source. Les cinq copies sont passées en memmove. Partie neuve à Rome sans erreur ASan. Build-cd SHA256 b5deda7ed9e0b655d4e335116b76a278f058841b3065d590565da574b3e8a162; tests/porting 497 PASS, tests/emulator 3677 PASS.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-10-27
 
 PORT-001, PORT-002, PORT-003 — **In progress**. Autorisation bornée jusqu’au 2026-10-27T23:59:00+01:00. Linux32 provisoire.
