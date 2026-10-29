@@ -739,7 +739,14 @@ Soak RSS de 15 minutes sur build-cm (mêmes entrées, échantillonnage
 fatale, exit 0 ; captures à 300 s (inventaire) et 600 s (allée de Rome)
 (`build/porting/soak-rss-20261029/`).
 Smoke PAL (`build/porting/data`, SLES_033.31) sur build-cm : scène de Rome
-rendue, audio initialisé, aucune erreur (`final-pal-20261029/`).
+rendue, audio initialisé, aucune erreur (`final-pal-20261029/`). New Game PAL
+confirmé par `Handle cutseq triggering name: 1` et l'allée de Rome : le menu
+est interactif vers 45 s et il faut **maintenir `C` ~350 ms** ; un tap court
+peut être perdu à 50 Hz et laisser le titre partir en DEMO MODE
+(`pal-timing3-20261029/`). Sauvegarde PAL validée : `F5` à level 1 room 0
+X 46592 Y 0 Z 31232 écrit 586 octets de niveau, relance + `F6` restaure la
+même position et une scène identique (moyennes 0,1006 / 0,1009 ;
+`build/porting/pal-save4-20261029/`).
 
 Cela protège aussi toute donnée de niveau manquante lors d'un chargement
 direct. Le chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT)

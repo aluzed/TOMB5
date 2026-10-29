@@ -2,6 +2,16 @@
 
 PORT-006 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
 
+PAL (SLES_033.31) : New Game confirmé (cutseq name 1, allée de Rome) en maintenant C ~350 ms après un menu interactif vers 45 s ; un tap court est perdu à 50 Hz et laisse partir en DEMO MODE. Sauvegarde PAL round-trip : F5 à level 1 room 0 X 46592 Y 0 Z 31232 écrit 586 octets de niveau, relance + F6 restaure la même position et une scène identique (moyennes 0,1006 / 0,1009). Preuves pal-timing3-20261029/ et pal-save4-20261029/. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
+PORT-006 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
 Mise à niveau v3→v4 au niveau 2 : L2.SAV (v3, level 2 room 50 X 91648 Y 0 Z 42496) chargé par F6, puis F5 réécrit le même fichier en v4 (606 octets de niveau, +12 octets d'état d'items). Relance et F6 restaurent le niveau 2, room 50, X 91648 Y 0 Z 42496, scène identique (moyennes 0,0885 / 0,0885). Preuve build/porting/level2-v4-20261029/. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b; tests/porting 497 PASS, tests/emulator 3677 PASS. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).
