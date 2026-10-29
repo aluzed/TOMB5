@@ -920,6 +920,12 @@ non initialisés (`hit_points=-16384`, pas d’IA/contrôle), donc les chiens et
 Larson sont encore inertes ; il faut compléter `BaddyObjects`/les contrôles
 ennemis.
 
+Repérage (téléportation de test, **pas** un parcours joué) : la **cour de la
+fontaine** est la `room 59` autour de `X54000 Z41000 Y256` ; un Doberman et
+la grille verrouillée y sont visibles (`play-tp59-20261029/01.png`). La
+`room 69` est un toit/point de vue sur la ville, pas la fontaine
+(`play-tp69-20261029/`). La route jouée jusqu’à cette cour reste à établir.
+
 Parcours réel effectué sans téléportation (29 octobre) :
 `room 0` (départ) → `room 2` (cour) → `room 11` (zone **Opera Backstage**,
 caisse en bois et passerelle visibles) → `room 3` → `room 44`. Les flèches
