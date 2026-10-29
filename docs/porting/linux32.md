@@ -399,7 +399,10 @@ endroit. Depuis le 29 octobre, le format v3 inclut aussi l'état du niveau
   (`build/porting/restorefull-debug2-20261029/`). `RESTORE3.SAV` (v2) reste
   accepté et se recharge sans état de niveau (`restorefull-v2-20261029/`).
   Le désarmement de `flipeffect` après restauration évite
-  `turn180_effect(NULL)`.
+  `turn180_effect(NULL)`. Preuve inter-niveaux v3 : sauvegarde `L2.SAV` au
+  niveau 2 (room 50, X 91648 Y 0 Z 42496, 594 octets de niveau), rechargement
+  par `TOMB5_AUTOLOAD` → même niveau/salle/position et scène identique
+  (`build/porting/level2-save-20261029/`, `level2-load-20261029/`).
 
 ### Limites PORT-006
 
