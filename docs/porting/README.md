@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
+
+Chaîne finale revalidée après les correctifs : build de test avec hook QA TOMB5_CHAIN_TEST (même logique de transition, non intégré) enchaîne 1→2→…→14 puis Handle cutseq name: 0, sans SIGSEGV; preuve build/porting/final-chain-bs2-20261029/chain.log. Déclenchements toujours synthétiques, aucune fin de niveau jouée, crédits/FMV non caractérisés.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-007 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
 
 Audio final combiné : boucles SF_LOOP et volume FX (SoundFXVolume) appliqués au mixage. Build-bu SHA256 a2722e6c2da9f0241f101674bb6ae4fe336c982e6f77983e795383e4d952c01f. Preuve SDL disk sur build-bu : 18,4 Mo PCM, RMS 1266, actif pendant la marche; dummy sans crash. Limites inchangées : pas d'écoute humaine, pas de CD/XA, ADSR/reverb approximés, pas de test pause/retour titre audio.

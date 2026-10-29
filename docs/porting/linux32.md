@@ -650,6 +650,10 @@ déclenchent la fin, puis reviennent au titre (`Handle cutseq triggering name:
 `GetDoor(0xfe4cb8d4)` n'est plus reproduit. Une nouvelle chaîne après le
 correctif de contiguïté scratch atteint de nouveau 1→14 puis le niveau 0/titre
 sans `SIGSEGV` (`build/porting/port008-fullchain-fix-20261029/gdb-chain.log`).
+Une seconde validation utilise le hook QA `TOMB5_CHAIN_TEST` (même logique de
+transition, déclenchement tous les 600 frames) et enchaîne 1→2→…→14 puis
+`Handle cutseq triggering name: 0` sans `SIGSEGV` sur
+`build/porting/final-chain-bs2-20261029/` (hook non intégré à `master`).
 La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du retour titre (le gameflow peut le faire avant `DoLevel(15)`) ; elle reste
 validée séparément par le saut direct 1→15.
 
