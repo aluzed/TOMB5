@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TOMB5 — Backlog fonctionnel</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:1120px;margin:auto;padding:24px;color:#18293a;background:#f6f8fb}h1,h2{line-height:1.25}a{color:#075a9c}table{width:100%;border-collapse:collapse;background:white}th,td{border:1px solid #ccd5df;padding:10px;text-align:left}.scroll{overflow-x:auto}.notice{padding:18px;border-left:5px solid #a66a00;background:#fff4d9}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}section{margin:32px 0;padding:20px;background:white;border:1px solid #ccd5df}</style></head><body><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-10-29
 
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
+Cause racine de la campagne non jouable identifiée sous GDB au niveau 1 : InitialiseObjects met tous les handlers d&#x27;objets à NULL, ObjectObjects n&#x27;initialise que LARA et un fragment de SAS, TrapObjects est vide. Les objets pickup/keyhole/puzzle/switch/porte du niveau 1 ont collision=NULL (Lara control=NULL), et PickUpCollision, KeyHoleCollision, PuzzleHoleCollision, TestLaraPosition, MoveLaraPosition, TestBoundsCollide, ItemPushLara, DoorControl, SwitchCollision, CreatureCollision sont des stubs. Aucun pickup ni interaction n&#x27;est donc possible, quelle que soit la route ; ce n&#x27;est pas une régression Linux32 mais un manque hérité de la décompilation (travail RE sous gates BLOCKED-004). Preuve build/porting/objcoll-20261029/. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b; tests/porting 497 PASS, tests/emulator 3677 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-10-29
+
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
 
 Chaîne finale sur les sources build-ci avec hook QA TOMB5_CHAIN_TEST (non intégré) : 1→2→…→14 puis Handle cutseq name: 0, sans SIGSEGV. Preuve final-chain-cj-20261029/chain.log. Déclenchements synthétiques, aucune complétion jouée/crédits.
