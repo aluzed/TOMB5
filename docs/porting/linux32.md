@@ -864,8 +864,8 @@ décompilation.
 
 ### Boucle de gameplay — première couche (29 octobre 2026)
 
-Implémenté dans les sources (build `build-gameplay8`, SHA256
-`559827c17f132301cabb942179dd56bfe61b15d6cbd23a926aeaab29b5aa299e`) :
+Implémenté dans les sources (build `build-gameplay10`, SHA256
+`51efd1a024a13ff39c0e942076d2a754dd5da8a689f01190ad344ce266b33152`) :
 
 - `SPEC_PSXPC_N/COLLIDE_S.C` : `PortCollideItems()` parcourt les items de la
   salle et appelle `objects[object_number].collision` après la géométrie.
@@ -903,6 +903,15 @@ Preuves runtime (GDB, niveau 1, téléportation de test) :
   Lara de room 0 X46592 Z31232 à room 2 X46592 Z38830 en 8 s
   (`play-move2-20261029/`) ; `w` est le scancode de `draw` en AZERTY et
   déclenche la vue noire des armes, pas la marche.
+
+Tir minimal : `PistolHandler` fait un hitscan (cible intelligente la plus
+proche dans le cône ±60°, portée `weapons[].target_dist`), applique
+`HitTarget`, consomme les munitions non-pistolet, joue `SFX_LARA_FIRE` et
+allume le flash. Preuve GDB : chien forcé à `hp=100`, `intelligent=1`, puis
+6 tirs → hp 64 (`combat_test3.out`). Limite : les ennemis du niveau restent
+non initialisés (`hit_points=-16384`, pas d’IA/contrôle), donc les chiens et
+Larson sont encore inertes ; il faut compléter `BaddyObjects`/les contrôles
+ennemis.
 
 Parcours réel effectué sans téléportation (29 octobre) :
 `room 0` (départ) → `room 2` (cour) → `room 11` (zone **Opera Backstage**,
