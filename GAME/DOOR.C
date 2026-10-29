@@ -303,6 +303,25 @@ void DoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)/
 		item->pos.y_rot ^= ANGLE(180);
 	}
 
+	if ((input & IN_ACTION) &&
+		l->current_anim_state == STATE_LARA_STOP &&
+		l->anim_number == ANIMATION_LARA_STAY_IDLE &&
+		!l->gravity_status && lara.gun_status == LG_NO_ARMS &&
+		TestLaraPosition(PushPullKickDoorBounds, item, l) &&
+		MoveLaraPosition(&PushDoorPos, item, l))
+	{
+		l->anim_number = ANIMATION_LARA_DOOR_OPEN_FORWARD;
+		l->frame_number = anims[ANIMATION_LARA_DOOR_OPEN_FORWARD].frame_base;
+		l->current_anim_state = STATE_LARA_MISC_CONTROL;
+		lara.gun_status = LG_HANDS_BUSY;
+		lara.IsMoving = 0;
+
+		item->status = ITEM_ACTIVE;
+		item->goal_anim_state = 1;
+		AddActiveItem(item_num);
+		return;
+	}
+
 	if (TestBoundsCollide(item, l, coll->radius))
 	{
 		if (TestCollision(item, l))
