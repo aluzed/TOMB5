@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
 
+AnimateItem traite la commande de translation (type 1) via TranslateItem puis mise à jour GetFloor/ItemNewRoom ; types 2/3 sautés. Sons/effets déjà traités. Démarrage vérifié. Build-gameplay20 SHA256 4fa51ce6ab94ffe3451b6f0e4e7ffc08f80067a14a9f913b6d12da90cf3e5232; tests 4174 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
+
 AnimateItem exécute les commandes d'animation 5 (son à une frame) et 6 (effet à une frame) ; type1 translation avance le pointeur sans déplacer l'objet, types2/3 sautés. Démarrage vérifié. Build-gameplay19 SHA256 d093d90605e3906f23eb0a377ea7cebf42780670809e7054f2f4caa7b1d94411; tests 4174 PASS. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).
