@@ -653,7 +653,8 @@ nouvelle erreur (`build/porting/asan-run2-20261029/`). Les parcours ASan
   pitch/volume courant et bornes de lecture, les parcours ASan nouvelle
   partie + `F5` puis rechargement v4 sont propres
   (`asan-run4-20261029/`, `asan-load2-20261029/`, `asan-run5-20261029/`,
-  `asan-load3-20261029/`, `asan-run6-20261029/`).
+  `asan-load3-20261029/`, `asan-run6-20261029/`). Un soak ASan de 6 min avec
+  entrées aléatoires ne signale aucune erreur (`asan-soak-20261029/`).
 
 Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
 1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**
