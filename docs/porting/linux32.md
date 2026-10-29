@@ -472,7 +472,8 @@ Preuves : avec `SDL_AUDIODRIVER=disk`, une partie neuve à Rome puis 8 s de
 marche produit un PCM stéréo non nul (21,1 Mo, RMS ~977, échantillons actifs
 uniquement pendant la marche, `build/porting/final-audio-bn-20261029/`).
 Les voix `SF_LOOP` redémarrent au lieu de se couper; contrôle
-`build/porting/final-audio-loop-20261029/` (RMS 1265).
+`build/porting/final-audio-loop-20261029/` (RMS 1265), et sur `build-cd`
+`build/porting/final-audio-cd-20261029/` (RMS 1285).
 `SDL_AUDIODRIVER=dummy` ouvre le device sans crash
 (`final-audio-dummy-20261029/`). Tests : `tests/porting` 497 PASS,
 `tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
