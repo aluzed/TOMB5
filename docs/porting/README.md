@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
 
+AnimateItem traite aussi la commande 2 (gravity_status/fallspeed/speed) et 3 (remise de l'arme de Lara à l'état neutre). Démarrage vérifié. Toutes les commandes connues 1/2/3/5/6 sont maintenant prises en charge ; physique de chute continue non ajoutée. Build-gameplay21 SHA256 c9904bcb4eb304d2c28950736a76e7e8367b6667cb62461722fe69d5deb317bb; tests 4174 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
+
 AnimateItem traite la commande de translation (type 1) via TranslateItem puis mise à jour GetFloor/ItemNewRoom ; types 2/3 sautés. Sons/effets déjà traités. Démarrage vérifié. Build-gameplay20 SHA256 4fa51ce6ab94ffe3451b6f0e4e7ffc08f80067a14a9f913b6d12da90cf3e5232; tests 4174 PASS. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).
