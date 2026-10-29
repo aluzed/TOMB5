@@ -18,7 +18,12 @@
 #include "SPHERE.H"
 #include "SWITCH.H"
 #include "OBJECTS.H"
+#include "MALLOC.H"
+#include "GETSTUFF.H"
+#include <string.h>
 #include INPUT_H
+
+static void PortInitialiseDoor(struct ITEM_INFO* item);
 
 static struct PHD_VECTOR DoubleDoorPos = { 0, 0, 220 };
 static struct PHD_VECTOR PullDoorPos = { -201, 0, 322 };
@@ -206,6 +211,17 @@ void PushPullKickDoorControl(short item_number)//2B508(<), 2B830 (F)
 	item = &items[item_number];
 	door = (struct DOOR_DATA*)item->data;
 
+	if (door == NULL)
+	{
+		PortInitialiseDoor(item);
+		door = (struct DOOR_DATA*)item->data;
+	}
+
+	if (door == NULL)
+	{
+		return;
+	}
+
 	if (!door->Opened)
 	{
 		OpenThatDoor(&door->d1, door);
@@ -302,10 +318,38 @@ void DoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)/
 	}
 }
 
+static void PortInitialiseDoor(struct ITEM_INFO* item)
+{
+	struct DOOR_DATA* door = (struct DOOR_DATA*)game_malloc(sizeof(struct DOOR_DATA));
+	short room_number = item->room_number;
+	struct FLOOR_INFO* floor = GetFloor(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, &room_number);
+
+	if (door == NULL || floor == NULL)
+	{
+		return;
+	}
+
+	memset(door, 0, sizeof(struct DOOR_DATA));
+	door->item = item;
+	door->d1.floor = floor;
+	door->d1.data = *floor;
+	door->d1.block = floor->box;
+	door->d2 = door->d1;
+	door->d1flip = door->d1;
+	door->d2flip = door->d1;
+	item->data = door;
+}
+
 void DoorControl(short item_number)//2AD74, 2B09C
 {
 	struct ITEM_INFO* item = &items[item_number];
 	struct DOOR_DATA* door = (struct DOOR_DATA*)item->data;
+
+	if (door == NULL)
+	{
+		PortInitialiseDoor(item);
+		door = (struct DOOR_DATA*)item->data;
+	}
 
 	if (door == NULL)
 	{
