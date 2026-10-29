@@ -4442,6 +4442,10 @@ int check_xray_machine_trigger()// (F)
 	return FALSE;
 }
 
+#if !PC_VERSION
+extern int GetChange(struct ITEM_INFO* item, struct ANIM_STRUCT* anim);
+#endif
+
 void AnimateItem(struct ITEM_INFO* item)
 {
 	struct ANIM_STRUCT* anim;
@@ -4465,19 +4469,16 @@ void AnimateItem(struct ITEM_INFO* item)
 
 	item->frame_number++;
 
+	if (anim->number_changes > 0 && GetChange(item, anim))
+	{
+		anim = &anims[item->anim_number];
+		item->current_anim_state = anim->current_anim_state;
+	}
+
 	if (item->frame_number > anim->frame_end)
 	{
-		if (item->goal_anim_state != item->current_anim_state &&
-			anim->jump_anim_num >= 0)
-		{
-			item->anim_number = anim->jump_anim_num;
-			item->frame_number = anims[item->anim_number].frame_base;
-			item->current_anim_state = anims[item->anim_number].current_anim_state;
-		}
-		else
-		{
-			item->frame_number = anim->frame_base;
-		}
+		item->frame_number = anim->frame_base;
+		item->current_anim_state = anim->current_anim_state;
 	}
 }
 
