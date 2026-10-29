@@ -352,6 +352,12 @@ extern unsigned long SpuGetReverbVoice (void);
 extern long SpuClearReverbWorkArea (long mode);
 
 extern unsigned long SpuWrite (unsigned char *addr, unsigned long size);
+
+/* Host-side accessors for the emulated SPU RAM and voice registers. */
+extern unsigned char* Spu_GetRam (void);
+extern int Spu_GetRamSize (void);
+extern unsigned short* Spu_GetRegisters (void);
+extern int Spu_GetKeyMask (void);
 extern unsigned long SpuWrite0 (unsigned long size);
 extern unsigned long SpuRead (unsigned char *addr, unsigned long size);
 extern long SpuSetTransferMode (long mode);

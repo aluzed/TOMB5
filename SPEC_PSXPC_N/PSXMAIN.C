@@ -1,5 +1,6 @@
 #include "CD.H"
 #include "GAMEFLOW.H"
+#include "HOSTAUDIO.H"
 #include "GPU.H"
 #include "LOAD_LEV.H"
 #include "MALLOC.H"
@@ -46,6 +47,7 @@ int main(int argc, char* argv[])//10064(<), 10064(<) (F) (*) (D) (ND)
 	ResetCallback();
 
 	SPU_Init();
+	HostAudio_Init();
 	
 	ResetGraph(0);
  	SetGraphDebug(0);

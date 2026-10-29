@@ -105,6 +105,7 @@ void S_SoundStopSample(int handle)
 
 	if (handle >= 0 && handle < MAX_SOUND_SLOTS && LabSampleType[handle] != 0)
 	{
+		SpuSetKey(SPU_OFF, 1 << handle);
 		SPU_FreeChannel(handle);
 	}
 }
@@ -195,10 +196,30 @@ void SOUND_Stop()
 
 int PlaySample(int a0, int volume_left, int volume_right, int a3, int arg_10, int t1, int t2)//914C8(<), 9350C(<)
 {
-	//CalcVolumes_ASM();//prolly modifies t1 and t2
-	SPU_Play(t1, volume_left, volume_right, t2, arg_10);
-	UNIMPLEMENTED();
-	return 0;//?
+	int volume = volume_left;
+	int pitch = t2;
+	int pan = (short)a3;
+	int left = volume;
+	int right = volume;
+
+	/* The historical call boundary passes the pitch where a right volume
+	 * would be expected and drops the pan (a3).  Rebuild the stereo pair here
+	 * from the real sample index (t1), volume, pitch and signed pan. */
+	if (pan > 0)
+	{
+		left = (volume * (32768 - pan)) >> 15;
+	}
+	else if (pan < 0)
+	{
+		right = (volume * (32768 + pan)) >> 15;
+	}
+
+	if (pitch <= 0)
+	{
+		pitch = 0x1000;
+	}
+
+	return (int)SPU_Play(t1, (short)left, (short)right, (short)pitch, arg_10);
 }
 
 int S_SoundPlaySampleLooped(int a0, int a1, int a2, int a3, int arg_10)

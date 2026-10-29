@@ -436,32 +436,43 @@ endroit. Depuis le 29 octobre, le format v3 inclut aussi l'état du niveau
 - Un fichier absent/corrompu est refusé avec un log et le titre continue.
   L'écriture n'est pas atomique (pas de fichier temporaire + rename).
 
-## Audio — arrêt propre, pas de sortie audible (PORT-007, partiel)
+## Audio — backend SDL et mixage SPU (PORT-007, en progrès)
 
-Le code PSXPC_N n'a **aucun backend de sortie audio hôte** : ni SDL_Audio, ni
-ALSA/Pulse/OpenAL, ni mixage SPU vers un tampon. Les appels `SpuSetKey`,
-`SPU_Play` et `S_CDPlay` alimentent un état émulé, mais rien n'est envoyé à une
-carte son. Le critère « audible » de PORT-007 ne peut donc pas être validé sur
-cet hôte, même avec un périphérique HDMI présent ; il faudrait écrire le mixage
-SPU/CD et ouvrir un device, puis une écoute humaine. Ticket **bloqué** sur ce
-backend, pas sur une correction ponctuelle.
+Depuis le 29 octobre, PSXPC_N dispose d'un **backend de sortie audio hôte** et
+d'un mixage SPU de base. Il ne s'agit pas encore d'une validation d'écoute
+humaine ni d'une fidélité SPU complète.
 
-Ce qui a été corrigé dans ce lot (arrêt propre, sans revendication d'audibilité) :
+- `EMULATOR/LIBSPU.C` conserve désormais les 512 Ko de RAM SPU
+  (`Spu_GetRam`) au lieu de jeter les transferts `SpuWrite`; `_spu_Fw` copie
+  les données à l'adresse de transfert. Les accesseurs exposent aussi les
+  registres de voix et le masque key-on.
+- `SpuSetVoiceAttr` corrige deux bugs du pont : la conversion de volume
+  `0..16383` vers `0..127` et l'écriture ADSR dans les registres `+4/+5`
+  (elle écrasait le volume gauche). `SpuSetKey`/key-off restent la source de
+  vérité des voix.
+- `SPEC_PSXPC_N/HOSTAUDIO.C` ouvre un device SDL2 44100 Hz stéréo S16,
+  décode les blocs VAG/ADPCM de la RAM SPU (filtres 0..4), applique pitch,
+  pan/volume et master, puis mixe 24 voix. Les voix sont libérées sur key-off
+  et `S_SoundStopSample` coupe explicitement la voix.
+- `PlaySample` conserve sa frontière historique à 7 arguments (contrat hôte),
+  mais utilise le vrai index d'échantillon, le pitch et le pan signé pour
+  fabriquer gauche/droite; l'ancien code passait le pitch comme volume droit.
 
-- `SPU_StopAll` libère toutes les voix (`SpuSetKey(SPU_OFF, SPU_ALLCH)`) et
-  reconstruit la liste des canaux libres ; auparavant c'était `UNIMPLEMENTED()`
-  et l'état key-on survivait à l'arrêt.
-- `S_SoundStopSample` libère le canal demandé, `S_SoundStopAllSamples` appelle
-  `SPU_StopAll`, `S_SetReverbType` mémorise le type courant.
-- Test hôte ajouté : `SpuSetKey(SPU_OFF, SPU_ALLCH)` remet `_spu_keystat` à zéro
-  (`tests/emulator/test_libspu_transfer.py`).
-- Smoke titre : `build-k` atteint le menu, aucune ligne
-  `[SPU_StopAll] - Unimplemented!`, fermeture normale exit 0
-  (`build/porting/audio-smoke-20261028/`).
+Preuves : avec `SDL_AUDIODRIVER=disk`, une partie neuve à Rome puis 8 s de
+marche produit un PCM stéréo non nul (21,1 Mo, RMS ~977, échantillons actifs
+uniquement pendant la marche, `build/porting/final-audio-bn-20261029/`).
+`SDL_AUDIODRIVER=dummy` ouvre le device sans crash
+(`final-audio-dummy-20261029/`). Tests : `tests/porting` 497 PASS,
+`tests/emulator` 3677 PASS. Build `build-bn` SHA256
+`809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9`.
 
-Limites : aucun test d'écoute, aucun changement de volume vérifié, pause/retour
-titre non instrumentés pour l'audio, musique CD/XA non mixée. PORT-007 reste
-In progress/Blocked ; ne pas lire ce lot comme une acceptation audio.
+Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
+reverb/loop approximés, pas de test de volume nul/catégories, pause et retour
+titre non instrumentés pour l'audio. PORT-007 reste **In progress**, pas Done.
+
+Historique conservé : `SPU_StopAll` libère toutes les voix et reconstruit les
+canaux; `S_SoundStopAllSamples`/`S_SetReverbType` sont implémentés; le test
+`SpuSetKey(SPU_OFF, SPU_ALLCH)` remet `_spu_keystat` à zéro.
 
 ## Recette intégrée finale — 28 octobre 2026
 

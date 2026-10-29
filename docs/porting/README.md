@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-007 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
+
+Backend audio hôte et mixage SPU de base : RAM SPU 512 Ko conservée, getters registres/key-on, VAG/ADPCM 24 voix, pitch/pan/volume, SDL2 44100 stéréo. Correction du pont SpuSetVoiceAttr (volume 14 bits vers 7 bits, ADSR +4/+5) et de PlaySample (vrai index/pitch/pan sans casser la frontière 7 args). Preuves : SDL_AUDIODRIVER=disk pendant une marche à Rome -> 21,1 Mo PCM, RMS 977, actif uniquement pendant la marche; dummy sans crash; tests/porting 497 PASS, tests/emulator 3677 PASS. Build-bn SHA256 809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9. Limites : pas d'écoute humaine, pas de CD/XA, ADSR/reverb/loop approximés, pas de test volume nul/pause.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-006 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T06:00:00+01:00. Linux32 provisoire.
 
 Reprise v3 de l'état du niveau intégrée : PortSave écrit un bloc fixe de 8192 octets via SaveLevelData (flips, meshes statiques, caméras, items). SaveLevelData écrit désormais un mot nul pour les items inactifs, sinon la sauvegarde Rome faisait 286 octets et RestoreLevelData en lisait 586 (désynchronisation). Après correction, F5 à Rome sérialise 586 octets et le rechargement lit exactement 586 octets (caméras 259, items 586), scène propre. Les fichiers v2 de 466 octets restent lisibles mais sans état de niveau. TOMB5_AUTOLOAD=1 conservé comme hook QA. Build-bb SHA256 469d42764959dc9c9aec4984343af29976a7c0a9cd70bf263d3fe2f6de961389. Preuves : restorefull-debug2-20261029, final-bb-v3-20261029, restorefull-v2-20261029. tests/porting 497 PASS, tests/emulator 3677 PASS.

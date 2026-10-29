@@ -60,6 +60,30 @@ int _spu_mem_mode_unit = 8;
 int _spu_mem_mode_unitM = 7;
 char spu[440];//0x1F801C00 is base address
 unsigned short* _spu_RXX = (unsigned short*)&spu[0];
+
+/* SPU RAM: the emulator previously discarded every SpuWrite transfer. */
+#define SPU_RAM_SIZE (512 * 1024)
+static unsigned char spu_ram[SPU_RAM_SIZE];
+
+unsigned char* Spu_GetRam(void)
+{
+	return spu_ram;
+}
+
+int Spu_GetRamSize(void)
+{
+	return SPU_RAM_SIZE;
+}
+
+unsigned short* Spu_GetRegisters(void)
+{
+	return _spu_RXX;
+}
+
+int Spu_GetKeyMask(void)
+{
+	return _spu_keystat;
+}
 int _spu_mem_mode_plus = 3;
 SpuTransferCallbackProc _spu_transferCallback = NULL;///@TODO initial value check
 int _spu_inTransfer = 0;///@TODO initial value check
@@ -237,9 +261,16 @@ void SpuSetVoiceAttr(SpuVoiceAttr* arg)//
             if (arg->mask < 1 || (arg->mask & 0x1))
             {
                 //v0 = arg->volume.left
-                //a0 = 0
-                //a1 = arg->volume.left & 0x7FFF
-                //v0 = arg->mask & 4
+                a0 = 0;
+                a1 = (arg->volume.left & 0x7FFF) >> 7;
+                if (a1 > 127)
+                {
+                    a1 = 127;
+                }
+                else if (a1 < 0)
+                {
+                    a1 = 0;
+                }
 
                 if (!(arg->mask & 0x4))
                 {
@@ -300,8 +331,16 @@ void SpuSetVoiceAttr(SpuVoiceAttr* arg)//
             if ((arg->mask < 1) || (arg->mask & 0x2))
             {
                 //v0 = arg->volume.right
-                //a0 = 0
-                //a1 = v0 & 0x7FFF
+                a0 = 0;
+                a1 = (arg->volume.right & 0x7FFF) >> 7;
+                if (a1 > 127)
+                {
+                    a1 = 127;
+                }
+                else if (a1 < 0)
+                {
+                    a1 = 0;
+                }
 
                 if ((arg->mask < 1) || (arg->mask & 0x8))
                 {
@@ -368,13 +407,13 @@ void SpuSetVoiceAttr(SpuVoiceAttr* arg)//
 
             if ((arg->mask < 1) || (arg->mask & 0x20000))
             {
-                _spu_RXX[i << 3] = arg->adsr1;
+                _spu_RXX[(i << 3) + 4] = arg->adsr1;
             }
 
             //loc_500
             if ((arg->mask < 1) || (arg->mask & 0x40000))
             {
-                _spu_RXX[i << 3] = arg->adsr2;
+                _spu_RXX[(i << 3) + 5] = arg->adsr2;
             }
             //loc_52C
 
@@ -672,6 +711,15 @@ void _spu_Fw(unsigned char* addr, unsigned long size)
 		_spu_t(2, _spu_tsa << _spu_mem_mode_plus);
 		///@TODO check if a1 is modified in spu_t
 	}
+	{
+		unsigned int target = (_spu_tsa << _spu_mem_mode_plus) & (SPU_RAM_SIZE - 1);
+		if (size > (unsigned long)(SPU_RAM_SIZE - target))
+		{
+			size = SPU_RAM_SIZE - target;
+		}
+		memcpy(&spu_ram[target], addr, size);
+	}
+
 	//loc_A84
 #if 0
 jal     _spu_t
