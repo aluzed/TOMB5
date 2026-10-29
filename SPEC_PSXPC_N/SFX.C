@@ -356,5 +356,6 @@ void GetPanVolume(struct SoundSlot* slot)
 	{
 		slot->nPan = 16 * CamRot.vy + phd_atan_asm(dz, dx);
 	}
-	slot->nVolume = slot->OrigVolume;
+	/* nVolume is already attenuated by SoundEffect; do not replace it with
+	 * the unattenuated OrigVolume. */
 }

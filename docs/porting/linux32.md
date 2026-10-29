@@ -482,7 +482,8 @@ humaine ni d'une fidélité SPU complète.
 - `S_SoundSetPanAndVolume`/`S_SoundSetPitch`/`GetPanVolume` sont implémentés
   (pan/volume/pitch des slots positionnels) au lieu de rester
   `Unimplemented`; `audio-cl-20261029/` ne contient plus ces messages et
-  produit du PCM pendant la marche.
+  produit du PCM pendant la marche. `GetPanVolume` ne remplace pas le volume
+  atténué par `OrigVolume` : seule la position panoramique est recalculée.
 
 Preuves : avec `SDL_AUDIODRIVER=disk`, une partie neuve à Rome puis 8 s de
 marche produit un PCM stéréo non nul (21,1 Mo, RMS ~977, échantillons actifs
@@ -497,8 +498,8 @@ en continu pendant 30 s de marche, pitch corrigé).
 `tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
 `809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9` ;
 build final combiné (reprise v4, écriture atomique, audio/pitch/volume,
-correctif strings gameflow et bornes de restauration) `build-cl` SHA256
-`4418ad896dc9582458f601a0eb7ae49106146e09ff79fd3ce82e718e3d32a3fc`.
+correctif strings gameflow et bornes de restauration) `build-cm` SHA256
+`da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b`.
 
 Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
 reverb/loop approximés, pas de test de volume nul/catégories, pause et retour
