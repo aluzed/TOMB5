@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
 
+AnimateItem utilise désormais GetChange/changes/ranges pour changer d'animation selon goal_anim_state, puis boucle sur frame_end. Les commandes d'animation (sons/effets/translations) ne sont pas encore exécutées. Démarrage vérifié. Build-gameplay18 SHA256 d7e0303ce0b80e5bc37b6aaa0bd0cc1fbcbbe92d36e93d74daca2fd16ece306b; tests 4174 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
+
 AnimateItem de base implémenté : avance frame_number, boucle sur frame_end, suit jump_anim_num si goal_anim_state diffère. Tables de changements/commandes non traitées, donc transitions d'animation partielles. Build-gameplay17 SHA256 2fd240d91a51696933784f2bcc1b4c1e38b1c425f715e8c9311293def87865dd; tests 4174 PASS; démarrage vérifié. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).
