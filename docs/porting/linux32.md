@@ -415,7 +415,9 @@ endroit. Depuis le 29 octobre, le format v4 inclut aussi l'état du niveau
   sérialisation d'un niveau dépasse cette taille, `F5` échoue explicitement au
   lieu d'écrire un fichier tronqué. `ReadSG` est borné à ce bloc et
   `RestoreLevelData`/`PortSave_ApplyPending` vérifient les numéros de salle
-  avant `ItemNewRoom`/`UpdateLaraRoom`. Les fichiers v2 restent lisibles mais
+  avant `ItemNewRoom`/`UpdateLaraRoom`. Un save v4 avec salle 255 est refusé
+  (`invalid saved room 255 (level has 242 rooms); load ignored`,
+  `badroom2-20261029/`). Les fichiers v2 restent lisibles mais
   ne restaurent que Lara et l'inventaire, pas les objets/portes/flips.
 - `RestoreLevelData` restaure les champs sérialisés par `SaveLevelData`
   (flips, meshes statiques, caméras, items : position, salle, animation,
