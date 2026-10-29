@@ -352,14 +352,15 @@ binaire.
 La sauvegarde mémoire PSX (`MemCard*`) n'est pas implémentée pour PSXPC_N. Le
 port fournit une **sauvegarde rapide de port** : `F5` en jeu écrit `TOMB5.SAV`
 (ou `TOMB5_SAVE_PATH`), `F6` au titre recharge la sauvegarde et reprend au même
-endroit. Depuis le 29 octobre, le format v3 inclut aussi l'état du niveau
+endroit. Depuis le 29 octobre, le format v4 inclut aussi l'état du niveau
 (`SaveLevelData`/`RestoreLevelData`).
 
-- **Format v3** : en-tête magique `T5P2`, version 3, `savegame_info` complet
+- **Format v4** : en-tête magique `T5P2`, version 4, `savegame_info` complet
   (inventaire, santé, stats, niveau), bloc de 8192 octets pour l'état du niveau
-  (flips, meshes statiques, caméras, items), position/rotation/salle/état
-  d'animation de Lara, checksum FNV-1a. Fichier de 8658 octets. Les fichiers v2
-  de 466 octets restent lisibles, mais ne contiennent pas l'état du niveau.
+  (flips, meshes statiques, caméras, items avec `item_flags`/`timer`/
+  `trigger_flags`), position/rotation/salle/état d'animation de Lara, checksum
+  FNV-1a. Fichier de 8658 octets. Les fichiers v3 (même taille, sans les champs
+  d'items) et v2 (466 octets) restent lisibles.
 - **Écriture** : `SaveLaraData()` rafraîchit `savegame.Lara` ; `F5` est capté
   avant le keymap (touche réservée) et consommé une seule fois par frame.
 - **Lecture** : `F6` au titre appelle `PortSave_Read`, qui recopie le bloc de
@@ -393,13 +394,14 @@ endroit. Depuis le 29 octobre, le format v3 inclut aussi l'état du niveau
   `2421b302a9e136b9e0fcee5475dd887f2ccf8d4ef4c8c71d3aba524f9ec94865`) : même
   position appliquée (`build/porting/port006c-20261028/`). Preuves privées :
   `build/porting/port006-20261028/`, `port006b-20261028/`.
-- **Preuve v3 (état du niveau)** : `F5` à Rome écrit 586 octets de niveau
+- **Preuve v4 (état du niveau)** : `F5` à Rome écrit 586 octets de niveau
   (bloc de 8192) ; au rechargement, les compteurs de lecture sont identiques
   (caméras à 259 octets, items à 586) et la scène est propre
-  (`build/porting/restorefull-debug2-20261029/`). `RESTORE3.SAV` (v2) reste
-  accepté et se recharge sans état de niveau (`restorefull-v2-20261029/`).
+  (`build/porting/restorefull-debug2-20261029/`, `v4-roundtrip-20261029/`).
+  `RESTORE3.SAV` (v2) et `E.SAV` (v3) restent acceptés
+  (`restorefull-v2-20261029/`, `v4-legacy-v3-20261029/`).
   Le désarmement de `flipeffect` après restauration évite
-  `turn180_effect(NULL)`. Preuve inter-niveaux v3 : sauvegarde `L2.SAV` au
+  `turn180_effect(NULL)`. Preuve inter-niveaux v3/v4 : sauvegarde `L2.SAV` au
   niveau 2 (room 50, X 91648 Y 0 Z 42496, 594 octets de niveau), rechargement
   par `TOMB5_AUTOLOAD` → même niveau/salle/position et scène identique
   (`build/porting/level2-save-20261029/`, `level2-load-20261029/`).
@@ -410,11 +412,11 @@ endroit. Depuis le 29 octobre, le format v3 inclut aussi l'état du niveau
   sérialisation d'un niveau dépasse cette taille, `F5` échoue explicitement au
   lieu d'écrire un fichier tronqué. Les fichiers v2 restent lisibles mais ne
   restaurent que Lara et l'inventaire, pas les objets/portes/flips.
-- `RestoreLevelData` restaure les champs réellement sérialisés par
-  `SaveLevelData` (flips, meshes statiques, caméras, items : position, salle,
-  animation, flags, points de vie). Les `item_flags`, `timer` et
-  `trigger_flags` ne sont pas encore écrits par `SaveLevelData`; ils ne sont
-  donc pas restaurés.
+- `RestoreLevelData` restaure les champs sérialisés par `SaveLevelData`
+  (flips, meshes statiques, caméras, items : position, salle, animation,
+  flags, points de vie, `item_flags`, `timer`, `trigger_flags` en v4). Les
+  fichiers v3 plus anciens utilisent `PortSave_LevelFormat=3` pour ignorer ces
+  champs et rester compatibles.
 - **Artefact visuel de reprise — cause trouvée et corrigée (29 octobre)** :
   la grande surface brune qui suivait la caméra n'était **pas** causée par
   `F6`, `AUTOLOAD` ou `RestoreLevelData` : elle apparaissait dès une partie
@@ -472,9 +474,9 @@ Les voix `SF_LOOP` redémarrent au lieu de se couper; contrôle
 (`final-audio-dummy-20261029/`). Tests : `tests/porting` 497 PASS,
 `tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
 `809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9` ;
-build final combiné (reprise v3, écriture atomique, audio/boucles/volume FX)
-`build-bx` SHA256
-`57322612388cf44b2172979e5ee68e5289d12c28e7c9de965a925a36ff0827c9`.
+build final combiné (reprise v4, écriture atomique, audio/boucles/volume FX)
+`build-cc` SHA256
+`63b12a331747deffe06a235e08cd78d08250f02174fca8992f5be50d5faba823`.
 
 Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
 reverb/loop approximés, pas de test de volume nul/catégories, pause et retour
@@ -514,7 +516,7 @@ de sauvegarde corrompu (`BAD.SAV`, 16 octets) est refusé avec
 (`build/porting/port006-corrupt-20261028/`).
 
 Cette recette historique ne validait pas la reprise complète des objets de
-niveau. Depuis le 29 octobre, le format v3 et `RestoreLevelData` restaurent
+niveau. Depuis le 29 octobre, le format v4 et `RestoreLevelData` restaurent
 l'état du niveau (voir PORT-006). Restent non validés : l'audio (aucun backend
 de sortie), la campagne et la manette physique.
 
