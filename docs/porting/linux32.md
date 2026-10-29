@@ -762,7 +762,9 @@ dernière sur les sources finales build-bx, puis
 `build/porting/final-chain-ce-20261029/` sur build-cd (memmove gameflow + v4),
 enfin `build/porting/final-chain-cj-20261029/` sur les sources finales build-ci,
 puis `build/porting/final-chain-cn-20261029/` sur build-cm (audio positionnel
-compris).
+compris). Chaîne de régression finale sur `build-pause` (pause réordonnée +
+correctif `SqrtTable`) : 1→14→titre, cutseq `name: 0`, aucun `SIGSEGV`
+(`build/porting/final-chain-pause-20261029/`).
 La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du retour titre (le gameflow peut le faire avant `DoLevel(15)`) ; elle reste
 validée séparément par le saut direct 1→15. Un soak de 13 minutes sur
 build-cm avec entrées aléatoires (marche, recul, strafe, saut, audio dummy)
