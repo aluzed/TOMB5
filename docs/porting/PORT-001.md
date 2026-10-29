@@ -2,6 +2,16 @@
 
 PORT-001 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
 
+Débordement SqrtTable trouvé par ASan pendant un soak PAL + manette : global-buffer-overflow dans mSqrt (MATHS.C:152), appelé par sub_2CL1 (LARA1.C:1555) avec un argument négatif. Correctif : clamp des entrées négatives à 0 dans mSqrt/mSqrt_2/phd_sqrt_asm/phd_sqrt_asm_CH/mSqrt_L et accès borné PortSqrtLookup() (0..209) dans MATHS.C/MATHS.H/LIGHT.C/CALCHAIR.C. Vérification GDB/ASan : toutes les variantes retournent 0 pour -1, mSqrt(INT_MAX)=46152, aucun rapport ASan ; soak ASan PAL + manette 571 s sans erreur (pal-asan-soak3-20261029/), crash initial documenté dans pal-asan-soak-20261029/. Smoke normal build-guard2 : scène de Rome rendue (guard-smoke2-20261029/). tests 4174 PASS. Build-pause SHA256 870166e1030a5399d88271eec135e66e59bbedff03ad485ca9f1827acaba1ae8. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
+PORT-001 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
 ASan PAL + manette virtuelle : avec ASAN_OPTIONS=detect_leaks=0, New Game (cutseq name: 1, 2153 occurrences), gamepad détecté et déplacement au stick, exit 0, aucune erreur AddressSanitizer (pal-asan2-20261029/). Avec LeakSanitizer actif, 189290 octets signalés dans libnvidia-glcore.so avec piles driver (aucune frame du port), donc bruit GL et non fuite du jeu (pal-asan-20261029/). Build ASan SHA256 ee0e15dca0cb3cdb8cd53e11932d1c51cbbe0a93ebde3a80caee9d9f3936cb2a. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).

@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-004 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
+Menu pause réordonné : Resume, Game Settings, Quit (Game Settings au-dessus de Quit). Le dispatch existant est conservé (case 2 = Quit, case 3 = Settings) par échange explicite 2↔3 après Requester. Vérifié au clavier : Game Settings ouvre bien SFX/Music/Configure Controls/Screen Adjust/Automatic Targeting ; Quit ouvre la confirmation « Are you sure you want to quit ? ». Preuves pause-order-kbd-20261029/ et pause-quit-20261029/. Build-pause SHA256 870166e1030a5399d88271eec135e66e59bbedff03ad485ca9f1827acaba1ae8; tests/porting+emulator 4174 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-004, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
 
 Défaut reproductible lié aux stubs : sortir les armes (Y manette) rend la vue 3D entièrement noire, HUD visible ; rengainer (Y) restaure la scène. Cause : CombatCamera (GAME/CAMERA.C:1638) a son corps sous #if 0 || PC_VERSION et tombe sur UNIMPLEMENTED. NTSC : moyennes 0,1018 → 0 → 0,1025, 63 appels CombatCamera. Preuve build/porting/vpad-draw-20261029/. Le combat aux armes est inutilisable, en plus des pickups/interactions déjà bloqués. Aucun Done.
