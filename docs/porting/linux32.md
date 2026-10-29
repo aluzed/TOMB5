@@ -287,8 +287,10 @@ virtuel créé via `/dev/uinput` est détecté par SDL
 (`[INPUT] Gamepad 0: X360 Controller`, GUID
 `030081b85e0400008e02000014010000`) ; `A` déclenche New Game (cutseq `name: 1`)
 et le stick gauche déplace Lara vers l'arche (`build/porting/vpad-20261029/`).
-Ce n'est pas une manette physique : le hotplug et le matériel réel restent non
-testés ; pas de hot reload. Tickets :
+Le hotplug est aussi validé en synthétique : la manette créée **après** le
+lancement est détectée (`SDL_CONTROLLERDEVICEADDED`), et `A` démarre New Game
+(`build/porting/vpad-hotplug-20261029/`). Ce n'est pas une manette physique :
+le matériel réel reste non testé ; pas de hot reload du keymap. Tickets :
 [PORT-009 à PORT-012](input/README.md).
 
 ## Commandes et caméra — 28 octobre 2026 (PORT-004)
