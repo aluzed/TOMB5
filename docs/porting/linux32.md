@@ -398,6 +398,9 @@ endroit. Depuis le 29 octobre, le format v4 inclut aussi l'état du niveau
   (bloc de 8192) ; au rechargement, les compteurs de lecture sont identiques
   (caméras à 259 octets, items à 586) et la scène est propre
   (`build/porting/restorefull-debug2-20261029/`, `v4-roundtrip-20261029/`).
+  Test ciblé des champs v4 : `item_flags`/`timer`/`trigger_flags` forcés sur
+  l'item 0 donnent 598 octets à la sauvegarde et 598 à la restauration
+  (`flag-roundtrip-20261029/`).
   `RESTORE3.SAV` (v2) et `E.SAV` (v3) restent acceptés
   (`restorefull-v2-20261029/`, `v4-legacy-v3-20261029/`).
   Le désarmement de `flipeffect` après restauration évite
