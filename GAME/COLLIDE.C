@@ -5,6 +5,8 @@
 #include "ITEMS.H"
 #include "LARA.H"
 #include "OBJECTS.H"
+#include "SETUP.H"
+#include "SOUND.H"
 #include "SPECIFIC.H"
 #include "STYPES.H"
 #include <stddef.h>
@@ -373,12 +375,63 @@ void TrapCollision(short item_num, struct ITEM_INFO* laraitem, struct COLL_INFO*
 
 void CreatureCollision(short item_num, struct ITEM_INFO* laraitem, struct COLL_INFO* coll)//29E10, 2A024
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_num];
+
+	if (item->status == ITEM_INVISIBLE || item->hit_points <= 0)
+	{
+		return;
+	}
+
+	if (TestBoundsCollide(item, laraitem, coll->radius) && TestCollision(item, laraitem))
+	{
+		if (coll->enable_baddie_push)
+		{
+			ItemPushLara(item, laraitem, coll, 0, 1);
+		}
+	}
 }
 
 void LaraBaddieCollision(struct ITEM_INFO* laraitem, struct COLL_INFO* coll)//29A44, 29C58
 {
-	UNIMPLEMENTED();
+	static int cooldown = 0;
+	int i;
+
+	if (cooldown > 0)
+	{
+		cooldown--;
+	}
+
+	for (i = 0; i < level_items; i++)
+	{
+		struct ITEM_INFO* item = &items[i];
+		long dx;
+		long dz;
+
+		if (item == laraitem || item->hit_points <= 0 ||
+			item->status == ITEM_INVISIBLE ||
+			!objects[item->object_number].intelligent)
+		{
+			continue;
+		}
+
+		dx = item->pos.x_pos - laraitem->pos.x_pos;
+		dz = item->pos.z_pos - laraitem->pos.z_pos;
+
+		if (ABS(dx) > 512 || ABS(dz) > 512 || ABS(item->pos.y_pos - laraitem->pos.y_pos) > 512)
+		{
+			continue;
+		}
+
+		if (cooldown == 0)
+		{
+			laraitem->hit_points -= 5;
+			laraitem->hit_status = 1;
+			SoundEffect(SFX_LARA_INJURY_RND, &laraitem->pos, SFX_DEFAULT);
+			cooldown = 45;
+		}
+
+		break;
+	}
 }
 
 void ShiftItem(struct ITEM_INFO* item, struct COLL_INFO* coll)//7BEEC(<), 7DF30(<) (F)

@@ -929,6 +929,7 @@ static void PortSetupGameplayEnemies(void)
 
 		objects[object_number].intelligent = 1;
 		objects[object_number].hit_points = hit_points;
+		objects[object_number].collision = &CreatureCollision;
 		items[i].hit_points = hit_points;
 		items[i].status = ITEM_INACTIVE;
 		items[i].collidable = 1;
