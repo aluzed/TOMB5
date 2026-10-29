@@ -790,7 +790,9 @@ complétion jouée. Chaîne PAL complète avec le même type d'injection toutes 
 600 frames : niveaux 1→14 avec les salles/positions du tableau NTSC (2/50,
 3/20, 4/99, 5/20, 6/123, 7/2, 8/70, 9/5, 10/20, 11/3, 12/129, 13/3, 14/8),
 puis retour au titre (`cutseq name: 0`), aucun `SIGSEGV`
-(`build/porting/pal-chain-20261029/`). Soak PAL de 10 minutes avec la manette
+(`build/porting/pal-chain-20261029/`). Chaîne PAL revérifiée sur `build-pause`
+(pause réordonnée + correctif `SqrtTable`) : 1→14→titre, cutseq `name: 0`,
+aucun `SIGSEGV` (`build/porting/pal-chain-pause-20261029/`). Soak PAL de 10 minutes avec la manette
 virtuelle (boutons et stick gauche aléatoires) : 32 échantillons VmRSS,
 **74 928 Ko constant** sur 571 s, exit 0, aucune erreur fatale, scène de rue
 rendue (`build/porting/pal-gp-soak-20261029/`).

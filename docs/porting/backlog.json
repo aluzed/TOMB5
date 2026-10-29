@@ -932,6 +932,15 @@
       ],
       "status": "In progress",
       "summary": "Chaîne de régression finale sur build-pause (pause réordonnée Resume/Game Settings/Quit + correctif SqrtTable) : injections GDB toutes les 600 frames, niveaux 1→14 avec salles/positions conformes (2/50, 3/20, 4/99, 5/20, 6/123, 7/2, 8/70, 9/5, 10/20, 11/3, 12/129, 13/3, 14/8), puis cutseq name: 0 et retour titre, aucun SIGSEGV. Preuve build/porting/final-chain-pause-20261029/. Déclenchements synthétiques, pas une complétion jouée. Build-pause SHA256 870166e1030a5399d88271eec135e66e59bbedff03ad485ca9f1827acaba1ae8. Aucun Done."
+    },
+    {
+      "date": "2026-10-29",
+      "authorization_until": "2026-10-29T12:00:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Chaîne PAL revérifiée sur build-pause (pause réordonnée + correctif SqrtTable) : injections GDB toutes les 600 frames, niveaux 1→14 avec salles/positions conformes, puis cutseq name: 0 et retour titre, aucun SIGSEGV. Preuve build/porting/pal-chain-pause-20261029/. Déclenchements synthétiques, pas une complétion jouée. Build-pause SHA256 870166e1030a5399d88271eec135e66e59bbedff03ad485ca9f1827acaba1ae8. Aucun Done."
     }
   ]
 }
