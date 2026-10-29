@@ -708,6 +708,8 @@ La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du retour ti
 validée séparément par le saut direct 1→15. Un soak de 13 minutes sur
 build-cm avec entrées aléatoires (marche, recul, strafe, saut, audio dummy)
 ne produit ni `SIGSEGV` ni erreur fatale (`build/porting/soak-20261029/`).
+Smoke PAL (`build/porting/data`, SLES_033.31) sur build-cm : scène de Rome
+rendue, audio initialisé, aucune erreur (`final-pal-20261029/`).
 
 Cela protège aussi toute donnée de niveau manquante lors d'un chargement
 direct. Le chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT)
