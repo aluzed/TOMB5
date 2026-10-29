@@ -698,6 +698,20 @@ nouvelle erreur (`build/porting/asan-run2-20261029/`). Les parcours ASan
   le même parcours signale 189 290 octets dans `libnvidia-glcore.so` (piles
   d'allocation du driver GL, aucune frame du port) : ce n'est pas une fuite du
   jeu, mais un bruit du driver (`pal-asan-20261029/`).
+  **Débordement SqrtTable trouvé et corrigé (29 octobre)** : le soak ASan
+  PAL + manette a déclenché un `global-buffer-overflow` dans `mSqrt`
+  (`SPEC_PSXPC_N/MATHS.C`, lecture `SqrtTable[value]`) depuis `sub_2CL1`
+  (`SPEC_PSXPC_N/LARA1.C:1555`, argument `0x1000000 - a000` négatif par
+  arrondi). Les variantes `mSqrt_2`, `phd_sqrt_asm`, `phd_sqrt_asm_CH`
+  (`CALCHAIR.C`) et `mSqrt_L` (`LIGHT.C`) lisaient la même table sans borne.
+  Correctif : entrée négative ramenée à 0 et accès centralisé par
+  `PortSqrtLookup()` borné à `0..209` (`MATHS.C`/`MATHS.H`). Vérification
+  directe sous GDB/ASan : `mSqrt(-1) = mSqrt_2(-1) = mSqrt_L(-1) =
+  phd_sqrt_asm(-1) = phd_sqrt_asm_CH(-1) = 0`, `mSqrt(2147483647) = 46152`,
+  aucun rapport ASan ; soak ASan PAL + manette de 571 s, 34 échantillons,
+  exit 0, aucune erreur (`pal-asan-soak3-20261029/`, preuve du crash initial
+  dans `pal-asan-soak-20261029/`). Régression visuelle normale : scène de
+  Rome rendue (`guard-smoke2-20261029/`).
 
 Après correctif, le niveau 6 se charge et rend sa scène ; le saut direct
 1→6 ne crashe plus. La chaîne contrôlée **1→2→3→4→5→6→7→8→9→10→11→12→13→14**

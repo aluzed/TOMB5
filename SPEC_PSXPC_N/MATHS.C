@@ -116,11 +116,34 @@ long mGetAngle(long x, long z, long tx, long tz)//77678(<), 796BC(<) (F)
 	return -result_angle & 0xFFFF;
 }
 
+unsigned short PortSqrtLookup(long index)
+{
+	const long count = (long)(sizeof(SqrtTable) / sizeof(SqrtTable[0]));
+
+	if (index < 0)
+	{
+		index = 0;
+	}
+	else if (index >= count)
+	{
+		index = count - 1;
+	}
+
+	return SqrtTable[index];
+}
+
 long mSqrt(long value)//779DC
 {
 	int v0 = 0;
 	int v1 = 0;
 	int at = 0;
+
+	/* A negative value is an overflow/rounding artifact for a squared
+	 * distance; the PSX table read would be out of bounds. */
+	if (value < 0)
+	{
+		value = 0;
+	}
 
 	LZCR = gte_leadingzerocount(value);
 	LZCS = value;
@@ -149,7 +172,7 @@ long mSqrt(long value)//779DC
 
 		value -= 0x40;
 
-		value = SqrtTable[value];
+		value = PortSqrtLookup(value);
 		value <<= v0;
 	}
 	//locret_77A38
@@ -160,7 +183,15 @@ long mSqrt_2(long value)//83B30(<), 85B74(<) (F)
 {
 	long v0 = 0x1F;
 	long at = 0;
-	long v1 = gte_ldlzc(value);
+	long v1;
+
+	/* Clamp negative inputs before the hardware sqrt normalization. */
+	if (value < 0)
+	{
+		value = 0;
+	}
+
+	v1 = gte_ldlzc(value);
 
 	if (value != 0)
 	{
@@ -179,7 +210,7 @@ long mSqrt_2(long value)//83B30(<), 85B74(<) (F)
 		}
 
 		//loc_85BB4
-		value = SqrtTable[value - 0x40] << v0;
+		value = PortSqrtLookup(value - 0x40) << v0;
 
 	}//locret_85BD0
 
@@ -189,8 +220,16 @@ long mSqrt_2(long value)//83B30(<), 85B74(<) (F)
 long phd_sqrt_asm(long value)//83B30(<), 85B74(<) (F)
 {
 	long v0 = 0x1F;
-	long v1 = gte_ldlzc(value);
+	long v1;
 	long at = 0;
+
+	/* Clamp negative inputs before the hardware sqrt normalization. */
+	if (value < 0)
+	{
+		value = 0;
+	}
+
+	v1 = gte_ldlzc(value);
 
 	if (value != 0)
 	{
@@ -209,7 +248,7 @@ long phd_sqrt_asm(long value)//83B30(<), 85B74(<) (F)
 		}
 
 		//loc_85BB4
-		value = SqrtTable[value - 0x40] << v0;
+		value = PortSqrtLookup(value - 0x40) << v0;
 
 	}//locret_85BD0
 

@@ -41,6 +41,7 @@ extern void phd_GetVectorAngles(long dx, long dy, long dz, short* angles);
 extern void phd_LookAt(long x, long y, long z, long tx, long ty, long tz, long croll);
 extern long phd_atan_asm(long x, long y);
 extern long mSqrt(long x);
+extern unsigned short PortSqrtLookup(long index);
 extern void mRotBoundingBoxNoPersp(short* bounds, short* tbounds);
 extern void phd_GenerateW2V(struct PHD_3DPOS* view);
 extern void iTranslateXYZ2(short x, short y, short z, short x2, short y2, short z2);

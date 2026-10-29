@@ -77,6 +77,12 @@ int mSqrt_L(int a0)//8649C (F)
 	int v1 = 0;
 	int at = 0;
 
+	/* Clamp negative inputs before the hardware sqrt normalization. */
+	if (a0 < 0)
+	{
+		a0 = 0;
+	}
+
 	LZCR = gte_leadingzerocount(a0);
 	LZCS = a0;
 
@@ -104,7 +110,7 @@ int mSqrt_L(int a0)//8649C (F)
 
 		//loc_864DC
 		a0 -= 64;
-		a0 = SqrtTable[a0];
+		a0 = PortSqrtLookup(a0);
 		a0 <<= v0;
 	}
 
@@ -180,7 +186,7 @@ void S_CalculateStaticMeshLight(long floor, long touch_bits, long mesh_bits, int
 							}
 							//loc_86780
 							a0 -= 0x40;
-							a0 = SqrtTable[a0];
+							a0 = PortSqrtLookup(a0);
 							a0 <<= v0;
 						}
 						//loc_8679C

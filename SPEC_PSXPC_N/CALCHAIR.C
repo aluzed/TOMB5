@@ -23,6 +23,12 @@ long phd_sqrt_asm_CH(long value)//83B30(<), 85B74(<) (F)
 	int v1 = 0;
 	int at = 0;
 
+	/* Clamp negative inputs before the hardware sqrt normalization. */
+	if (value < 0)
+	{
+		value = 0;
+	}
+
 	LZCR = gte_leadingzerocount(value);
 
 	v0 = 0x1F;
@@ -47,7 +53,7 @@ long phd_sqrt_asm_CH(long value)//83B30(<), 85B74(<) (F)
 		}
 
 		//loc_85BB4
-		value = SqrtTable[value - 0x40] << v0;
+		value = PortSqrtLookup(value - 0x40) << v0;
 
 	}//locret_85BD0
 
