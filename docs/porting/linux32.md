@@ -281,8 +281,14 @@ ELF32 i386 (SHA256 `30c014c2ca3ce1dac76dc932a529e2f8b9fb51a61444e82bc4cd1a46da23
 `action` clavier 2 = `SPACE`, puis `Espace` atteint la scène
 (`ui-bind-e2e/03-level.png`) ; `left` clavier 2 = `A` écrit
 `INPUT.CFG` (`build/porting/ui-evidence-20261028/bound-left-A.png`). F1 en jeu et reprise :
-`build/porting/ui-evidence-20261028/gameplay-ui.png`, `gameplay-resumed.png`. Aucune manette physique
-testée ; pas de hot reload. Tickets :
+`build/porting/ui-evidence-20261028/gameplay-ui.png`, `gameplay-resumed.png`.
+Manette validée en **synthétique** le 29 octobre : un contrôleur Xbox 360
+virtuel créé via `/dev/uinput` est détecté par SDL
+(`[INPUT] Gamepad 0: X360 Controller`, GUID
+`030081b85e0400008e02000014010000`) ; `A` déclenche New Game (cutseq `name: 1`)
+et le stick gauche déplace Lara vers l'arche (`build/porting/vpad-20261029/`).
+Ce n'est pas une manette physique : le hotplug et le matériel réel restent non
+testés ; pas de hot reload. Tickets :
 [PORT-009 à PORT-012](input/README.md).
 
 ## Commandes et caméra — 28 octobre 2026 (PORT-004)

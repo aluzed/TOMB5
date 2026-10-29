@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-10-29
+
+PORT-004 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
+Manette validée en synthétique : contrôleur Xbox 360 virtuel créé via /dev/uinput, détecté par SDL (GUID 030081b85e0400008e02000014010000, nom X360 Controller). Le bouton A déclenche New Game (cutseq name: 1) et le stick gauche déplace Lara vers l'arche ; captures 01-after-a.png / 02-after-forward.png. Preuve build/porting/vpad-20261029/. Ce n'est pas une manette physique : hotplug et matériel réel non testés. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-10-28
 
 PORT-004 — **In progress**. Autorisation bornée jusqu’au 2026-10-28T15:00:00+01:00. Linux32 provisoire.

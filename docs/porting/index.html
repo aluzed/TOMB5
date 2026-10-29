@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TOMB5 — Backlog fonctionnel</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:1120px;margin:auto;padding:24px;color:#18293a;background:#f6f8fb}h1,h2{line-height:1.25}a{color:#075a9c}table{width:100%;border-collapse:collapse;background:white}th,td{border:1px solid #ccd5df;padding:10px;text-align:left}.scroll{overflow-x:auto}.notice{padding:18px;border-left:5px solid #a66a00;background:#fff4d9}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}section{margin:32px 0;padding:20px;background:white;border:1px solid #ccd5df}</style></head><body><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-10-29
 
+PORT-004 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
+Manette validée en synthétique : contrôleur Xbox 360 virtuel créé via /dev/uinput, détecté par SDL (GUID 030081b85e0400008e02000014010000, nom X360 Controller). Le bouton A déclenche New Game (cutseq name: 1) et le stick gauche déplace Lara vers l&#x27;arche ; captures 01-after-a.png / 02-after-forward.png. Preuve build/porting/vpad-20261029/. Ce n&#x27;est pas une manette physique : hotplug et matériel réel non testés. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-10-29
+
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
 
 PAL (SLES_033.31) : chaîne complète 1→14→titre validée par injections GDB de gfLevelComplete=gfCurrentLevel+1 toutes les 600 frames. Salles/positions conformes au tableau NTSC (1/0, 2/50, 3/20, 4/99, 5/20, 6/123, 7/2, 8/70, 9/5, 10/20, 11/3, 12/129, 13/3, 14/8), puis cutseq name: 0 et retour titre, aucun SIGSEGV. Preuve build/porting/pal-chain-20261029/. Déclenchements synthétiques, pas une complétion jouée. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done.
