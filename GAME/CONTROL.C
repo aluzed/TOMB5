@@ -3,6 +3,7 @@
 
 #if PSX_VERSION || PSXPC_VERSION
 #include "COLLIDE_S.H"
+#include "GETSTUFF.H"
 #include "DRAWPHAS.H"
 #include "3D_GEN.H"
 #include "CD.H"
@@ -4444,7 +4445,32 @@ int check_xray_machine_trigger()// (F)
 
 #if !PC_VERSION
 extern int GetChange(struct ITEM_INFO* item, struct ANIM_STRUCT* anim);
+extern void TranslateItem(struct ITEM_INFO* item, short x, short y, short z);
+extern void ItemNewRoom(short item_num, short room_number);
 #endif
+
+static void PortUpdateItemRoom(struct ITEM_INFO* item)
+{
+#if !PC_VERSION
+	short room_number = item->room_number;
+	struct FLOOR_INFO* floor = GetFloor(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, &room_number);
+
+	if (floor != NULL)
+	{
+		short height = GetHeight(floor, item->pos.x_pos, item->pos.y_pos, item->pos.z_pos);
+
+		if (height != -32512)
+		{
+			item->pos.y_pos = height;
+		}
+
+		if (room_number != item->room_number)
+		{
+			ItemNewRoom((short)(item - items), room_number);
+		}
+	}
+#endif
+}
 
 void AnimateItem(struct ITEM_INFO* item)
 {
@@ -4517,6 +4543,33 @@ void AnimateItem(struct ITEM_INFO* item)
 
 	if (item->frame_number > anim->frame_end)
 	{
+		int command_count = anim->number_commands;
+		unsigned short* command = (unsigned short*)&commands[anim->command_index];
+
+		while (command_count-- > 0)
+		{
+			unsigned short data = *command++;
+
+			if (data == 1)
+			{
+				TranslateItem(item, command[0], command[1], command[2]);
+				command += 3;
+				PortUpdateItemRoom(item);
+			}
+			else if (data == 5 || data == 6)
+			{
+				command += 2;
+			}
+			else if (data == 2)
+			{
+				command += 2;
+			}
+			else if (data != 3)
+			{
+				break;
+			}
+		}
+
 		item->frame_number = anim->frame_base;
 		item->current_anim_state = anim->current_anim_state;
 	}
