@@ -898,6 +898,57 @@ void BaddyObjects()//?, B5328
 	}//loc_20A4
 }
 
+static void PortSetupGameplayObjects(void)
+{
+	int i;
+
+	for (i = 0; i < NUMBER_OBJECTS; i++)
+	{
+		if (!objects[i].loaded)
+		{
+			continue;
+		}
+
+		if ((i >= PUZZLE_ITEM1 && i <= CROWBAR_ITEM) ||
+			(i >= PISTOLS_ITEM && i <= COMPASS_ITEM))
+		{
+			if (i == CROSSBOW_BOLT || i == FLARE_ITEM)
+			{
+				continue;
+			}
+
+			objects[i].collision = &PickUpCollision;
+		}
+		else if (i >= PUZZLE_HOLE1 && i <= PUZZLE_HOLE8)
+		{
+			objects[i].collision = &PuzzleHoleCollision;
+		}
+		else if (i >= PUZZLE_DONE1 && i <= PUZZLE_DONE8)
+		{
+			objects[i].collision = &PuzzleDoneCollision;
+		}
+		else if (i >= KEY_HOLE1 && i <= KEY_HOLE8)
+		{
+			objects[i].collision = &KeyHoleCollision;
+		}
+		else if (i >= SWITCH_TYPE1 && i <= SWITCH_TYPE8)
+		{
+			objects[i].collision = &SwitchCollision;
+			objects[i].control = &SwitchControl;
+		}
+		else if (i >= DOOR_TYPE1 && i <= DOOR_TYPE8)
+		{
+			objects[i].collision = &DoorCollision;
+			objects[i].control = &DoorControl;
+		}
+		else if (i == TURN_SWITCH)
+		{
+			objects[i].collision = &TurnSwitchCollision;
+			objects[i].control = &TurnSwitchControl;
+		}
+	}
+}
+
 void InitialiseObjects()//?(<), B96EC(<) sub_5DE0
 {
 	int i;
@@ -934,6 +985,7 @@ void InitialiseObjects()//?(<), B96EC(<) sub_5DE0
 	BaddyObjects();
 	ObjectObjects();
 	TrapObjects();
+	PortSetupGameplayObjects();
 	InitialiseHair();
 	InitialiseEffects();
 

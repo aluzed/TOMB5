@@ -338,12 +338,6 @@ int ItemPushLaraStatic(struct ITEM_INFO* laraitem, short* bounds, struct PHD_3DP
 	return 0;
 }
 
-int TestBoundsCollideStatic(short* bounds, struct PHD_3DPOS* pos, long radius)//2A140, 2A368
-{
-	UNIMPLEMENTED();
-	return 0;
-}
-
 void AIPickupCollision(short item_num, struct ITEM_INFO* laraitem, struct COLL_INFO* coll)//2A03C(<), 2A264 (F)
 {
 	struct ITEM_INFO* item = &items[item_num];
@@ -395,6 +389,159 @@ void ShiftItem(struct ITEM_INFO* item, struct COLL_INFO* coll)//7BEEC(<), 7DF30(
 	coll->shift.x = coll->shift.y = coll->shift.z = 0;
 }
 
+static void PortRotateXZ(long x, long z, short y_rot, long* rx, long* rz)
+{
+	*rx = (x * COS(y_rot) - z * SIN(y_rot)) >> W2V_SHIFT;
+	*rz = (x * SIN(y_rot) + z * COS(y_rot)) >> W2V_SHIFT;
+}
+
+static int PortInside(long value, long low, long high)
+{
+	return value >= low && value <= high;
+}
+
+int TestBoundsCollideStatic(short* bounds, struct PHD_3DPOS* pos, long radius)
+{
+	long x = lara_item->pos.x_pos - pos->x_pos;
+	long z = lara_item->pos.z_pos - pos->z_pos;
+	long rx;
+	long rz;
+
+	PortRotateXZ(x, z, pos->y_rot, &rx, &rz);
+
+	return PortInside(rx, bounds[0] - radius, bounds[1] + radius) &&
+	       PortInside(rz, bounds[4] - radius, bounds[5] + radius);
+}
+
+int TestBoundsCollide(struct ITEM_INFO* item, struct ITEM_INFO* laraitem, long radius)
+{
+	short* bounds = GetBoundsAccurate(item);
+	long x = laraitem->pos.x_pos - item->pos.x_pos;
+	long z = laraitem->pos.z_pos - item->pos.z_pos;
+	long rx;
+	long rz;
+
+	if (bounds == NULL)
+	{
+		return 0;
+	}
+
+	PortRotateXZ(x, z, item->pos.y_rot, &rx, &rz);
+
+	return PortInside(rx, bounds[0] - radius, bounds[1] + radius) &&
+	       PortInside(rz, bounds[4] - radius, bounds[5] + radius);
+}
+
+int TestLaraPosition(short* bounds, struct ITEM_INFO* item, struct ITEM_INFO* lara_item)
+{
+	short* lara_bounds = GetBoundsAccurate(lara_item);
+	long x = lara_item->pos.x_pos - item->pos.x_pos;
+	long y = lara_item->pos.y_pos - item->pos.y_pos;
+	long z = lara_item->pos.z_pos - item->pos.z_pos;
+	long rx;
+	long rz;
+
+	if (lara_bounds == NULL)
+	{
+		return 0;
+	}
+
+	PortRotateXZ(x, z, item->pos.y_rot, &rx, &rz);
+
+	return rx + lara_bounds[1] >= bounds[0] &&
+	       rx + lara_bounds[0] <= bounds[1] &&
+	       y + lara_bounds[3] >= bounds[2] &&
+	       y + lara_bounds[2] <= bounds[3] &&
+	       rz + lara_bounds[5] >= bounds[4] &&
+	       rz + lara_bounds[4] <= bounds[5];
+}
+
+int MoveLaraPosition(struct PHD_VECTOR* vector, struct ITEM_INFO* item, struct ITEM_INFO* lara_item)
+{
+	long x = item->pos.x_pos + ((vector->x * COS(item->pos.y_rot) - vector->z * SIN(item->pos.y_rot)) >> W2V_SHIFT);
+	long y = item->pos.y_pos + vector->y;
+	long z = item->pos.z_pos + ((vector->x * SIN(item->pos.y_rot) + vector->z * COS(item->pos.y_rot)) >> W2V_SHIFT);
+
+	if (ABS(lara_item->pos.x_pos - x) <= 256 &&
+		ABS(lara_item->pos.y_pos - y) <= 256 &&
+		ABS(lara_item->pos.z_pos - z) <= 256)
+	{
+		lara_item->pos.x_pos = x;
+		lara_item->pos.y_pos = y;
+		lara_item->pos.z_pos = z;
+		return 1;
+	}
+
+	return 0;
+}
+
+int ItemPushLara(struct ITEM_INFO* item, struct ITEM_INFO* laraitem, struct COLL_INFO* coll, int spaz, int big_push)
+{
+	short* bounds = GetBoundsAccurate(item);
+	long x = laraitem->pos.x_pos - item->pos.x_pos;
+	long z = laraitem->pos.z_pos - item->pos.z_pos;
+	long rx;
+	long rz;
+	long minx;
+	long maxx;
+	long minz;
+	long maxz;
+	long push_x = 0;
+	long push_z = 0;
+
+	if (bounds == NULL)
+	{
+		return 0;
+	}
+
+	PortRotateXZ(x, z, item->pos.y_rot, &rx, &rz);
+
+	minx = bounds[0] - coll->radius;
+	maxx = bounds[1] + coll->radius;
+	minz = bounds[4] - coll->radius;
+	maxz = bounds[5] + coll->radius;
+
+	if (!PortInside(rx, minx, maxx) || !PortInside(rz, minz, maxz))
+	{
+		return 0;
+	}
+
+	if (rx - minx < maxx - rx)
+	{
+		push_x = minx - rx;
+	}
+	else
+	{
+		push_x = maxx - rx;
+	}
+
+	if (rz - minz < maxz - rz)
+	{
+		push_z = minz - rz;
+	}
+	else
+	{
+		push_z = maxz - rz;
+	}
+
+	if (ABS(push_x) < ABS(push_z))
+	{
+		push_z = 0;
+	}
+	else
+	{
+		push_x = 0;
+	}
+
+	coll->shift.x = (push_x * COS(item->pos.y_rot) + push_z * SIN(item->pos.y_rot)) >> W2V_SHIFT;
+	coll->shift.z = (push_z * COS(item->pos.y_rot) - push_x * SIN(item->pos.y_rot)) >> W2V_SHIFT;
+
+	laraitem->pos.x_pos += coll->shift.x;
+	laraitem->pos.z_pos += coll->shift.z;
+
+	return 1;
+}
+
 #if PC_VERSION
 void UpdateLaraRoom(struct ITEM_INFO* item, int height)//7C58C(<), 7E5D0(<) (F)
 {
@@ -419,30 +566,6 @@ void ObjectCollision(short item_num, struct ITEM_INFO* lara_item, struct COLL_IN
 		if (coll->enable_baddie_push)
 			ItemPushLara(item, lara_item, coll, 0, 1);
 	}
-}
-
-int TestLaraPosition(short* bounds, struct ITEM_INFO* item, struct ITEM_INFO* lara_item)
-{
-	UNIMPLEMENTED();
-	return 0;
-}
-
-int MoveLaraPosition(struct PHD_VECTOR* vector, struct ITEM_INFO* item, struct ITEM_INFO* lara_item)
-{
-	UNIMPLEMENTED();
-	return 0;
-}
-
-int TestBoundsCollide(struct ITEM_INFO* item, struct ITEM_INFO* laraitem, long radius)
-{
-	UNIMPLEMENTED();
-	return 0;
-}
-
-int ItemPushLara(struct ITEM_INFO* item, struct ITEM_INFO* laraitem, struct COLL_INFO* coll, int spaz, int big_push)
-{
-	UNIMPLEMENTED();
-	return 0;
 }
 
 int GetCollidedObjects(struct ITEM_INFO* a1, long a2, int a3, struct ITEM_INFO** a4, struct MESH_INFO** a5, int a6)

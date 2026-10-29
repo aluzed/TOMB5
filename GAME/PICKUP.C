@@ -15,6 +15,7 @@
 #include "SPECIFIC.H"
 #include "SWITCH.H"
 #include "ITEMS.H"
+#include "NEWINV2.H"
 #include "DELTAPAK.H"
 #ifdef PC_VERSION
 #include "GAME.H"
@@ -216,7 +217,30 @@ int KeyTrigger(short item_num)//52C14(<), 53078(<) (F)
 
 void PuzzleHoleCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//52520, 52984
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_num];
+	int puzzle = item->object_number - PUZZLE_HOLE1;
+	struct PHD_VECTOR pos = { 0, 0, 0 };
+
+	if (puzzle >= 0 && puzzle < 8 && (input & IN_ACTION) &&
+		l->current_anim_state == STATE_LARA_STOP &&
+		l->anim_number == ANIMATION_LARA_STAY_IDLE &&
+		!l->gravity_status && lara.gun_status == LG_NO_ARMS &&
+		have_i_got_object(PUZZLE_ITEM1 + puzzle) &&
+		TestLaraPosition(PuzzleBounds, item, l) &&
+		MoveLaraPosition(&pos, item, l))
+	{
+		l->anim_number = ANIMATION_LARA_USE_PUZZLE;
+		l->frame_number = anims[ANIMATION_LARA_USE_PUZZLE].frame_base;
+		l->current_anim_state = STATE_LARA_INSERT_PUZZLE;
+		lara.gun_status = LG_HANDS_BUSY;
+		lara.IsMoving = 0;
+
+		DEL_picked_up_object(PUZZLE_ITEM1 + puzzle);
+		PuzzleDone(item, item_num);
+		return;
+	}
+
+	ObjectCollision(item_num, l, coll);
 }
 
 void PuzzleDoneCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//524C8(<), 5292C (F)
@@ -229,12 +253,63 @@ void PuzzleDoneCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* 
 
 void KeyHoleCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//52188, 525EC
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_num];
+	int key = item->object_number - KEY_HOLE1;
+
+	if (key >= 0 && key < 8 && (input & IN_ACTION) &&
+		l->current_anim_state == STATE_LARA_STOP &&
+		l->anim_number == ANIMATION_LARA_STAY_IDLE &&
+		!l->gravity_status && lara.gun_status == LG_NO_ARMS &&
+		have_i_got_object(KEY_ITEM1 + key) &&
+		TestLaraPosition(KeyHoleBounds, item, l) &&
+		MoveLaraPosition(&KeyHolePosition, item, l))
+	{
+		l->anim_number = ANIMATION_LARA_USE_KEY;
+		l->frame_number = anims[ANIMATION_LARA_USE_KEY].frame_base;
+		l->current_anim_state = STATE_LARA_INSERT_KEY;
+		lara.gun_status = LG_HANDS_BUSY;
+		lara.IsMoving = 0;
+
+		DEL_picked_up_object(KEY_ITEM1 + key);
+		item->status = ITEM_ACTIVE;
+		KeyTriggerActive = TRUE;
+		AddActiveItem(item_num);
+		TestTriggersAtXYZ(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, item->room_number, 1, 0);
+		return;
+	}
+
+	ObjectCollision(item_num, l, coll);
 }
 
 void PickUpCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//516C8, 51B2C
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_num];
+
+	if (item->status != ITEM_INVISIBLE &&
+		(input & IN_ACTION) &&
+		l->current_anim_state == STATE_LARA_STOP &&
+		l->anim_number == ANIMATION_LARA_STAY_IDLE &&
+		!l->gravity_status &&
+		lara.gun_status == LG_NO_ARMS &&
+		TestLaraPosition(PickUpBounds, item, l))
+	{
+		if (MoveLaraPosition(&PickUpPosition, item, l))
+		{
+			l->anim_number = ANIMATION_LARA_PICKUP;
+			l->frame_number = anims[ANIMATION_LARA_PICKUP].frame_base;
+			l->current_anim_state = STATE_LARA_PICKUP;
+			lara.gun_status = LG_HANDS_BUSY;
+			lara.IsMoving = 0;
+
+			AddDisplayPickup(item->object_number);
+			item->status = ITEM_INVISIBLE;
+			item->collidable = 0;
+			KillItem(item_num);
+			return;
+		}
+	}
+
+	ObjectCollision(item_num, l, coll);
 }
 
 void RegeneratePickups()//515AC, 51A10 (F)

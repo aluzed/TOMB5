@@ -472,7 +472,26 @@ unsigned short GetTiltType(struct FLOOR_INFO* floor, long x, long y, long z)
 	return 0;
 }
 
-void GetCollisionInfo(struct COLL_INFO* coll, long xpos, long ypos, long zpos, short room_number, long objheight)//7B210, 7D254
+static void PortCollideItems(struct COLL_INFO* coll, short room_number)
+{
+	short item_num = room[room_number].item_number;
+
+	while (item_num != -1)
+	{
+		struct ITEM_INFO* item = &items[item_num];
+		short next_item = item->next_item;
+
+		if (item->collidable && item->status != ITEM_INVISIBLE &&
+			objects[item->object_number].collision != NULL)
+		{
+			objects[item->object_number].collision(item_num, lara_item, coll);
+		}
+
+		item_num = next_item;
+	}
+}
+
+static void GetCollisionInfoGeometry(struct COLL_INFO* coll, long xpos, long ypos, long zpos, short room_number, long objheight)//7B210, 7D254
 {
 	int fp;
 	short room_num;//0x70+var_58
@@ -935,4 +954,10 @@ void GetCollisionInfo(struct COLL_INFO* coll, long xpos, long ypos, long zpos, s
 	}
 	//loc_7B918
 	return;
+}
+
+void GetCollisionInfo(struct COLL_INFO* coll, long xpos, long ypos, long zpos, short room_number, long objheight)
+{
+	GetCollisionInfoGeometry(coll, xpos, ypos, zpos, room_number, objheight);
+	PortCollideItems(coll, room_number);
 }

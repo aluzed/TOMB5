@@ -235,7 +235,24 @@ void DoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)/
 
 void DoorControl(short item_number)//2AD74, 2B09C
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_number];
+	struct DOOR_DATA* door = (struct DOOR_DATA*)item->data;
+
+	if (door == NULL)
+	{
+		return;
+	}
+
+	if (!door->Opened)
+	{
+		OpenThatDoor(&door->d1, door);
+		OpenThatDoor(&door->d2, door);
+		OpenThatDoor(&door->d1flip, door);
+		OpenThatDoor(&door->d2flip, door);
+		door->Opened = 1;
+	}
+
+	AnimateItem(item);
 }
 
 void OpenThatDoor(struct DOORPOS_DATA* d, struct DOOR_DATA* dd)//2AB8C, 2AEB4

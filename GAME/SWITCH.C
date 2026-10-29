@@ -321,7 +321,7 @@ void TurnSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* 
 
 void TurnSwitchControl(short item_num)//56E9C, 5733C
 {
-	UNIMPLEMENTED();
+	AnimateItem(&items[item_num]);
 	return;
 }
 
@@ -345,13 +345,34 @@ void SwitchCollision2(short item_num, struct ITEM_INFO* l, struct COLL_INFO* col
 
 void SwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//56470, 56910
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+
+	if ((input & IN_ACTION) &&
+		l->current_anim_state == STATE_LARA_STOP &&
+		l->anim_number == ANIMATION_LARA_STAY_IDLE &&
+		!l->gravity_status && lara.gun_status == LG_NO_ARMS &&
+		TestLaraPosition(SwitchBounds, item, l) &&
+		MoveLaraPosition(&SwitchPos, item, l))
+	{
+		l->anim_number = ANIMATION_LARA_SWITCH_SMALL_DOWN;
+		l->frame_number = anims[ANIMATION_LARA_SWITCH_SMALL_DOWN].frame_base;
+		l->current_anim_state = STATE_LARA_SWITCH_DOWN;
+		lara.gun_status = LG_HANDS_BUSY;
+		lara.IsMoving = 0;
+
+		item->status = ITEM_ACTIVE;
+		item->goal_anim_state = 1;
+		AddActiveItem(item_num);
+		TestTriggersAtXYZ(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, item->room_number, 1, 0);
+		return;
+	}
+
+	ObjectCollision(item_num, l, coll);
 }
 
 void SwitchControl(short item_number)//5623C, 566DC
 {
-	UNIMPLEMENTED();
+	AnimateItem(&items[item_number]);
 	return;
 }
 
