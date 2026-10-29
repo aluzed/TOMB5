@@ -476,6 +476,9 @@ humaine ni d'une fidélité SPU complète.
 - `SpuSetKey` renseigne le registre de volume courant `+6` (0x3FFF à
   key-on, 0 à key-off); sans cela `SpuGetKeyStatus` renvoyait « terminé » et
   le jeu libérait les voix immédiatement.
+- `SoundFXVolume` est appliqué au master du callback. Mise à zéro forcée par
+  GDB : le PCM reste entièrement nul pendant la marche
+  (`build/porting/mute-20261029/`).
 
 Preuves : avec `SDL_AUDIODRIVER=disk`, une partie neuve à Rome puis 8 s de
 marche produit un PCM stéréo non nul (21,1 Mo, RMS ~977, échantillons actifs
