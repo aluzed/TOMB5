@@ -4,6 +4,8 @@
 #include <LIBSPU.H>
 #include "SPUSOUND.H"
 
+extern unsigned char SoundFXVolume;
+
 #include <stdio.h>
 #include <string.h>
 
@@ -189,8 +191,8 @@ static void HostAudio_Callback(void* userdata, Uint8* stream, int len)
 	{
 		float left = 0.0f;
 		float right = 0.0f;
-		int master_left = regs[192] & 0x7FFF;
-		int master_right = regs[193] & 0x7FFF;
+		int master_left = (regs[192] & 0x7FFF) * SoundFXVolume / 255;
+		int master_right = (regs[193] & 0x7FFF) * SoundFXVolume / 255;
 
 		for (i = 0; i < SPU_VOICES; i++)
 		{
