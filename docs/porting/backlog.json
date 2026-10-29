@@ -868,6 +868,15 @@
       ],
       "status": "In progress",
       "summary": "Hotplug manette validé en synthétique : contrôleur Xbox 360 virtuel créé après le lancement du jeu, détecté via SDL_CONTROLLERDEVICEADDED ([INPUT] Gamepad 0: X360 Controller), puis A déclenche New Game (cutseq name: 1, 1610 occurrences) et la scène de Rome s'affiche. Preuve build/porting/vpad-hotplug-20261029/. Matériel physique toujours non testé, hot reload du keymap non validé. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done."
+    },
+    {
+      "date": "2026-10-29",
+      "authorization_until": "2026-10-29T12:00:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Soak PAL de 10 minutes avec manette Xbox 360 virtuelle (boutons et stick gauche aléatoires après New Game) : 32 échantillons VmRSS, 74928 Ko constant sur 571 s, exit 0, aucune erreur fatale, scène de rue rendue à 360 s. Preuve build/porting/pal-gp-soak-20261029/. Matériel physique non testé. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done."
     }
   ]
 }
