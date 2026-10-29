@@ -750,7 +750,11 @@ même position et une scène identique (moyennes 0,1006 / 0,1009 ;
 GDB de `gfLevelComplete=2` après 600 frames de niveau 1 : cutseq `name: 2`
 (1657 occurrences), scène TRAJAN_MARKETS rendue, aucun `SIGSEGV`
 (`build/porting/pal-transition-20261029/`) — déclenchement synthétique, pas une
-complétion jouée.
+complétion jouée. Chaîne PAL complète avec le même type d'injection toutes les
+600 frames : niveaux 1→14 avec les salles/positions du tableau NTSC (2/50,
+3/20, 4/99, 5/20, 6/123, 7/2, 8/70, 9/5, 10/20, 11/3, 12/129, 13/3, 14/8),
+puis retour au titre (`cutseq name: 0`), aucun `SIGSEGV`
+(`build/porting/pal-chain-20261029/`).
 
 Cela protège aussi toute donnée de niveau manquante lors d'un chargement
 direct. Le chemin de **fin de campagne réel** (crédits/FMV après RED_ALERT)
