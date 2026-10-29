@@ -904,6 +904,12 @@ Preuves runtime (GDB, niveau 1, téléportation de test) :
   (`play-move2-20261029/`) ; `w` est le scancode de `draw` en AZERTY et
   déclenche la vue noire des armes, pas la marche.
 
+Animations d’objets : `AnimateItem` avance `frame_number`, boucle sur
+`frame_end` et suit `jump_anim_num` quand `goal_anim_state` diffère. Les
+tables de changements/commandes d’animation ne sont pas encore traitées ;
+les portes/switchs peuvent donc avancer leurs frames sans transitions
+complètes.
+
 Collisions créatures : `CreatureCollision` pousse Lara hors des bounds.
 `LaraBaddieCollision` fait désormais **poursuivre** les créatures
 intelligentes jusqu’à 4096 unités (16 unités/frame, mise à jour
