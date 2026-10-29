@@ -4469,6 +4469,46 @@ void AnimateItem(struct ITEM_INFO* item)
 
 	item->frame_number++;
 
+	{
+		int command_count = anim->number_commands;
+		unsigned short* command = (unsigned short*)&commands[anim->command_index];
+
+		while (command_count-- > 0)
+		{
+			unsigned short data = *command++;
+
+			if (data == 5)
+			{
+				if (item->frame_number == command[0])
+				{
+					SoundEffect(command[1] & 0x3FFF, &item->pos, 2);
+				}
+				command += 2;
+			}
+			else if (data == 6)
+			{
+				if (item->frame_number == command[0])
+				{
+					FXType = command[1] & 0xC000;
+					effect_routines[command[1] & 0x3FFF](item);
+				}
+				command += 2;
+			}
+			else if (data == 1)
+			{
+				command += 3;
+			}
+			else if (data == 2)
+			{
+				command += 2;
+			}
+			else if (data != 3)
+			{
+				break;
+			}
+		}
+	}
+
 	if (anim->number_changes > 0 && GetChange(item, anim))
 	{
 		anim = &anims[item->anim_number];
