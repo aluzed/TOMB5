@@ -671,7 +671,8 @@ transition, déclenchement tous les 600 frames) et enchaîne 1→2→…→14 pu
 `Handle cutseq triggering name: 0` sans `SIGSEGV` sur
 `build/porting/final-chain-bs2-20261029/` et
 `build/porting/final-chain-by-20261029/` (hook non intégré à `master`), cette
-dernière sur les sources finales build-bx.
+dernière sur les sources finales build-bx, puis
+`build/porting/final-chain-ce-20261029/` sur build-cd (memmove gameflow + v4).
 La garde GAMEWAD n'est pas nécessairement l'élément déclencheur du retour titre (le gameflow peut le faire avant `DoLevel(15)`) ; elle reste
 validée séparément par le saut direct 1→15.
 
