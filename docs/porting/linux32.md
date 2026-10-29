@@ -473,8 +473,8 @@ Les voix `SF_LOOP` redémarrent au lieu de se couper; contrôle
 `tests/emulator` 3677 PASS. Build de preuve audio `build-bn` SHA256
 `809e8cae8f26536052a0590486f5f3672349b8dfc4c4a0a675a7e0d4662ae9a9` ;
 build final combiné (reprise v3, écriture atomique, audio/boucles/volume FX)
-`build-bw` SHA256
-`60492a9ac0fc6e905d61143b590d23cc65df0eeccb0b86a910ab7f23dd6a456f`.
+`build-bx` SHA256
+`57322612388cf44b2172979e5ee68e5289d12c28e7c9de965a925a36ff0827c9`.
 
 Limites : aucune écoute humaine, pas de musique CD/XA ni de voix CD, ADSR/
 reverb/loop approximés, pas de test de volume nul/catégories, pause et retour

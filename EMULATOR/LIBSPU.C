@@ -262,7 +262,11 @@ void SpuSetVoiceAttr(SpuVoiceAttr* arg)//
             {
                 //v0 = arg->volume.left
                 a0 = 0;
-                a1 = (arg->volume.left & 0x7FFF) >> 7;
+                a1 = arg->volume.left & 0x7FFF;
+                if (a1 > 127)
+                {
+                    a1 >>= 7;
+                }
                 if (a1 > 127)
                 {
                     a1 = 127;
@@ -332,7 +336,11 @@ void SpuSetVoiceAttr(SpuVoiceAttr* arg)//
             {
                 //v0 = arg->volume.right
                 a0 = 0;
-                a1 = (arg->volume.right & 0x7FFF) >> 7;
+                a1 = arg->volume.right & 0x7FFF;
+                if (a1 > 127)
+                {
+                    a1 >>= 7;
+                }
                 if (a1 > 127)
                 {
                     a1 = 127;
