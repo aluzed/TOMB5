@@ -4583,6 +4583,35 @@ void AnimateItem(struct ITEM_INFO* item)
 		item->frame_number = anim->frame_base;
 		item->current_anim_state = anim->current_anim_state;
 	}
+
+	if (item->gravity_status)
+	{
+		short room_number = item->room_number;
+
+		item->fallspeed += 6;
+		item->pos.y_pos += item->fallspeed;
+
+		{
+			struct FLOOR_INFO* floor = GetFloor(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, &room_number);
+
+			if (floor != NULL)
+			{
+				short height = GetHeight(floor, item->pos.x_pos, item->pos.y_pos, item->pos.z_pos);
+
+				if (height != -32512 && item->pos.y_pos >= height)
+				{
+					item->pos.y_pos = height;
+					item->fallspeed = 0;
+					item->gravity_status = 0;
+				}
+
+				if (room_number != item->room_number)
+				{
+					ItemNewRoom((short)(item - items), room_number);
+				}
+			}
+		}
+	}
 }
 
 void UpdateSpiders()
