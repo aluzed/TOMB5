@@ -5,12 +5,12 @@ recette construit les sources du checkout ; elle ne télécharge aucun jeu. Un
 build réussi ou une sortie zéro ne valide ni menu ni gameplay.
 
 **État au 29 octobre 2026** : le backend Linux32 (rendu, entrées, sauvegarde
-rapide, audio SDL) est stable et testé, mais la campagne réelle est bloquée par
-un manque **hérité de la décompilation** : `ObjectObjects`/`TrapObjects`
-n'installent pas les gestionnaires des objets et les handlers pickup/collision/
-switch/door sont des stubs. Aucun pickup ni interaction n'est possible. Détail
-et preuve GDB : section « Cause racine héritée : objets runtime non initialisés »
-plus bas.
+rapide, audio SDL) est stable et testé. Une **première couche d'interactions
+gameplay** est désormais présente (dispatch des collisions d'objets, pickups,
+serrures, puzzles, switchs, collisions de portes). Les portes n'ont toutefois
+pas encore d'initialiseur de données, les ennemis/combat restent des stubs et
+la campagne réelle n'est pas jouée. Détail : sections « Cause racine héritée »
+et « Boucle de gameplay — première couche » plus bas.
 
 ## Environnement et dépendances
 
@@ -850,13 +850,55 @@ Cause dans les sources :
   appels `CombatCamera` (`build/porting/vpad-draw-20261029/`). Le combat aux
   armes est donc lui aussi inutilisable en l'état.
 
-Conséquence : aucun pickup, keyhole, puzzle, levier, porte à clé/crowbar ou
-ennemi ne peut réagir à Lara. Le déplacement, les déclencheurs de plancher et
-la boucle de niveau fonctionnent, mais les interactions nécessaires à la
-résolution de Rome (et de tous les niveaux) sont absentes. Ce n'est **pas** une
-régression Linux32 : le même état existe en amont de la décompilation ; c'est
-un travail de reconstruction gameplay (RE), soumis aux gates
-`docs/stories/BLOCKED-004*` et aux tickets reverse, pas un correctif de port.
+Depuis le 29 octobre, une **première couche d'interactions** est implémentée
+dans le port (voir la section « Boucle de gameplay — première couche » plus
+bas) : dispatch des collisions d'objets, pickups, serrures, trous de puzzle,
+switchs et collisions de portes. Les preuves runtime montrent qu'un pickup
+ajoute bien l'objet à l'inventaire et qu'une serrure/un switch réagit à
+`IN_ACTION`. Il reste notamment les **données de porte** (aucun
+`InitialiseDoor` n'est encore présent : `item->data == NULL`, donc
+`DoorControl` ne peut pas ouvrir la géométrie), les ennemis/combat et les
+objets spéciaux. La campagne réelle reste donc non validée, mais elle n'est
+plus bloquée par l'absence totale de collisions d'objets. Ce n'est **pas** une
+régression Linux32 : le point de départ était l'état incomplet de la
+décompilation.
+
+### Boucle de gameplay — première couche (29 octobre 2026)
+
+Implémenté dans les sources (build `build-gameplay7`, SHA256
+`294177084e2e14951db1604f5be410f99b44713f78f8d5319d2503b9e0b88898`) :
+
+- `SPEC_PSXPC_N/COLLIDE_S.C` : `PortCollideItems()` parcourt les items de la
+  salle et appelle `objects[object_number].collision` après la géométrie.
+- `GAME/COLLIDE.C` : `TestBoundsCollideStatic`, `TestBoundsCollide`,
+  `TestLaraPosition`, `MoveLaraPosition` (snap à 256 unités) et
+  `ItemPushLara` (poussée AABB minimale).
+- `GAME/PICKUP.C` : `PickUpCollision` (pickup + `AddDisplayPickup` +
+  `KillItem`), `KeyHoleCollision`, `PuzzleHoleCollision` avec les bounds et
+  positions existants.
+- `GAME/DOOR.C` : `DoorControl`, `DoubleDoorCollision`,
+  `PushPullKickDoorCollision`.
+- `GAME/SWITCH.C` : `SwitchCollision`, `SwitchControl`,
+  `TurnSwitchControl`.
+- `GAME/SETUP.C` : `PortSetupGameplayObjects()` assigne les handlers aux
+  pickups, keyholes, puzzles, switchs et portes après `ObjectObjects()`.
+
+Preuves runtime (GDB, niveau 1, téléportation de test) :
+
+- pickup : `AddDisplayPickup` appelé **une fois** pour l'objet 339 ;
+  `num_shotgun_ammo1` passe de 0 à 36, item passé `ITEM_INVISIBLE`
+  (`gameplay-pickup-20261029/`, `pickup_kbd2.out`) ;
+- serrure : clé donnée par GDB, `KeyHoleCollision` atteint avec
+  `TestLaraPosition=1` et `IN_ACTION` (`keyhole_test.out`) ;
+- switch : `SwitchCollision` atteint avec `TestLaraPosition=1`
+  (`switch_test.out`) ;
+- fumée normale : Nouvelle partie, déplacement, aucune `SIGSEGV`
+  (`gameplay-smoke-20261029/`).
+
+Limites immédiates : pas d'`InitialiseDoor` (donc pas d'ouverture
+géométrique des portes), ennemis/combat toujours stubs, objets spéciaux
+(`CrowDoveSwitch`, `SearchObject`, `UnderwaterDoor`, `SequenceDoor`) non
+couverts, et campagne réelle non jouée.
 
 ### Ce qui reste non validé
 
