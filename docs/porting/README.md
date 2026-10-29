@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-004, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
+Défaut reproductible lié aux stubs : sortir les armes (Y manette) rend la vue 3D entièrement noire, HUD visible ; rengainer (Y) restaure la scène. Cause : CombatCamera (GAME/CAMERA.C:1638) a son corps sous #if 0 || PC_VERSION et tombe sur UNIMPLEMENTED. NTSC : moyennes 0,1018 → 0 → 0,1025, 63 appels CombatCamera. Preuve build/porting/vpad-draw-20261029/. Le combat aux armes est inutilisable, en plus des pickups/interactions déjà bloqués. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-001 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
 
 ASan PAL + manette virtuelle : avec ASAN_OPTIONS=detect_leaks=0, New Game (cutseq name: 1, 2153 occurrences), gamepad détecté et déplacement au stick, exit 0, aucune erreur AddressSanitizer (pal-asan2-20261029/). Avec LeakSanitizer actif, 189290 octets signalés dans libnvidia-glcore.so avec piles driver (aucune frame du port), donc bruit GL et non fuite du jeu (pal-asan-20261029/). Build ASan SHA256 ee0e15dca0cb3cdb8cd53e11932d1c51cbbe0a93ebde3a80caee9d9f3936cb2a. Aucun Done.

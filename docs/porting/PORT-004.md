@@ -1,5 +1,15 @@
 ## Progression vérifiée du 2026-10-29
 
+PORT-004, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
+
+Défaut reproductible lié aux stubs : sortir les armes (Y manette) rend la vue 3D entièrement noire, HUD visible ; rengainer (Y) restaure la scène. Cause : CombatCamera (GAME/CAMERA.C:1638) a son corps sous #if 0 || PC_VERSION et tombe sur UNIMPLEMENTED. NTSC : moyennes 0,1018 → 0 → 0,1025, 63 appels CombatCamera. Preuve build/porting/vpad-draw-20261029/. Le combat aux armes est inutilisable, en plus des pickups/interactions déjà bloqués. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-10-29
+
 PORT-004 — **In progress**. Autorisation bornée jusqu’au 2026-10-29T12:00:00+01:00. Linux32 provisoire.
 
 Hotplug manette validé en synthétique : contrôleur Xbox 360 virtuel créé après le lancement du jeu, détecté via SDL_CONTROLLERDEVICEADDED ([INPUT] Gamepad 0: X360 Controller), puis A déclenche New Game (cutseq name: 1, 1610 occurrences) et la scène de Rome s'affiche. Preuve build/porting/vpad-hotplug-20261029/. Matériel physique toujours non testé, hot reload du keymap non validé. Build-cm SHA256 da21fdc774bb70ea0df85c257752b51f8f72b02136f182b30eb980120305588b. Aucun Done.

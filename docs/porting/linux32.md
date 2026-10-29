@@ -818,6 +818,13 @@ Cause dans les sources :
   (`GAME/DOOR.C:236`), `SwitchCollision`/`SwitchControl`
   (`GAME/SWITCH.C:346-352`), `CreatureCollision`/`LaraBaddieCollision`
   (`GAME/COLLIDE.C:380-387`).
+- Conséquence visible sur les armes : `CombatCamera`
+  (`GAME/CAMERA.C:1638`) a son corps sous `#if 0 || PC_VERSION` et tombe sur
+  `UNIMPLEMENTED`. Dès que Lara sort les armes (`Y` sur la manette), la vue 3D
+  devient entièrement noire (HUD encore dessiné) ; rengainer (`Y` à nouveau)
+  restaure la scène. Reproduit sur NTSC : moyennes 0,1018 → 0 → 0,1025, 63
+  appels `CombatCamera` (`build/porting/vpad-draw-20261029/`). Le combat aux
+  armes est donc lui aussi inutilisable en l'état.
 
 Conséquence : aucun pickup, keyhole, puzzle, levier, porte à clé/crowbar ou
 ennemi ne peut réagir à Lara. Le déplacement, les déclencheurs de plancher et
