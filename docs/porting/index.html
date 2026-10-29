@@ -3,6 +3,16 @@
 
 PORT-004, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
 
+Parcours réel sans téléportation dans Rome : room 0 (départ) → room 2 (cour) → room 11 (zone Opera Backstage, caisse/passerelle) → room 3 → room 44, avec les flèches Up/Left/Right. Preuves play-room1-20261029/ et play-train-20261029/. Les lettres AZERTY q/d produisent des rotations ambiguës en test ; utiliser les flèches. Interactions pickups/serrures/switchs/portes déjà validées séparément. Restent : maillage de porte statique, ennemis/combat stubs, fin de niveau/campagne non atteinte. Build-gameplay9 SHA256 3d8e1ffd660c271425e5717b2e63367a196588549709b86928e5736c11043c62; tests 4174 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-10-29
+
+PORT-004, PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.
+
 CombatCamera (corps PSX non reconstruit) utilise désormais ChaseCamera en repli : sortir les armes ne noircit plus la vue. Preuve NTSC build-gameplay9 : moyennes 0,1012 (idle) / 0,1012 (armes) / 0,1018 (rengainé), aucun SIGSEGV (gameplay-draw-fix-20261029/). La visée automatique du combat reste absente. Build-gameplay9 SHA256 3d8e1ffd660c271425e5717b2e63367a196588549709b86928e5736c11043c62; tests 4174 PASS. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).

@@ -904,6 +904,13 @@ Preuves runtime (GDB, niveau 1, téléportation de test) :
   (`play-move2-20261029/`) ; `w` est le scancode de `draw` en AZERTY et
   déclenche la vue noire des armes, pas la marche.
 
+Parcours réel effectué sans téléportation (29 octobre) :
+`room 0` (départ) → `room 2` (cour) → `room 11` (zone **Opera Backstage**,
+caisse en bois et passerelle visibles) → `room 3` → `room 44`. Les flèches
+`Up/Down/Left/Right` sont les entrées fiables (les lettres AZERTY `q`/`d`
+donnent des rotations ambiguës dans les tests automatisés). Preuves :
+`play-room1-20261029/`, `play-train-20261029/`.
+
 Limites immédiates : le maillage des portes reste statique
 (`PortInitialiseDoor` n'ouvre que le plancher), ennemis/combat toujours
 stubs, objets spéciaux (`CrowDoveSwitch`, `SearchObject`, `UnderwaterDoor`,
