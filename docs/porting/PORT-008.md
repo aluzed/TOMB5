@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-11-02
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-02T23:00:00+01:00. Linux32 provisoire.
+
+Mécanisme Mouth of Truth validé (téléportation de test) : SWITCH_TYPE7 item72 room139 X48640 Z65024, Action → animation de switch, PV restent 1000, grille ouverte et passage à room170 Z67487. room170 est un réduit avec dalle circulaire, sans sortie identifiée. Preuve play-sw72b-20261102/. Reste la route jouée jusqu'au panneau, la clé, le temple et le Saturn Symbol. Build-gameplay22 SHA256 37feac205848424df8c855a31cbb40ed74dc38079060a6f5c0dc54b273879ccc; tests 4174 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-10-29
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-10-31T12:00:00+01:00. Linux32 provisoire.

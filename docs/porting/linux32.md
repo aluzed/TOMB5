@@ -947,6 +947,14 @@ joue l’animation d’insertion et la zone de la grille change
 (`play-keygate-20261029/01-before.png` / `02-after.png`), avec un Doberman
 visible. La clé est normalement à trouver plus tard dans le niveau.
 
+Mécanisme `SWITCH_TYPE7` (item 72, `room 139`, `X48640 Z65024`) : avec
+`Action`, Lara joue l’animation de switch (pas de dégâts, PV restent 1000),
+la grille s’ouvre et Lara passe de `Z65024` à `Z67487` (`room 170`) en
+marchant. C’est un mécanisme de type **Mouth of Truth** fonctionnel ; la
+suite `room 170` est un petit réduit avec une dalle circulaire, sans sortie
+identifiée (`play-sw72b-20261102/`). Ce test part d’une téléportation, pas
+d’un parcours joué jusqu’au panneau.
+
 Repérage (téléportation de test, **pas** un parcours joué) : la **cour de la
 fontaine** est la `room 59` autour de `X54000 Z41000 Y256` ; un Doberman et
 la grille verrouillée y sont visibles (`play-tp59-20261029/01.png`). La
