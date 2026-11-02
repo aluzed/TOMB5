@@ -941,19 +941,37 @@ non initialisés (`hit_points=-16384`, pas d’IA/contrôle), donc les chiens et
 Larson sont encore inertes ; il faut compléter `BaddyObjects`/les contrôles
 ennemis.
 
-Serrure de la fontaine : au trou de clé `room 59` (`item 25`), avec
-`KEY_ITEM1` injectée par GDB, `TestLaraPosition=1` ; après `Action`, Lara
-joue l’animation d’insertion et la zone de la grille change
-(`play-keygate-20261029/01-before.png` / `02-after.png`), avec un Doberman
-visible. La clé est normalement à trouver plus tard dans le niveau.
+Déclencheurs de switch : `SwitchTrigger` est maintenant implémenté à partir
+de la décompilation TOMB4 (`ITEM_DEACTIVATED`, `JUMP_SWITCH`, timer ×30,
+`RemoveActiveItem`, `IFLAG_INVISIBLE`). `AnimateItem` exécute la commande
+d’animation 4 (`ACMD_KILL`, passage en `ITEM_DEACTIVATED`) et suit
+`jump_anim_num`/`jump_frame_num` en fin d’animation. `SwitchControl` peut
+donc terminer son animation et `_TestTriggers` active réellement les objets
+ciblés. `ControlRaisingBlock` est implémenté (baisse/remontée du sol via
+`AlterFloorHeight`) et assigné à `RAISING_BLOCK1/2`.
 
-Mécanisme `SWITCH_TYPE7` (item 72, `room 139`, `X48640 Z65024`) : avec
-`Action`, Lara joue l’animation de switch (pas de dégâts, PV restent 1000),
-la grille s’ouvre et Lara passe de `Z65024` à `Z67487` (`room 170`) en
-marchant. C’est un mécanisme de type **Mouth of Truth** fonctionnel ; la
-suite `room 170` est un petit réduit avec une dalle circulaire, sans sortie
-identifiée (`play-sw72b-20261102/`). Ce test part d’une téléportation, pas
-d’un parcours joué jusqu’au panneau.
+Validation runtime (build `gameplay26`) : le switch `item 72` (`room 139`,
+`X48640 Z65024`) déclenche bien `DoorControl(71)` ; preuve GDB
+`probe-switch-effect4-20261102/`. Le même pipeline est utilisé par les
+autres switchs/leviers.
+
+Chaîne de la clé d’or validée sans injection : pickup réel de `KEY_ITEM1`
+(`item 107`, `room 192`, `X55808 Z35328`) → `AddDisplayPickup(obj=196)` →
+retour de Lara à l’état idle (`gun_status=0` après l’animation de pickup) →
+insertion au trou de clé `item 25` (`room 59`) → `DoorControl(24)` ouvre la
+grille de la fontaine. Preuve GDB `probe-goldkey4-20261102/`. La correction
+de `lara_as_pickup` (remise de `lara.gun_status` à `LG_NO_ARMS` à
+`frame_end - 1`) est nécessaire pour que Lara puisse agir après un pickup.
+
+Serrure de la fontaine : l’injection directe de `KEY_ITEM1` par GDB
+(`play-keygate-20261029/`) reste une preuve séparée ; la chaîne pickup réel
+ci-dessus la remplace comme validation de gameplay. Un Doberman est visible
+dans la cour.
+
+Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
+Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
+de panneau Mouth of Truth et la route jouée jusqu’au panneau restent à
+établir.
 
 Repérage (téléportation de test, **pas** un parcours joué) : la **cour de la
 fontaine** est la `room 59` autour de `X54000 Z41000 Y256` ; un Doberman et
