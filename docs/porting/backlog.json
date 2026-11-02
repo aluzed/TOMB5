@@ -1117,6 +1117,15 @@
       ],
       "status": "In progress",
       "summary": "Déclencheurs de switch opérationnels : SwitchTrigger implémenté depuis TOMB4, AnimateItem exécute ACMD_KILL et suit jump_anim_num/jump_frame_num, ControlRaisingBlock implémenté et assigné. Validation : item 72 room 139 ouvre DoorControl(71). Chaîne clé d'or validée sans injection : pickup réel KEY_ITEM1 item 107 room 192 (AddDisplayPickup obj=196), retour idle de Lara, insertion au trou de clé item 25 room 59, DoorControl(24) ouvre la grille de la fontaine. Correction lara_as_pickup (gun_status à frame_end-1). Build-gameplay26 SHA256 35fc8facc4a032d5fad2a5e88a5da3dd75d4e4f7d6b418bbb0875a7cf5297e78; tests 4174 PASS. Preuves probe-switch-effect4-20261102/ et probe-goldkey4-20261102/. Le mécanisme item 72 n'est plus qualifié de Mouth of Truth sans preuve. Aucun Done."
+    },
+    {
+      "date": "2026-11-02",
+      "authorization_until": "2026-11-02T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Chaîne des deux clés de jardin validée sans injection : pickup PUZZLE_ITEM1 item 36 room 85, usage trou 63 room 124 (PUZZLE_DONE1, inventaire 1→0), pickup item 92 room 170, usage trou 64, ouverture DoorControl(53) et (54). Correctifs : PuzzleHoleCollision appelle TestTriggersAtXYZ avec KeyTriggerActive ; KeyHoleCollision et PuzzleHoleCollision consomment via remove_inventory_item au lieu de DEL_picked_up_object (qui ajoutait). Build-gameplay30 SHA256 ff83f3aafd70c8af9a21fd08ddf31c0e6f2054b8d9f3aed78ffec008de2f0f7d; tests 4174 PASS. Preuve probe-garden2keys2-20261102/. Aucun Done."
     }
   ]
 }

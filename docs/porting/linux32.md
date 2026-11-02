@@ -968,6 +968,16 @@ Serrure de la fontaine : l’injection directe de `KEY_ITEM1` par GDB
 ci-dessus la remplace comme validation de gameplay. Un Doberman est visible
 dans la cour.
 
+Clés de jardin validées sans injection : pickup de `PUZZLE_ITEM1` (`item 36`,
+`room 85`), usage au trou `item 63` (`room 124`, `PUZZLE_DONE1`, inventaire
+1→0) ; pickup du second `PUZZLE_ITEM1` (`item 92`, `room 170`), usage au trou
+`item 64` ; les deux trous activent `DoorControl(53)` et `DoorControl(54)`
+(grille du jardin). Preuve GDB `probe-garden2keys2-20261102/`. Les trous de
+puzzle appellent maintenant `TestTriggersAtXYZ` avec `KeyTriggerActive` et
+consomment réellement l’objet via `remove_inventory_item` (et non
+`DEL_picked_up_object`, qui ajoute). Les trous de clé consomment aussi la clé
+de la même façon.
+
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
 de panneau Mouth of Truth et la route jouée jusqu’au panneau restent à
