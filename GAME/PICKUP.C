@@ -235,8 +235,10 @@ void PuzzleHoleCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* 
 		lara.gun_status = LG_HANDS_BUSY;
 		lara.IsMoving = 0;
 
-		DEL_picked_up_object(PUZZLE_ITEM1 + puzzle);
+		remove_inventory_item(PUZZLE_ITEM1 + puzzle);
 		PuzzleDone(item, item_num);
+		KeyTriggerActive = TRUE;
+		TestTriggersAtXYZ(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, item->room_number, 0, 0);
 		return;
 	}
 
@@ -270,7 +272,7 @@ void KeyHoleCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* col
 		lara.gun_status = LG_HANDS_BUSY;
 		lara.IsMoving = 0;
 
-		DEL_picked_up_object(KEY_ITEM1 + key);
+		remove_inventory_item(KEY_ITEM1 + key);
 		item->status = ITEM_ACTIVE;
 		KeyTriggerActive = TRUE;
 		AddActiveItem(item_num);
