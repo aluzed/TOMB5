@@ -477,108 +477,42 @@ int GetSwitchTrigger(struct ITEM_INFO* item, short* ItemNos, long AttatchedToSwi
 
 int SwitchTrigger(short item_num, short timer)//55DE4, 56284
 {
-	struct ITEM_INFO* item;//$s0
-	//a2 = a0
+	struct ITEM_INFO* item = &items[item_num];
 
-	item = &items[item_num];
-
-	if (item->status == 2)
+	if (item->status == ITEM_DEACTIVATED)
 	{
-		//v0 = item->current_anim_state
-		//a0 = item->current_anim_state
+		if (((item->current_anim_state || item->object_number == JUMP_SWITCH) &&
+			(item->current_anim_state != 1 || item->object_number != JUMP_SWITCH)) || timer <= 0)
+		{
+			RemoveActiveItem(item_num);
+			item->status = ITEM_INACTIVE;
 
-	}//loc_55F24
+			if (item->item_flags[0])
+			{
+				item->flags |= IFLAG_INVISIBLE;
+			}
+		}
+		else
+		{
+			item->timer = timer;
+			item->status = ITEM_ACTIVE;
 
-#if 0
-				 bnez    $v0, loc_55E4C
-				 lui     $v0, 1
-				 lh      $v1, 0xC($s0)
-				 li      $v0, 0x118
-				 bne     $v1, $v0, loc_55E5C
-				 lui     $v0, 1
+			if (timer != 1)
+			{
+				item->timer *= 30;
+			}
+		}
 
-				 loc_55E4C:
-			 lw      $v1, 0xC($s0)
-				 ori     $v0, 0x118
-				 bne     $v1, $v0, loc_55E94
-				 nop
+		return 1;
+	}
 
-				 loc_55E5C :
-			 blez    $a1, loc_55E94
-				 li      $v1, 0xFFFFFFF9
-				 lw      $v0, 0x84($s0)
-				 sh      $a1, 0x26($s0)
-				 and $v0, $v1
-				 ori     $v0, 2
-				 li      $v1, 1
-				 beq     $a1, $v1, loc_55F1C
-				 sw      $v0, 0x84($s0)
-				 sll     $v0, $a1, 4
-				 subu    $v0, $a1
-				 sll     $v0, 1
-				 j       loc_55F1C
-				 sh      $v0, 0x26($s0)
+	if (item->status != ITEM_INACTIVE)
+	{
+		if (item->flags & IFLAG_INVISIBLE)
+		{
+			return 1;
+		}
+	}
 
-				 loc_55E94:
-			 lh      $v1, 0x2C($s0)
-				 li      $v0, 6
-				 bne     $v1, $v0, loc_55EC4
-				 sll     $v0, $a0, 16
-				 bnez    $v0, loc_55EC4
-				 li      $v1, 0xFFFFFFF9
-				 lw      $v0, 0x84($s0)
-				 nop
-				 and     $v0, $v1
-				 ori     $v0, 2
-				 j       loc_55F1C
-				 sw      $v0, 0x84($s0)
-
-				 loc_55EC4:
-			 jal     sub_41E98
-				 move    $a0, $a2
-				 li      $v0, 0xFFFFFFF9
-				 lw      $v1, 0x84($s0)
-				 lh      $a0, 0x34($s0)
-				 and $v1, $v0
-				 beqz    $a0, loc_55EF4
-				 sw      $v1, 0x84($s0)
-				 lhu     $v0, 0x28($s0)
-				 nop
-				 ori     $v0, 0x100
-				 sh      $v0, 0x28($s0)
-
-				 loc_55EF4:
-			 lh      $v1, 0xE($s0)
-				 li      $v0, 1
-				 bne     $v1, $v0, loc_55F3C
-				 nop
-				 lhu     $v1, 0x2C($s0)
-				 nop
-				 addiu   $v1, -5
-				 sltiu   $v1, 2
-				 bnez    $v1, loc_55F3C
-				 move    $v0, $zero
-
-				 loc_55F1C :
-			 j       loc_55F3C
-				 li      $v0, 1
-
-				 loc_55F24 :
-				 beqz    $v1, loc_55F38
-				 nop
-				 lbu     $v0, 0x29($s0)
-				 j       loc_55F3C
-				 andi    $v0, 1
-
-				 loc_55F38 :
-				 move    $v0, $zero
-
-				 loc_55F3C :
-			 lw      $ra, 0x18 + var_4($sp)
-				 lw      $s0, 0x18 + var_8($sp)
-				 jr      $ra
-				 addiu   $sp, 0x18
-#endif
-	UNIMPLEMENTED();
 	return 0;
 }

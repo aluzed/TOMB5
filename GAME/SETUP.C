@@ -41,6 +41,7 @@
 #include "SOUND.H"
 
 #include "SWITCH.H"
+#include "TRAPS.H"
 #include "TOMB4FX.H"
 #include "TYPES.H"
 
@@ -993,6 +994,10 @@ static void PortSetupGameplayObjects(void)
 		{
 			objects[i].collision = &TurnSwitchCollision;
 			objects[i].control = &TurnSwitchControl;
+		}
+		else if (i == RAISING_BLOCK1 || i == RAISING_BLOCK2)
+		{
+			objects[i].control = &ControlRaisingBlock;
 		}
 	}
 }

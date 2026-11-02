@@ -1635,6 +1635,11 @@ void lara_as_pickup(struct ITEM_INFO* item, struct COLL_INFO* coll)//1AB00(<), 1
 	camera.target_angle = ANGLE(-130);
 	camera.target_elevation = ANGLE(-15);
 	camera.target_distance = SECTOR(1);
+
+	if (item->frame_number == anims[item->anim_number].frame_end - 1)
+	{
+		lara.gun_status = LG_NO_ARMS;
+	}
 }
 
 void lara_as_ppready(struct ITEM_INFO* item, struct COLL_INFO* coll)//1AABC(<), 1ABF0(<) (F)

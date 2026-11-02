@@ -4528,6 +4528,10 @@ void AnimateItem(struct ITEM_INFO* item)
 			{
 				command += 2;
 			}
+			else if (data == 4)
+			{
+				/* ACMD_KILL has no operands. */
+			}
 			else if (data != 3)
 			{
 				break;
@@ -4574,14 +4578,35 @@ void AnimateItem(struct ITEM_INFO* item)
 					lara.gun_status = 0;
 				}
 			}
+			else if (data == 4)
+			{
+				if (objects[item->object_number].intelligent)
+				{
+					item->after_death = 1;
+				}
+
+				item->status = ITEM_DEACTIVATED;
+			}
 			else
 			{
 				break;
 			}
 		}
 
-		item->frame_number = anim->frame_base;
-		item->current_anim_state = anim->current_anim_state;
+		item->anim_number = anim->jump_anim_num;
+		item->frame_number = anim->jump_frame_num;
+		anim = &anims[item->anim_number];
+
+		if (item->current_anim_state != anim->current_anim_state)
+		{
+			item->current_anim_state = anim->current_anim_state;
+			item->goal_anim_state = anim->current_anim_state;
+		}
+
+		if (item->required_anim_state == item->current_anim_state)
+		{
+			item->required_anim_state = 0;
+		}
 	}
 
 	if (item->gravity_status)

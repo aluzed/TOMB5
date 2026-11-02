@@ -2,6 +2,7 @@
 
 #include "DRAW.H"
 #include "CONTROL.H"
+#include "CAMERA.H"
 #include "EFFECTS.H"
 #include "ITEMS.H"
 #include "LARA.H"
@@ -23,6 +24,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 
 short SPDETyoffs[8] =
 {
@@ -647,8 +649,79 @@ void ControlScaledSpike(short item_number)//5C000, 5C47C
 
 void ControlRaisingBlock(short item_number)//5C56C, 5C9E8
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_number];
+
+	if (TriggerActive(item))
+	{
+		if (!item->item_flags[2])
+		{
+			if (item->object_number == RAISING_BLOCK2)
+			{
+				AlterFloorHeight(item, -2048);
+			}
+			else
+			{
+				AlterFloorHeight(item, -1024);
+			}
+
+			item->item_flags[2] = 1;
+		}
+
+		if (item->item_flags[1] < 4096)
+		{
+			SoundEffect(SFX_LOW_RUMBLE, &item->pos, SFX_DEFAULT);
+			item->item_flags[1] += 64;
+
+			if (item->trigger_flags &&
+				abs(item->pos.x_pos - lara_item->pos.x_pos) < 10240 &&
+				abs(item->pos.y_pos - lara_item->pos.y_pos) < 10240 &&
+				abs(item->pos.z_pos - lara_item->pos.z_pos) < 10240)
+			{
+				if (item->item_flags[1] == 64 || item->item_flags[1] == 4096)
+				{
+					camera.bounce = -32;
+				}
+				else
+				{
+					camera.bounce = -16;
+				}
+			}
+		}
+	}
+	else if (item->item_flags[1] > 0)
+	{
+		SoundEffect(SFX_LOW_RUMBLE, &item->pos, SFX_DEFAULT);
+
+		if (item->trigger_flags &&
+			abs(item->pos.x_pos - lara_item->pos.x_pos) < 10240 &&
+			abs(item->pos.y_pos - lara_item->pos.y_pos) < 10240 &&
+			abs(item->pos.z_pos - lara_item->pos.z_pos) < 10240)
+		{
+			if (item->item_flags[1] == 64 || item->item_flags[1] == 4096)
+			{
+				camera.bounce = -32;
+			}
+			else
+			{
+				camera.bounce = -16;
+			}
+		}
+
+		item->item_flags[1] -= 64;
+	}
+	else if (item->item_flags[2])
+	{
+		if (item->object_number == RAISING_BLOCK2)
+		{
+			AlterFloorHeight(item, 2048);
+		}
+		else
+		{
+			AlterFloorHeight(item, 1024);
+		}
+
+		item->item_flags[2] = 0;
+	}
 }
 
 void ControlExplosion(short item_number)//5C8BC, 5CD38
