@@ -978,6 +978,22 @@ consomment réellement l’objet via `remove_inventory_item` (et non
 `DEL_picked_up_object`, qui ajoute). Les trous de clé consomment aussi la clé
 de la même façon.
 
+Cloche du temple : le tir sélectionne désormais aussi les `SWITCH_TYPE7/8`
+non intelligents dans le cône de l’arme. `PortHitSwitch78` évalue le
+déclencheur sous la cloche (`y - 256`), récupère `GetSwitchTrigger`, active
+la porte cible et joue `SFX_BELL`. Validation réelle (pistolet, sans
+injection) : cloche `item 75` (`room 145`, `Y -9088`) → `DoorControl(79)`
+(`DOOR_TYPE6`, `room 153`). Preuve `probe-shootbell-final-20261103/`.
+La sélection utilise des distances 64 bits (les coordonnées lointaines
+débordaient le `long` 32 bits et pouvaient fausser la cible).
+
+Boucle des objets actifs : `ControlActiveItems` utilisait
+`items[next_item_active]` au lieu de `items[item_num]` et ne faisait pas
+avancer `item_num`, ce qui bouclait à l’infini dès que deux objets actifs
+étaient chaînés (la cloche active la porte 79 et la cloche elle-même). La
+boucle suit maintenant `item->next_active` comme la décompilation TOMB4.
+C’est ce correctif qui rend l’ouverture de la porte 79 effective.
+
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
 de panneau Mouth of Truth et la route jouée jusqu’au panneau restent à

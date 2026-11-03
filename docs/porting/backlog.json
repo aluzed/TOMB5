@@ -1126,6 +1126,15 @@
       ],
       "status": "In progress",
       "summary": "Chaîne des deux clés de jardin validée sans injection : pickup PUZZLE_ITEM1 item 36 room 85, usage trou 63 room 124 (PUZZLE_DONE1, inventaire 1→0), pickup item 92 room 170, usage trou 64, ouverture DoorControl(53) et (54). Correctifs : PuzzleHoleCollision appelle TestTriggersAtXYZ avec KeyTriggerActive ; KeyHoleCollision et PuzzleHoleCollision consomment via remove_inventory_item au lieu de DEL_picked_up_object (qui ajoutait). Build-gameplay30 SHA256 ff83f3aafd70c8af9a21fd08ddf31c0e6f2054b8d9f3aed78ffec008de2f0f7d; tests 4174 PASS. Preuve probe-garden2keys2-20261102/. Aucun Done."
+    },
+    {
+      "date": "2026-11-03",
+      "authorization_until": "2026-11-03T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Cloche du temple validée en tir réel : PistolHandler sélectionne aussi les SWITCH_TYPE7/8 dans le cône, PortHitSwitch78 évalue le déclencheur sous la cloche (y-256), GetSwitchTrigger active la porte cible et joue SFX_BELL. Cloche item 75 room 145 Y-9088 -> DoorControl(79) DOOR_TYPE6 room 153. Correctifs : distances de ciblage en 64 bits (débordement 32 bits sur coordonnées lointaines) et boucle ControlActiveItems corrigée (items[item_num] + next_active) qui bouclait à l'infini avec deux objets actifs chaînés. Build-gameplay37 SHA256 ad9db3541c1b008a0378e2a9d1d83f968d09fafe7ad7da1f03f65b8e60a828b4; tests 4174 PASS. Preuves probe-shootbell-final-20261103/. Aucun Done."
     }
   ]
 }
