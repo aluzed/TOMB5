@@ -994,6 +994,16 @@ avancer `item_num`, ce qui bouclait à l’infini dès que deux objets actifs
 boucle suit maintenant `item->next_active` comme la décompilation TOMB4.
 C’est ce correctif qui rend l’ouverture de la porte 79 effective.
 
+Switch corbeau/colombe : `CROWDOVE_SWITCH` est maintenant assigné à
+`CrowDoveSwitchCollision`/`CrowDoveSwitchControl`. La collision joue
+l’animation de switch, active l’objet et évalue le déclencheur ; le contrôle
+shattere le corbeau (`mesh_bits = 5`) et passe l’objet en
+`ITEM_DEACTIVATED` pour que `SwitchTrigger` libère le déclencheur. Validation
+sans injection : switch `item 84` (`room 165`, `X58880 Z81408`) →
+`DoorControl(99)` (`DOOR_TYPE6`, `room 175`). Preuve
+`probe-dove84d-20261103/`. Le second pedestal `item 85` n’a pas de
+déclencheur à sa tuile ; sa tuile de trigger reste à localiser.
+
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
 de panneau Mouth of Truth et la route jouée jusqu’au panneau restent à

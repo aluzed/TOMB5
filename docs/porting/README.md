@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-03T23:59:00+01:00. Linux32 provisoire.
 
+Switch corbeau/colombe validé : CROWDOVE_SWITCH assigné à CrowDoveSwitchCollision/CrowDoveSwitchControl ; collision + animation + activation, le contrôle shattere le corbeau (mesh_bits=5) et passe l'objet en ITEM_DEACTIVATED pour libérer SwitchTrigger. Item 84 room 165 X58880 Z81408 -> DoorControl(99) DOOR_TYPE6 room 175. Le second pedestal item 85 n'a pas de trigger à sa tuile. Build-gameplay41 SHA256 962eeb889a44bcff58563ba990d9e9399eb6d08592aa88b6ddbd30ec405a5cbd; tests 4174 PASS. Preuve probe-dove84d-20261103/. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-03
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-03T23:59:00+01:00. Linux32 provisoire.
+
 Cloche du temple validée en tir réel : PistolHandler sélectionne aussi les SWITCH_TYPE7/8 dans le cône, PortHitSwitch78 évalue le déclencheur sous la cloche (y-256), GetSwitchTrigger active la porte cible et joue SFX_BELL. Cloche item 75 room 145 Y-9088 -> DoorControl(79) DOOR_TYPE6 room 153. Correctifs : distances de ciblage en 64 bits (débordement 32 bits sur coordonnées lointaines) et boucle ControlActiveItems corrigée (items[item_num] + next_active) qui bouclait à l'infini avec deux objets actifs chaînés. Build-gameplay37 SHA256 ad9db3541c1b008a0378e2a9d1d83f968d09fafe7ad7da1f03f65b8e60a828b4; tests 4174 PASS. Preuves probe-shootbell-final-20261103/. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).
