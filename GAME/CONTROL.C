@@ -1169,12 +1169,15 @@ long ControlPhase(long nframes, int demo_mode)//1D538(<), 1D6CC(!) //DO NOT TOUC
 
 		while (item_num != -1)
 		{
-			if (items[next_item_active].after_death < 128)
+			struct ITEM_INFO* item = &items[item_num];
+			short next = item->next_active;
+
+			if (item->after_death < 128)
 			{
 				//loc_1DBB4
-				if (objects[items[next_item_active].object_number].control != NULL)
+				if (objects[item->object_number].control != NULL)
 				{
-					objects[items[next_item_active].object_number].control(item_num);
+					objects[item->object_number].control(item_num);
 				}
 				//loc_1DBDC
 			}
@@ -1183,7 +1186,7 @@ long ControlPhase(long nframes, int demo_mode)//1D538(<), 1D6CC(!) //DO NOT TOUC
 				KillItem(item_num);
 			}
 			//1DBE0
-			item_num = items[next_item_active].next_active;
+			item_num = next;
 		}
 
 		InItemControlLoop = 0;

@@ -17,6 +17,7 @@
 #include "BOX.H"
 #include "ITEMS.H"
 #include "MATHS.H"
+#include "SWITCH.H"
 
 static struct PISTOL_DEF PistolTable[4] =
 {
@@ -31,11 +32,52 @@ void AnimatePistols(int weapon_type)
 	UNIMPLEMENTED();
 }
 
+static void PortHitSwitch78(struct ITEM_INFO* target)
+{
+	short ItemNos[8];
+	int count;
+	int i;
+
+	/* The switch trigger lives on the tile below the hanging object.  Evaluating
+	 * that tile first also leaves trigger_index pointing at the switch trigger,
+	 * which GetSwitchTrigger then reuses. */
+	TestTriggersAtXYZ(target->pos.x_pos, target->pos.y_pos - 256, target->pos.z_pos,
+		target->room_number, 0, 0);
+	count = GetSwitchTrigger(target, ItemNos, 1);
+
+	if (count > 0)
+	{
+		for (i = 0; i < count; i++)
+		{
+			short item_number = ItemNos[i];
+
+			AddActiveItem(item_number);
+			items[item_number].status = ITEM_ACTIVE;
+			items[item_number].flags |= IFLAG_ACTIVATION_MASK;
+		}
+	}
+	else
+	{
+		TestTriggersAtXYZ(target->pos.x_pos, target->pos.y_pos - 256, target->pos.z_pos,
+			target->room_number, 1, 0);
+	}
+
+	if (target->object_number == SWITCH_TYPE7 && objects[target->object_number].nmeshes > 0)
+	{
+		ExplodeItemNode(target, objects[target->object_number].nmeshes - 1, 0, 64);
+	}
+
+	AddActiveItem((short)(target - items));
+	target->flags |= IFLAG_ACTIVATION_MASK;
+	target->status = ITEM_ACTIVE;
+	SoundEffect(SFX_BELL, &target->pos, SFX_DEFAULT);
+}
+
 void PistolHandler(int weapon_type)
 {
 	static int cooldown = 0;
 	struct ITEM_INFO* target = NULL;
-	long best_distance = 0x7FFFFFFF;
+	long long best_distance = 0x7FFFFFFFLL;
 	int i;
 
 	if (cooldown > 0)
@@ -67,7 +109,7 @@ void PistolHandler(int weapon_type)
 		struct ITEM_INFO* item = &items[i];
 		long dx;
 		long dz;
-		long distance;
+		long long distance;
 		long angle;
 		long diff;
 
@@ -82,7 +124,7 @@ void PistolHandler(int weapon_type)
 		dz = item->pos.z_pos - lara_item->pos.z_pos;
 		distance = dx * dx + dz * dz;
 
-		if (distance > (long)weapons[weapon_type].target_dist * weapons[weapon_type].target_dist)
+		if (distance > (long long)weapons[weapon_type].target_dist * weapons[weapon_type].target_dist)
 		{
 			continue;
 		}
@@ -102,6 +144,54 @@ void PistolHandler(int weapon_type)
 		target = item;
 	}
 
+	if (target == NULL)
+	{
+		for (i = 0; i < level_items; i++)
+		{
+			struct ITEM_INFO* item = &items[i];
+			long dx;
+			long dz;
+			long long distance;
+			long angle;
+			long diff;
+
+			if (item == lara_item ||
+				(item->object_number != SWITCH_TYPE7 && item->object_number != SWITCH_TYPE8) ||
+				item->status == ITEM_INVISIBLE)
+			{
+				continue;
+			}
+
+			dx = item->pos.x_pos - lara_item->pos.x_pos;
+			dz = item->pos.z_pos - lara_item->pos.z_pos;
+			distance = dx * dx + dz * dz;
+
+			if (distance > (long long)weapons[weapon_type].target_dist * weapons[weapon_type].target_dist)
+			{
+				continue;
+			}
+
+			angle = phd_atan_asm(dx, dz);
+			diff = angle - lara_item->pos.y_rot;
+
+			while (diff > 32768) diff -= 65536;
+			while (diff < -32768) diff += 65536;
+
+			if (ABS(diff) > 10920 || distance >= best_distance)
+			{
+				continue;
+			}
+
+			best_distance = distance;
+			target = item;
+		}
+
+		if (target != NULL && ABS(target->pos.y_pos - lara_item->pos.y_pos) > 6144)
+		{
+			target = NULL;
+		}
+	}
+
 	lara.has_fired = 1;
 	lara.Fired = 1;
 	lara.right_arm.flash_gun = weapons[weapon_type].flash_time;
@@ -110,11 +200,18 @@ void PistolHandler(int weapon_type)
 
 	if (target != NULL)
 	{
-		HitTarget(target, NULL, weapons[weapon_type].damage, 0);
-
-		if (target->hit_points <= 0)
+		if (target->object_number == SWITCH_TYPE7 || target->object_number == SWITCH_TYPE8)
 		{
-			CreatureDie((short)(target - items), 0);
+			PortHitSwitch78(target);
+		}
+		else
+		{
+			HitTarget(target, NULL, weapons[weapon_type].damage, 0);
+
+			if (target->hit_points <= 0)
+			{
+				CreatureDie((short)(target - items), 0);
+			}
 		}
 	}
 
