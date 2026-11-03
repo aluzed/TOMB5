@@ -1007,8 +1007,19 @@ déclencheur à sa tuile ; sa tuile de trigger reste à localiser.
 Saturn Symbol : pickup réel validé sans injection. `item 94`
 (`PICKUP_ITEM2`, `room 171`, `X59904 Z71168`) → `AddDisplayPickup(obj=221)` ;
 `TestLaraPosition(PickUpBounds)=1` depuis `X59954 Z71168`. Preuve
-`probe-saturn2-20261103/`. La porte 93 et le déclencheur de fin de niveau
-restent à valider : le pickup seul ne termine pas le niveau.
+`probe-saturn2-20261103/`.
+
+Les pickups évaluent maintenant le déclencheur de leur tuile
+(`TestTriggersAtXYZ`). Pour le Saturn Symbol, la tuile contient un trigger
+`PICKUP` avec `TO_FLIPMAP 8` : le pickup déclenche donc `FlipMap(8)`.
+Preuve `probe-saturn-finish-20261103/` (`SATF FLIP number=8`,
+`flip_stats[8]=1`). La porte 93 et la fin de niveau restent à valider.
+
+Recherche de fin de niveau : balayage des listes de triggers des 242 salles,
+avant et après `FlipMap(8)`, aucun `TO_FINISH` ni `TO_CUTSCENE` ; les seuls
+`TO_FLIPEFFECT` trouvés (rooms 223/225/228) n’utilisent pas l’effet
+`finish_level_effect` (index 4). La fin passe donc par un autre chemin
+(gameflow, cutscene dédiée ou condition de salle) encore non identifié.
 
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification

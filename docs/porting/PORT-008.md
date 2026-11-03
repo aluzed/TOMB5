@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-03T23:59:00+01:00. Linux32 provisoire.
 
+Les pickups appellent TestTriggersAtXYZ sur leur tuile. Saturn Symbol (item 94, room 171) : pickup -> AddDisplayPickup(221) + trigger PICKUP avec TO_FLIPMAP 8 -> FlipMap(8), flip_stats[8]=1. Preuve probe-saturn-finish-20261103/. Recherche de fin : balayage des 242 salles avant/après FlipMap(8), aucun TO_FINISH/TO_CUTSCENE ; TO_FLIPEFFECT des rooms 223/225/228 sans finish_level_effect (index 4). Fin de niveau encore non identifiée. Build-gameplay42 SHA256 1b479bb37abc35e481d25dcd91a9330180812a48a7d1599e09a4936310f0e299; tests 4174 PASS. Aucun Done.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-03
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-03T23:59:00+01:00. Linux32 provisoire.
+
 Saturn Symbol ramassé sans injection : item 94 PICKUP_ITEM2 room 171 X59904 Z71168 -> AddDisplayPickup(obj=221), TestLaraPosition(PickUpBounds)=1 depuis X59954 Z71168. Preuve probe-saturn2-20261103/. La porte 93 (accès) et le trigger de fin de niveau restent à valider ; le pickup seul ne termine pas le niveau. Second pedestal corbeau/colombe item 85 sans trigger à sa tuile. Build-gameplay41 SHA256 962eeb889a44bcff58563ba990d9e9399eb6d08592aa88b6ddbd30ec405a5cbd; tests 4174 PASS. Aucun Done.
 
 Détails : [scène et parcours runtime](runtime-level.md).
