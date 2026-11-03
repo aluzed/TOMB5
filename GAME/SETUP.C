@@ -995,6 +995,11 @@ static void PortSetupGameplayObjects(void)
 			objects[i].collision = &TurnSwitchCollision;
 			objects[i].control = &TurnSwitchControl;
 		}
+		else if (i == CROWDOVE_SWITCH)
+		{
+			objects[i].collision = &CrowDoveSwitchCollision;
+			objects[i].control = &CrowDoveSwitchControl;
+		}
 		else if (i == RAISING_BLOCK1 || i == RAISING_BLOCK2)
 		{
 			objects[i].control = &ControlRaisingBlock;

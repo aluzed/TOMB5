@@ -126,7 +126,29 @@ void ProcessExplodingSwitchType8(struct ITEM_INFO* item)//58958, 58DF8 (F)
 
 void CrowDoveSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//58740, 58BE0
 {
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+
+	if ((input & IN_ACTION) &&
+		l->current_anim_state == STATE_LARA_STOP &&
+		l->anim_number == ANIMATION_LARA_STAY_IDLE &&
+		!l->gravity_status && lara.gun_status == LG_NO_ARMS &&
+		TestLaraPosition(SwitchBounds, item, l) &&
+		MoveLaraPosition(&SwitchPos, item, l))
+	{
+		l->anim_number = ANIMATION_LARA_SWITCH_SMALL_DOWN;
+		l->frame_number = anims[ANIMATION_LARA_SWITCH_SMALL_DOWN].frame_base;
+		l->current_anim_state = STATE_LARA_SWITCH_DOWN;
+		lara.gun_status = LG_HANDS_BUSY;
+		lara.IsMoving = 0;
+
+		item->status = ITEM_ACTIVE;
+		item->goal_anim_state = 1;
+		AddActiveItem(item_num);
+		TestTriggersAtXYZ(l->pos.x_pos, l->pos.y_pos, l->pos.z_pos, l->room_number, 0, 0);
+		return;
+	}
+
+	ObjectCollision(item_num, l, coll);
 }
 
 void CrowDoveSwitchControl(short item_number)//58674(<), 58B14 (F)
@@ -139,6 +161,7 @@ void CrowDoveSwitchControl(short item_number)//58674(<), 58B14 (F)
 		SoundEffect(SFX_RAVENSWITCH_EXP, &item->pos, SFX_DEFAULT);
 		item->mesh_bits = 5;
 		RemoveActiveItem(item_number);
+		item->status = ITEM_DEACTIVATED;
 	}
 	else
 	{
