@@ -307,6 +307,7 @@ void PickUpCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll
 			item->status = ITEM_INVISIBLE;
 			item->collidable = 0;
 			KillItem(item_num);
+			TestTriggersAtXYZ(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, item->room_number, 0, 0);
 			return;
 		}
 	}
