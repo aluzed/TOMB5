@@ -1004,6 +1004,12 @@ sans injection : switch `item 84` (`room 165`, `X58880 Z81408`) →
 `probe-dove84d-20261103/`. Le second pedestal `item 85` n’a pas de
 déclencheur à sa tuile ; sa tuile de trigger reste à localiser.
 
+Saturn Symbol : pickup réel validé sans injection. `item 94`
+(`PICKUP_ITEM2`, `room 171`, `X59904 Z71168`) → `AddDisplayPickup(obj=221)` ;
+`TestLaraPosition(PickUpBounds)=1` depuis `X59954 Z71168`. Preuve
+`probe-saturn2-20261103/`. La porte 93 et le déclencheur de fin de niveau
+restent à valider : le pickup seul ne termine pas le niveau.
+
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
 de panneau Mouth of Truth et la route jouée jusqu’au panneau restent à
