@@ -1021,9 +1021,11 @@ avant et après `FlipMap(8)`, aucun `TO_FINISH` ni `TO_CUTSCENE` ; les seuls
 `finish_level_effect` (index 4). `FlipMap(8)` échange la salle 171 (Saturn
 Symbol) avec la salle 234 ; le balayage des triggers de ces deux salles ne
 révèle aucune fin de niveau. Un test de sortie en `room 230` avec le Saturn
-Symbol ne déclenche pas `gfLevelComplete`. La fin passe donc par un autre
-chemin (gameflow, cutscene dédiée, téléportation TL ou condition de salle)
-encore non identifié.
+Symbol ne déclenche pas `gfLevelComplete`. Les déclencheurs `TL_6/TL_7/TL_9`
+des rooms 223/225/228 et les rooms candidates 174/175/183/186/234 ont aussi
+été testés avec le Saturn Symbol en inventaire : aucun téléport, aucun
+`gfLevelComplete`, aucune cutscene. La fin passe donc par un autre chemin
+(gameflow, cutscene dédiée ou condition de salle) encore non identifié.
 
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
