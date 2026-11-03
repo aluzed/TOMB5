@@ -1024,8 +1024,17 @@ révèle aucune fin de niveau. Un test de sortie en `room 230` avec le Saturn
 Symbol ne déclenche pas `gfLevelComplete`. Les déclencheurs `TL_6/TL_7/TL_9`
 des rooms 223/225/228 et les rooms candidates 174/175/183/186/234 ont aussi
 été testés avec le Saturn Symbol en inventaire : aucun téléport, aucun
-`gfLevelComplete`, aucune cutscene. La fin passe donc par un autre chemin
-(gameflow, cutscene dédiée ou condition de salle) encore non identifié.
+`gfLevelComplete`, aucune cutscene.
+
+Déclencheur de fin identifié : dans la `room 116`, la bande de tuiles
+`X59904`, `Z55808` à `Z61952` porte un `TO_CUTSCENE` de valeur **17**. Avec
+le Saturn Symbol en inventaire, `NeatAndTidyTriggerCutscene(17, 0)` est
+appelé à chaque frame (`E116 CUT value=17`). Le port PSXPC_N n’a toutefois
+pas de lecteur de cutscene : `handle_cutseq_triggering` est compilé
+uniquement pour `PC_VERSION`, donc `cutseq_num` n’est jamais consommé et
+`gfLevelComplete` n’est jamais positionné. C’est le blocage actuel de la fin
+de niveau : le trigger est correct, mais la cutscene 0x17 ne peut pas être
+jouée.
 
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
