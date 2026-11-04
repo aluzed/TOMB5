@@ -1059,10 +1059,15 @@ objets proches inventoriés : `item 6` (`REVOLVER_AMMO_ITEM`, room 2),
 `item 19` (`LASERSIGHT_ITEM`, room 25) ; aucun `REVOLVER_ITEM` dans la salle
 de départ.
 
-Pickup du niveau 2 validé : `item 19` (`LASERSIGHT_ITEM`, room 25,
-`X89600 Y-512 Z47616`) → `AddDisplayPickup(obj=351)`. Preuve
-`level2-laser2-20261104/` (`L2L LEVEL2 start room=50`, `L2L LASER ... test=1`,
-`L2L PICK obj=351`).
+Pickups du niveau 2 validés :
+- `item 19` (`LASERSIGHT_ITEM`, room 25, `X89600 Y-512 Z47616`) →
+  `AddDisplayPickup(obj=351)` ; preuve `level2-laser2-20261104/` ;
+- `item 2` (`CROWBAR_ITEM`, room 1, `X89600 Y-512 Z36352`) →
+  `AddDisplayPickup(obj=240)` ; preuve `level2-crowbar-20261104/` ;
+- `item 115` (`SHOTGUN_ITEM`, room 135, `X70144 Y0 Z48640`) →
+  `AddDisplayPickup(obj=338)` ; preuve `level2-shotgun-20261104/`.
+Les trois tests confirment `L2 LEVEL2 start room=50`, `TestLaraPosition=1` et
+le pickup effectif.
 
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
