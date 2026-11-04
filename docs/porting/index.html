@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-04T23:59:00+01:00. Linux32 provisoire.
 
+Niveau 2 : porte au crowbar testée. item 0 DOOR_TYPE1 room 0 X81408 Z43520 trigger_flags=2 ; avec crowbar et GLOBAL_inventoryitemchosen=CROWBAR_ITEM, DoorControl(0) est activé (status=1, flags=15904, goal=1). Preuve level2-crowbardoor0e-20261104/. Crash ensuite dans DEL_CalcLaraMatrices_Interpolated_ASM (lara.right_arm.frame_base, animation 403) : état d&#x27;animation des bras incomplet, ouverture non validée de bout en bout. Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Streets of Rome terminé, Trajan&#x27;s Markets en cours. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-04
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-04T23:59:00+01:00. Linux32 provisoire.
+
 Niveau 2 Trajan&#x27;s Markets : trois pickups validés après transition depuis Streets of Rome. LASERSIGHT_ITEM item 19 room 25 X89600 Y-512 Z47616 -&gt; obj 351 (level2-laser2-20261104/). CROWBAR_ITEM item 2 room 1 X89600 Y-512 Z36352 -&gt; obj 240 (level2-crowbar-20261104/). SHOTGUN_ITEM item 115 room 135 X70144 Y0 Z48640 -&gt; obj 338 (level2-shotgun-20261104/). Tous avec L2 LEVEL2 start room=50 et TestLaraPosition=1. Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Streets of Rome terminé, Trajan&#x27;s Markets en cours. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

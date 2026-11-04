@@ -1069,6 +1069,15 @@ Pickups du niveau 2 validés :
 Les trois tests confirment `L2 LEVEL2 start room=50`, `TestLaraPosition=1` et
 le pickup effectif.
 
+Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
+`trigger_flags=2`). Avec le crowbar en inventaire et
+`GLOBAL_inventoryitemchosen=CROWBAR_ITEM`, `DoorControl(0)` est activé
+(`status=1`, `flags=15904`, `goal_anim_state=1`). Preuve
+`level2-crowbardoor0e-20261104/`. La séquence crashe toutefois ensuite dans
+`DEL_CalcLaraMatrices_Interpolated_ASM` (`lara.right_arm.frame_base`,
+animation 403) : l’état d’animation des bras après l’ouverture au crowbar
+reste incomplet. L’ouverture n’est donc pas validée de bout en bout.
+
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
 de panneau Mouth of Truth et la route jouée jusqu’au panneau restent à
