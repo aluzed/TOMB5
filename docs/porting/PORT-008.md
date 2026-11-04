@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-04T23:59:00+01:00. Linux32 provisoire.
 
+Transition niveau 1 -> niveau 2 validée : après gfLevelComplete=2 (cutscene 16, Saturn Symbol/FlipMap 8), le gameflow charge Trajan's Markets. Preuve play-level2c-20261104/attempt1.log (L2 LEVEL2) et capture attempt1.png (couloir de pierre, revolver au sol). Streets of Rome est bouclé jusqu'au niveau suivant. Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Aucun Done global (campagne TR5 non terminée).
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-04
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-04T23:59:00+01:00. Linux32 provisoire.
+
 Fin du niveau 1 validée par cutscene réelle, sans synthèse : Saturn Symbol (item 94) -> FlipMap(8) -> tuile de sortie de room 171 (X59904 Z69120, room 171 échangée avec 234) -> TO_CUTSCENE 16 (CUT_ANDREA2) -> Load_and_Init_Cutseq(16) -> cutscene jouée -> gfLevelComplete=2. Preuve play-exit16-20261104/ : E16 LOAD num=16, E16 COMPLETE value=2, captures exit-*.png. Correctifs cutscene : input & IN_LOOK au lieu de lara.look, défaut cutseq_num=value. Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Streets of Rome terminé. Aucun Done global (campagne TR5 non terminée).
 
 Détails : [scène et parcours runtime](runtime-level.md).

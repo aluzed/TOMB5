@@ -1046,6 +1046,12 @@ sortie → `Load_and_Init_Cutseq(16)` → cutscene jouée →
 `E16 COMPLETE value=2`, captures `exit-*.png`. Le niveau 1 (Streets of Rome)
 est donc terminé par la cutscene réelle, sans synthèse.
 
+Transition de niveau validée : après `gfLevelComplete=2`, le gameflow charge
+le niveau 2 (`gfCurrentLevel == 2`, Trajan’s Markets). Preuve
+`play-level2c-20261104/attempt1.log` (`L2 LEVEL2`) et capture
+`play-level2c-20261104/attempt1.png` (Lara dans un couloir de pierre, revolver
+au sol). Le niveau 1 est donc entièrement bouclé jusqu’au niveau suivant.
+
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
 de panneau Mouth of Truth et la route jouée jusqu’au panneau restent à
