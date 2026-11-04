@@ -1171,6 +1171,15 @@
       ],
       "status": "In progress",
       "summary": "Cutscenes PSX débloquées : NeatAndTidyTriggerCutscene utilisait lara.look, forcé TRUE chaque frame par le hack PSXPC, et n'avait pas de défaut cutseq_num=value. Correctifs (input & IN_LOOK, défaut cutseq_num) : TO_CUTSCENE 17 de room 116 (=CUT_ANDREA1) se charge via Load_and_Init_Cutseq(17) et se joue réellement (capture cinématique play-ending-20261104/ending-00.png). 17 n'est pas une cutscene de fin : les cuts qui posent gfLevelComplete (CUT_RICH_CUT_2=26, CUT_JOBY_CUT_3=22, etc.) n'ont aucun TO_CUTSCENE/TO_FINISH dans les 242 salles. Fin de niveau encore non déclenchée par les données explorées. Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Aucun Done."
+    },
+    {
+      "date": "2026-11-04",
+      "authorization_until": "2026-11-04T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Fin du niveau 1 validée par cutscene réelle, sans synthèse : Saturn Symbol (item 94) -> FlipMap(8) -> tuile de sortie de room 171 (X59904 Z69120, room 171 échangée avec 234) -> TO_CUTSCENE 16 (CUT_ANDREA2) -> Load_and_Init_Cutseq(16) -> cutscene jouée -> gfLevelComplete=2. Preuve play-exit16-20261104/ : E16 LOAD num=16, E16 COMPLETE value=2, captures exit-*.png. Correctifs cutscene : input & IN_LOOK au lieu de lara.look, défaut cutseq_num=value. Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Streets of Rome terminé. Aucun Done global (campagne TR5 non terminée)."
     }
   ]
 }

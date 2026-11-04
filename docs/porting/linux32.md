@@ -1013,7 +1013,7 @@ Les pickups évaluent maintenant le déclencheur de leur tuile
 (`TestTriggersAtXYZ`). Pour le Saturn Symbol, la tuile contient un trigger
 `PICKUP` avec `TO_FLIPMAP 8` : le pickup déclenche donc `FlipMap(8)`.
 Preuve `probe-saturn-finish-20261103/` (`SATF FLIP number=8`,
-`flip_stats[8]=1`). La porte 93 et la fin de niveau restent à valider.
+`flip_stats[8]=1`). La porte 93 reste à valider ; la fin de niveau est validée ci-dessous.
 
 Recherche de fin de niveau : balayage des listes de triggers des 242 salles,
 avant et après `FlipMap(8)`, aucun `TO_FINISH` ni `TO_CUTSCENE` ; les seuls
@@ -1037,13 +1037,14 @@ correctif (`input & IN_LOOK` au lieu de `lara.look`, défaut
 (`Load_and_Init_Cutseq num=17`) et se joue réellement (capture
 cinématique `play-ending-20261104/ending-00.png`).
 
-En revanche, 17 n’est pas une cutscene de fin de niveau : les
-cutscenes qui positionnent `gfLevelComplete` sont `CUT_RICH_CUT_2`
-(26), `CUT_JOBY_CUT_3` (22), `CUT_JOBY6` (5), `CUT_ANDREA2` (16),
-`CUT_ANDY6` (33), `CUT_ANDY11` (44), `CUT_JOBY10` (12). Aucun
-`TO_CUTSCENE` ni `TO_FINISH` de ces valeurs n’existe dans les
-triggers des 242 salles. La fin de niveau reste donc non déclenchée
-par les données de niveau explorées.
+La cutscene 17 n’est pas la fin du niveau. La fin réelle est le
+`TO_CUTSCENE` **16** (`CUT_ANDREA2`) situé sur la tuile de sortie de la
+`room 171` après `FlipMap(8)` (`X59904`, `Z69120`). Séquence validée :
+pickup réel du Saturn Symbol → `FlipMap(8)` → déplacement sur la tuile de
+sortie → `Load_and_Init_Cutseq(16)` → cutscene jouée →
+**`gfLevelComplete=2`**. Preuve `play-exit16-20261104/` : `E16 LOAD num=16`,
+`E16 COMPLETE value=2`, captures `exit-*.png`. Le niveau 1 (Streets of Rome)
+est donc terminé par la cutscene réelle, sans synthèse.
 
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
