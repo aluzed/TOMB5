@@ -1693,7 +1693,7 @@ void NeatAndTidyTriggerCutscene(int value/*s0*/, int timer/*s1*/)
 	//loc_20FA0
 	//v1 = lara
 	//s2 = a0
-	if (!(lara.look))
+	if (!(input & IN_LOOK))
 	{
 		if (value == 0x17)
 		{
@@ -1827,6 +1827,10 @@ void NeatAndTidyTriggerCutscene(int value/*s0*/, int timer/*s1*/)
 				}
 				//loc_215B8
 			}
+
+			/* Default cutscene start for values not handled above. */
+			cutseq_num = value;
+			return;
 			//loc_212D8
 			//v0 = 0x14
 
