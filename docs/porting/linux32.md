@@ -1052,6 +1052,13 @@ le niveau 2 (`gfCurrentLevel == 2`, Trajan’s Markets). Preuve
 `play-level2c-20261104/attempt1.png` (Lara dans un couloir de pierre, revolver
 au sol). Le niveau 1 est donc entièrement bouclé jusqu’au niveau suivant.
 
+Départ du niveau 2 (Trajan’s Markets) vérifié : `room 50`, position
+`X91648 Y0 Z42496`, salle `X87040 Z38912` (6×6). Preuve
+`level2-start-20261104/level2-start.png` et `level2-items-20261104/`. Les
+objets proches inventoriés : `item 6` (`REVOLVER_AMMO_ITEM`, room 2),
+`item 19` (`LASERSIGHT_ITEM`, room 25) ; aucun `REVOLVER_ITEM` dans la salle
+de départ.
+
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification
 de panneau Mouth of Truth et la route jouée jusqu’au panneau restent à
