@@ -1026,15 +1026,24 @@ des rooms 223/225/228 et les rooms candidates 174/175/183/186/234 ont aussi
 été testés avec le Saturn Symbol en inventaire : aucun téléport, aucun
 `gfLevelComplete`, aucune cutscene.
 
-Déclencheur de fin identifié : dans la `room 116`, la bande de tuiles
-`X59904`, `Z55808` à `Z61952` porte un `TO_CUTSCENE` de valeur **17**. Avec
-le Saturn Symbol en inventaire, `NeatAndTidyTriggerCutscene(17, 0)` est
-appelé à chaque frame (`E116 CUT value=17`). Le port PSXPC_N n’a toutefois
-pas de lecteur de cutscene : `handle_cutseq_triggering` est compilé
-uniquement pour `PC_VERSION`, donc `cutseq_num` n’est jamais consommé et
-`gfLevelComplete` n’est jamais positionné. C’est le blocage actuel de la fin
-de niveau : le trigger est correct, mais la cutscene 0x17 ne peut pas être
-jouée.
+Déclencheur `TO_CUTSCENE` 17 trouvé dans la `room 116`
+(`X59904`, `Z55808` à `Z61952`). Avec le Saturn Symbol, il appelle
+`NeatAndTidyTriggerCutscene(17, 0)`. Deux blocages de port empêchaient
+la cutscene de démarrer : `lara.look` est forcé à TRUE chaque frame
+(hack d’entrée PSXPC) et la fonction `NeatAndTidyTriggerCutscene`
+n’avait pas de branche par défaut `cutseq_num = value`. Après
+correctif (`input & IN_LOOK` au lieu de `lara.look`, défaut
+`cutseq_num = value`), la cutscene 17 (= `CUT_ANDREA1`) se charge
+(`Load_and_Init_Cutseq num=17`) et se joue réellement (capture
+cinématique `play-ending-20261104/ending-00.png`).
+
+En revanche, 17 n’est pas une cutscene de fin de niveau : les
+cutscenes qui positionnent `gfLevelComplete` sont `CUT_RICH_CUT_2`
+(26), `CUT_JOBY_CUT_3` (22), `CUT_JOBY6` (5), `CUT_ANDREA2` (16),
+`CUT_ANDY6` (33), `CUT_ANDY11` (44), `CUT_JOBY10` (12). Aucun
+`TO_CUTSCENE` ni `TO_FINISH` de ces valeurs n’existe dans les
+triggers des 242 salles. La fin de niveau reste donc non déclenchée
+par les données de niveau explorées.
 
 Le mécanisme `SWITCH_TYPE7` item 72 n’est plus présenté comme « Mouth of
 Truth » : son effet vérifié est l’ouverture de la porte 71. La qualification

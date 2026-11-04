@@ -1162,6 +1162,15 @@
       ],
       "status": "In progress",
       "summary": "Les pickups appellent TestTriggersAtXYZ sur leur tuile. Saturn Symbol (item 94, room 171) : pickup -> AddDisplayPickup(221) + trigger PICKUP avec TO_FLIPMAP 8 -> FlipMap(8), flip_stats[8]=1. Preuve probe-saturn-finish-20261103/. Recherche de fin : balayage des 242 salles avant/après FlipMap(8), aucun TO_FINISH/TO_CUTSCENE ; TO_FLIPEFFECT des rooms 223/225/228 sans finish_level_effect (index 4). Fin de niveau encore non identifiée. Build-gameplay42 SHA256 1b479bb37abc35e481d25dcd91a9330180812a48a7d1599e09a4936310f0e299; tests 4174 PASS. Aucun Done."
+    },
+    {
+      "date": "2026-11-04",
+      "authorization_until": "2026-11-04T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Cutscenes PSX débloquées : NeatAndTidyTriggerCutscene utilisait lara.look, forcé TRUE chaque frame par le hack PSXPC, et n'avait pas de défaut cutseq_num=value. Correctifs (input & IN_LOOK, défaut cutseq_num) : TO_CUTSCENE 17 de room 116 (=CUT_ANDREA1) se charge via Load_and_Init_Cutseq(17) et se joue réellement (capture cinématique play-ending-20261104/ending-00.png). 17 n'est pas une cutscene de fin : les cuts qui posent gfLevelComplete (CUT_RICH_CUT_2=26, CUT_JOBY_CUT_3=22, etc.) n'ont aucun TO_CUTSCENE/TO_FINISH dans les 242 salles. Fin de niveau encore non déclenchée par les données explorées. Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Aucun Done."
     }
   ]
 }
