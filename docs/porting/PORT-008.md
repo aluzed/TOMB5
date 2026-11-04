@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-04T23:59:00+01:00. Linux32 provisoire.
 
+Niveau 2 : transition depuis le niveau 1 confirmée (room 50) et pickup LASERSIGHT_ITEM validé. item 19 room 25 X89600 Y-512 Z47616 -> AddDisplayPickup(obj=351). Preuve level2-laser2-20261104/ (L2L LEVEL2 start room=50, L2L LASER test=1, L2L PICK obj=351). Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Streets of Rome terminé, Trajan's Markets en cours. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-04
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-04T23:59:00+01:00. Linux32 provisoire.
+
 Niveau 2 (Trajan's Markets) chargé et départ vérifié : room 50, X91648 Y0 Z42496, salle X87040 Z38912 (6x6). Preuves level2-start-20261104/level2-start.png et level2-items-20261104/. Objets proches : item 6 REVOLVER_AMMO_ITEM room 2, item 19 LASERSIGHT_ITEM room 25 ; aucun REVOLVER_ITEM dans la salle de départ. Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Streets of Rome terminé, Trajan's Markets commencé. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
