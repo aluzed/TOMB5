@@ -1252,6 +1252,15 @@
       ],
       "status": "In progress",
       "summary": "Poulie niveau 2 : la traction déclenche bien le flyby SPOTCAMS 1 (level2-pulley-gear-20261105/). Les cibles du trigger restent inactives (item 11 TRAPDOOR1, item 15/16 ANIMATING6_MIP, item 17 ANIMATING7 : status=0, active=0) faute de routines de contrôle assignées dans le port. Mécanisme d'engrenage partiel : flyby OK, activation des engrenages incomplète. Build-gameplay48b SHA256 6ed6233a84cb950ba66712b4129e4bfdeb5fc6410ae4480de8cf38c2160dfd59; tests 4174 PASS. Streets of Rome terminé, Trajan's Markets en cours. Aucun Done global."
+    },
+    {
+      "date": "2026-11-05",
+      "authorization_until": "2026-11-05T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Seconde poulie niveau 2 : traction validée (STATE_LARA_PULLEY 104, anim 339->340, trigger_flags 1->0) mais pas de DoorControl/flyby. Trigger de tuile : SWITCH item 36 (flags 0x3E00) ciblant uniquement item 18 HIGH_OBJECT1 room 24 X74240 Y3072 Z32256. HIGH_OBJECT1 n'a pas de contrôle dans le port, donc inactif et la porte circulaire ne s'ouvre pas. Preuves pulley36-direct5-20261105/ et trig36-20261105/. Build-gameplay48b SHA256 6ed6233a84cb950ba66712b4129e4bfdeb5fc6410ae4480de8cf38c2160dfd59; tests 4174 PASS. Streets of Rome terminé, Trajan's Markets en cours. Aucun Done global."
     }
   ]
 }

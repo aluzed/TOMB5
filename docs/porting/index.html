@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-05T23:59:00+01:00. Linux32 provisoire.
 
+Seconde poulie niveau 2 : traction validée (STATE_LARA_PULLEY 104, anim 339-&gt;340, trigger_flags 1-&gt;0) mais pas de DoorControl/flyby. Trigger de tuile : SWITCH item 36 (flags 0x3E00) ciblant uniquement item 18 HIGH_OBJECT1 room 24 X74240 Y3072 Z32256. HIGH_OBJECT1 n&#x27;a pas de contrôle dans le port, donc inactif et la porte circulaire ne s&#x27;ouvre pas. Preuves pulley36-direct5-20261105/ et trig36-20261105/. Build-gameplay48b SHA256 6ed6233a84cb950ba66712b4129e4bfdeb5fc6410ae4480de8cf38c2160dfd59; tests 4174 PASS. Streets of Rome terminé, Trajan&#x27;s Markets en cours. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-05
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-05T23:59:00+01:00. Linux32 provisoire.
+
 Poulie niveau 2 : la traction déclenche bien le flyby SPOTCAMS 1 (level2-pulley-gear-20261105/). Les cibles du trigger restent inactives (item 11 TRAPDOOR1, item 15/16 ANIMATING6_MIP, item 17 ANIMATING7 : status=0, active=0) faute de routines de contrôle assignées dans le port. Mécanisme d&#x27;engrenage partiel : flyby OK, activation des engrenages incomplète. Build-gameplay48b SHA256 6ed6233a84cb950ba66712b4129e4bfdeb5fc6410ae4480de8cf38c2160dfd59; tests 4174 PASS. Streets of Rome terminé, Trajan&#x27;s Markets en cours. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
