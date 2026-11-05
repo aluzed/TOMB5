@@ -5,6 +5,7 @@
 
 enum item_flags
 {
+	IFLAG_TRIGGERED = (1 << 5),  // 0x0020
 	IFLAG_UNK40 = (1 << 6),		 // 0x0040
 	IFLAG_CLEAR_BODY = (1 << 7), // 0x0080
 	IFLAG_INVISIBLE = (1 << 8),  // 0x0100

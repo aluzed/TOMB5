@@ -10,6 +10,8 @@ extern short SPxzoffs[8];
 
 extern void ControlExplosion(short item_number);
 extern void ControlRaisingBlock(short item_number);
+extern void InitialiseRaisingCog(short item_number);
+extern void ControlRaisingCog(short item_number);
 extern void ControlScaledSpike(short item_number);
 extern int TestBoundsCollideTeethSpikes(struct ITEM_INFO* item);
 extern void ControlTwoBlockPlatform(short item_number);
@@ -35,6 +37,7 @@ extern void FallingBlockCollision(short item_number, struct ITEM_INFO* l, struct
 extern void TrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll);
 extern void CeilingTrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll);
 extern void FloorTrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll);
+extern void InitialiseTrapDoor(short item_number);
 extern void TrapDoorControl(short item_number);
 extern void CloseTrapDoor(struct ITEM_INFO* item);
 extern void OpenTrapDoor(struct ITEM_INFO* item);

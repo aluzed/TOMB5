@@ -522,10 +522,11 @@ int GetKeyTrigger(struct ITEM_INFO* item)//56080(<), 56520(<) (F)
 
 int GetSwitchTrigger(struct ITEM_INFO* item, short* ItemNos, long AttatchedToSwitch)//55F4C, 563EC (F)
 {
-	short* data = trigger_index;
+	short* data;
 
 	GetHeight(GetFloor(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, &item->room_number),
 		item->pos.x_pos, item->pos.y_pos, item->pos.z_pos);
+	data = trigger_index;
 
 	if (data != NULL)
 	{
@@ -535,17 +536,17 @@ int GetSwitchTrigger(struct ITEM_INFO* item, short* ItemNos, long AttatchedToSwi
 		if (*data & 4)
 		{
 			short num = 0;
-			
+
+			data += 2;
+
 			do
 			{
-				data += 2;
-
 				if (!(*data & 0x3C00) && item != &items[*data & 0x3FF])
 				{
 					ItemNos[num] = *data & 0x3FF;
 					num++;
 				}
-			} while (!(*data & 0x8000));
+			} while (!(*data++ & 0x8000));
 
 			return num;
 		}

@@ -407,6 +407,7 @@ extern void ControlWaterfall(short item_number);
 extern void AnimateWaterfalls();
 extern void ControlTriggerTriggerer(short item_number);
 extern void PoleCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll);
+extern void InitialiseAnimatingSlots(short item_number);
 extern void ControlAnimatingSlots(short item_number);
 extern void BridgeTilt2Ceiling(struct ITEM_INFO* item, long x, long y, long z, long* height);
 extern void BridgeTilt2Floor(struct ITEM_INFO* item, long x, long y, long z, long* height);

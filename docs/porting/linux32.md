@@ -1077,7 +1077,7 @@ Z25088`) : Lara entre `STATE_LARA_PULLEY` (104), animation 339
 
 Le déclencheur de la tuile de la poulie est : type spécial 20, puis
 `SWITCH` sur `item 27` (`flags=0x3E00`) avec pour cibles `item 11`
-(`TRAPDOOR1`), `item 15`/`16` (`ANIMATING6_MIP`), `item 17` (`ANIMATING7`)
+(`TRAPDOOR1`), `item 15`/`16` (`ANIMATING3_MIP`), `item 17` (`ANIMATING4`)
 et un `TO_FLYBY` de valeur 1. Preuve `trig27-20261105/`. C’est le mécanisme
 d’engrenage. Test complémentaire : `SPOTCAMS 1` est bien appelé après la
 traction (`level2-pulley-gear-20261105/`). En revanche, les objets cibles
@@ -1100,10 +1100,51 @@ Seconde poulie (`item 36`, room 51, `X72192 Y-2048 Z25088`) : la traction
 fonctionne aussi (`STATE_LARA_PULLEY` 104, anim 339→340, `trigger_flags`
 1→0), mais aucun `DoorControl` ni flyby n’est observé ensuite. Le trigger
 de sa tuile est un `SWITCH` sur `item 36` (`flags=0x3E00`) dont la seule
-cible est `item 18` (`HIGH_OBJECT1`, room 24, `X74240 Y3072 Z32256`).
-`HIGH_OBJECT1` n’a pas de routine de contrôle dans le port, donc
+cible est `item 18` (`RAISING_COG`, room 24, `X74240 Y3072 Z32256`).
+`RAISING_COG` n’avait alors pas de routine de contrôle dans le port, donc
 `AddActiveItem` le laisse inactif : la porte circulaire n’est pas déclenchée.
 Preuves `pulley36-direct5-20261105/` et `trig36-20261105/`.
+
+### Poulie, engrenages et RAISING_COG (5 novembre 2026, build-gameplay56)
+
+Le diagnostic précédent identifiait à tort `item 18` comme `HIGH_OBJECT1`.
+La table d’objets compilée et la sonde runtime donnent `item 18 = RAISING_COG`
+(389, room 24, `X74240 Y3072 Z32256`). Les cibles du trigger de la poulie 27
+sont `item 11 = TRAPDOOR1` (106), `item 15`/`16 = ANIMATING3_MIP` (421) et
+`item 17 = ANIMATING4` (422) ; le `TO_FLYBY 1` est conservé.
+
+Correctifs fondés sur `GAME`/`SPEC_PSXPC_N` et sur les preuves runtime :
+
+- `GetSwitchTrigger` : `trigger_index` est lu après `GetFloor`/`GetHeight`, et
+  la boucle examine chaque mot de trigger (`data++`) au lieu de sauter les
+  mots impairs. Sans ces deux corrections, `InitialiseRaisingCog` ne voyait
+  pas la poulie 27 (`n=0` puis `n=2` au lieu de `n=3`).
+- `_TestTriggers` : le marqueur `TRIGTRIGGER_TYPE` est désormais un verrou
+  (retour immédiat tant que `IFLAG_TRIGGERED` 0x20 n’est pas posé), conforme
+  au code PC. `ControlTriggerTriggerer` pose/efface ce bit.
+- `InitialiseRaisingCog` / `ControlRaisingCog` portés. L’initialisation
+  croisée est rejouée après la boucle `InitialiseItem` car l’initialisation
+  de la poulie 27 remettait `item_flags[1]` à zéro
+  (`PortInitialiseRaisingCogs`).
+- `ControlRaisingCog` ne retire l’objet actif qu’à la fin de la troisième
+  étape. Avec le retrait après chaque étape (code PC brut), le cog s’arrêtait
+  à `item_flags[0]=1` et la poulie 27 restait verrouillée ; la séquence réelle
+  prouve les trois étapes.
+- `ControlAnimatingSlots` / `InitialiseAnimatingSlots` : première
+  implémentation (cas `trigger_flags` 0, 2, 333, 555 et animation active).
+  Assignation limitée à `LVL5_TRAJAN_MARKETS` pour
+  `ANIMATING3_MIP`/`ANIMATING4` et `TRAPDOOR1..3` : l’assignation globale
+  `ANIMATING1..16` faisait crasher le plan du titre via `ANIMATING4`
+  (`iRotSuperPackedYXZ_AI`). Les branches `111/222/666/667/668/777/888`
+  restent à porter.
+
+Séquence réelle validée (`sequence-real2-20261105/`) : traction poulie 36,
+cog actif (`SPOTCAMS 9`), `item_flags[0]` 0→1→2→3, `y` 3072→2304,
+`item 27` déverrouillée (`item_flags[1]` 1→0), `item 28` actif, traction
+poulie 27, engrenages actifs (`items 11/15/16/17 status=1 active=1
+flags=15904`), `ANIMATING4` avance jusqu’à la frame 62, `SPOTCAMS 1` actif.
+Aucun SIGSEGV. La suite (`flipmap[3]`, `flipmap[8]`, `gfLevelComplete`) reste
+à 0 : la porte/route ouverte par les engrenages n’est pas encore identifiée.
 
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et

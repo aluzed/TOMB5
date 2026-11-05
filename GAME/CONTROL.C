@@ -2580,12 +2580,16 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 		}
 	}
 	//loc_1EB90
-	if ((*data & 0x1F) == 20 && !(*data & 0x20))
+	if ((*data & 0x1F) == TRIGTRIGGER_TYPE)
 	{
-		if ((*data++ & 0x8000))
+		/* Un trigger ne s'ouvre que si le TRIGGER_TRIGGERER associe
+		 * a marque le mot de controle avec IFL_TRIGGERED (0x20). */
+		if (!(*data & 0x20) || (*data & 0x8000))
 		{
 			return;
 		}
+
+		data++;
 	}
 
 	//loc_1EBB4

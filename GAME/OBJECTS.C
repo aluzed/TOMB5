@@ -7,6 +7,7 @@
 #include "EFFECTS.H"
 #include "ITEMS.H"
 #include "LARA.H"
+#include "MALLOC.H"
 
 #if PSXENGINE || SAT_VERSION
 #include "SETUP.H"
@@ -22,6 +23,10 @@
 #include "SPECIFIC.H"
 #include "STYPES.H"
 #include "TOMB4FX.H"
+
+#if PSX_VERSION || PSXPC_VERSION || SAT_VERSION
+#include "GETSTUFF.H"
+#endif
 
 #include <stddef.h>
 #include "SWITCH.H"
@@ -197,9 +202,91 @@ void BridgeTilt2Ceiling(struct ITEM_INFO* item, long x, long y, long z, long* he
 #endif
 }
 
+void InitialiseAnimatingSlots(short item_number)
+{
+	struct ITEM_INFO* item = &items[item_number];
+
+	if (item->trigger_flags == 666 || item->trigger_flags == 667)
+	{
+		struct creature_info* c = (struct creature_info*)game_malloc(sizeof(struct creature_info));
+
+		item->data = c;
+		c->joint_rotation[0] = 0;
+		c->joint_rotation[1] = 0;
+
+		if (item->trigger_flags == 667)
+		{
+			item->anim_number = objects[item->object_number].anim_index + 1;
+			item->frame_number = anims[item->anim_number].frame_base;
+		}
+	}
+	else if (item->trigger_flags > 900)
+	{
+		switch (item->trigger_flags)
+		{
+		case 901:
+			item->anim_number = objects[item->object_number].anim_index;
+			item->frame_number = anims[item->anim_number].frame_base;
+			item->current_anim_state = 1;
+			item->goal_anim_state = 1;
+			break;
+
+		case 902:
+			item->anim_number = objects[item->object_number].anim_index + 2;
+			item->frame_number = anims[item->anim_number].frame_base + 60;
+			item->current_anim_state = 1;
+			item->goal_anim_state = 1;
+			break;
+
+		case 903:
+			item->anim_number = objects[item->object_number].anim_index;
+			item->frame_number = anims[item->anim_number].frame_base;
+			item->current_anim_state = 0;
+			item->goal_anim_state = 1;
+			break;
+
+		case 904:
+			item->anim_number = objects[item->object_number].anim_index + 2;
+			item->frame_number = anims[item->anim_number].frame_base;
+			item->current_anim_state = 1;
+			item->goal_anim_state = 1;
+			break;
+		}
+	}
+}
+
 void ControlAnimatingSlots(short item_number)
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_number];
+
+	if (!TriggerActive(item))
+	{
+		switch (item->trigger_flags)
+		{
+		case 2:
+			item->status = ITEM_INVISIBLE;
+			return;
+
+		case 333:
+			item->flags |= IFLAG_ACTIVATION_MASK;
+			break;
+
+		case 555:
+			item->flags |= IFLAG_ACTIVATION_MASK;
+
+			if (item->anim_number == objects[item->object_number].anim_index + 1)
+				return;
+
+			item->anim_number = objects[item->object_number].anim_index + 1;
+			break;
+		}
+
+		item->frame_number = anims[item->anim_number].frame_base;
+		return;
+	}
+
+	item->status = ITEM_ACTIVE;
+	AnimateItem(item);
 }
 
 void PoleCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)
@@ -209,7 +296,47 @@ void PoleCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)
 
 void ControlTriggerTriggerer(short item_number)
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_number];
+	short* data;
+
+	GetHeight(GetFloor(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, &item->room_number),
+		item->pos.x_pos, item->pos.y_pos, item->pos.z_pos);
+	data = trigger_index;
+
+	if (data == NULL)
+		return;
+
+	if ((*data & 0x1F) == LAVA_TYPE)
+	{
+		if (*data & 0x8000)
+			return;
+
+		data++;
+	}
+
+	if ((*data & 0x1F) == CLIMB_TYPE)
+	{
+		if (*data & 0x8000)
+			return;
+
+		data++;
+	}
+
+	if ((*data & 0x1F) == MONKEY_TYPE)
+	{
+		if (*data & 0x8000)
+			return;
+
+		data++;
+	}
+
+	if ((*data & 0x1F) == TRIGTRIGGER_TYPE)
+	{
+		if (TriggerActive(item))
+			*data |= IFLAG_TRIGGERED;
+		else
+			*data &= ~IFLAG_TRIGGERED;
+	}
 }
 
 void AnimateWaterfalls()//4FABC(<), 4FF20(<)

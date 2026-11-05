@@ -899,6 +899,23 @@ void BaddyObjects()//?, B5328
 	}//loc_20A4
 }
 
+static void PortInitialiseRaisingCogs(void)
+{
+	int i;
+
+	/* InitialiseRaisingCog ecrit item_flags[1] sur la poulie associee.
+	 * L'InitialiseItem de cette poulie, plus tard dans la boucle, remet
+	 * ce champ a zero. On rejoue donc l'initialisation croisee une fois
+	 * tous les items initialises. */
+	for (i = 0; i < level_items; i++)
+	{
+		if (items[i].object_number == RAISING_COG)
+		{
+			InitialiseRaisingCog(i);
+		}
+	}
+}
+
 static void PortSetupGameplayEnemies(void)
 {
 	int i;
@@ -1007,6 +1024,40 @@ static void PortSetupGameplayObjects(void)
 		else if (i == RAISING_BLOCK1 || i == RAISING_BLOCK2)
 		{
 			objects[i].control = &ControlRaisingBlock;
+		}
+		else if (i == RAISING_COG)
+		{
+			objects[i].initialise = &InitialiseRaisingCog;
+			objects[i].control = &ControlRaisingCog;
+			objects[i].save_position = TRUE;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+		}
+		else if (i == TRIGGER_TRIGGERER)
+		{
+			objects[i].initialise = &ControlTriggerTriggerer;
+			objects[i].control = &ControlTriggerTriggerer;
+			objects[i].save_flags = TRUE;
+		}
+		else if (gfCurrentLevel == LVL5_TRAJAN_MARKETS && i >= TRAPDOOR1 && i <= TRAPDOOR3)
+		{
+			objects[i].initialise = &InitialiseTrapDoor;
+			objects[i].control = &TrapDoorControl;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+		}
+		else if (gfCurrentLevel == LVL5_TRAJAN_MARKETS && (i == ANIMATING3_MIP || i == ANIMATING4))
+		{
+			/* Les engrenages de Trajan's Markets (items 15/16/17).
+			 * L'assignation globale ANIMATING casse les animations de
+			 * cutscene (ANIMATING4 est utilise par le plan du titre). */
+			objects[i].initialise = &InitialiseAnimatingSlots;
+			objects[i].control = &ControlAnimatingSlots;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+			objects[i].save_mesh = TRUE;
+			bones[objects[i].bone_index] |= 8;
+			bones[objects[i].bone_index + 4] |= 4;
 		}
 	}
 }
@@ -1672,6 +1723,7 @@ void LoadLevel(FILE* nHandle)
 			InitialiseItem(i);
 		}
 
+		PortInitialiseRaisingCogs();
 		PortSetupGameplayEnemies();
 	}
 	//loc_A5C

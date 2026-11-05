@@ -15,6 +15,8 @@
 #include "COLLIDE.H"
 #include "GAMEFLOW.H"
 #include "SAVEGAME.H"
+#include "SWITCH.H"
+#include "SPOTCAM.H"
 
 #if PSX_VERSION || PSXPC_VERSION || SAT_VERSION
 	#include "MISC.H"
@@ -166,6 +168,11 @@ void CloseTrapDoor(struct ITEM_INFO* item)//58B68(<), 59008(<) (F)
 
 	item->item_flags[2] = 1;
 	item->item_flags[3] = pitsky;
+}
+
+void InitialiseTrapDoor(short item_number)
+{
+	CloseTrapDoor(&items[item_number]);
 }
 
 void TrapDoorControl(short item_number)//58D08(<), 59184 (F)
@@ -721,6 +728,112 @@ void ControlRaisingBlock(short item_number)//5C56C, 5C9E8
 		}
 
 		item->item_flags[2] = 0;
+	}
+}
+
+void InitialiseRaisingCog(short item_number)
+{
+	struct ITEM_INFO* item = &items[item_number];
+	struct ITEM_INFO* item2;
+	short TriggerItems[4];
+	short NumTrigs;
+	int i;
+
+	NumTrigs = (short)GetSwitchTrigger(item, TriggerItems, 1);
+
+	for (i = NumTrigs; i > 0; i--)
+	{
+		item2 = &items[TriggerItems[i - 1]];
+
+		if (item2->object_number == TRIGGER_TRIGGERER)
+		{
+			item->item_flags[1] = item2->room_number;
+		}
+		else if (item2->object_number == PULLEY && item2->room_number == item->item_flags[1])
+		{
+			item2->item_flags[1] = 1;
+			GlobalPulleyFrigItem = TriggerItems[i - 1];
+		}
+	}
+}
+
+void ControlRaisingCog(short item_number)
+{
+	struct ITEM_INFO* item = &items[item_number];
+	struct ITEM_INFO* triggered;
+	short TriggerItems[4];
+	short NumTrigs;
+	short vol;
+
+	if (!TriggerActive(item))
+		return;
+
+	if (item->item_flags[0] >= 3)
+	{
+		AnimateItem(item);
+		return;
+	}
+
+	if (item->item_flags[2] >= 256)
+	{
+		item->item_flags[2] = 0;
+		item->item_flags[0]++;
+
+		if (item->item_flags[0] == 3)
+		{
+			for (NumTrigs = (short)GetSwitchTrigger(item, TriggerItems, 1); NumTrigs; NumTrigs--)
+			{
+				triggered = &items[TriggerItems[NumTrigs - 1]];
+
+				if (triggered->object_number == PULLEY)
+				{
+					if (triggered->room_number == item->item_flags[1])
+					{
+						triggered->item_flags[1] = 0;
+						triggered->flags |= IFLAG_TRIGGERED;
+					}
+					else
+					{
+						triggered->item_flags[1] = 1;
+					}
+				}
+				else if (triggered->object_number == TRIGGER_TRIGGERER)
+				{
+					AddActiveItem(TriggerItems[NumTrigs - 1]);
+					triggered->status = ITEM_ACTIVE;
+					triggered->flags |= IFLAG_ACTIVATION_MASK;
+				}
+			}
+
+			RemoveActiveItem(item_number);
+			item->status = ITEM_INACTIVE;
+			item->flags &= ~IFLAG_ACTIVATION_MASK;
+		}
+	}
+	else
+	{
+		if (!item->item_flags[2])
+		{
+			InitialiseSpotCam(9);
+			bUseSpotCam = 1;
+		}
+
+		if (item->item_flags[2] < 31)
+		{
+			vol = item->item_flags[2];
+		}
+		else if (item->item_flags[2] > 224)
+		{
+			vol = 255 - item->item_flags[2];
+		}
+		else
+		{
+			vol = 31;
+		}
+
+		SoundEffect(SFX_BLK_PLAT_RAISE_LOW, &item->pos, (vol << 8) | SFX_SETVOL);
+		item->item_flags[2] += 2;
+		item->pos.y_pos -= 2;
 	}
 }
 

@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-05T23:59:00+01:00. Linux32 provisoire.
 
+Trajan's Markets : item 18 identifie comme RAISING_COG (389), pas HIGH_OBJECT1. GetSwitchTrigger corrige (trigger_index lu apres GetHeight, iteration sur chaque mot) renvoie 3 cibles [36,27,28]; _TestTriggers verrouille correctement TRIGTRIGGER_TYPE tant que IFLAG_TRIGGERED 0x20 est absent; ControlTriggerTriggerer implemente. InitialiseRaisingCog/ControlRaisingCog portes, initialisation croisee rejouee apres InitialiseItem (PortInitialiseRaisingCogs) et retrait de l'objet actif seulement a la fin de l'etape 3 (sinon le cog s'arretait a f0=1). ControlAnimatingSlots/InitialiseAnimatingSlots implementes pour trigger_flags 0/2/333/555 et assignes uniquement a Trajan's Markets pour ANIMATING3_MIP/ANIMATING4 et TRAPDOOR1..3 (l'assignation globale ANIMATING plantait le plan du titre via ANIMATING4). Sequence reelle jouee: poulie 36 -> SPOTCAMS 9, cog f0 0->1->2->3, y 3072->2304, item 27 deverrouillee (f1 1->0), item 28 actif; poulie 27 -> items 11/15/16/17 status=1 active=1 flags=15904, ANIMATING4 frame 62, SPOTCAMS 1; aucun SIGSEGV. flipmap[3], flipmap[8] et gfLevelComplete restent a 0. Preuves cog-init3-20261105/, cog-state4-20261105/ et sequence-real2-20261105/. Build-gameplay56 SHA256 85783c9a13bc36606f388f557e9521fd66a384690df5ca22f1b3949602905d12; tests 4174 PASS. Streets of Rome termine, Trajan's Markets en cours. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-05
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-05T23:59:00+01:00. Linux32 provisoire.
+
 Seconde poulie niveau 2 : traction validée (STATE_LARA_PULLEY 104, anim 339->340, trigger_flags 1->0) mais pas de DoorControl/flyby. Trigger de tuile : SWITCH item 36 (flags 0x3E00) ciblant uniquement item 18 HIGH_OBJECT1 room 24 X74240 Y3072 Z32256. HIGH_OBJECT1 n'a pas de contrôle dans le port, donc inactif et la porte circulaire ne s'ouvre pas. Preuves pulley36-direct5-20261105/ et trig36-20261105/. Build-gameplay48b SHA256 6ed6233a84cb950ba66712b4129e4bfdeb5fc6410ae4480de8cf38c2160dfd59; tests 4174 PASS. Streets of Rome terminé, Trajan's Markets en cours. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
