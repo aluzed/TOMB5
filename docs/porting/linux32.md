@@ -1079,8 +1079,13 @@ Le déclencheur de la tuile de la poulie est : type spécial 20, puis
 `SWITCH` sur `item 27` (`flags=0x3E00`) avec pour cibles `item 11`
 (`TRAPDOOR1`), `item 15`/`16` (`ANIMATING6_MIP`), `item 17` (`ANIMATING7`)
 et un `TO_FLYBY` de valeur 1. Preuve `trig27-20261105/`. C’est le mécanisme
-d’engrenage : les objets d’engrenage sont activés et le flyby est déclenché.
-La validation visuelle du flyby reste à faire.
+d’engrenage. Test complémentaire : `SPOTCAMS 1` est bien appelé après la
+traction (`level2-pulley-gear-20261105/`). En revanche, les objets cibles
+restent `status=0`, `active=0` : `item 11` (`TRAPDOOR1`), `item 15`/`16`
+(`ANIMATING6_MIP`) et `item 17` (`ANIMATING7`) n’ont pas de routine de
+contrôle assignée dans le port, donc `AddActiveItem` les laisse inactifs.
+Le flyby est déclenché, mais l’activation visuelle des engrenages reste
+incomplète.
 
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
