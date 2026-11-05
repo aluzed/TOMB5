@@ -1069,6 +1069,14 @@ Pickups du niveau 2 validés :
 Les trois tests confirment `L2 LEVEL2 start room=50`, `TestLaraPosition=1` et
 le pickup effectif.
 
+Poulie : `PulleyCollision` est implémenté (port TOMB4) et assigné à
+`PULLEY`. Test niveau 2, `item 27` (`PULLEY`, room 33, `X81408 Y-2048
+Z25088`) : Lara entre `STATE_LARA_PULLEY` (104), animation 339
+(`ANIMATION_LARA_PULLEY_GRAB`), `TestLaraPosition(PulleyBounds)=1`,
+`trigger_flags=1`. Preuve `level2-pulley2-20261105/`. La transition vers
+l’animation 340 (`PULL`) ne se produit pas, donc le frame +44 qui décrémente
+`trigger_flags` et déclenche l’engrenage n’est pas atteint. Poulie partielle.
+
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
 `GLOBAL_inventoryitemchosen=CROWBAR_ITEM`, `DoorControl(0)` est activé

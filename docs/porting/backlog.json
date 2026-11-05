@@ -1225,6 +1225,15 @@
       ],
       "status": "In progress",
       "summary": "Niveau 2 : porte au crowbar testée. item 0 DOOR_TYPE1 room 0 X81408 Z43520 trigger_flags=2 ; avec crowbar et GLOBAL_inventoryitemchosen=CROWBAR_ITEM, DoorControl(0) est activé (status=1, flags=15904, goal=1). Preuve level2-crowbardoor0e-20261104/. Crash ensuite dans DEL_CalcLaraMatrices_Interpolated_ASM (lara.right_arm.frame_base, animation 403) : état d'animation des bras incomplet, ouverture non validée de bout en bout. Build-gameplay44 SHA256 67ca8a288b0ee76ef93741e22c5ca477d6fd687eedd1bb6582a765be6a18d8cb; tests 4174 PASS. Streets of Rome terminé, Trajan's Markets en cours. Aucun Done global."
+    },
+    {
+      "date": "2026-11-05",
+      "authorization_until": "2026-11-05T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Niveau 2 : PulleyCollision implémenté (port TOMB4) et assigné à PULLEY. Test item 27 room 33 X81408 Y-2048 Z25088 : Lara entre STATE_LARA_PULLEY (104), anim 339 GRAB, TestLaraPosition=1, trigger_flags=1. Preuve level2-pulley2-20261105/. La transition vers l'anim 340 (PULL) ne se fait pas, donc le trigger d'engrenage (frame +44) n'est pas atteint. Poulie partielle. Build-gameplay48b SHA256 6ed6233a84cb950ba66712b4129e4bfdeb5fc6410ae4480de8cf38c2160dfd59; tests 4174 PASS. Streets of Rome terminé, Trajan's Markets en cours. Aucun Done global."
     }
   ]
 }
