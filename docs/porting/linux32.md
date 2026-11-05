@@ -1087,6 +1087,15 @@ contrôle assignée dans le port, donc `AddActiveItem` les laisse inactifs.
 Le flyby est déclenché, mais l’activation visuelle des engrenages reste
 incomplète.
 
+Diagnostic complémentaire : en appelant directement `_TestTriggers` sur la
+tuile de la poulie avec `items[27].status = ITEM_DEACTIVATED`, les cibles
+reçoivent bien `flags=15904` (`0x3E20`) et `status=1`, mais restent
+`active=0` : `AddActiveItem` ne les ajoute pas car leur `control` est NULL.
+L’assignation générique `ControlAnimatingSlots = AnimateItem` à
+`TRAPDOOR1..3` et aux `ANIMATING` non-MIP a été testée puis **revertée** :
+elle provoque un SIGSEGV dans `iRotSuperPackedYXZ_AI` (données de frame
+invalides pour ces objets). Preuve `trigger-pulley-20261105/`.
+
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
 `GLOBAL_inventoryitemchosen=CROWBAR_ITEM`, `DoorControl(0)` est activé
