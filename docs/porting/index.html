@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-05T23:59:00+01:00. Linux32 provisoire.
 
+Poulie niveau 2 : PulleyCollision (port TOMB4) fonctionnel. item 27 room 33 : Lara STATE_LARA_PULLEY (104), anim 339 GRAB -&gt; 340 PULL, trigger_flags 1 -&gt; 0. Preuve level2-pulley4-20261105/. Trigger de tuile : type spécial 20 + SWITCH item 27 (flags 0x3E00) ciblant item 11 TRAPDOOR1, item 15/16 ANIMATING6_MIP, item 17 ANIMATING7 et TO_FLYBY 1. Preuve trig27-20261105/. Mécanisme d&#x27;engrenage activé ; validation visuelle du flyby à faire. Build-gameplay48b SHA256 6ed6233a84cb950ba66712b4129e4bfdeb5fc6410ae4480de8cf38c2160dfd59; tests 4174 PASS. Streets of Rome terminé, Trajan&#x27;s Markets en cours. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-05
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-05T23:59:00+01:00. Linux32 provisoire.
+
 Niveau 2 : PulleyCollision implémenté (port TOMB4) et assigné à PULLEY. Test item 27 room 33 X81408 Y-2048 Z25088 : Lara entre STATE_LARA_PULLEY (104), anim 339 GRAB, TestLaraPosition=1, trigger_flags=1. Preuve level2-pulley2-20261105/. La transition vers l&#x27;anim 340 (PULL) ne se fait pas, donc le trigger d&#x27;engrenage (frame +44) n&#x27;est pas atteint. Poulie partielle. Build-gameplay48b SHA256 6ed6233a84cb950ba66712b4129e4bfdeb5fc6410ae4480de8cf38c2160dfd59; tests 4174 PASS. Streets of Rome terminé, Trajan&#x27;s Markets en cours. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

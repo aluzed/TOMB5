@@ -1072,10 +1072,15 @@ le pickup effectif.
 Poulie : `PulleyCollision` est implémenté (port TOMB4) et assigné à
 `PULLEY`. Test niveau 2, `item 27` (`PULLEY`, room 33, `X81408 Y-2048
 Z25088`) : Lara entre `STATE_LARA_PULLEY` (104), animation 339
-(`ANIMATION_LARA_PULLEY_GRAB`), `TestLaraPosition(PulleyBounds)=1`,
-`trigger_flags=1`. Preuve `level2-pulley2-20261105/`. La transition vers
-l’animation 340 (`PULL`) ne se produit pas, donc le frame +44 qui décrémente
-`trigger_flags` et déclenche l’engrenage n’est pas atteint. Poulie partielle.
+(`GRAB`), puis passe à l’animation 340 (`PULL`) ; `trigger_flags` décroît de
+1 à 0. Preuve `level2-pulley4-20261105/` (frames 7028→7057, `trig=0`).
+
+Le déclencheur de la tuile de la poulie est : type spécial 20, puis
+`SWITCH` sur `item 27` (`flags=0x3E00`) avec pour cibles `item 11`
+(`TRAPDOOR1`), `item 15`/`16` (`ANIMATING6_MIP`), `item 17` (`ANIMATING7`)
+et un `TO_FLYBY` de valeur 1. Preuve `trig27-20261105/`. C’est le mécanisme
+d’engrenage : les objets d’engrenage sont activés et le flyby est déclenché.
+La validation visuelle du flyby reste à faire.
 
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
