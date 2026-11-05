@@ -1000,6 +1000,10 @@ static void PortSetupGameplayObjects(void)
 			objects[i].collision = &CrowDoveSwitchCollision;
 			objects[i].control = &CrowDoveSwitchControl;
 		}
+		else if (i == PULLEY)
+		{
+			objects[i].collision = &PulleyCollision;
+		}
 		else if (i == RAISING_BLOCK1 || i == RAISING_BLOCK2)
 		{
 			objects[i].control = &ControlRaisingBlock;

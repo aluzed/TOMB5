@@ -11,6 +11,7 @@
 #include "DRAW.H"
 #include "CAMERA.H"
 #include "ITEMS.H"
+#include "PICKUP.H"
 
 #ifdef PC_VERSION
 #include "GAME.H"
@@ -350,8 +351,63 @@ void TurnSwitchControl(short item_num)//56E9C, 5733C
 
 void PulleyCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//56C98, 57138
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+	short roty;
+
+	if (!(item->flags & IFLAG_INVISIBLE) &&
+		((input & IN_ACTION) && lara.gun_status == LG_NO_ARMS &&
+			l->current_anim_state == STATE_LARA_STOP &&
+			l->anim_number == ANIMATION_LARA_STAY_IDLE && !l->gravity_status ||
+			lara.IsMoving && lara.GeneralPtr == (void*)item_num))
+	{
+		roty = item->pos.y_rot;
+		item->pos.y_rot = l->pos.y_rot;
+
+		if (TestLaraPosition(PulleyBounds, item, l))
+		{
+			if (item->item_flags[1])
+			{
+				if (OldPickupPos.x != l->pos.x_pos || OldPickupPos.y != l->pos.y_pos || OldPickupPos.z != l->pos.z_pos)
+				{
+					OldPickupPos.x = l->pos.x_pos;
+					OldPickupPos.y = l->pos.y_pos;
+					OldPickupPos.z = l->pos.z_pos;
+					SayNo();
+				}
+			}
+			else if (MoveLaraPosition(&PulleyPos, item, l))
+			{
+				l->anim_number = ANIMATION_LARA_PULLEY_GRAB;
+				l->frame_number = anims[ANIMATION_LARA_PULLEY_GRAB].frame_base;
+				l->current_anim_state = STATE_LARA_PULLEY;
+				AddActiveItem(item_num);
+				item->status = ITEM_ACTIVE;
+				item->pos.y_rot = roty;
+				lara.IsMoving = 0;
+				lara.head_x_rot = 0;
+				lara.head_y_rot = 0;
+				lara.torso_x_rot = 0;
+				lara.torso_y_rot = 0;
+				lara.gun_status = LG_HANDS_BUSY;
+				lara.GeneralPtr = item;
+			}
+			else
+			{
+				lara.GeneralPtr = (void*)item_num;
+			}
+		}
+		else if (lara.IsMoving && lara.GeneralPtr == (void*)item_num)
+		{
+			lara.IsMoving = 0;
+			lara.gun_status = LG_NO_ARMS;
+		}
+
+		item->pos.y_rot = roty;
+	}
+	else if (l->current_anim_state != STATE_LARA_PULLEY)
+	{
+		ObjectCollision(item_num, l, coll);
+	}
 }
 
 void UnderwaterSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//56A2C, 56ECC
