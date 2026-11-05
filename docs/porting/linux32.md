@@ -1096,6 +1096,12 @@ L’assignation générique `ControlAnimatingSlots = AnimateItem` à
 elle provoque un SIGSEGV dans `iRotSuperPackedYXZ_AI` (données de frame
 invalides pour ces objets). Preuve `trigger-pulley-20261105/`.
 
+Seconde poulie (`item 36`, room 51, `X72192 Y-2048 Z25088`) : la traction
+fonctionne aussi (`STATE_LARA_PULLEY` 104, anim 339→340, `trigger_flags`
+1→0), mais aucun `DoorControl` ni flyby n’est observé ensuite. Le trigger
+aval est probablement conditionné par l’état des engrenages de la première
+poulie, encore incomplet. Preuve `pulley36-direct5-20261105/`.
+
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
 `GLOBAL_inventoryitemchosen=CROWBAR_ITEM`, `DoorControl(0)` est activé
