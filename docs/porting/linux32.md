@@ -1155,6 +1155,16 @@ sans changer `flipmap[8]` ni `gfLevelComplete`. Preuves
 `sequence-real2-20261105/`, `flyby-state-20261105/` et
 `flip3-rooms-20261106/`.
 
+Le même flyby appelle `FlipMap(4)` : `flip_stats[4]=1`, et les rooms **52**
+et **176** (même emprise `X75776 Z21504`, `Y1280..-2048`) sont permutées.
+C’est la porte circulaire effectivement appliquée. En revanche `flipmap[3]`
+vaut aussi `0x3E00` mais `flip_stats[3]=0` : le trigger contient deux entrées
+`TO_FLIPMAP` et `_TestTriggers` ne conserve qu’un seul `flip` (le dernier),
+donc les rooms **147/163** (munition Uzi `item 119`) ne sont pas permutées.
+La collecte directe de `item 119` fonctionne (`num_uzi_ammo` 30→60,
+`status=3`), mais l’accès via flip 3 reste à corriger. Preuves
+`flip4-20261106/`, `flipstats-20261106/` et `uziammo-20261106/`.
+
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
 `GLOBAL_inventoryitemchosen=CROWBAR_ITEM`, `DoorControl(0)` est activé
