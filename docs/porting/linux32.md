@@ -1144,7 +1144,16 @@ cog actif (`SPOTCAMS 9`), `item_flags[0]` 0→1→2→3, `y` 3072→2304,
 poulie 27, engrenages actifs (`items 11/15/16/17 status=1 active=1
 flags=15904`), `ANIMATING4` avance jusqu’à la frame 62, `SPOTCAMS 1` actif.
 Aucun SIGSEGV. La suite (`flipmap[3]`, `flipmap[8]`, `gfLevelComplete`) reste
-à 0 : la porte/route ouverte par les engrenages n’est pas encore identifiée.
+à 0 au moment de l’activation des engrenages.
+
+Le flyby `SPOTCAMS 1` se poursuit ensuite et déclenche un `TO_FLIPMAP 3` :
+`flipmap[3]` passe à `15872` (`0x3E00`). Les rooms concernées sont **147** et
+**163**, de même emprise (`X75776 Z21504`, 7×5 secteurs, `Y-2048..-4096`) ;
+la room 163 contient `item 119` (`UZI_AMMO_ITEM`, `X78336 Y-2048 Z27136`).
+La porte circulaire ouvre donc l’accès à la récompense (munitions Uzi),
+sans changer `flipmap[8]` ni `gfLevelComplete`. Preuves
+`sequence-real2-20261105/`, `flyby-state-20261105/` et
+`flip3-rooms-20261106/`.
 
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
