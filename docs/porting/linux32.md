@@ -1191,6 +1191,15 @@ Exploration réelle dans la room 21 : `(81408,1024,34727)` →
 `(83215,1024,32869)` → `(85915,1024,33093)`, toujours en room 21. Les portes
 de la room 21 ciblent 18, 225 et 22 ; le passage vers la room 22/23 (objets et
 engrenages) n’est pas encore franchi. Preuve `walk21c-20261106/`.
+
+Données de room utiles (`rooms212223-20261106/`) :
+- room 21 : `X78848 Z30720`, 6×8, portes 18/18/225/22 ; plusieurs cellules ont
+  `sky_room=225`, donc une ouverture de plafond vers la room 225.
+- room 22 : `X79872 Z30720`, 6×7, une porte vers 21.
+- room 23 : `X69632 Z30720`, 6×8, portes 224/224/224/16/16/24 et
+  `sky_room=224` sur plusieurs cellules.
+La suite probable est donc room 21 → room 225 par l’ouverture/les escaliers,
+puis 225 → 3/223/21. L’escalade réelle vers la room 225 reste à jouer.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
