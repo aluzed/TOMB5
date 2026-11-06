@@ -1165,6 +1165,11 @@ Les rooms **52/176** (`X75776 Z21504`, `Y1280..-2048`, porte circulaire) et
 La collecte de `item 119` fonctionne (`num_uzi_ammo` 30→60, `status=3`).
 Preuve `multiflip-20261106/`.
 
+Vue après permutation depuis la room 52 (`X79360 Y1792 Z24064`) :
+`room52-20261106/screenshot.png` montre l’escalier/passage dégagé derrière
+la porte circulaire. La navigation réellement jouée au-delà de cette salle
+reste à effectuer.
+
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
 `GLOBAL_inventoryitemchosen=CROWBAR_ITEM`, `DoorControl(0)` est activé
