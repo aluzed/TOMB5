@@ -1186,6 +1186,11 @@ engrenages par la porte ouverte. Preuve `walk33-20261106/`.
 
 Autre route issue du graphe : **33 → 223 → 221 → 163 → 164 → 166** pour la
 chambre Uzi et la suite.
+
+Exploration réelle dans la room 21 : `(81408,1024,34727)` →
+`(83215,1024,32869)` → `(85915,1024,33093)`, toujours en room 21. Les portes
+de la room 21 ciblent 18, 225 et 22 ; le passage vers la room 22/23 (objets et
+engrenages) n’est pas encore franchi. Preuve `walk21c-20261106/`.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
