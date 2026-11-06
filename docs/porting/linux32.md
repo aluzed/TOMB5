@@ -1199,7 +1199,15 @@ Données de room utiles (`rooms212223-20261106/`) :
 - room 23 : `X69632 Z30720`, 6×8, portes 224/224/224/16/16/24 et
   `sky_room=224` sur plusieurs cellules.
 La suite probable est donc room 21 → room 225 par l’ouverture/les escaliers,
-puis 225 → 3/223/21. L’escalade réelle vers la room 225 reste à jouer.
+puis 225 → 3/223/21.
+
+Données de la room 225 (`room225-20261106/`) : `X79872 Z30720`, 6×7,
+`minfloor=-2048`, `maxceiling=-4352`, portes 21/223/223/3, et `pit_room=21`
+sur de nombreuses cellules : la room 225 est juste au-dessus de la room 21,
+reliée par un trou. Une tentative de montée depuis le centre de la room 21
+avec `Up+Action` donne `input=0x100041` mais Lara reste immobile
+(`state=2`, `anim=103`, position inchangée) ; l’escalade n’est pas encore
+trouvée.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
