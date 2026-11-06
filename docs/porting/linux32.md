@@ -1208,6 +1208,13 @@ reliée par un trou. Une tentative de montée depuis le centre de la room 21
 avec `Up+Action` donne `input=0x100041` mais Lara reste immobile
 (`state=2`, `anim=103`, position inchangée) ; l’escalade n’est pas encore
 trouvée.
+
+Room 223 (`room223-20261106/`) : `X78848 Z26624`, 6×7, `minfloor=-2048`,
+portes 18/33/225/225/18/221, et `pit_room=18` sur les cellules x2–5, z1–4.
+La marche vers le nord depuis l’entrée de la room 33 tombe donc dans la
+room 18. Le déplacement vers l’ouest est bloqué vers `x≈80997`. La route
+vers la room 225 demande probablement un saut au-dessus de la fosse ou une
+porte dans la paroi ouest ; elle n’est pas encore franchie.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163

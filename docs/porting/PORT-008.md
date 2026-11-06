@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-06T23:59:00+01:00. Linux32 provisoire.
 
+Trajan's Markets, room223: X78848 Z26624 6x7 minfloor=-2048, portes 18/33/225/225/18/221, pit_room=18 sur cellules x2-5 z1-4. La marche nord depuis l'entree room33 tombe dans room18; deplacement ouest bloque vers x=80997. Route vers room225 probablement par saut au-dessus de la fosse ou porte dans la paroi ouest, non franchie. Preuve room223-20261106/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-06
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-06T23:59:00+01:00. Linux32 provisoire.
+
 Trajan's Markets, room225: X79872 Z30720 6x7 minfloor=-2048 maxceiling=-4352, portes 21/223/223/3, pit_room=21 sur de nombreuses cellules (room225 juste au-dessus de room21 par un trou). Tentative de montee depuis room21 centre avec Up+Action: input=0x100041 mais Lara reste immobile (state=2 anim=103, position inchangee); escalade non trouvee. Preuve room225-20261106/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
