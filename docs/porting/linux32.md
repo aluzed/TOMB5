@@ -1224,8 +1224,19 @@ Les portails ont été décodés (`doorsfull-20261106/`, format
   `x=80896..86016`, `z=31744..36864`.
 - room 163 → 164 : `x≈77776..78848`, `z≈23551`.
 
-La route room 223 → 221 n’est pas encore franchie : elle demande un saut
-vers la corniche ouest ou un contournement de la fosse.
+La route room 223 → 221 n’est pas encore franchie par la fosse ; elle a été
+validée depuis la corniche ouest (téléportation de test au point
+`80500,-2048,30000`, puis marche réelle) :
+**room 223 → 221** (`79325,-1729,30000`) → chute dans **room 15**
+(`78342,1280,30000`) → **room 16** (`75679,1280,30000`) →
+**room 23** (`72198,1024,32797` puis `71640,1024,34161`).
+Le joueur atteint donc la **zone des engrenages (room 23)** par la marche.
+Preuve `walk23b-20261106/`.
+
+Portails room 16 → 23 : `x=71680..72704` et `x=73728..75776`, `z≈31744`.
+Portails room 23 → 224 : plans horizontaux `x=71680..72704`/`73728..75776`,
+`z=31744..35840`. Portail room 23 → 24 : `x=70656..75776`,
+`z=32768..34816`, normale `-y`. La suite passe probablement par 224 ou 24.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
