@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-06T23:59:00+01:00. Linux32 provisoire.
 
+Trajan's Markets, navigation: apres le flyby bDisableLaraControl reste a 1 tant que la spotcam n'est pas finie; en laissant finir (ou en forcant la variable pour la sonde), Lara marche (input=0x1) dans la room52. Graphe de portes: 33->223->221->163->164->166. Room52 est la salle basse, room163 (Uzi ammo) au-dessus (sky_room=163); portes 163->52/221/164. Parcours joue 223/221/163 restant a faire. Preuves doors52-20261106/, doors33-20261106/, roomgraph-20261106/, navwalk-20261106/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-06
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-06T23:59:00+01:00. Linux32 provisoire.
+
 Trajan's Markets: apres la correction multi-flip, vue de controle depuis la room52 (X79360 Y1792 Z24064) montrant l'escalier/passage degage derriere la porte circulaire (room52-20261106/screenshot.png). La navigation reellement jouee au-dela de cette salle reste a effectuer. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

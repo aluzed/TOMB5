@@ -1167,8 +1167,20 @@ Preuve `multiflip-20261106/`.
 
 Vue après permutation depuis la room 52 (`X79360 Y1792 Z24064`) :
 `room52-20261106/screenshot.png` montre l’escalier/passage dégagé derrière
-la porte circulaire. La navigation réellement jouée au-delà de cette salle
-reste à effectuer.
+la porte circulaire.
+
+Diagnostic de navigation : après le flyby, `bDisableLaraControl` reste à 1
+tant que la séquence de spotcam n’est pas terminée. En forçant
+`bUseSpotCam=0` trop tôt, le contrôle reste bloqué ; en laissant la séquence
+finir (ou en remettant `bDisableLaraControl=0` pour la sonde), Lara marche
+normalement (`input=0x1`, déplacement dans la room 52). Le graphe de portes
+du niveau donne la route depuis la poulie 27 :
+**room 33 → 223 → 221 → 163 → 164 → 166**.
+La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
+(`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
+room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
+reste à effectuer. Preuves `doors52-20261106/`, `doors33-20261106/`,
+`roomgraph-20261106/` et `navwalk-20261106/`.
 
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
