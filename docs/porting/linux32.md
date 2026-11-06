@@ -1175,8 +1175,17 @@ naturellement au 6e échantillon (`spot=0`, `dis=0`), donc le contrôle revient
 sans patch. En forçant `bUseSpotCam=0` trop tôt, le contrôle restait bloqué ;
 en laissant la séquence finir (ou en remettant `bDisableLaraControl=0` pour
 la sonde), Lara marche normalement (`input=0x1`, déplacement dans la room 52).
-Le graphe de portes du niveau donne la route depuis la poulie 27 :
-**room 33 → 223 → 221 → 163 → 164 → 166**.
+Le graphe de portes du niveau donne plusieurs routes depuis la poulie 27.
+Parcours **réellement marché** après le flyby, sans téléportation pendant la
+marche : **room 33 → 223 → 18 → 21**, en maintenant `Up`.
+Positions relevées : `81408,-2048,25600` (room 33) → `81408,-2048,28439`
+(room 223) → `81408,8,29878` puis `81408,1280,30149` (room 18) →
+`81408,1024,32001` (room 21) → `81408,1024,34727` (room 21, près de la
+trappe `item 11` et des engrenages). Le joueur atteint donc la zone des
+engrenages par la porte ouverte. Preuve `walk33-20261106/`.
+
+Autre route issue du graphe : **33 → 223 → 221 → 163 → 164 → 166** pour la
+chambre Uzi et la suite.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163

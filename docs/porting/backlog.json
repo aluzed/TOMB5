@@ -1324,6 +1324,15 @@
       ],
       "status": "In progress",
       "summary": "Trajan's Markets: le flyby SPOTCAMS 1 se termine naturellement (spot=0, dis=0) au 6e echantillon, donc bDisableLaraControl est bien remis a 0 et le controle revient sans patch (preuve flyend2-20261106/). La navigation dans la room52 fonctionne alors (input=0x1, deplacement, montee/descente). Graphe de portes: 33->223->221->163->164->166; room52 est la salle basse, room163 (Uzi ammo) au-dessus (sky_room=163), portes 163->52/221/164. Parcours joue 223/221/163 restant a faire. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
+    },
+    {
+      "date": "2026-11-06",
+      "authorization_until": "2026-11-06T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Trajan's Markets: parcours reellement marche apres le flyby, sans teleportation pendant la marche, room 33 -> 223 -> 18 -> 21 en maintenant Up. Positions: 81408,-2048,25600 (room33) -> 81408,-2048,28439 (room223) -> 81408,8,29878 puis 81408,1280,30149 (room18) -> 81408,1024,32001 (room21) -> 81408,1024,34727 (room21, pres de item11 TRAPDOOR1 et des engrenages). Le joueur atteint la zone des engrenages par la porte ouverte. Autre route du graphe: 33->223->221->163->164->166. Preuve walk33-20261106/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
     }
   ]
 }
