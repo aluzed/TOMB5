@@ -1170,11 +1170,12 @@ Vue après permutation depuis la room 52 (`X79360 Y1792 Z24064`) :
 la porte circulaire.
 
 Diagnostic de navigation : après le flyby, `bDisableLaraControl` reste à 1
-tant que la séquence de spotcam n’est pas terminée. En forçant
-`bUseSpotCam=0` trop tôt, le contrôle reste bloqué ; en laissant la séquence
-finir (ou en remettant `bDisableLaraControl=0` pour la sonde), Lara marche
-normalement (`input=0x1`, déplacement dans la room 52). Le graphe de portes
-du niveau donne la route depuis la poulie 27 :
+tant que la séquence de spotcam n’est pas terminée. Le flyby se termine
+naturellement au 6e échantillon (`spot=0`, `dis=0`), donc le contrôle revient
+sans patch. En forçant `bUseSpotCam=0` trop tôt, le contrôle restait bloqué ;
+en laissant la séquence finir (ou en remettant `bDisableLaraControl=0` pour
+la sonde), Lara marche normalement (`input=0x1`, déplacement dans la room 52).
+Le graphe de portes du niveau donne la route depuis la poulie 27 :
 **room 33 → 223 → 221 → 163 → 164 → 166**.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
