@@ -1288,6 +1288,15 @@
       ],
       "status": "In progress",
       "summary": "Trajan's Markets: le flyby applique FlipMap(4) (flip_stats[4]=1), permutant les rooms 52/176 (X75776 Z21504, Y1280..-2048): c'est la porte circulaire effective. flipmap[3] est aussi a 0x3E00 mais flip_stats[3]=0: le trigger contient deux entrees TO_FLIPMAP et _TestTriggers ne conserve qu'un seul flip (le dernier), donc les rooms 147/163 (Uzi ammo item119) ne sont pas permutees. Collecte directe de item119 validee (num_uzi_ammo 30->60, status=3), mais acces via flip3 a corriger. Preuves flip4-20261106/, flipstats-20261106/, uziammo-20261106/. Build-gameplay56 SHA256 85783c9a13bc36606f388f557e9521fd66a384690df5ca22f1b3949602905d12; tests 4174 PASS. Aucun Done global."
+    },
+    {
+      "date": "2026-11-06",
+      "authorization_until": "2026-11-06T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Trajan's Markets: correction du traitement multi-TO_FLIPMAP dans _TestTriggers. Le flyby contient FLIPMAP 3 et 4; le code ne conservait qu'un seul flip (le dernier). PortRecordFlip collecte les valeurs et _TestTriggers applique chaque FlipMap en fin de trigger. Runtime: FlipMap(3) et FlipMap(4) appeles, flip_stats[3]=1 et flip_stats[4]=1; rooms 52/176 (porte circulaire, X75776 Z21504 Y1280..-2048) et 147/163 (Uzi ammo item119, Y-2048..-4096) permutees. Collecte item119 validee (num_uzi_ammo 30->60, status=3). Preuve multiflip-20261106/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
     }
   ]
 }

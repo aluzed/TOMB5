@@ -2487,6 +2487,20 @@ void FlipMap(int FlipNumber)// (F)
 	}
 }
 
+static void PortRecordFlip(short* flips, int* num_flips, short value)
+{
+	int i;
+
+	for (i = 0; i < *num_flips; i++)
+	{
+		if (flips[i] == value)
+			return;
+	}
+
+	if (*num_flips < 16)
+		flips[(*num_flips)++] = value;
+}
+
 void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (F)
 {
 #if PSXPC_TEST || PC_VERSION
@@ -2515,6 +2529,9 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 	int quad;
 	short CamSeq;
 	short lp;
+	short flips[16];
+	int num_flips = 0;
+	int fi;
 
 	flip = -1;
 	HeavyTriggered = 0;
@@ -3011,6 +3028,7 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 					if (!(flip_stats[value]))
 					{
 						flip = value;
+						PortRecordFlip(flips, &num_flips, value);
 					}
 				}
 				else
@@ -3019,6 +3037,7 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 					if (flip_stats[value] != 0)
 					{
 						flip = value;
+						PortRecordFlip(flips, &num_flips, value);
 					}
 				}
 			}//def_1EF68
@@ -3033,6 +3052,7 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 				flipmap[value] |= 0x3E00;
 			}
 			flip = value;
+			PortRecordFlip(flips, &num_flips, value);
 			break;
 		}
 		case TO_FLIPOFF:
@@ -3043,6 +3063,7 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 			{
 				flipmap[value] &= 0xC1FF;
 				flip = value;
+				PortRecordFlip(flips, &num_flips, value);
 			}
 			break;
 		}
@@ -3147,9 +3168,9 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 		camera.item = camera_item;
 	}
 	//loc_1F760
-	if (flip != -1)
+	for (fi = 0; fi < num_flips; fi++)
 	{
-		FlipMap(flip);
+		FlipMap(flips[fi]);
 	}
 	//loc_1F774
 	if (neweffect != -1 && (flip == 0 || flip_available == 0))

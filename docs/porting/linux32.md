@@ -1155,15 +1155,15 @@ sans changer `flipmap[8]` ni `gfLevelComplete`. Preuves
 `sequence-real2-20261105/`, `flyby-state-20261105/` et
 `flip3-rooms-20261106/`.
 
-Le même flyby appelle `FlipMap(4)` : `flip_stats[4]=1`, et les rooms **52**
-et **176** (même emprise `X75776 Z21504`, `Y1280..-2048`) sont permutées.
-C’est la porte circulaire effectivement appliquée. En revanche `flipmap[3]`
-vaut aussi `0x3E00` mais `flip_stats[3]=0` : le trigger contient deux entrées
-`TO_FLIPMAP` et `_TestTriggers` ne conserve qu’un seul `flip` (le dernier),
-donc les rooms **147/163** (munition Uzi `item 119`) ne sont pas permutées.
-La collecte directe de `item 119` fonctionne (`num_uzi_ammo` 30→60,
-`status=3`), mais l’accès via flip 3 reste à corriger. Preuves
-`flip4-20261106/`, `flipstats-20261106/` et `uziammo-20261106/`.
+Le même flyby contient deux entrées `TO_FLIPMAP` (3 et 4). Le code
+d’origine ne conservait qu’un seul `flip` et n’appliquait que le dernier.
+`_TestTriggers` collecte désormais les flips (`PortRecordFlip`) et applique
+chacun d’eux à la fin du trigger. Résultat validé : `FlipMap(3)` et
+`FlipMap(4)` sont tous deux appelés, `flip_stats[3]=1` et `flip_stats[4]=1`.
+Les rooms **52/176** (`X75776 Z21504`, `Y1280..-2048`, porte circulaire) et
+**147/163** (`Y-2048..-4096`, munition Uzi `item 119`) sont permutées.
+La collecte de `item 119` fonctionne (`num_uzi_ammo` 30→60, `status=3`).
+Preuve `multiflip-20261106/`.
 
 Porte au crowbar : `item 0` (`DOOR_TYPE1`, room 0, `X81408 Z43520`,
 `trigger_flags=2`). Avec le crowbar en inventaire et
