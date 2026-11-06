@@ -1212,9 +1212,20 @@ trouvée.
 Room 223 (`room223-20261106/`) : `X78848 Z26624`, 6×7, `minfloor=-2048`,
 portes 18/33/225/225/18/221, et `pit_room=18` sur les cellules x2–5, z1–4.
 La marche vers le nord depuis l’entrée de la room 33 tombe donc dans la
-room 18. Le déplacement vers l’ouest est bloqué vers `x≈80997`. La route
-vers la room 225 demande probablement un saut au-dessus de la fosse ou une
-porte dans la paroi ouest ; elle n’est pas encore franchie.
+room 18. Le déplacement vers l’ouest est bloqué vers `x≈80997`.
+
+Les portails ont été décodés (`doorsfull-20261106/`, format
+`AdjoiningRoom + Normal + 4 vertices`) :
+- room 223 → 221 : paroi ouest, `x≈79871`, `z=28672..31744`,
+  `y=-2048..0`. Le portail est derrière la fosse ; il faut probablement
+  sauter sur l’étroite corniche ouest.
+- room 221 → 163 : paroi nord, `x≈77824..78848`, `z≈27647`.
+- room 21 → 225 : ouverture horizontale à `y≈-2048`,
+  `x=80896..86016`, `z=31744..36864`.
+- room 163 → 164 : `x≈77776..78848`, `z≈23551`.
+
+La route room 223 → 221 n’est pas encore franchie : elle demande un saut
+vers la corniche ouest ou un contournement de la fosse.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163

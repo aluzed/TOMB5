@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-06T23:59:00+01:00. Linux32 provisoire.
 
+Trajan's Markets, portails decodes (format AdjoiningRoom+Normal+4 vertices): room223->221 paroi ouest x~79871 z=28672..31744 y=-2048..0; room221->163 paroi nord x~77824..78848 z~27647; room21->225 ouverture horizontale y~-2048 x=80896..86016 z=31744..36864; room163->164 x~77776..78848 z~23551. Route 223->221 non franchie, demande saut vers corniche ouest ou contournement de la fosse. Preuve doorsfull-20261106/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-06
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-06T23:59:00+01:00. Linux32 provisoire.
+
 Trajan's Markets, room223: X78848 Z26624 6x7 minfloor=-2048, portes 18/33/225/225/18/221, pit_room=18 sur cellules x2-5 z1-4. La marche nord depuis l'entree room33 tombe dans room18; deplacement ouest bloque vers x=80997. Route vers room225 probablement par saut au-dessus de la fosse ou porte dans la paroi ouest, non franchie. Preuve room223-20261106/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
