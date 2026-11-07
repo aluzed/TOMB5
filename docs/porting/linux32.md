@@ -1236,7 +1236,21 @@ Preuve `walk23b-20261106/`.
 Portails room 16 → 23 : `x=71680..72704` et `x=73728..75776`, `z≈31744`.
 Portails room 23 → 224 : plans horizontaux `x=71680..72704`/`73728..75776`,
 `z=31744..35840`. Portail room 23 → 24 : `x=70656..75776`,
-`z=32768..34816`, normale `-y`. La suite passe probablement par 224 ou 24.
+`z=32768..34816`, normale `-y`.
+
+Structure verticale (`room224-20261107/`) :
+- room 224 : `X69632 Z30720`, 6×8, `minfloor=-2048`, portes
+  23/23/23/222/222/154/232, `pit_room=23`, `sky_room=232`.
+- room 24 : `X69632 Z30720`, 6×7, `minfloor=3072`, `maxceiling=1024`,
+  porte 23, `sky_room=23` (salle basse en cul-de-sac).
+- room 222 : `X69632 Z26624`, 6×8, `minfloor=-2048`, portes
+  224/224/16/51/168/16/221, `pit_room=16`.
+- room 232 : `X69632 Z30720`, 6×8, `minfloor=-4096`, `maxceiling=-6144`,
+  portes 205/224/168, `pit_room=224`.
+- room 154 : `X70656 Z34816`, 5×6, `minfloor=-2048`, portes
+  203/83/224/205/84.
+La room 23 (floor 1024) est sous la room 224 (floor -2048) ; la suite
+demande donc une montée par un trou/escalier ou un passage par 222/232.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163

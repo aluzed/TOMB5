@@ -1387,6 +1387,15 @@
       ],
       "status": "In progress",
       "summary": "Trajan's Markets: route 223->221 validee depuis la corniche ouest (teleport de test 80500,-2048,30000 puis marche reelle): room223 -> 221 (79325,-1729,30000) -> chute room15 (78342,1280,30000) -> room16 (75679,1280,30000) -> room23 (72198,1024,32797 puis 71640,1024,34161). Le joueur atteint la zone des engrenages (room23) par la marche. Portails 16->23 x=71680..72704/73728..75776 z~31744; 23->224 plans horizontaux x=71680..72704/73728..75776 z=31744..35840; 23->24 x=70656..75776 z=32768..34816 normale -y. Suite probable par 224 ou 24. Preuve walk23b-20261106/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
+    },
+    {
+      "date": "2026-11-07",
+      "authorization_until": "2026-11-07T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Trajan's Markets, structure verticale room224/24/222/232/154: room224 X69632 Z30720 6x8 minfloor=-2048 portes 23x3/222x2/154/232 pit=23 sky=232; room24 X69632 Z30720 6x7 minfloor=3072 porte 23 sky=23 (cul-de-sac bas); room222 X69632 Z26624 6x8 minfloor=-2048 portes 224/224/16/51/168/16/221 pit=16; room232 X69632 Z30720 6x8 minfloor=-4096 portes 205/224/168 pit=224; room154 X70656 Z34816 5x6 minfloor=-2048 portes 203/83/224/205/84. Room23 (floor1024) sous room224 (floor-2048); suite demande montee par trou/escalier ou passage 222/232. Preuve room224-20261107/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
     }
   ]
 }
