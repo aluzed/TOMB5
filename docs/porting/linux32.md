@@ -1283,6 +1283,14 @@ passe à `status=3` ; `DEL_picked_up_object` exécute la branche
 `PICKUP_ITEM4` (`lara.pickupitems |= 8`, son de secret `CDA_XA1_SECRET`).
 C’est donc un **secret**. La porte `item 138` (`DOOR_TYPE3`) reste à
 `status=0`, `anim=601`, `state=0`, `goal=0` : elle n’est pas encore ouverte.
+
+En marchant vers l’est depuis la room 219 à `z=46528`, Lara passe à côté de
+la porte 138 (`z=46592`) et entre dans la **room 207** (`77487,0,46528`),
+puis s’arrête à `78747,0,46528`. Preuve `walkdoor138-20261107/`.
+Le portail **room 207 → 201** est horizontal : `x=76800..78848`,
+`z=44032..48128`. La room 201 a `minfloor=-1024` (un secteur au-dessus de la
+room 207, `minfloor=0`) : c’est une marche à franchir. Le joueur s’arrête à
+`x=78747`, juste avant. Preuve `rooms201-20261107/`.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
