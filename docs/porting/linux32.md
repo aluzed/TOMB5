@@ -1293,7 +1293,12 @@ Le portail **room 207 → 201** est horizontal : `x=76800..78848`,
 les deux rooms sont **superposées avec un trou**, pas une simple marche.
 Room 207 : `minfloor=0` ; room 201 : `minfloor=-1024`.
 Le joueur s’arrête à `x=78747,z=46528`, cellule 15, **juste sous le trou**.
-Il faut donc un saut/grab ou une échelle pour monter dans la room 201.
+Essais de saut (`jump201-20261107/`, `jump201b-20261107/`) : Lara entre
+effectivement dans la room 201 en vol (`room=201`, `y≈-954/-884`), mais
+retombe dans la room 207. Pour rester en 201, il faut atterrir sur une
+cellule solide : la room 201 a des murs en x3 et des trous x1–2/z1–4 ;
+les cellules solides sont x0 et la bordure z0. Un saut lancé vers l’est
+(x≈77000 → 79000) ou un passage par la bordure z0 est nécessaire.
 Preuve `floors207-20261107/`.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
