@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-11-08
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-08T23:59:00+01:00. Linux32 provisoire.
+
+Trajan's Markets: essai saut sud depuis 78747,0,44500 (jump201c-20261108) ne monte pas dans room201; traverse la limite et retombe room10 (78747,0,43259) puis 9/46/17/15/52. Bord z0 non grimpable. Room201 accessible seulement en vol, sans atterrissage maitrise. Il faut etude geometrique du trou (maillage/echelle) ou autre route. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-11-07
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-07T23:59:00+01:00. Linux32 provisoire.

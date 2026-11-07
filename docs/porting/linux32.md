@@ -1301,6 +1301,13 @@ les cellules solides sont x0 et la bordure z0. Un saut lancé vers l’est
 (x≈77000 → 79000) ou un passage par la bordure z0 est nécessaire.
 Preuve `floors207-20261107/`.
 
+Essai complémentaire au sud (`jump201c-20261108/`) : depuis
+`78747,0,44500` face au sud, le saut ne monte pas dans 201 ; il traverse
+la limite et retombe dans la room 10 (`78747,0,43259`), puis 9/46/17/15/52.
+Le bord z0 n’est donc pas une corniche grimpable. La room 201 reste
+accessible seulement en vol, sans atterrissage maîtrisé. Il faut soit une
+étude géométrique du trou (maillage/échelle), soit une autre route.
+
 Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
 `UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis
 la marche nord retombe dans la room 207 et s’arrête à `77500,0,48031`.
