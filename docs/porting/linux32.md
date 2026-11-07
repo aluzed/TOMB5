@@ -1277,6 +1277,12 @@ Room 219 : `item 138` = `DOOR_TYPE3` à `76288,0,46592` et
 `item 139` = `PICKUP_ITEM4` à `71168,0,47616`. Le joueur s’arrête à
 `71781,0,46528`, à proximité de l’objet et de la porte. Preuve
 `walk219-20261107/`.
+
+Collecte validée (`pickup139-20261107/`) : `item 139` (`PICKUP_ITEM4`)
+passe à `status=3` ; `DEL_picked_up_object` exécute la branche
+`PICKUP_ITEM4` (`lara.pickupitems |= 8`, son de secret `CDA_XA1_SECRET`).
+C’est donc un **secret**. La porte `item 138` (`DOOR_TYPE3`) reste à
+`status=0`, `anim=601`, `state=0`, `goal=0` : elle n’est pas encore ouverte.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
