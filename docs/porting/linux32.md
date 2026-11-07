@@ -1288,9 +1288,13 @@ En marchant vers l’est depuis la room 219 à `z=46528`, Lara passe à côté d
 la porte 138 (`z=46592`) et entre dans la **room 207** (`77487,0,46528`),
 puis s’arrête à `78747,0,46528`. Preuve `walkdoor138-20261107/`.
 Le portail **room 207 → 201** est horizontal : `x=76800..78848`,
-`z=44032..48128`. La room 201 a `minfloor=-1024` (un secteur au-dessus de la
-room 207, `minfloor=0`) : c’est une marche à franchir. Le joueur s’arrête à
-`x=78747`, juste avant. Preuve `rooms201-20261107/`.
+`z=44032..48128`. Les cellules 7–10 et 13–16 de la room 207 ont
+`sky_room=201`, et les mêmes cellules de la room 201 ont `pit_room=207` :
+les deux rooms sont **superposées avec un trou**, pas une simple marche.
+Room 207 : `minfloor=0` ; room 201 : `minfloor=-1024`.
+Le joueur s’arrête à `x=78747,z=46528`, cellule 15, **juste sous le trou**.
+Il faut donc un saut/grab ou une échelle pour monter dans la room 201.
+Preuve `floors207-20261107/`.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
