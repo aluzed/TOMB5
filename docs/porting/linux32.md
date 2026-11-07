@@ -1251,6 +1251,15 @@ Structure verticale (`room224-20261107/`) :
   203/83/224/205/84.
 La room 23 (floor 1024) est sous la room 224 (floor -2048) ; la suite
 demande donc une montée par un trou/escalier ou un passage par 222/232.
+
+Retour vers le marché bas : depuis la room 15 (`78000,1280,28500`), la marche
+vers le sud traverse le portail et entre dans la **room 52** à
+`78000,1280,27447`, puis descend à `78000,256,22629` (room 52).
+Le portail **room 52 → 161** est à `z≈22527`, `x=76800..79872`, normale `+z`.
+Le joueur s’arrête à `z=22629`, juste avant le portail : un petit saut ou un
+franchissement de rebord est nécessaire. La room 161 contient
+`item 118` (`ANIMATING1`, `78336,256,22016`). Preuve
+`walk52route-20261107/`.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
