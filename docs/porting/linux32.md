@@ -1300,6 +1300,17 @@ cellule solide : la room 201 a des murs en x3 et des trous x1–2/z1–4 ;
 les cellules solides sont x0 et la bordure z0. Un saut lancé vers l’est
 (x≈77000 → 79000) ou un passage par la bordure z0 est nécessaire.
 Preuve `floors207-20261107/`.
+
+Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
+`UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis
+la marche nord retombe dans la room 207 et s’arrête à `77500,0,48031`.
+Le téléport direct dans 201 n’est donc pas fiable ; il faut passer par une
+cellule solide ou par une autre route.
+
+Route alternative identifiée : la room 209 est reliée à la **room 10**
+(porte 10 de la room 209), elle-même déjà traversée lors du grand parcours
+(`78336,256,40788`). Cela permettrait d’éviter le trou 207 → 201 et
+d’enchaîner **209 → 206/210/213**. Preuve `walk209b-20261107/`.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163

@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-07T23:59:00+01:00. Linux32 provisoire.
 
+Trajan's Markets: teleport room201 a 77500,-1024,43500 reassigne la room a 10 (empilement 5D), puis marche nord retombe en room207 et s'arrete a 77500,0,48031. Teleport direct 201 non fiable. Route alternative: room209 reliee a room10 (deja traversee a 78336,256,40788), permettant d'eviter le trou 207->201 et d'enchainer 209->206/210/213. Preuve walk209b-20261107/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-07
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-07T23:59:00+01:00. Linux32 provisoire.
+
 Trajan's Markets: room207->201 par trou vertical. Essais saut: Lara entre bien dans room201 en vol (room=201, y~-954/-884) mais retombe en 207. Room201: murs en x3, trous x1-2/z1-4, cellules solides x0 et bordure z0. Prochain essai: saut lance est x~77000->79000 ou passage par bordure z0. Preuves jump201-20261107/, jump201b-20261107/, floors207-20261107/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
