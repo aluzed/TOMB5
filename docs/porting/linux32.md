@@ -1264,6 +1264,19 @@ Le passage 52 → 161 demande donc un alignement/geste plus précis (ou un
 téléport de validation). La room 161 contient `item 118`
 (`ANIMATING1`, `78336,256,22016`). Preuves `walk52route-20261107/`,
 `walk161-20261107/` et `walk161c-20261107/`.
+
+Depuis la room 161 (`78336,256,22016`), la marche vers le nord traverse :
+**161 → 52** (`78336,256,23304`) → **15** (`78336,1280,27675`) →
+**17** (`78336,1024,33503`) → **46** (`78336,1024,36417`) →
+**9** (`78336,256,39331`) → **10** (`78336,256,40788`) →
+**207** (`78336,0,45159`) → **219** (`76395,0,46181` puis
+`71781,0,46528`). Le joueur atteint donc la room 219 en marchant.
+Preuve `walk161n-20261107/`.
+
+Room 219 : `item 138` = `DOOR_TYPE3` à `76288,0,46592` et
+`item 139` = `PICKUP_ITEM4` à `71168,0,47616`. Le joueur s’arrête à
+`71781,0,46528`, à proximité de l’objet et de la porte. Preuve
+`walk219-20261107/`.
 La room 52 est la salle basse ; la room 163 (munition Uzi) est au-dessus
 (`sky_room=163` dans plusieurs cellules de la room 52). Les portes de la
 room 163 ciblent 52, 221 et 164. Le parcours joué à travers 223/221/163
