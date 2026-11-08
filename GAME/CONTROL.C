@@ -395,9 +395,83 @@ void UpdateDebris()//87978(<), 899BC(<) (F)
 	}
 }
 
-void UpdateBlood()
+void UpdateBlood()//87B40(<), 89B84(<) (F)
 {
-	Unimpl();
+	struct BLOOD_STRUCT* b = &blood[0];
+	int i;
+
+	for (i = 0; i < 32; i++, b++)
+	{
+		int life;
+		int sLife;
+		int fade;
+		int xvel;
+		int yvel;
+		int zvel;
+		int friction;
+
+		if (!b->On)
+			continue;
+
+		sLife = b->sLife;
+		life = b->Life - 1;
+		b->Life = (char)life;
+
+		if (life <= 0)
+		{
+			b->On = 0;
+			continue;
+		}
+
+		if (sLife - life < b->FadeToBlack)
+		{
+			fade = ((sLife - life) << 16) / b->FadeToBlack;
+			b->Shade = (unsigned char)(b->sShade + (((b->dShade - b->sShade) * fade) >> 16));
+		}
+		else if (life < b->ColFadeSpeed)
+		{
+			fade = ((b->ColFadeSpeed - life) << 16) / b->ColFadeSpeed;
+			fade = (b->dShade * (0x10000 - fade)) >> 16;
+			fade &= 0xFF;
+			b->Shade = (unsigned char)fade;
+
+			if (fade < 8)
+			{
+				b->On = 0;
+				continue;
+			}
+		}
+		else
+		{
+			b->Shade = b->dShade;
+		}
+
+		fade = ((sLife - life) << 16) / sLife;
+
+		b->RotAng = (short)((b->RotAng + b->RotAdd) & 0xFFF);
+
+		yvel = b->Yvel + b->Gravity;
+		xvel = b->Xvel;
+		zvel = b->Zvel;
+		friction = b->Friction & 0xF;
+
+		if (friction != 0)
+		{
+			xvel -= xvel >> friction;
+			zvel -= zvel >> friction;
+
+			b->Xvel = (short)xvel;
+			b->Zvel = (short)zvel;
+		}
+
+		b->Yvel = (short)yvel;
+
+		b->x += xvel >> 5;
+		b->y += yvel >> 5;
+		b->z += zvel >> 5;
+
+		b->Size = (unsigned char)(b->sSize + (((b->dSize - b->sSize) * fade) >> 16));
+	}
 }
 
 void UpdateDrips()

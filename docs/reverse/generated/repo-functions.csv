@@ -1161,6 +1161,7 @@ final_psx_address,beta_psx_address,repo_function,file,line,markers,comment
 0x80088d08,0x80086cc4,OptimiseOTagR,SPEC_PSXPC/SHADOWS.C,3,<;<,"86CC4(<), 88D08(<)"
 0x80088d08,0x80086cc4,OptimiseOTagR,SPEC_PSXPC_N/SHADOWS.C,75,<;<,"86CC4(<), 88D08(<)"
 0x800899bc,0x80087978,UpdateDebris,GAME/CONTROL.C,330,<;<;F,"87978(<), 899BC(<) (F)"
+0x80089b84,0x80087b40,UpdateBlood,GAME/CONTROL.C,398,<;<;F,"87B40(<), 89B84(<) (F)"
 0x8008c968,0x8008a924,DrawGunflashes,GAME/DRAW.C,202,<;<,8A924(<) 8C968(<)
 0x8008ca58,0x8008aa14,TriggerShatterSmoke,GAME/TOMB4FX.C,381,<;<;F,"8AA14(<), 8CA58(<) (F)"
 0x8008d20c,0x8008b1c8,ClearFires,GAME/CONTROL.C,1532,<;<;F,"8B1C8(<), 8D20C(<) (F)"
