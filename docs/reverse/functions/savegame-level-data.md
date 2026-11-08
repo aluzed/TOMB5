@@ -56,14 +56,15 @@ Self-test result:
 
 ### `RestoreLevelData`
 
-- Source: `GAME/SAVEGAME.C:82`
+- Source: `GAME/SAVEGAME.C:103` (current)
 - Final PSX address: `0x80054f6c`
 - Ghidra: `0x80054f6c` / `FUN_80054f6c`
 - Body size: `4080` bytes
 - Dumped instruction count: `1020`
 - Backlog priority: `P0`, rank `#1`
 - Runtime focus: yes
-- Current source state: only `UNIMPLEMENTED();`
+- RE-009 source state (2026-06-14): only `UNIMPLEMENTED();`
+- Current source state (refreshed): `ReadSG`-based implementation present (no `UNIMPLEMENTED()` in `GAME/SAVEGAME.C`); not proven equivalent to the original PSX restore.
 
 Observed call targets from the original function:
 
@@ -84,27 +85,26 @@ Interpretation:
 
 - This is not a small wrapper; the original is a large restore routine with many serialized fields and several state-reconstruction calls.
 - The dominant helper is `ReadSG`, which mirrors the save stream writer used by `SaveLevelData`.
-- The current C body has no implementation, so no source-level equivalence claim can be made yet.
+- Current source contains implemented restore read sites, but RE-018 (refreshed) finds `patch-ready hypotheses = 0`: implemented source symmetry is not proof of original PSX restore predicate/order/field identity/control-flow equivalence.
 
 Verdict:
 
-- `(**)`: no — no rebuilt comparable artifact and source is unimplemented.
-- `(F)`: no — source does not implement the original behavior.
-- `(D)`: no — no functional/runtime validation and source is unimplemented.
+- `(**)`: no — no rebuilt comparable artifact / original-equivalence proof.
+- `(F)`: no — original PSX behavior not proven equivalent.
+- `(D)`: no — no functional/runtime validation establishing original equivalence.
 - `(ND)`: not currently present on this function; do not add/remove markers based on this audit alone.
 
 ### `SaveLevelData`
 
-- Source: `GAME/SAVEGAME.C:100`
+- Source: `GAME/SAVEGAME.C:367` (current)
 - Final PSX address: `0x80053f10`
 - Ghidra: `0x80053f10` / `FUN_80053f10`
 - Body size: `4188` bytes
 - Dumped instruction count: `1047`
 - Backlog priority: `P0`, rank `#2`
 - Runtime focus: yes
-- Current source state:
-  - PC branch contains a partial level-save implementation.
-  - PSX/non-PC branch is still `UNIMPLEMENTED();` with `// todo check for psx`.
+- RE-009 source state (2026-06-14): PC branch partial; PSX/non-PC branch `UNIMPLEMENTED();`
+- Current source state (refreshed): implementation compiles for PSX/PSXPC_N (see RE-011); current savegame schema parses `41` `Write(...)` rows including active-item payload writes (`item_flags[0..3]`, `timer`, `trigger_flags`).
 
 Observed call targets from the original function:
 
@@ -113,28 +113,26 @@ Observed call targets from the original function:
 Interpretation:
 
 - The original function is a large serializer dominated by repeated writes through `WriteSG`.
-- The current source already documents many PC-side serialized fields, flags, item fields, camera/spotcam flags, and object save flags.
-- The PSX path, which is the path relevant to the verified original payload, remains unimplemented in source.
-- Because the extracted original has 1047 instructions and the PSX branch currently compiles to the `UNIMPLEMENTED()` placeholder path, the current PSX source cannot be marked equivalent.
+- Current source implements a substantial save stream, but original item groups still have control-flow/field/predicate gaps relative to PSX original evidence (RE-016..RE-017 and later audits).
+- Source evolution (including restore-side implementation and save payload writes) does not by itself prove original PSX equivalence.
 
 Verdict:
 
-- `(**)`: no — no rebuilt comparable artifact and PSX source path is unimplemented.
-- `(F)`: no for PSX — the PC branch is not sufficient proof for the PSX original.
-- `(D)`: no — no functional/runtime validation of PSX save behavior.
+- `(**)`: no — no rebuilt comparable artifact / original-equivalence proof.
+- `(F)`: no for PSX original equivalence — not proven against the original PSX function.
+- `(D)`: no — no functional/runtime validation establishing original equivalence.
 - `(ND)`: not currently present on this function; do not add/remove markers based on this audit alone.
 
 ## Key source findings
 
-`GAME/SAVEGAME.C` currently has asymmetric save/restore coverage:
+`GAME/SAVEGAME.C` save/restore coverage (RE-009 baseline, refreshed):
 
 - `sgRestoreGame` calls `RestoreLevelData(1)` and `RestoreLaraData(1)`.
 - `sgSaveGame` calls `SaveLevelData(1)` and `SaveLaraData()`.
 - `RestoreLaraData`, `SaveLaraData`, `ReadSG`, and `WriteSG` are already marked `(F)`.
-- `RestoreLevelData` is wholly unimplemented.
-- `SaveLevelData` is implemented only under `#if PC_VERSION`; the PSX-relevant `#else` branch remains unimplemented.
-
-This means the next meaningful work is implementation/reconstruction, not marker cleanup.
+- RE-009 (2026-06-14): `RestoreLevelData` was wholly unimplemented; `SaveLevelData` PSX/non-PC branch was `UNIMPLEMENTED()`.
+- Current source (refreshed): `RestoreLevelData` and `SaveLevelData` contain implementations (`ReadSG`/`WriteSG` paths present; no `UNIMPLEMENTED()` in `GAME/SAVEGAME.C`). The save schema currently parses `41` write rows (see `docs/reverse/generated/savegame-level-data-schema.md`).
+- Despite implementation progress, RE-018 (refreshed) / RE-019+ show `patch-ready hypotheses = 0` for original-PSX restore proof; do not add `(F)`, `(D)`, or `(**)` without original-equivalence evidence.
 
 ## Recommended next ticket
 
@@ -206,15 +204,16 @@ RE-017 reconciled the mismatched item groups into a source-vs-original field/wid
 - branch/sentinel groups: `3`
 - status: `field-width-gaps-found`
 
-RE-018 checked those hypotheses against current restore-side source support:
+RE-018 checked those hypotheses against current restore-side source support (refreshed to include implemented restore read evidence and RE-019 comparison metadata):
 
 - `docs/reverse/generated/saveleveldata-restore-side-audit.csv`
 - `docs/reverse/functions/saveleveldata-restore-side-audit.md`
-- `RestoreLevelData` source status: `source-unimplemented`
+- `RestoreLevelData` source status: `source-has-read-sites` (implemented `ReadSG` sites present; no `UNIMPLEMENTED()` in `GAME/SAVEGAME.C`)
 - hypotheses audited: `57`
 - priority hypotheses: `34`
 - patch-ready hypotheses: `0`
 - status: `restore-side-proof-missing`
+- key note: implemented save/restore symmetry (e.g. item payload reads/writes gated by `PortSave_LevelFormat >= 4`, 2-byte anim-state reads in current source) is not proof of original PSX restore equivalence; RE-019 still shows `no-exact-restore-size-sequence` for groups 4/5/6/8 and only size-subsequence (not predicate/layout proof) for group 10.
 
 RE-019 extracted a metadata-only original `RestoreLevelData` `ReadSG` call map and compared the RE-017 item groups against restore read size sequences:
 
@@ -449,4 +448,6 @@ RE-038..RE-043 terminal findings:
 - group `8` is terminal-blocked by subtype/layout/fanout and group `5` dependency.
 - no safe remaining `RestoreLevelData` source work exists in this chain.
 
-Current next story: none for `RestoreLevelData` source reconstruction. Resume only if new non-raw evidence becomes available, or switch to a different reverse-engineering domain. Do not patch `GAME/SAVEGAME.C` or add `(F)`, `(D)`, or `(**)` from the current chain.
+Current source note (refreshed): `RestoreLevelData` now has implemented `ReadSG` sites in `GAME/SAVEGAME.C` and `SaveLevelData`/schema reflect item payload writes (e.g. `item_flags[0..3]`, `timer`, `trigger_flags`; 41 parsed write rows). This changes the RE-009/RE-018-era "source-unimplemented" baseline, but it does **not** satisfy RE-038..RE-043's proof requirements — implemented symmetry is not original PSX restore predicate/order/field identity/control-flow proof, and RE-018 (refreshed) still reports `patch-ready hypotheses = 0`. The terminal chain's decision remains: do not mark `(F)`, `(D)`, or `(**)` from this chain without new non-raw original-equivalence evidence.
+
+Current next story: none for `RestoreLevelData` original-equivalence proof from this chain. Resume only if new non-raw evidence becomes available, or switch to a different reverse-engineering domain.

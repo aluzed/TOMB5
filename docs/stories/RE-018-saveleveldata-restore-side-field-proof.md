@@ -39,8 +39,9 @@ RE-018 doit confronter ces hypothèses au restore-side, pas patcher `GAME/SAVEGA
 - [x] Valider le build `TombRaiderChronicles_PSXPC_N`.
 - [x] Contrôler les fichiers staged contre assets/dumps originaux.
 - [x] Committer et pousser.
+- [x] Rafraîchir RE-018 après évolution du source restore (implémentation `ReadSG` présente) et intégration du contexte RE-019 ; verdict inchangé (`patch-ready hypotheses = 0`).
 
-## Result
+## Result (original, 2026-06-14)
 
 Fichiers ajoutés:
 
@@ -67,7 +68,7 @@ Métriques produites:
   - `restore-layout-unverifiable`: `3`
   - `restore-width-unverifiable`: `3`
 
-## Findings
+## Findings (original)
 
 RE-018 bloque explicitement le patch serializer basé sur RE-017 seul:
 
@@ -77,36 +78,69 @@ RE-018 bloque explicitement le patch serializer basé sur RE-017 seul:
 - Les gaps de layout, dont `room_number` ordre/layout, restent `restore-layout-unverifiable`.
 - Les champs exact-width côté save restent `restore-source-absent`: une largeur de save plausible ne suffit pas sans inverse restore.
 
+## Refresh (2026-11-08)
+
+Le source `GAME/SAVEGAME.C` contient désormais une implémentation de `RestoreLevelData` avec sites `ReadSG` (plus de `UNIMPLEMENTED()`). RE-018 a été rafraîchi pour documenter cette évidence **implémentée** (best-effort, extraction texte) et intégrer les métadonnées de comparaison RE-019 (`restoreleveldata-read-call-map.csv`) là où disponibles. Ce rafraîchissement est une **réconciliation de contexte**, pas une preuve d'équivalence PSX originale.
+
+Métriques rafraîchies (`python3 scripts/reverse/saveleveldata_restore_side_audit.py`):
+
+- `RestoreLevelData` source status: `source-has-read-sites`
+- hypothèses auditées: `57`
+- hypothèses prioritaires: `34`
+- hypothèses prêtes pour patch: `0`
+- status: `restore-side-proof-missing`
+- restore-side status counts (voir CSV/MD générés pour le détail par hypothèse):
+  - `implemented-restore-read-present-needs-original-proof`: `26`
+  - `needs-original-restore-proof`: `18`
+  - `implemented-restore-payload-present-needs-original-proof`: `9`
+  - `implemented-restore-width-differs-from-original-hypothesis`: `3`
+  - `implemented-restore-layout-differs-from-original-hypothesis`: `1`
+
+Constats clés du rafraîchissement (preuves originales toujours manquantes):
+
+- Groupe 4 anim states (calls 11-13): RE-017 hypothèse 1 byte côté original ; save/restore implémentés lisent/écrivent 2 bytes. La largeur implémentée diffère de l'hypothèse RE-017, et la largeur/prédicat original restent à prouver.
+- Groupe 5 payloads `item_flags[0..3]`/`timer`/`trigger_flags` (calls 2-7): sites payload 2 bytes présents côté save et restore (restore sous garde `PortSave_LevelFormat >= 4`). La présence implémentée ne prouve pas l'identité de champ, les prédicats, l'ordre ni le contrôle-flow originaux (RE-019: pas de séquence de tailles restore exacte pour le groupe 5).
+- Groupe 10: RE-019 signale un sous-séquence de tailles restore exacte, mais pas de preuve prédicat/layout. L'implémentation conserve `room` avant `y_rot` dans le bloc position, alors que RE-017 signale une question d'ordre/layout room-byte.
+- Blocs payloads object-specific (20/24), sentinelles/bytes de contrôle: preuve restore originale toujours requise.
+
 ## Commands
 
 ```bash
 python3 -m pytest tests/reverse/test_saveleveldata_restore_side_audit.py -q
 python3 scripts/reverse/saveleveldata_restore_side_audit.py
 python3 -m py_compile scripts/reverse/saveleveldata_restore_side_audit.py
+# Tests reverse complets (certains dépendent d'artefacts locaux build/reverse/* non versionnés)
 python3 -m pytest tests/reverse -q
 cmake --build BUILD/re005-psxpcn-disc --target TombRaiderChronicles_PSXPC_N -j2
 git diff --cached --name-only | python3 -c 'import sys; bad=[p.strip() for p in sys.stdin if p.strip().startswith(("build/",)) or p.strip().endswith((".BIN", ".CUE", ".OBJ", ".WAD"))]; print("asset guard ok" if not bad else "blocked: "+", ".join(bad)); sys.exit(1 if bad else 0)'
 ```
 
-Validation:
+Validation (originale, 2026-06-14):
 
-- `24 passed`
+- `24 passed` (suite reverse au moment du ticket)
 - `Built target TombRaiderChronicles_PSXPC_N`
 - Output metadata guard: no `instruction`, `word_le_hex`, `payload_offset`, or raw `jal` token in RE-018 outputs
 - Asset/staging guard: `asset guard ok`
 
+Validation (rafraîchissement, 2026-11-08):
+
+- `python3 -m pytest tests/reverse/test_saveleveldata_restore_side_audit.py -q` → `3 passed`
+- `python3 scripts/reverse/saveleveldata_restore_side_audit.py` → `source-has-read-sites`, `hypotheses=57`, `patch_ready=0`, `status=restore-side-proof-missing`
+- Artefacts régénérés: `docs/reverse/generated/saveleveldata-restore-side-audit.csv`, `docs/reverse/functions/saveleveldata-restore-side-audit.md`
+- Limites préservées: metadata-only, pas de `(F)`, `(D)`, `(**)`, pas de patch serializer
+
 ## Acceptance criteria
 
 - [x] Les priority findings RE-017 sont couverts côté restore-side.
-- [x] Chaque hypothèse est classée avec un statut explicite: source absent, width/layout unverifiable, needs original restore proof.
+- [x] Chaque hypothèse est classée avec un statut explicite (source absent, width/layout unverifiable, needs original restore proof, ou évidence implémentée + preuve originale manquante après rafraîchissement).
 - [x] Les sorties restent metadata-only et ne contiennent pas `instruction`, `word_le_hex`, `payload_offset` ni instruction originale.
 - [x] Le verdict distingue les gaps prêts pour une story de patch de ceux qui nécessitent une preuve originale restore.
 - [x] Aucun marqueur `(F)`, `(D)` ou `(**)` n'est ajouté.
 
 ## Verdict
 
-RE-018 ne trouve aucune hypothèse prête pour patch: `patch-ready hypotheses = 0`. Le restore-side source est absent/unimplemented, donc RE-017 reste une matrice d'hypothèses et ne justifie aucune correction serializer ni marqueur de complétude.
+RE-018 ne trouve aucune hypothèse prête pour patch: `patch-ready hypotheses = 0`. Le verdict reste `restore-side-proof-missing`. Le rafraîchissement 2026-11-08 ajoute une évidence implémentée plus riche (`source-has-read-sites`, lecture/écriture payloads présentes dans le source actuel) et le contexte RE-019, mais **la symétrie source implémentée n'est pas une preuve d'équivalence PSX originale**. Ne pas ajouter `(F)`, `(D)` ou `(**)`.
 
 ## Next step
 
-RE-019: extraire ou reconstruire une call-map metadata-only de l'original `RestoreLevelData`, puis comparer les tailles/ordre de lecture restore aux hypothèses RE-017/RE-018 avant toute modification source.
+RE-019: extraire ou reconstruire une call-map metadata-only de l'original `RestoreLevelData`, puis comparer les tailles/ordre de lecture restore aux hypothèses RE-017/RE-018 avant toute modification source. (Déjà réalisé ; les chaînes RE-019–RE-043 indiquent qu'aucun travail source `RestoreLevelData` restant n'est sûr sans nouvelle preuve originale non-raw. Reprendre uniquement avec une nouvelle preuve, ou changer de domaine RE.)
