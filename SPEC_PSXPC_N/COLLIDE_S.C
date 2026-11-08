@@ -808,7 +808,7 @@ static void GetCollisionInfoGeometry(struct COLL_INFO* coll, long xpos, long ypo
 			{
 				//loc_7B7B0
 				coll->shift.x = coll->old.x - xpos;
-				FindGridShift(zpos + zfront, zpos);
+				coll->shift.z = FindGridShift(zpos + zfront, zpos);
 				coll->coll_type = 1;
 				return;
 			}
@@ -915,11 +915,15 @@ static void GetCollisionInfoGeometry(struct COLL_INFO* coll, long xpos, long ypo
 			if (coll->right_type == 4)
 			{
 				//loc_7B768
+				coll->shift.x = coll->old.x - xpos;
+				coll->shift.z = coll->old.z - zpos;
+				coll->coll_type = 4;
+				return;
 			}
 			else if (coll->quadrant == 0)
 			{
 				//loc_7B8E8
-				coll->bad_ceiling = FindGridShift(xpos + s7, xpos + xfront);
+				coll->shift.x = FindGridShift(xpos + s7, xpos + xfront);
 				coll->coll_type = 4;
 				return;
 			}
@@ -933,7 +937,7 @@ static void GetCollisionInfoGeometry(struct COLL_INFO* coll, long xpos, long ypo
 			else if (coll->quadrant - 2 == 0)
 			{
 				//loc_7B8E8
-				coll->bad_ceiling = FindGridShift(xpos + s7, xpos + xfront);
+				coll->shift.x = FindGridShift(xpos + s7, xpos + xfront);
 				coll->coll_type = 4;
 				return;
 			}
