@@ -121,5 +121,50 @@ void TriggerDebris(struct GAME_VECTOR* pos, void* TextInfo, short* Offsets, long
 
 void ShatterObject(struct SHATTER_ITEM* ShatterItem, struct MESH_INFO* StaticMesh, short Num, short RoomNumber, int NoXZVel)//36A3C, 36F3C
 {
-	UNIMPLEMENTED();
+	int i;
+	short* sptr;
+	short* dptr;
+	long* vptr;
+	long* nptr;
+	struct DEBRIS_STRUCT* d;
+	struct GAME_VECTOR pos;
+	long x, y, z;
+	short room_num;
+	int lp;
+
+	if (ShatterItem == NULL)
+		return;
+
+	if (Num < 0)
+		Num = -Num;
+
+	// Get debris mesh info
+	sptr = (short*)ShatterItem->meshp;
+	if (sptr == NULL)
+		return;
+
+	for (i = 0; i < Num; i++)
+	{
+		d = &debris[GetFreeDebris()];
+		d->On = 1;
+		d->TextInfo = NULL;
+
+		// Copy position
+		d->x = ShatterItem->Sphere.x;
+		d->y = ShatterItem->Sphere.y;
+		d->z = ShatterItem->Sphere.z;
+		d->RoomNumber = RoomNumber;
+
+		d->Speed = (GetRandomControl() & 0x1F) + 16;
+		d->Yvel = (GetRandomControl() & 0xF) - 16;
+		d->Gravity = 4;
+
+		d->Dir = GetRandomControl() << 1;
+		d->XRot = GetRandomControl();
+		d->YRot = GetRandomControl();
+
+		d->r = 0xFF;
+		d->g = 0xFF;
+		d->b = 0xFF;
+	}
 }
