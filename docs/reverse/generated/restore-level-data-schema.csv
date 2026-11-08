@@ -1,0 +1,39 @@
+index,line,expression,size,context
+1,114,(char*)&FmvSceneTriggered,4,top-level
+2,115,(char*)&GLOBAL_lastinvitem,4,top-level
+3,117,(char*)&word,2,top-level
+4,125,(char*)&word,2,for (i = 0; i < 10; i++)
+5,129,(char*)&flipeffect,4,top-level
+6,134,(char*)&fliptimer,4,top-level
+7,135,(char*)&flip_status,4,top-level
+8,136,cd_flags,136,top-level
+9,137,(char*)&CurrentAtmosphere,1,top-level
+10,152,(char*)&word,2,for (i = 0; i < number_rooms; i++) / for (j = 0; j < room[i].num_meshes; j++) / if (room[i].mesh[j].static_number >= 50 && / if (k == 0)
+11,165,(char*)&CurrentSequence,1,top-level
+12,166,(char*)&byte,1,top-level
+13,174,(char*)&camera.fixed[i].flags,2,for (i = 0; i < number_cameras; i++)
+14,179,(char*)&SpotCam[i].flags,2,for (i = 0; i < number_spotcams; i++)
+15,192,(char*)&word,2,"for (i = 0; i < level_items; i++, item++)"
+16,213,(char*)&packed,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_position)"
+17,215,(char*)&packed,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_position)"
+18,217,(char*)&packed,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_position)"
+19,220,(char*)&byte,1,"for (i = 0; i < level_items; i++, item++) / if (obj->save_position)"
+20,222,(char*)&item->pos.y_rot,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_position)"
+21,231,(char*)&item->pos.x_rot,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_position) / if (word & 1)"
+22,235,(char*)&item->pos.z_rot,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_position) / if (word & 2)"
+23,239,(char*)&item->speed,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_position) / if (word & 0x20)"
+24,243,(char*)&item->fallspeed,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_position) / if (word & 0x40)"
+25,249,(char*)&item->current_anim_state,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_anim)"
+26,250,(char*)&item->goal_anim_state,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_anim)"
+27,251,(char*)&item->required_anim_state,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_anim)"
+28,255,(char*)&item->anim_number,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_anim) / if (item->object_number == LARA)"
+29,259,(char*)&byte,1,"for (i = 0; i < level_items; i++, item++) / if (obj->save_anim) / else"
+30,263,(char*)&item->frame_number,2,"for (i = 0; i < level_items; i++, item++) / if (obj->save_anim)"
+31,269,(char*)&item->item_flags[0],2,"for (i = 0; i < level_items; i++, item++) / if (PortSave_LevelFormat >= 4)"
+32,271,(char*)&item->item_flags[1],2,"for (i = 0; i < level_items; i++, item++) / if (PortSave_LevelFormat >= 4)"
+33,273,(char*)&item->item_flags[2],2,"for (i = 0; i < level_items; i++, item++) / if (PortSave_LevelFormat >= 4)"
+34,275,(char*)&item->item_flags[3],2,"for (i = 0; i < level_items; i++, item++) / if (PortSave_LevelFormat >= 4)"
+35,277,(char*)&item->timer,2,"for (i = 0; i < level_items; i++, item++) / if (PortSave_LevelFormat >= 4)"
+36,279,(char*)&item->trigger_flags,2,"for (i = 0; i < level_items; i++, item++) / if (PortSave_LevelFormat >= 4)"
+37,284,(char*)&item->hit_points,2,"for (i = 0; i < level_items; i++, item++) / if (word & 0x4000)"
+38,289,(char*)&flags,4,"for (i = 0; i < level_items; i++, item++) / if (obj->save_flags)"

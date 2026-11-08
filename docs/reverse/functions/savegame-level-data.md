@@ -152,6 +152,15 @@ RE-010 produced the first versionable stream schema from the current PC `SaveLev
 - `docs/reverse/generated/savegame-level-data-schema.md`
 - `tests/reverse/test_savegame_source.py`
 
+A companion source-level restore schema (current implementation, metadata-only) is available:
+
+- `scripts/reverse/restore_level_data_schema.py`
+- `docs/reverse/generated/restore-level-data-schema.csv`
+- `docs/reverse/generated/restore-level-data-schema.md`
+- `tests/reverse/test_restore_level_data_schema.py`
+
+Save/restore source schema symmetry is a reconstruction aid only; it is not proof of original PSX equivalence.
+
 RE-012 produced a versionable original-dump metadata audit in `docs/reverse/functions/saveleveldata-original-audit.md`:
 
 - original `WriteSG` calls in `SaveLevelData`: `81`
