@@ -68,3 +68,24 @@ ils ne prouvent ni la scène ni le son matériel.
 avec traces et captures, avant toute correction. S'il apparaît un défaut,
 reproduire puis établir l'attribution cible/ABI et un RED actual-TU avant patch.
 Ne pas inventer un correctif de chargement pour un arrêt d'observation trop court.
+
+
+## Analyse géométrie empilement 5D Trajan's Markets (données, 2026-11-08)
+
+Source : NTSC USA `TOMB5.BIN` (data), Trajan's Markets = LBA 18404 (252 rooms). Parsing via `offsetRoomInfo`/`roomInfoLength` du header niveau (`ver=-225`), puis table `room_info` 80 octets + sous-blocs `[data,door,floor,light,mesh]` (tailles sur disque dans les champs pointeur), `floorData` à la suite. `FLOOR_INFO` 8 octets (`index, fx:4/box:11/stop:1, pit_room, floor, sky_room, ceiling`), hauteurs en clicks signés (`room.y - click*256`). **Données statiques, non validées en jeu.**
+
+### Puits 207→201→199→200 (impraticable en montée)
+- 207 (75776,43008,-1024, mf=0, 6x4) : intérieur x=1-4,z=1-2 `fl=0 ceil=-4 sky=201 pit=255` (sol monde -1024).
+- 201 (-2048) : `fl=-4 ceil=-8 sky=199 pit=207` (sol monde -1024 **mais `pit=207`**) — aucun atterrissage.
+- 199 (-4096) : `fl=-8 ceil=-16 sky=200 pit=201`. 200 (-6146, mf=-4096) : `fl=-16 ceil=-24 sky=255 pit=199`.
+Conclusion : le saut 207→201 atteint 201 en vol mais retombe (confirmé runtime) ; le puits est entièrement `pit` vers le bas.
+
+### Connectivité / piles verticales
+- 207 portails 10,219 (+201 au-dessus). 10 (75776,38912,-1024, `sky=209`) ↔ 209 (-2048, `sky=11 pit=10`, portails 10/11/201/206/210/213). 209↔11 (-4096, `sky=13 pit=209`) ↔ 13 (-6144, `pit=11`).
+- Nord : 209↔213 (-2048, `sky=45 pit=9`)↔214 (-2048, `sky=12 pit=46`). 213↔9/45 ; 214↔46/12. 45 (-4096, `pit=213 sky=202`) ; 12 (-4096, `pit=214 sky=202`) ; 202 (-6144).
+- Est : 209↔210 (`sky=48 pit=0`)↔211 (`sky=49 pit=54`)↔212 (`sky=5 pit=50`). 212↔50 (départ niveau 2, -1024, `sky=212`) et ↔5 (-4096, `pit=212`). 48/49/5 à y=-4096.
+- Ouest : 209↔206 (`pit=208`)↔208 (`sky=206`).
+- Aucun secteur `CLIMB`/`MONKEY` (floor_data) dans wx 74000-84000, wz 34000-49000 ; `CLIMB` du niveau uniquement rooms 16,95,222. Transitions ~+256u (10→209) à ~+1024u (209→11,214→12,213→45,210→48/211→49/212→5) : saisie de rebord selon géométrie de collision, à valider en jeu.
+
+### Route plausible (à valider)
+`207 → 10` (plat) → `209` (saut +256u par `sky=209`/`pit=10`) → monter `213→45` ou `214→12` (nord, vers couche -4096/`202`) ou `210→48`/`211→49`/`212→5` (est). Le puits `207/201` ne mène nulle part en atterrissage.

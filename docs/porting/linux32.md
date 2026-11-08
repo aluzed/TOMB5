@@ -1395,3 +1395,8 @@ préflight corrigé sans patch du jeu. Le rejeu ne comprenait pas de runtime.
 Cela industrialise build/lancement et préflight, **pas** un correctif gameplay.
 PORT-001 reste en cours : acceptation visuelle complète non établie ;
 PORT-002/menu et gameplay non validés.
+
+
+## Analyse géométrie Trajan's Markets, empilement 5D 207/201/214/213 (données, 2026-11-08, non validée en jeu)
+
+Extraction NTSC USA LBA 18404 (252 rooms) via `offsetRoomInfo`/`roomInfoLength`. Puits `207(75776,43008,-1024) sky=201 → 201 pit=207,sky=199 → 199 pit=201,sky=200 → 200 pit=199` : aucun sol atterrissable (201 intérieur tout `pit=207`). Aucun `CLIMB`/`MONKEY` floor_data dans la zone. Hub `209(sky=11,pit=10, portails 10/11/201/206/210/213)` : `207→10` plat, `10→209` +256u (sky/pit). Montées +1024u sans `CLIMB` (rebord à valider) : nord `213(sky=45)→45`, `214(sky=12)→12` (vers `202`) ; est `210→48/211→49/212→5` (`212↔50` départ). Route plausible : `207→10→209` puis branche nord ou est ; **validation moteur requise**. Détail : [runtime-level.md](runtime-level.md).
