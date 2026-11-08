@@ -81,7 +81,7 @@ void sgRestoreGame()//55B88, 55FEC (F)
 	RestoreLaraData(1);
 }
 
-void sgSaveGame()//55AF8(<), 55F5C(<)
+void sgSaveGame()//55AF8(<), 55F5C(<) (F)
 {
 	SGpoint = &MGSaveGamePtr[sizeof(struct savegame_info)];
 	SGcount = 0;
@@ -100,7 +100,7 @@ void sgSaveGame()//55AF8(<), 55F5C(<)
 	return;
 }
 
-void RestoreLevelData(int FullSave)//54B08, 54F6C
+void RestoreLevelData(int FullSave)//54B08, 54F6C (F)
 {
 	int i;
 	int j;
@@ -364,7 +364,7 @@ int SaveLevelDataToBuffer(char* buffer, int size)// port helper
 	return written;
 }
 
-void SaveLevelData(int FullSave)//53AAC, 53F10
+void SaveLevelData(int FullSave)//53AAC, 53F10 (F)
 {
 	int i;
 	short word = 0;
