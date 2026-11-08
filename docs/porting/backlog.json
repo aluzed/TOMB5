@@ -1484,7 +1484,7 @@
       "tickets": [
         "PORT-008"
       ],
-      "status": "Blocked",
+      "status": "In progress",
       "summary": "Trajan's Markets: blocage navigation dans l'empilement 5D 207/201/214/213. Room46 minfloor=1024 sky_room=214; room214 minfloor=-1024 pit_room=46; 214->213 horizontal z~38912 x=76800..80896; 213->209 horizontal z~39936 x=76800..80896; rooms12/45 minfloor=-2048 au-dessus. Sauts aveugles dans les trous insuffisants pour trouver la route prevue. Besoin d'un walkthrough/ordre des salles ou d'une vue du maillage/escalier pour continuer sans deviner. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
     }
   ]
