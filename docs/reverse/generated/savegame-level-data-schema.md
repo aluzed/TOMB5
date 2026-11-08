@@ -12,7 +12,7 @@ It is a reconstruction aid for PSX save/restore work, not proof of binary or fun
 
 - Source: `GAME/SAVEGAME.C`
 - CSV: `docs/reverse/generated/savegame-level-data-schema.csv`
-- Parsed write sites: `34`
+- Parsed write sites: `41`
 
 ## How to use this schema
 
@@ -25,204 +25,246 @@ It is a reconstruction aid for PSX save/restore work, not proof of binary or fun
 
 ### 1. `&FmvSceneTriggered`
 
-- source line: `106`
+- source line: `373`
 - size expression: `4`
 - context: `top-level`
 
 ### 2. `&GLOBAL_lastinvitem`
 
-- source line: `107`
+- source line: `374`
 - size expression: `4`
 - context: `top-level`
 
 ### 3. `&word`
 
-- source line: `114`
+- source line: `381`
 - size expression: `2`
 - context: `top-level`
 
 ### 4. `&word`
 
-- source line: `119`
+- source line: `386`
 - size expression: `2`
 - context: `for(i = 0; i < 10; i++)`
 
 ### 5. `&flipeffect`
 
-- source line: `122`
+- source line: `389`
 - size expression: `4`
 - context: `top-level`
 
 ### 6. `&fliptimer`
 
-- source line: `123`
+- source line: `390`
 - size expression: `4`
 - context: `top-level`
 
 ### 7. `&flip_status`
 
-- source line: `124`
+- source line: `391`
 - size expression: `4`
 - context: `top-level`
 
 ### 8. `cd_flags`
 
-- source line: `125`
+- source line: `392`
 - size expression: `136`
 - context: `top-level`
 
 ### 9. `&CurrentAtmosphere`
 
-- source line: `126`
+- source line: `393`
 - size expression: `1`
 - context: `top-level`
 
 ### 10. `&word`
 
-- source line: `143`
+- source line: `410`
 - size expression: `2`
 - context: `for(i = 0; i < number_rooms; i++) / for (j = 0; j < room[i].num_meshes; j++) / if (room[i].mesh[j].static_number >= 50 && room[i].mesh[j].static_number <= 59) / if (k == 16)`
 
 ### 11. `&word`
 
-- source line: `152`
+- source line: `419`
 - size expression: `2`
 - context: `if (number_rooms > 0)`
 
 ### 12. `&CurrentSequence`
 
-- source line: `155`
+- source line: `422`
 - size expression: `1`
 - context: `top-level`
 
 ### 13. `&byte`
 
-- source line: `162`
+- source line: `429`
 - size expression: `1`
 - context: `top-level`
 
 ### 14. `&camera.fixed[i].flags`
 
-- source line: `166`
+- source line: `433`
 - size expression: `2`
 - context: `for (i = 0; i < number_cameras; i++)`
 
 ### 15. `&SpotCam[i].flags`
 
-- source line: `171`
+- source line: `438`
 - size expression: `2`
 - context: `for(i = 0; i < number_spotcams; i++)`
 
 ### 16. `&word`
 
-- source line: `182`
+- source line: `454`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / if (item->flags & IFLAG_KILLED)`
 
 ### 17. `&word`
 
-- source line: `230`
+- source line: `502`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)`
 
 ### 18. `&packed`
 
-- source line: `235`
+- source line: `507`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)`
 
 ### 19. `&packed`
 
-- source line: `237`
+- source line: `509`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)`
 
 ### 20. `&packed`
 
-- source line: `239`
+- source line: `511`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)`
 
 ### 21. `&item->room_number`
 
-- source line: `241`
+- source line: `513`
 - size expression: `1`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)`
 
 ### 22. `&item->pos.y_rot`
 
-- source line: `243`
+- source line: `515`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)`
 
 ### 23. `&item->pos.x_rot`
 
-- source line: `246`
+- source line: `518`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)`
 
 ### 24. `&item->pos.z_rot`
 
-- source line: `248`
+- source line: `520`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)`
 
 ### 25. `&item->speed`
 
-- source line: `250`
+- source line: `522`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)`
 
 ### 26. `&item->fallspeed`
 
-- source line: `252`
+- source line: `524`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_position)`
 
 ### 27. `&item->current_anim_state`
 
-- source line: `257`
+- source line: `529`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)`
 
 ### 28. `&item->goal_anim_state`
 
-- source line: `258`
+- source line: `530`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)`
 
 ### 29. `&item->required_anim_state`
 
-- source line: `259`
+- source line: `531`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)`
 
 ### 30. `&item->anim_number`
 
-- source line: `263`
+- source line: `535`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim) / if (item->object_number == LARA)`
 
 ### 31. `&byte`
 
-- source line: `268`
+- source line: `540`
 - size expression: `1`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim) / else`
 
 ### 32. `&item->frame_number`
 
-- source line: `271`
+- source line: `543`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_anim)`
 
-### 33. `&item->hit_points`
+### 33. `&item->item_flags[0]`
 
-- source line: `275`
+- source line: `547`
 - size expression: `2`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)`
 
-### 34. `&flags`
+### 34. `&item->item_flags[1]`
 
-- source line: `289`
+- source line: `549`
+- size expression: `2`
+- context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)`
+
+### 35. `&item->item_flags[2]`
+
+- source line: `551`
+- size expression: `2`
+- context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)`
+
+### 36. `&item->item_flags[3]`
+
+- source line: `553`
+- size expression: `2`
+- context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)`
+
+### 37. `&item->timer`
+
+- source line: `555`
+- size expression: `2`
+- context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)`
+
+### 38. `&item->trigger_flags`
+
+- source line: `557`
+- size expression: `2`
+- context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)`
+
+### 39. `&item->hit_points`
+
+- source line: `560`
+- size expression: `2`
+- context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave)`
+
+### 40. `&flags`
+
+- source line: `574`
 - size expression: `4`
 - context: `for(i = 0; i < level_items; i++, item++) / else if (item->flags & (IFLAG_ACTIVATION_MASK | IFLAG_INVISIBLE | 0x20) || item->object_number == LARA && FullSave) / if (obj->save_flags)`
+
+### 41. `&word`
+
+- source line: `582`
+- size expression: `2`
+- context: `for(i = 0; i < level_items; i++, item++) / else`

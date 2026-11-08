@@ -37,8 +37,8 @@ def test_re062_re068_builds_debris_chain_with_terminal_blocker():
     assert all(ticket.progress for ticket in chain.tickets)
 
     functions = {row.function: row for row in chain.scope_rows}
-    assert functions["ShatterObject"].implementation_status == "unimplemented-stub"
-    assert functions["TriggerDebris"].implementation_status == "unimplemented-stub"
+    assert functions["ShatterObject"].implementation_status == "implemented-source"
+    assert functions["TriggerDebris"].implementation_status == "implemented-source"
     assert functions["GetFreeDebris"].implementation_status == "implemented-source"
     assert functions["ExplodeItemNode"].caller_or_callee_role == "caller"
     assert functions["ExplodeFX"].caller_or_callee_role == "caller"
@@ -94,7 +94,7 @@ def test_re062_re068_outputs_metadata_only_artifacts(tmp_path):
     assert "story_id,title,status,decision,next_ticket,code_change_readiness" in chain_csv
     assert "RE-062,Debris object breakage caller side-effect map,done" in chain_csv
     assert "function,file,caller_or_callee_role,implementation_status" in scope_csv
-    assert "ShatterObject,GAME/DEBRIS.C,pivot,unimplemented-stub" in scope_csv
+    assert "ShatterObject,GAME/DEBRIS.C,pivot,implemented-source" in scope_csv
     assert "caller,callee,caller_file,callee_file,line,shape_id" in callsite_csv
     assert "ExplodeItemNode,ShatterObject,GAME/CONTROL.C,GAME/DEBRIS.C" in callsite_csv
     assert "shape_id,site_count,arg1_kind,arg2_kind,arg3_kind,arg4_kind,arg5_kind" in taxonomy_csv

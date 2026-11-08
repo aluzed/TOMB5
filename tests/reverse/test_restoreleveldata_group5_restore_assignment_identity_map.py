@@ -42,7 +42,7 @@ def test_restore_assignment_identity_map_covers_group5_payload_families_and_defe
     assert identity_map.assignment_identity_ready_count == 0
     assert identity_map.patch_ready_count == 0
     assert identity_map.status == "restoreleveldata-group5-restore-assignment-identity-map-blocked"
-    assert identity_map.restore_source_state == "RestoreLevelData source body is UNIMPLEMENTED"
+    assert identity_map.restore_source_state == "RestoreLevelData source body exists but assignment identity still requires proof"
     assert identity_map.group5_decision == "defer-group5-from-source-reconstruction"
 
     rows = {row.payload_family: row for row in identity_map.rows}

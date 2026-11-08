@@ -1,6 +1,6 @@
 # TOMB5 reverse progress
 
-Generated: `2026-06-14T18:53:10.981663+00:00`
+Generated: `2026-11-08T12:42:20.668174+00:00`
 
 ## Status definitions
 
@@ -16,16 +16,16 @@ Generated: `2026-06-14T18:53:10.981663+00:00`
 - Repo functions in mapping
   - total: `1250`
   - mapped: `866` (`69.28%`)
-  - final/debug/binary-matched: `925` (`74.0%`)
-  - F: `842`; D: `83`; binary-matched: `0`; decompiled: `324`; named: `0`; unknown: `1`; ND: `23`
+  - final/debug/binary-matched: `930` (`74.4%`)
+  - F: `847`; D: `83`; binary-matched: `0`; decompiled: `319`; named: `0`; unknown: `1`; ND: `23`
 
 ## Modules
 
 - GAME
   - total: `811`
   - mapped: `620` (`76.45%`)
-  - final/debug/binary-matched: `672` (`82.86%`)
-  - F: `667`; D: `5`; binary-matched: `0`; decompiled: `139`; named: `0`; unknown: `0`; ND: `4`
+  - final/debug/binary-matched: `677` (`83.48%`)
+  - F: `672`; D: `5`; binary-matched: `0`; decompiled: `134`; named: `0`; unknown: `0`; ND: `4`
 - SPEC_PSXPC_N
   - total: `212`
   - mapped: `102` (`48.11%`)
@@ -125,10 +125,6 @@ Generated: `2026-06-14T18:53:10.981663+00:00`
   - non-final: `4` / `9`
   - mapped non-final: `4`
   - final/debug/binary-matched: `55.56%`
-- `GAME/EFFECTS.C`
-  - non-final: `4` / `41`
-  - mapped non-final: `4`
-  - final/debug/binary-matched: `90.24%`
 - `GAME/NEWINV2.C`
   - non-final: `4` / `65`
   - mapped non-final: `4`
@@ -169,21 +165,13 @@ Generated: `2026-06-14T18:53:10.981663+00:00`
   - non-final: `3` / `3`
   - mapped non-final: `3`
   - final/debug/binary-matched: `0.0%`
+- `SPEC_PSXPC/LOADSAVE.C`
+  - non-final: `3` / `3`
+  - mapped non-final: `3`
+  - final/debug/binary-matched: `0.0%`
 
 ## Next candidates
 
-- `0x800937c4` `SoundEffect` — score `7544`
-  - file: `GAME/EFFECTS.C:625`
-  - status: `decompiled`; markers: `none`
-  - body_size: `1404`; callers: `75`; callees: `7`
-- `0x800937c4` `SoundEffect` — score `7544`
-  - file: `GAME/EFFECTS.C:633`
-  - status: `decompiled`; markers: `none`
-  - body_size: `1404`; callers: `75`; callees: `7`
-- `0x800937c4` `SoundEffect` — score `7544`
-  - file: `GAME/EFFECTS.C:891`
-  - status: `decompiled`; markers: `none`
-  - body_size: `1404`; callers: `75`; callees: `7`
 - `0x800383d0` `CalculateSpotCams` — score `5140`
   - file: `GAME/SPOTCAM.C:429`
   - status: `decompiled`; markers: `none`
@@ -204,10 +192,6 @@ Generated: `2026-06-14T18:53:10.981663+00:00`
   - file: `SPEC_PSXPC_N/COLLIDE_S.C:475`
   - status: `decompiled`; markers: `none`
   - body_size: `1848`; callers: `19`; callees: `7`
-- `0x80036f3c` `ShatterObject` — score `3364`
-  - file: `GAME/DEBRIS.C:54`
-  - status: `decompiled`; markers: `none`
-  - body_size: `2684`; callers: `7`; callees: `6`
 - `0x8003d7a4` `draw_current_object_list` — score `3256`
   - file: `GAME/NEWINV2.C:1890`
   - status: `decompiled`; markers: `none`
@@ -252,3 +236,19 @@ Generated: `2026-06-14T18:53:10.981663+00:00`
   - file: `GAME/EFFECT2.C:46`
   - status: `decompiled`; markers: `none`
   - body_size: `1980`; callers: `0`; callees: `14`
+- `0x80051b2c` `PickUpCollision` — score `2260`
+  - file: `GAME/PICKUP.C:235`
+  - status: `decompiled`; markers: `none`
+  - body_size: `2100`; callers: `0`; callees: `8`
+- `0x8005cd38` `ControlExplosion` — score `2224`
+  - file: `GAME/TRAPS.C:654`
+  - status: `decompiled`; markers: `none`
+  - body_size: `1884`; callers: `0`; callees: `17`
+- `0x8008fb90` `PrintString` — score `2160`
+  - file: `SPEC_PSXPC/FXTRIG.C:7`
+  - status: `decompiled`; markers: `none`
+  - body_size: `580`; callers: `19`; callees: `3`
+- `0x8008fb90` `PrintString` — score `2160`
+  - file: `SPEC_PSXPC_N/TEXT_S.C:196`
+  - status: `decompiled`; markers: `none`
+  - body_size: `580`; callers: `19`; callees: `3`

@@ -69,8 +69,8 @@
       "total": 25
     },
     "GAME/DEBRIS.C": {
-      "finalish": 1,
-      "finalish_percent": 33.33,
+      "finalish": 3,
+      "finalish_percent": 100.0,
       "mapped": 3,
       "mapped_percent": 100.0,
       "nd": 0,
@@ -78,8 +78,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 2,
-        "final": 1,
+        "decompiled": 0,
+        "final": 3,
         "named": 0,
         "unknown": 0
       },
@@ -171,8 +171,8 @@
       "total": 9
     },
     "GAME/EFFECTS.C": {
-      "finalish": 37,
-      "finalish_percent": 90.24,
+      "finalish": 40,
+      "finalish_percent": 97.56,
       "mapped": 27,
       "mapped_percent": 65.85,
       "nd": 0,
@@ -180,8 +180,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 4,
-        "final": 37,
+        "decompiled": 1,
+        "final": 40,
         "named": 0,
         "unknown": 0
       },
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-06-14T18:53:10.981663+00:00",
+  "generated_at": "2026-11-08T12:42:20.668174+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2502,14 +2502,6 @@
       "total": 9
     },
     {
-      "file": "GAME/EFFECTS.C",
-      "finalish_percent": 90.24,
-      "mapped_non_final": 4,
-      "module": "GAME",
-      "non_final": 4,
-      "total": 41
-    },
-    {
       "file": "GAME/NEWINV2.C",
       "finalish_percent": 93.85,
       "mapped_non_final": 4,
@@ -2588,12 +2580,20 @@
       "module": "SPEC_PSX",
       "non_final": 3,
       "total": 3
+    },
+    {
+      "file": "SPEC_PSXPC/LOADSAVE.C",
+      "finalish_percent": 0.0,
+      "mapped_non_final": 3,
+      "module": "SPEC_PSXPC",
+      "non_final": 3,
+      "total": 3
     }
   ],
   "modules": {
     "GAME": {
-      "finalish": 672,
-      "finalish_percent": 82.86,
+      "finalish": 677,
+      "finalish_percent": 83.48,
       "mapped": 620,
       "mapped_percent": 76.45,
       "nd": 4,
@@ -2601,8 +2601,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 5,
-        "decompiled": 139,
-        "final": 667,
+        "decompiled": 134,
+        "final": 672,
         "named": 0,
         "unknown": 0
       },
@@ -2679,42 +2679,6 @@
   },
   "next_candidates": [
     {
-      "address": "0x800937c4",
-      "body_size": 1404,
-      "callees": 7,
-      "callers": 75,
-      "file": "GAME/EFFECTS.C",
-      "function": "SoundEffect",
-      "line": 625,
-      "markers": [],
-      "score": 7544,
-      "status": "decompiled"
-    },
-    {
-      "address": "0x800937c4",
-      "body_size": 1404,
-      "callees": 7,
-      "callers": 75,
-      "file": "GAME/EFFECTS.C",
-      "function": "SoundEffect",
-      "line": 633,
-      "markers": [],
-      "score": 7544,
-      "status": "decompiled"
-    },
-    {
-      "address": "0x800937c4",
-      "body_size": 1404,
-      "callees": 7,
-      "callers": 75,
-      "file": "GAME/EFFECTS.C",
-      "function": "SoundEffect",
-      "line": 891,
-      "markers": [],
-      "score": 7544,
-      "status": "decompiled"
-    },
-    {
       "address": "0x800383d0",
       "body_size": 4800,
       "callees": 13,
@@ -2772,18 +2736,6 @@
       "line": 475,
       "markers": [],
       "score": 3508,
-      "status": "decompiled"
-    },
-    {
-      "address": "0x80036f3c",
-      "body_size": 2684,
-      "callees": 6,
-      "callers": 7,
-      "file": "GAME/DEBRIS.C",
-      "function": "ShatterObject",
-      "line": 54,
-      "markers": [],
-      "score": 3364,
       "status": "decompiled"
     },
     {
@@ -3157,11 +3109,59 @@
       "markers": [],
       "score": 1548,
       "status": "decompiled"
+    },
+    {
+      "address": "0x80083548",
+      "body_size": 992,
+      "callees": 23,
+      "callers": 1,
+      "file": "SPEC_PSXPC_N/ANIMITEM.C",
+      "function": "CalcAnimatingItem_ASM",
+      "line": 1847,
+      "markers": [],
+      "score": 1532,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x800785d0",
+      "body_size": 272,
+      "callees": 0,
+      "callers": 15,
+      "file": "SPEC_PSXPC/MATHS.C",
+      "function": "mTranslateXYZ",
+      "line": 194,
+      "markers": [],
+      "score": 1472,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x800785d0",
+      "body_size": 272,
+      "callees": 0,
+      "callers": 15,
+      "file": "SPEC_PSXPC_N/MATHS.C",
+      "function": "mTranslateXYZ",
+      "line": 305,
+      "markers": [],
+      "score": 1472,
+      "status": "decompiled"
+    },
+    {
+      "address": "0x8003fdf4",
+      "body_size": 1296,
+      "callees": 3,
+      "callers": 1,
+      "file": "GAME/NEWINV2.C",
+      "function": "use_current_item",
+      "line": 987,
+      "markers": [],
+      "score": 1436,
+      "status": "decompiled"
     }
   ],
   "overall": {
-    "finalish": 925,
-    "finalish_percent": 74.0,
+    "finalish": 930,
+    "finalish_percent": 74.4,
     "mapped": 866,
     "mapped_percent": 69.28,
     "nd": 23,
@@ -3169,8 +3169,8 @@
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 324,
-      "final": 842,
+      "decompiled": 319,
+      "final": 847,
       "named": 0,
       "unknown": 1
     },

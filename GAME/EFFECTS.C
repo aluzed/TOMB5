@@ -32,6 +32,10 @@
 
 #include "TOMB4FX.H"
 
+#if !PC_VERSION
+extern void ItemNewRoom(short item_num, short room_number);
+#endif
+
 #if !SAT_VERSION
 #include <string.h>
 #include <stddef.h>
@@ -365,15 +369,10 @@ void ResetTest(struct ITEM_INFO* item)//39738, 39C38
 			target_item->touch_bits = 0;
 			target_item->mesh_bits = 0xFFFFFFFF;
 
-			if (target_item->object_number == LARA)
-			{
-				target_item->room_number = LaraInitialPosition[3];
-				ItemNewRoom(item_num, LaraInitialPosition[3]);
-			}
-			else
-			{
-				ItemNewRoom(item_num, target_item->room_number);
-			}
+			/* Room 0xFF of item_flags[2] is the spawn room stored with the
+			 * item; only queue a move when the item is not already there. */
+			if (target_item->room_number != (target_item->item_flags[2] & 0xFF))
+				ItemNewRoom(item_num, target_item->item_flags[2] & 0xFF);
 		}
 
 		item_num = target_item->next_active;
@@ -556,7 +555,7 @@ long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int flags)//91780(<)
 #endif
 
 #if PC_VERSION
-long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int flags)//91780(<), 937C4(!)
+long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int flags)//91780(<), 937C4(F)
 {
 	if (GLOBAL_playing_cutseq)
 	{
@@ -814,7 +813,7 @@ long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int flags)//91780(<)
 #endif
 
 #if PSXPC_VERSION || PSXPC_TEST
-long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int arg2)//91780(<), 937C4(!)
+long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int arg2)//91780(<), 937C4(F)
 {
 	int t8;
 	int a1;

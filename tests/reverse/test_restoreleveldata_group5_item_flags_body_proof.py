@@ -49,7 +49,7 @@ def test_item_flags_body_proof_tracks_each_flag_and_keeps_patch_blocked():
         row = rows[index]
         assert row.payload_field == f"item->item_flags[{index}] payload"
         assert row.header_predicate == f"item->item_flags[{index}] -> word bit {mask}"
-        assert row.source_body_evidence == "no separate Write site in current source"
+        assert row.source_body_evidence == "separate Write site present"
         assert row.save_payload_width == 2
         assert row.restore_candidate_width == 2
         assert row.restore_candidate_context == "restore group 6 compact branch payload cluster"

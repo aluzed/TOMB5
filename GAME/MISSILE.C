@@ -141,6 +141,7 @@ int ExplodeFX(struct FX_INFO* fx, int NoXZVel, long bits)//4E4E0, 4E944 (F)
 	ShatterItem.Sphere.y = fx->pos.y_pos;
 	ShatterItem.Sphere.z = fx->pos.z_pos;
 	ShatterItem.Bit = 0;
+	ShatterItem.il = &fxil;
 	ShatterItem.Flags = fx->flag2 & 0x1400;
 
 	if (fx->flag2 & 0x2000)
