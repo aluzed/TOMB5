@@ -593,18 +593,23 @@ void SoundEffects()//39190(<), 39690 (F)
 {
 	struct OBJECT_VECTOR* sound;
 	int i;
+	int flip;
+	int mask;
 
-	sound = &sound_effects[0];
+	sound = sound_effects;
 
 	if (number_sound_effects > 0)
 	{
 		//loc_391B8
-		for (i = number_sound_effects; i > 0; i--, sound++)
+		for (i = 0; i < number_sound_effects; i++, sound++)
 		{
 			//loc_39224
-			if ((flip_stats[((sound_effects[i].flags & 0x1F) & 1) | ((sound_effects[i].flags & 0x1F) & 2) + ((((sound_effects[i].flags & 0x1F) >> 2) & 1) << 1) + (((sound_effects[i].flags & 0x1F) >> 2) & 1) + (((sound_effects[i].flags & 0x1F) >> 1) & 4) + (((sound_effects[i].flags & 0x1F) >> 4) << 2) + ((sound_effects[i].flags & 0x1F) >> 4)] & 0x40) || (flip_stats[((sound_effects[i].flags & 0x1F) & 1) | ((sound_effects[i].flags & 0x1F) & 2) + ((((sound_effects[i].flags & 0x1F) >> 2) & 1) << 1) + (((sound_effects[i].flags & 0x1F) >> 2) & 1) + (((sound_effects[i].flags & 0x1F) >> 1) & 4) + (((sound_effects[i].flags & 0x1F) >> 4) << 2) + ((sound_effects[i].flags & 0x1F) >> 4)] & 0x80))///@FIXME Macro
+			flip = sound->flags & 0x1F;
+			mask = (flip & 3) + (((flip >> 2) & 1) * 3) + ((flip >> 1) & 4) + ((flip >> 4) * 5);
+
+			if ((flip_stats[mask] && (sound->flags & 0x40)) || (!flip_stats[mask] && (sound->flags & 0x80)))
 			{
-				SoundEffect(sound->data, (struct PHD_3DPOS*)&sound, SFX_DEFAULT);
+				SoundEffect(sound->data, (struct PHD_3DPOS*)sound, SFX_DEFAULT);
 			}
 			//loc_39238
 		}
