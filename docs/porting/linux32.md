@@ -1308,6 +1308,16 @@ Le bord z0 n’est donc pas une corniche grimpable. La room 201 reste
 accessible seulement en vol, sans atterrissage maîtrisé. Il faut soit une
 étude géométrique du trou (maillage/échelle), soit une autre route.
 
+La pile de rooms autour de 207/201 est un empilement 5D :
+- room 46 (`minfloor=1024`) a `sky_room=214` ; room 214
+  (`minfloor=-1024`) est au-dessus, avec `pit_room=46` ;
+- room 214 → 213 est horizontal (`z≈38912`, `x=76800..80896`) ;
+- room 213 → 209 est horizontal (`z≈39936`, `x=76800..80896`) ;
+- room 12/45 sont encore au-dessus (`minfloor=-2048`), reliées à 214/213.
+
+Sans vue du maillage ou d’un walkthrough, les sauts à l’aveugle dans ces
+trous ne permettent pas de déterminer la route prévue.
+
 Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
 `UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis
 la marche nord retombe dans la room 207 et s’arrête à `77500,0,48031`.
