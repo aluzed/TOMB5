@@ -404,7 +404,7 @@ int GetStringLength(char* string, unsigned short* a1, unsigned short* a2)//8DEDC
 	int t5 = 0;
 	int t0 = 0;
 	int t2 = -1024;
-	char c = *string++;//a3
+	unsigned char c = (unsigned char)*string++;//a3
 	int t1 = 1024;
 	int a3 = 0;
 	int t3 = 0;
@@ -457,13 +457,54 @@ int GetStringLength(char* string, unsigned short* a1, unsigned short* a2)//8DEDC
 					//loc_8DF7C
 					if ((unsigned int)(c - 0x80) < 0x2E)
 					{
-						a3 = AccentTable[0][c - 0x80];
-						t5 = 1;
-						assert(0);//Not debugged, colliding register type here!
-					}
+						/* RE-740: AccentTable is [46][2]; use the entry for (c-0x80).
+						 * Resolve glyphs through the normal char domain to avoid
+						 * host UB from the previous out-of-bounds CharDef[c-33].
+						 * Overlay extent combination and the 12 space/space entries
+						 * ("zone preceding first glyph", RE-732) remain unproven;
+						 * assert on paths that still need binary proof. */
+						unsigned char base = (unsigned char)AccentTable[c - 0x80][0];
+						unsigned char accent = (unsigned char)AccentTable[c - 0x80][1];
+						struct CHARDEF* baseDef = NULL;
 
-					//loc_8DF98
-					a33 = &CharDef[c - 33];
+						t5 = 1;
+
+						if (base == 0x20)
+						{
+							/* Space/space and any base-space form are not proven
+							 * here (RE-732). Keep the path safe and explicit. */
+							assert(0);
+							baseDef = &CharDef[0];
+						}
+						else if (base < 0x20)
+						{
+							baseDef = &CharDef[base + 74];
+						}
+						else if (base < 0x80)
+						{
+							baseDef = &CharDef[base - 33];
+						}
+						else
+						{
+							assert(0);
+							baseDef = &CharDef[0];
+						}
+
+						if (accent != 0x20)
+						{
+							/* Accent overlay drawn (PrintString comments): extent/
+							 * width combination not reconstructed; defer to proof. */
+							assert(0);
+						}
+
+						a33 = baseDef;
+						a3 = base;
+					}
+					else
+					{
+						//loc_8DF98
+						a33 = &CharDef[c - 33];
+					}
 				}
 				//loc_8DFA8
 				v0 = a33->w;
@@ -487,7 +528,7 @@ int GetStringLength(char* string, unsigned short* a1, unsigned short* a2)//8DEDC
 				}
 			}
 			//loc_8DFE4
-			c = *string++;
+			c = (unsigned char)*string++;
 
 			//v0 = 0xA
 			if (c != 0)
