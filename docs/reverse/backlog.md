@@ -1,6 +1,6 @@
 # Backlog priorisée des fonctions reverse TOMB5
 
-Generated: `2026-11-08T12:42:20.734446+00:00`
+Generated: `2026-11-08T13:14:35.926653+00:00`
 Source: `docs/reverse/generated/repo-function-map.csv`
 CSV détaillé: `docs/reverse/generated/function-priority.csv`
 Story: `docs/stories/RE-004-priorisation-fonctions-non-finalisees.md`
@@ -41,7 +41,7 @@ Buckets:
 
 ## Summary
 
-- candidates total: `343` / repo rows `1250`
+- candidates total: `343` / repo rows `1251`
 - mapped candidates: `200`
 - ND highlighted: `23`
 - P0: `35`; P1: `98`; P2: `210`

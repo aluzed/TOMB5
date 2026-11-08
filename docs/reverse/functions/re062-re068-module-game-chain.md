@@ -26,10 +26,10 @@ Next ticket: `RE-069`
 
 ## Scope rows
 
-- `ShatterObject` — `unimplemented-stub` / `source-stub-no-behavior-body` / blocker `implementation body absent and non-raw binary equivalence not available`
-- `TriggerDebris` — `unimplemented-stub` / `source-stub-no-behavior-body` / blocker `implementation body absent and non-raw binary equivalence not available`
+- `ShatterObject` — `implemented-source` / `source-contract-visible` / blocker `missing-non-raw-binary-equivalence`
+- `TriggerDebris` — `implemented-source` / `source-contract-visible` / blocker `missing-non-raw-binary-equivalence`
 - `GetFreeDebris` — `implemented-source` / `source-contract-visible` / blocker `missing-non-raw-binary-equivalence`
-- `UpdateDebris` — `unimplemented-stub` / `source-stub-no-behavior-body` / blocker `implementation body absent and non-raw binary equivalence not available`
+- `UpdateDebris` — `implemented-source` / `source-contract-visible` / blocker `missing-non-raw-binary-equivalence`
 - `ExplodeItemNode` — `implemented-source` / `source-contract-visible` / blocker `missing-non-raw-binary-equivalence`
 - `ExplodeFX` — `implemented-source` / `source-contract-visible` / blocker `missing-non-raw-binary-equivalence`
 

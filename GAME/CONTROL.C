@@ -327,9 +327,72 @@ void UpdateSplashes()
 	Unimpl();
 }
 
-void UpdateDebris()
+void UpdateDebris()//87978(<), 899BC(<) (F)
 {
-	Unimpl();
+	struct DEBRIS_STRUCT* d = &debris[0];
+	int i;
+
+	for (i = 0; i < 128; i++, d++)
+	{
+		struct FLOOR_INFO* floor;
+		short floor_height;
+		short ceiling_height;
+		short sin;
+		short cos;
+		long x;
+		long y;
+		long z;
+		int speed;
+		int vy;
+
+		if (!d->On)
+			continue;
+
+		vy = d->Yvel + d->Gravity;
+
+		if (vy >= 4097)
+			vy = 4096;
+
+		speed = d->Speed;
+		speed -= speed >> 4;
+
+		x = d->x;
+		y = d->y + (vy >> 4);
+		z = d->z;
+
+		sin = SIN(d->Dir);
+		cos = COS(d->Dir);
+
+		x += (speed * sin) >> W2V_SHIFT;
+		z += (speed * cos) >> W2V_SHIFT;
+
+		d->XRot = (unsigned char)((signed char)d->XRot + (vy >> 6));
+
+		if (vy != 0)
+			d->YRot = (unsigned char)((signed char)d->YRot + (speed >> 5));
+
+		d->Yvel = (short)vy;
+		d->Speed = (short)speed;
+
+		/* Underwater debris loses a quarter of its vertical velocity. */
+		if (room[d->RoomNumber].flags & 1)
+			d->Yvel = (short)((unsigned)vy - ((unsigned)vy >> 2));
+
+		floor = GetFloor(x, y, z, &d->RoomNumber);
+		floor_height = GetHeight(floor, x, y, z);
+		ceiling_height = GetCeiling(floor, x, y, z);
+
+		if (y < floor_height && y >= ceiling_height)
+		{
+			d->x = x;
+			d->y = y;
+			d->z = z;
+		}
+		else
+		{
+			d->On--;
+		}
+	}
 }
 
 void UpdateBlood()

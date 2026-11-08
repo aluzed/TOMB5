@@ -42,7 +42,7 @@ def test_re062_re068_builds_debris_chain_with_terminal_blocker():
     assert functions["GetFreeDebris"].implementation_status == "implemented-source"
     assert functions["ExplodeItemNode"].caller_or_callee_role == "caller"
     assert functions["ExplodeFX"].caller_or_callee_role == "caller"
-    assert functions["UpdateDebris"].implementation_status == "unimplemented-stub"
+    assert functions["UpdateDebris"].implementation_status == "implemented-source"
 
     assert {row.caller for row in chain.callsites}.isdisjoint({"if", "for", "while", "switch"})
     callsites = {(row.caller, row.callee): row for row in chain.callsites}
