@@ -36,11 +36,11 @@ def short(value):
 @pytest.mark.parametrize('baseline', [False, True], ids=['current', '243c16ac'])
 @pytest.mark.parametrize('ubsan', [False, True], ids=['normal', 'strict-ubsan'])
 def test_actual_registered_roof_bridge_chain(baseline, ubsan):
-    assert (FIXTURE / 'run_test.py').is_file(), 'RE788 actual-source runner missing'
+    assert (FIXTURE / 'harness.py').is_file(), 'RE788 actual-source harness missing'
     assert (FIXTURE / 'roof_registration.cpp').is_file(), 'RE788 integration harness missing'
     ARCHIVE.mkdir(parents=True, exist_ok=True)
     work = Path(tempfile.mkdtemp(prefix=f'{"baseline" if baseline else "current"}-{ubsan}-', dir=ARCHIVE))
-    argv = [sys.executable, '-B', str(FIXTURE / 'run_test.py'), '--root', str(ROOT),
+    argv = [sys.executable, '-B', str(FIXTURE / 'harness.py'), '--root', str(ROOT),
             '--source', 'baseline' if baseline else 'current', '--output', str(work / 'run')]
     if ubsan:
         argv.append('--ubsan')

@@ -1,10 +1,10 @@
-# RE-057 — Collision proof cluster
+# RE-057 — Collision cluster proof
 
 Status: Done
 
 ## Goal
 
-Advance `collision` / `GetCollisionInfo` through `collision-proof-cluster` as a metadata-only reverse-engineering step.
+Advance `collision` / `GetCollisionInfo` through `collision-cluster-proof` as a metadata-only reverse-engineering step.
 
 ## Scope
 
@@ -25,12 +25,12 @@ Advance `collision` / `GetCollisionInfo` through `collision-proof-cluster` as a 
 
 ## Findings
 
-- cluster reviewed: `lara-movement-collision`
+- cluster reviewed: `lara-movement`
 - cluster proof remains metadata-only
 
 ## Readiness decision
 
-- decision: `selected-cluster-remains-proof-needed`
+- decision: `internal-cluster-remains-proof-needed`
 - safe next action: `publish patch/marker gate`
 - code change readiness: `blocked`
 - next ticket: `RE-058`

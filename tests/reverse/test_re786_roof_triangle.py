@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
-RUN = ROOT / 'tests/reverse/fixtures/re786/run_test.py'
+RUN = ROOT / 'tests/reverse/fixtures/re786/harness.py'
 OUT = ROOT / 'build/reverse/re786-public-tests'
 BASELINE = 'fd74fbb9'
 COORDS = [(100, 200), (200, 100), (512, 512), (900, 200), (200, 900), (824, 200), (825, 200), (823, 200)]

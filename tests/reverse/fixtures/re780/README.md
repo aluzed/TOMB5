@@ -7,7 +7,7 @@ Ces fichiers publics ont reçu une revue indépendante PASS bornée du filtre ; 
 Depuis la racine du dépôt, avec g++, support C++ 32 bits et les dépendances des headers normaux disponibles :
 
 ```sh
-python3 tests/reverse/fixtures/re780/run_test.py --root . --source SPEC_PSXPC_N/GETSTUFF.C --output build/reverse/re780-trigger-filter-new-run
+python3 tests/reverse/fixtures/re780/harness.py --root . --source SPEC_PSXPC_N/GETSTUFF.C --output build/reverse/re780-trigger-filter-new-run
 ```
 
 Le dossier output doit être absent. Pour tester une correction privée, passer son chemin à `--source`. Le runner compile la TU entière séparément du harnais. Les headers du dépôt sont utilisés sans substitutions. La liaison élimine les sections non atteintes ; elle ne supprime pas les erreurs de symboles non résolus. Ce n'est pas un build du jeu entier.

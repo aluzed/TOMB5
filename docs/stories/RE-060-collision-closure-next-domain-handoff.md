@@ -26,14 +26,15 @@ Advance `collision` / `GetCollisionInfo` through `collision-closure-next-domain-
 ## Findings
 
 - collision chain closed as documentation-only
-- next domain selected: `module-game`
+- collision-adjacent next domain `traps-switches-doors` was later closed by RE-222..RE-228
+- effective next domain selected: `module-spec_psxpc` (RE-228 handoff)
 
 ## Readiness decision
 
-- decision: `handoff-to-module-game-domain`
-- safe next action: `open RE-061 module-game proof-first audit`
+- decision: `handoff-to-module-spec_psxpc-domain`
+- safe next action: `open or continue RE-229 module-spec_psxpc proof-first audit`
 - code change readiness: `blocked`
-- next ticket: `RE-061`
+- next ticket: `RE-229`
 
 Do not patch production source or add `(F)`, `(D)`, or `(**)` markers from this story alone.
 
@@ -44,4 +45,4 @@ Do not patch production source or add `(F)`, `(D)`, or `(**)` markers from this 
 
 ## Next step
 
-RE-061: open RE-061 module-game proof-first audit.
+RE-229: open or continue RE-229 module-spec_psxpc proof-first audit.

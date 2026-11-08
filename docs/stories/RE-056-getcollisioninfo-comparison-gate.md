@@ -1,14 +1,14 @@
-# RE-055 — Collision argument/data taxonomy
+# RE-056 — GetCollisionInfo source-vs-binary comparison gate
 
 Status: Done
 
 ## Goal
 
-Advance `collision` / `GetCollisionInfo` through `collision-argument-data-taxonomy` as a metadata-only reverse-engineering step.
+Advance `collision` / `GetCollisionInfo` through `getcollisioninfo-comparison-gate` as a metadata-only reverse-engineering step.
 
 ## Scope
 
-- depends on: `RE-054`
+- depends on: `RE-054`, `RE-055`
 - safety contract: `metadata-only; no opcodes; no machine words; no payload coordinates; no branch or call targets; no copied dump records; no raw addresses in generated outputs`
 
 ## Progress
@@ -25,15 +25,15 @@ Advance `collision` / `GetCollisionInfo` through `collision-argument-data-taxono
 
 ## Findings
 
-- source callsites classified: `22`
-- argument shapes: `4`
+- no non-raw equivalence proof names the spatial-query and side-effect contract
+- source-level taxonomy is insufficient for marker/source changes
 
 ## Readiness decision
 
-- decision: `argument-and-data-shapes-published`
-- safe next action: `advance to comparison gate`
+- decision: `blocked-by-missing-non-raw-binary-equivalence-proof`
+- safe next action: `do not patch; reduce proof to collision-core/platform cluster`
 - code change readiness: `blocked`
-- next ticket: `RE-056`
+- next ticket: `RE-057`
 
 Do not patch production source or add `(F)`, `(D)`, or `(**)` markers from this story alone.
 
@@ -44,4 +44,4 @@ Do not patch production source or add `(F)`, `(D)`, or `(**)` markers from this 
 
 ## Next step
 
-RE-056: advance to comparison gate.
+RE-057: do not patch; reduce proof to collision-core/platform cluster.

@@ -26,12 +26,12 @@ Advance `collision` / `GetCollisionInfo` through `getcollisioninfo-caller-map` a
 ## Findings
 
 - callers classified: `19`
-- selected cluster: `lara-movement-collision`
+- selected cluster: `lara-movement`
 
 ## Readiness decision
 
 - decision: `caller-clusters-published`
-- safe next action: `advance to collision argument/data taxonomy`
+- safe next action: `advance to argument taxonomy`
 - code change readiness: `blocked`
 - next ticket: `RE-055`
 
@@ -44,4 +44,4 @@ Do not patch production source or add `(F)`, `(D)`, or `(**)` markers from this 
 
 ## Next step
 
-RE-055: advance to collision argument/data taxonomy.
+RE-055: advance to argument taxonomy.

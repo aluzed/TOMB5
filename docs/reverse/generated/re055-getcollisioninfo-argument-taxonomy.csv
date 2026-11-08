@@ -1,0 +1,5 @@
+shape_id,arity,site_count,first_arg_kind,second_arg_kind,third_arg_kind,fourth_arg_kind,fifth_arg_kind,sixth_arg_kind,readiness,blocker
+shape-01,6,15,symbolic-identifier,field-access-expression,field-access-expression,field-access-expression,field-access-expression,numeric-literal,taxonomy-only,argument semantics and collision side effects require non-raw binary equivalence proof
+shape-02,6,4,expression,compound,compound,compound,compound,compound,taxonomy-only,argument semantics and collision side effects require non-raw binary equivalence proof
+shape-03,3,2,address-of-source-object,field-access-expression,field-access-expression,missing,missing,missing,taxonomy-only,argument semantics and collision side effects require non-raw binary equivalence proof
+shape-04,3,1,symbolic-identifier,field-access-expression,field-access-expression,missing,missing,missing,taxonomy-only,argument semantics and collision side effects require non-raw binary equivalence proof

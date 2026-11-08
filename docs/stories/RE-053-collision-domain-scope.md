@@ -25,8 +25,8 @@ Advance `collision` / `GetCollisionInfo` through `collision-domain-scope` as a m
 
 ## Findings
 
-- collision candidates: `31`
-- pivot rows: `1`
+- collision candidates: `34`
+- GetCollisionInfo mapped rows: `1`
 
 ## Readiness decision
 

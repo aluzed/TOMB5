@@ -18,7 +18,7 @@ limited to this fixture; it does not resolve the pre-existing GetFloor debt.
 
 Run from the repository with a new output directory:
 
-    python3 tests/reverse/fixtures/re782/run_test.py --root . --source GAME/OBJECTS.C --output /tmp/re782-fresh
+    python3 tests/reverse/fixtures/re782/harness.py --root . --source GAME/OBJECTS.C --output /tmp/re782-fresh
 
 Add `--sanitize` for the bounded undefined-behavior sanitizer run.
 No protected assets or target instruction dumps are required by this public test.

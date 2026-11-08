@@ -2,7 +2,7 @@
 
 Invocation publique (répertoire output absent) :
 
-    python3 tests/reverse/fixtures/re781/run_test.py --root . --source SPEC_PSXPC_N/GETSTUFF.C --output build/reverse/re781-manual-new
+    python3 tests/reverse/fixtures/re781/harness.py --root . --source SPEC_PSXPC_N/GETSTUFF.C --output build/reverse/re781-manual-new
 
 288 cas synthétiques, deux consommateurs (GetHeight direct, UpdateLaraRoom réel), deux bridges ordonnés, inhibition indépendante, trois bases et trois hauteurs de requête. GETSTUFF.C, COLLIDE_S.C et OBJECTS.C entiers sont compilés avec les headers normaux, Linux/i386 et macros PSX_VERSION/PSXPC_TEST. Liaison avec élimination des sections inutilisées, sans ignorer les symboles non résolus. Le tableau entier des trois items et les globals énumérés sont contrôlés.
 
