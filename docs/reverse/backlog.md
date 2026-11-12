@@ -1,6 +1,6 @@
 # Backlog priorisée des fonctions reverse TOMB5
 
-Generated: `2026-11-12T19:51:04.671566+00:00`
+Generated: `2026-11-12T20:03:05.773416+00:00`
 Source: `docs/reverse/generated/repo-function-map.csv`
 CSV détaillé: `docs/reverse/generated/function-priority.csv`
 Story: `docs/stories/RE-004-priorisation-fonctions-non-finalisees.md`
@@ -41,11 +41,11 @@ Buckets:
 
 ## Summary
 
-- candidates total: `327` / repo rows `1259`
-- mapped candidates: `184`
+- candidates total: `326` / repo rows `1260`
+- mapped candidates: `183`
 - ND highlighted: `23`
-- P0: `35`; P1: `94`; P2: `198`
-- statuses: `debugged` `23`; `decompiled` `303`; `unknown` `1`
+- P0: `35`; P1: `94`; P2: `197`
+- statuses: `debugged` `23`; `decompiled` `302`; `unknown` `1`
 
 ## Lot 1 — P0 runtime / ND à clarifier
 
@@ -188,7 +188,7 @@ Buckets:
 - `GAME/SETUP.C`
   - candidates: `12`; mapped: `0`; ND: `0`; top score: `800`
 - `SPEC_PSXPC_N/MISC.C`
-  - candidates: `11`; mapped: `7`; ND: `4`; top score: `2052`
+  - candidates: `10`; mapped: `6`; ND: `4`; top score: `2052`
 - `GAME/DOOR.C`
   - candidates: `8`; mapped: `8`; ND: `0`; top score: `2452`
 - `GAME/LARAFIRE.C`
@@ -250,23 +250,23 @@ Buckets:
   - graph: callers `0`, callees `4`, body_size `516`
   - why: adresse Ghidra disponible; 4 callee(s); body_size 516; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#137` `0x8005fdd0` `GPU_BeginScene` — `P2` score `1753`
-  - source: `SPEC_PSXPC_N/MISC.C:249`; Ghidra: `0x8005fdd0` `FUN_8005fdd0`
-  - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
-  - graph: callers `5`, callees `1`, body_size `68`
-  - why: adresse Ghidra disponible; 5 caller(s); 1 callee(s); body_size 68; statut decompiled
-  - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#138` `0x80063060` `LoadGame` — `P2` score `1750`
+- `#137` `0x80063060` `LoadGame` — `P2` score `1750`
   - source: `SPEC_PSXPC_N/LOADSAVE.C:119`; Ghidra: `0x80063060` `FUN_80063060`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `2`, callees `4`, body_size `320`
   - why: adresse Ghidra disponible; 2 caller(s); 4 callee(s); body_size 320; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#139` `0x8008ff20` `GetStringLength` — `P2` score `1742`
+- `#138` `0x8008ff20` `GetStringLength` — `P2` score `1742`
   - source: `SPEC_PSXPC_N/TEXT_S.C:401`; Ghidra: `0x8008ff20` `FUN_8008ff20`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `3`, callees `0`, body_size `332`
   - why: adresse Ghidra disponible; 3 caller(s); body_size 332; statut decompiled
+  - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
+- `#139` `0x80062dc8` `DisplayFiles` — `P2` score `1739`
+  - source: `SPEC_PSXPC/LOADSAVE.C:35`; Ghidra: `0x80062dc8` `FUN_80062dc8`
+  - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
+  - graph: callers `0`, callees `7`, body_size `664`
+  - why: adresse Ghidra disponible; 7 callee(s); body_size 664; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
 
 ## Workflow recommandé par fonction

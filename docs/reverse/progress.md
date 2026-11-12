@@ -1,6 +1,6 @@
 # TOMB5 reverse progress
 
-Generated: `2026-11-12T19:51:04.607539+00:00`
+Generated: `2026-11-12T20:03:05.707538+00:00`
 
 ## Status definitions
 
@@ -14,10 +14,10 @@ Generated: `2026-11-12T19:51:04.607539+00:00`
 ## Overall
 
 - Repo functions in mapping
-  - total: `1259`
-  - mapped: `875` (`69.5%`)
-  - final/debug/binary-matched: `955` (`75.85%`)
-  - F: `872`; D: `83`; binary-matched: `0`; decompiled: `303`; named: `0`; unknown: `1`; ND: `23`
+  - total: `1260`
+  - mapped: `876` (`69.52%`)
+  - final/debug/binary-matched: `957` (`75.95%`)
+  - F: `874`; D: `83`; binary-matched: `0`; decompiled: `302`; named: `0`; unknown: `1`; ND: `23`
 
 ## Modules
 
@@ -27,10 +27,10 @@ Generated: `2026-11-12T19:51:04.607539+00:00`
   - final/debug/binary-matched: `691` (`84.47%`)
   - F: `686`; D: `5`; binary-matched: `0`; decompiled: `127`; named: `0`; unknown: `0`; ND: `4`
 - SPEC_PSXPC_N
-  - total: `214`
-  - mapped: `104` (`48.6%`)
-  - final/debug/binary-matched: `127` (`59.35%`)
-  - F: `86`; D: `41`; binary-matched: `0`; decompiled: `86`; named: `0`; unknown: `1`; ND: `12`
+  - total: `215`
+  - mapped: `105` (`48.84%`)
+  - final/debug/binary-matched: `129` (`60.0%`)
+  - F: `88`; D: `41`; binary-matched: `0`; decompiled: `85`; named: `0`; unknown: `1`; ND: `12`
 - SPEC_PSXPC
   - total: `144`
   - mapped: `88` (`61.11%`)
@@ -89,10 +89,6 @@ Generated: `2026-11-12T19:51:04.607539+00:00`
   - non-final: `7` / `17`
   - mapped non-final: `4`
   - final/debug/binary-matched: `58.82%`
-- `SPEC_PSXPC_N/MISC.C`
-  - non-final: `7` / `18`
-  - mapped non-final: `4`
-  - final/debug/binary-matched: `61.11%`
 - `SPEC_PSXPC/PROFILE.C`
   - non-final: `7` / `7`
   - mapped non-final: `0`
@@ -105,6 +101,10 @@ Generated: `2026-11-12T19:51:04.607539+00:00`
   - non-final: `6` / `13`
   - mapped non-final: `3`
   - final/debug/binary-matched: `53.85%`
+- `SPEC_PSXPC_N/MISC.C`
+  - non-final: `6` / `18`
+  - mapped non-final: `3`
+  - final/debug/binary-matched: `66.67%`
 - `GAME/COLLIDE.C`
   - non-final: `5` / `11`
   - mapped non-final: `5`

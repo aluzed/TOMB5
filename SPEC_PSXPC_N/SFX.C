@@ -130,7 +130,7 @@ void S_SetReverbType(int reverb)
 	}
 }
 
-void S_SoundStopAllSamples()
+void S_SoundStopAllSamples()//91D34, 93D80 (F)
 {
 	if (GtSFXEnabled == 0)
 	{

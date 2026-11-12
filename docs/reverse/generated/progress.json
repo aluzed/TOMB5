@@ -2058,8 +2058,8 @@
       "total": 5
     },
     "SPEC_PSXPC_N/MISC.C": {
-      "finalish": 11,
-      "finalish_percent": 61.11,
+      "finalish": 12,
+      "finalish_percent": 66.67,
       "mapped": 11,
       "mapped_percent": 61.11,
       "nd": 4,
@@ -2067,8 +2067,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 4,
-        "decompiled": 7,
-        "final": 7,
+        "decompiled": 6,
+        "final": 8,
         "named": 0,
         "unknown": 0
       },
@@ -2228,21 +2228,21 @@
       "total": 2
     },
     "SPEC_PSXPC_N/SFX.C": {
-      "finalish": 5,
-      "finalish_percent": 71.43,
-      "mapped": 6,
-      "mapped_percent": 85.71,
+      "finalish": 6,
+      "finalish_percent": 75.0,
+      "mapped": 7,
+      "mapped_percent": 87.5,
       "nd": 0,
       "repo_only": 1,
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
         "decompiled": 2,
-        "final": 5,
+        "final": 6,
         "named": 0,
         "unknown": 0
       },
-      "total": 7
+      "total": 8
     },
     "SPEC_PSXPC_N/SHADOWS.C": {
       "finalish": 0,
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T19:51:04.607539+00:00",
+  "generated_at": "2026-11-12T20:03:05.707538+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2430,14 +2430,6 @@
       "total": 17
     },
     {
-      "file": "SPEC_PSXPC_N/MISC.C",
-      "finalish_percent": 61.11,
-      "mapped_non_final": 4,
-      "module": "SPEC_PSXPC_N",
-      "non_final": 7,
-      "total": 18
-    },
-    {
       "file": "SPEC_PSXPC/PROFILE.C",
       "finalish_percent": 0.0,
       "mapped_non_final": 0,
@@ -2460,6 +2452,14 @@
       "module": "SPEC_PSXPC",
       "non_final": 6,
       "total": 13
+    },
+    {
+      "file": "SPEC_PSXPC_N/MISC.C",
+      "finalish_percent": 66.67,
+      "mapped_non_final": 3,
+      "module": "SPEC_PSXPC_N",
+      "non_final": 6,
+      "total": 18
     },
     {
       "file": "GAME/COLLIDE.C",
@@ -2660,21 +2660,21 @@
       "total": 144
     },
     "SPEC_PSXPC_N": {
-      "finalish": 127,
-      "finalish_percent": 59.35,
-      "mapped": 104,
-      "mapped_percent": 48.6,
+      "finalish": 129,
+      "finalish_percent": 60.0,
+      "mapped": 105,
+      "mapped_percent": 48.84,
       "nd": 12,
       "repo_only": 110,
       "statuses": {
         "binary_matched": 0,
         "debugged": 41,
-        "decompiled": 86,
-        "final": 86,
+        "decompiled": 85,
+        "final": 88,
         "named": 0,
         "unknown": 1
       },
-      "total": 214
+      "total": 215
     }
   },
   "next_candidates": [
@@ -3160,23 +3160,23 @@
     }
   ],
   "overall": {
-    "finalish": 955,
-    "finalish_percent": 75.85,
-    "mapped": 875,
-    "mapped_percent": 69.5,
+    "finalish": 957,
+    "finalish_percent": 75.95,
+    "mapped": 876,
+    "mapped_percent": 69.52,
     "nd": 23,
     "repo_only": 384,
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 303,
-      "final": 872,
+      "decompiled": 302,
+      "final": 874,
       "named": 0,
       "unknown": 1
     },
-    "total": 1259
+    "total": 1260
   },
-  "source_rows": 1259,
+  "source_rows": 1260,
   "status_definitions": {
     "binary_matched": "Contains `(**)`.",
     "debugged": "Contains `(D)`; stronger than `(F)` for tracking.",

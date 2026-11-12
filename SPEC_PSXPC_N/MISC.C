@@ -247,7 +247,7 @@ void LOAD_DrawEnable(unsigned char isEnabled) //5F2C8, 5FFA8 (F)
 	LtLoadingBarEnabled = isEnabled;
 }
 
-void GPU_BeginScene() //5F0F0(<), 5FDD0(<)
+void GPU_BeginScene() //5F0F0(<), 5FDD0(<) (F)
 {
 	db.ot = db.order_table[db.current_buffer];
 	db.polyptr = (char*)db.poly_buffer[db.current_buffer];
