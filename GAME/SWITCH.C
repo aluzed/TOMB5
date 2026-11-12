@@ -231,10 +231,66 @@ void CogSwitchControl(short item_num)//581D8, 58678 (F)
 	}
 }
 
-void FullBlockSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57FB8, 58458
+void FullBlockSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57FB8, 58458 (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+
+	if (!((input & IN_ACTION) &&
+		item->status == 0 &&
+		!(item->flags & IFLAG_INVISIBLE) &&
+		CurrentSequence < 3 &&
+		lara.gun_status == LG_NO_ARMS &&
+		l->current_anim_state == 2 &&
+		l->anim_number == 103) &&
+		!(lara.IsMoving && lara.GeneralPtr == (void*)item_num))
+	{
+		if (TestBoundsCollide(item, l, coll->radius) &&
+			TestCollision(item, l) &&
+			l->hit_status)
+		{
+			ItemPushLara(item, l, coll, 0, 1);
+		}
+
+		return;
+	}
+
+	if (!TestLaraPosition(FullBlockSwitchBounds, item, l))
+	{
+		if (lara.IsMoving && lara.GeneralPtr == (void*)item_num)
+		{
+			lara.IsMoving = 0;
+			lara.gun_status = LG_NO_ARMS;
+		}
+
+		return;
+	}
+
+	if (!MoveLaraPositionToItem(&FullBlockSwitchPos, item, l))
+	{
+		lara.GeneralPtr = (void*)item_num;
+		return;
+	}
+
+	if (item->current_anim_state == 1)
+	{
+		l->current_anim_state = 40;
+		l->anim_number = 316;
+		item->goal_anim_state = 0;
+	}
+
+	l->goal_anim_state = 2;
+	l->frame_number = anims[l->anim_number].frame_base;
+	item->status = 1;
+
+	AddActiveItem(item_num);
+	AnimateItem(item);
+
+	lara.head_y_rot = 0;
+	lara.head_x_rot = 0;
+	lara.torso_y_rot = 0;
+	lara.torso_x_rot = 0;
+	lara.gun_status = LG_HANDS_BUSY;
+	lara.IsMoving = 0;
 }
 
 void FullBlockSwitchControl(short item_number)//57EB8, 58358 (F)

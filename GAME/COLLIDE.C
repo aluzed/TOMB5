@@ -20,6 +20,10 @@ extern void ItemNewRoom(short item_num, short room_number);
 #include "TYPES.H"
 #include "EFFECTS.H"
 
+#if PSX_VERSION || PSXPC_VERSION || PSXPC_TEST || SAT_VERSION
+#include "GTEREG.H"
+#endif
+
 #if PSX_VERSION || PSXPC_VERSION || SAT_VERSION
 #include "MISC.H"
 #include "FXTRIG.H"
@@ -563,6 +567,165 @@ int MoveLaraPosition(struct PHD_VECTOR* vector, struct ITEM_INFO* item, struct I
 	}
 
 	return 0;
+}
+
+static short InterpolateLaraAngle(short current, short target, short step)//7B044(<), 7D088(<) (F)
+{
+	short diff = (short)(target - current);
+
+	if (step < diff)
+	{
+		return (short)(current + step);
+	}
+
+	if (diff < -step)
+	{
+		return (short)(current - step);
+	}
+
+	return target;
+}
+
+int SetLaraPosition(struct PHD_3DPOS* dst, struct PHD_3DPOS* target, int distance, short step)//7ADFC(<), 7CE40(<) (F)
+{
+	long dx = target->x_pos - dst->x_pos;
+	long dy = target->y_pos - dst->y_pos;
+	long dz = target->z_pos - dst->z_pos;
+	long dist = phd_sqrt_asm(dx * dx + dy * dy + dz * dz);
+
+	if (dist <= distance)
+	{
+		dst->x_pos = target->x_pos;
+		dst->y_pos = target->y_pos;
+		dst->z_pos = target->z_pos;
+	}
+	else
+	{
+		long ratio = ((long)distance << 16) / dist;
+
+		dst->x_pos += (dx * ratio) >> 16;
+		dst->y_pos += (dy * ratio) >> 16;
+		dst->z_pos += (dz * ratio) >> 16;
+	}
+
+	if (!lara.IsMoving)
+	{
+		if (lara.water_status == LW_UNDERWATER)
+		{
+			lara.MoveCount = 0;
+			lara.IsMoving = 1;
+		}
+		else
+		{
+			long angle = phd_atan_asm(dst->x_pos - target->x_pos, dst->z_pos - target->z_pos) + 8192;
+			int quadrant = (int)(((angle >> 14) - ((target->y_rot + 8192) >> 14)) & 3);
+			int anim;
+			short state;
+
+			switch (quadrant)
+			{
+			case 0:
+				anim = 65;
+				state = 22;
+				break;
+			case 1:
+				anim = 1;
+				state = 0;
+				break;
+			case 2:
+				anim = 67;
+				state = 21;
+				break;
+			default:
+				anim = 40;
+				state = 16;
+				break;
+			}
+
+			lara_item->anim_number = (short)anim;
+			lara_item->current_anim_state = state;
+			lara_item->goal_anim_state = state;
+			lara_item->frame_number = anims[anim].frame_base;
+			lara.gun_status = LG_HANDS_BUSY;
+			lara.MoveCount = 0;
+			lara.IsMoving = 1;
+		}
+	}
+
+	dst->x_rot = InterpolateLaraAngle(dst->x_rot, target->x_rot, step);
+	dst->y_rot = InterpolateLaraAngle(dst->y_rot, target->y_rot, step);
+	dst->z_rot = InterpolateLaraAngle(dst->z_rot, target->z_rot, step);
+
+	return dst->x_pos == target->x_pos && dst->y_pos == target->y_pos && dst->z_pos == target->z_pos &&
+		dst->x_rot == target->x_rot && dst->y_rot == target->y_rot && dst->z_rot == target->z_rot;
+}
+
+int MoveLaraPositionToItem(struct PHD_VECTOR* vector, struct ITEM_INFO* item, struct ITEM_INFO* l)//7AC70(<), 7CCB4(<) (F)
+{
+	struct PHD_3DPOS target;
+	short room;
+	struct FLOOR_INFO* floor;
+	short height;
+	long dx;
+	long dy;
+	long dz;
+
+#if PSX_VERSION || PSXPC_VERSION || PSXPC_TEST || SAT_VERSION
+	mPushUnitMatrix();
+	mRotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
+
+	IR1 = vector->x;
+	IR2 = vector->y;
+	IR3 = vector->z;
+	TRX = item->pos.x_pos;
+	TRY = item->pos.y_pos;
+	TRZ = item->pos.z_pos;
+
+	docop2(0x498012);
+
+	target.x_pos = MAC1;
+	target.y_pos = MAC2;
+	target.z_pos = MAC3;
+
+	mPopMatrix();
+#else
+	target.x_pos = item->pos.x_pos + ((vector->x * COS(item->pos.y_rot) - vector->z * SIN(item->pos.y_rot)) >> W2V_SHIFT);
+	target.y_pos = item->pos.y_pos + vector->y;
+	target.z_pos = item->pos.z_pos + ((vector->x * SIN(item->pos.y_rot) + vector->z * COS(item->pos.y_rot)) >> W2V_SHIFT);
+#endif
+
+	target.x_rot = item->pos.x_rot;
+	target.y_rot = item->pos.y_rot;
+	target.z_rot = item->pos.z_rot;
+
+	if (item->object_number == 354 || item->object_number == 241)
+	{
+		room = l->room_number;
+		floor = GetFloor(target.x_pos, target.y_pos, target.z_pos, &room);
+		height = GetHeight(floor, target.x_pos, target.y_pos, target.z_pos);
+
+		if (ABS(height - l->pos.y_pos) >= 513)
+		{
+			if (lara.IsMoving)
+			{
+				lara.IsMoving = 0;
+				lara.gun_status = LG_NO_ARMS;
+			}
+
+			return 0;
+		}
+
+		dx = target.x_pos - l->pos.x_pos;
+		dy = target.y_pos - l->pos.y_pos;
+		dz = target.z_pos - l->pos.z_pos;
+
+		if (phd_sqrt_asm(dx * dx + dy * dy + dz * dz) < 128)
+		{
+			return 1;
+		}
+	}
+
+	return SetLaraPosition(&l->pos, &target, 12, 364);
 }
 
 int ItemPushLara(struct ITEM_INFO* item, struct ITEM_INFO* laraitem, struct COLL_INFO* coll, int spaz, int big_push)

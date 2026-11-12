@@ -35,21 +35,21 @@
       "total": 10
     },
     "GAME/COLLIDE.C": {
-      "finalish": 6,
-      "finalish_percent": 54.55,
-      "mapped": 10,
-      "mapped_percent": 90.91,
+      "finalish": 9,
+      "finalish_percent": 64.29,
+      "mapped": 13,
+      "mapped_percent": 92.86,
       "nd": 0,
       "repo_only": 1,
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
         "decompiled": 5,
-        "final": 6,
+        "final": 9,
         "named": 0,
         "unknown": 0
       },
-      "total": 11
+      "total": 14
     },
     "GAME/CONTROL.C": {
       "finalish": 30,
@@ -630,8 +630,8 @@
       "total": 4
     },
     "GAME/SWITCH.C": {
-      "finalish": 9,
-      "finalish_percent": 42.86,
+      "finalish": 10,
+      "finalish_percent": 47.62,
       "mapped": 21,
       "mapped_percent": 100.0,
       "nd": 0,
@@ -639,8 +639,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 12,
-        "final": 9,
+        "decompiled": 11,
+        "final": 10,
         "named": 0,
         "unknown": 0
       },
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T20:03:05.707538+00:00",
+  "generated_at": "2026-11-12T20:10:51.271464+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2382,20 +2382,20 @@
       "total": 30
     },
     {
-      "file": "GAME/SWITCH.C",
-      "finalish_percent": 42.86,
-      "mapped_non_final": 12,
-      "module": "GAME",
-      "non_final": 12,
-      "total": 21
-    },
-    {
       "file": "GAME/SETUP.C",
       "finalish_percent": 52.0,
       "mapped_non_final": 0,
       "module": "GAME",
       "non_final": 12,
       "total": 25
+    },
+    {
+      "file": "GAME/SWITCH.C",
+      "finalish_percent": 47.62,
+      "mapped_non_final": 11,
+      "module": "GAME",
+      "non_final": 11,
+      "total": 21
     },
     {
       "file": "GAME/DOOR.C",
@@ -2463,11 +2463,11 @@
     },
     {
       "file": "GAME/COLLIDE.C",
-      "finalish_percent": 54.55,
+      "finalish_percent": 64.29,
       "mapped_non_final": 5,
       "module": "GAME",
       "non_final": 5,
-      "total": 11
+      "total": 14
     },
     {
       "file": "GAME/LARAFLAR.C",
@@ -2592,21 +2592,21 @@
   ],
   "modules": {
     "GAME": {
-      "finalish": 691,
-      "finalish_percent": 84.47,
-      "mapped": 627,
-      "mapped_percent": 76.65,
+      "finalish": 695,
+      "finalish_percent": 84.65,
+      "mapped": 630,
+      "mapped_percent": 76.74,
       "nd": 4,
       "repo_only": 191,
       "statuses": {
         "binary_matched": 0,
         "debugged": 5,
-        "decompiled": 127,
-        "final": 686,
+        "decompiled": 126,
+        "final": 690,
         "named": 0,
         "unknown": 0
       },
-      "total": 818
+      "total": 821
     },
     "SPEC_PC_N": {
       "finalish": 1,
@@ -3160,23 +3160,23 @@
     }
   ],
   "overall": {
-    "finalish": 957,
-    "finalish_percent": 75.95,
-    "mapped": 876,
-    "mapped_percent": 69.52,
+    "finalish": 961,
+    "finalish_percent": 76.09,
+    "mapped": 879,
+    "mapped_percent": 69.6,
     "nd": 23,
     "repo_only": 384,
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 302,
-      "final": 874,
+      "decompiled": 301,
+      "final": 878,
       "named": 0,
       "unknown": 1
     },
-    "total": 1260
+    "total": 1263
   },
-  "source_rows": 1260,
+  "source_rows": 1263,
   "status_definitions": {
     "binary_matched": "Contains `(**)`.",
     "debugged": "Contains `(D)`; stronger than `(F)` for tracking.",

@@ -1,6 +1,6 @@
 # TOMB5 reverse progress
 
-Generated: `2026-11-12T20:03:05.707538+00:00`
+Generated: `2026-11-12T20:10:51.271464+00:00`
 
 ## Status definitions
 
@@ -14,18 +14,18 @@ Generated: `2026-11-12T20:03:05.707538+00:00`
 ## Overall
 
 - Repo functions in mapping
-  - total: `1260`
-  - mapped: `876` (`69.52%`)
-  - final/debug/binary-matched: `957` (`75.95%`)
-  - F: `874`; D: `83`; binary-matched: `0`; decompiled: `302`; named: `0`; unknown: `1`; ND: `23`
+  - total: `1263`
+  - mapped: `879` (`69.6%`)
+  - final/debug/binary-matched: `961` (`76.09%`)
+  - F: `878`; D: `83`; binary-matched: `0`; decompiled: `301`; named: `0`; unknown: `1`; ND: `23`
 
 ## Modules
 
 - GAME
-  - total: `818`
-  - mapped: `627` (`76.65%`)
-  - final/debug/binary-matched: `691` (`84.47%`)
-  - F: `686`; D: `5`; binary-matched: `0`; decompiled: `127`; named: `0`; unknown: `0`; ND: `4`
+  - total: `821`
+  - mapped: `630` (`76.74%`)
+  - final/debug/binary-matched: `695` (`84.65%`)
+  - F: `690`; D: `5`; binary-matched: `0`; decompiled: `126`; named: `0`; unknown: `0`; ND: `4`
 - SPEC_PSXPC_N
   - total: `215`
   - mapped: `105` (`48.84%`)
@@ -65,14 +65,14 @@ Generated: `2026-11-12T20:03:05.707538+00:00`
   - non-final: `15` / `30`
   - mapped non-final: `15`
   - final/debug/binary-matched: `50.0%`
-- `GAME/SWITCH.C`
-  - non-final: `12` / `21`
-  - mapped non-final: `12`
-  - final/debug/binary-matched: `42.86%`
 - `GAME/SETUP.C`
   - non-final: `12` / `25`
   - mapped non-final: `0`
   - final/debug/binary-matched: `52.0%`
+- `GAME/SWITCH.C`
+  - non-final: `11` / `21`
+  - mapped non-final: `11`
+  - final/debug/binary-matched: `47.62%`
 - `GAME/DOOR.C`
   - non-final: `8` / `10`
   - mapped non-final: `8`
@@ -106,9 +106,9 @@ Generated: `2026-11-12T20:03:05.707538+00:00`
   - mapped non-final: `3`
   - final/debug/binary-matched: `66.67%`
 - `GAME/COLLIDE.C`
-  - non-final: `5` / `11`
+  - non-final: `5` / `14`
   - mapped non-final: `5`
-  - final/debug/binary-matched: `54.55%`
+  - final/debug/binary-matched: `64.29%`
 - `GAME/LARAFLAR.C`
   - non-final: `5` / `11`
   - mapped non-final: `5`
