@@ -562,10 +562,46 @@ void UnderwaterSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_
 	return;
 }
 
-void SwitchCollision2(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//568C0, 56D60
+void SwitchCollision2(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//568C0, 56D60 (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+
+	if (!(input & IN_ACTION) || item->status != 0)
+		return;
+
+	if (lara.water_status != LW_UNDERWATER || lara.gun_status != LG_NO_ARMS)
+		return;
+
+	if (l->current_anim_state != 13)
+		return;
+
+	if (!TestLaraPosition(Switch2Bounds, item, l))
+		return;
+
+	if (item->current_anim_state >= 2)
+		return;
+
+	if (!MoveLaraPositionToItem(&Switch2Position, item, l))
+		return;
+
+	l->fallspeed = 0;
+	l->goal_anim_state = 40;
+
+	while (l->current_anim_state != 40)
+		AnimateLara(l);
+
+	l->goal_anim_state = 13;
+	lara.gun_status = LG_HANDS_BUSY;
+
+	if (item->current_anim_state == 1)
+		item->goal_anim_state = 0;
+	else
+		item->goal_anim_state = 1;
+
+	item->status = 1;
+
+	AddActiveItem(item_num);
+	AnimateItem(item);
 }
 
 void SwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//56470, 56910

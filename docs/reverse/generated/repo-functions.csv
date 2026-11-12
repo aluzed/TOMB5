@@ -721,7 +721,7 @@ final_psx_address,beta_psx_address,repo_function,file,line,markers,comment
 0x80056648,0x800561a8,TestTriggersAtXYZ,GAME/SWITCH.C,358,<;<;F,"561A8(<), 56648(<) (F)"
 0x800566dc,0x8005623c,SwitchControl,GAME/SWITCH.C,352,,"5623C, 566DC"
 0x80056910,0x80056470,SwitchCollision,GAME/SWITCH.C,346,,"56470, 56910"
-0x80056d60,0x800568c0,SwitchCollision2,GAME/SWITCH.C,340,,"568C0, 56D60"
+0x80056d60,0x800568c0,SwitchCollision2,GAME/SWITCH.C,565,<;<;F,"568C0, 56D60 (F)"
 0x80056ecc,0x80056a2c,UnderwaterSwitchCollision,GAME/SWITCH.C,334,,"56A2C, 56ECC"
 0x80057138,0x80056c98,PulleyCollision,GAME/SWITCH.C,328,,"56C98, 57138"
 0x8005733c,0x80056e9c,TurnSwitchControl,GAME/SWITCH.C,322,,"56E9C, 5733C"

@@ -630,8 +630,8 @@
       "total": 4
     },
     "GAME/SWITCH.C": {
-      "finalish": 10,
-      "finalish_percent": 47.62,
+      "finalish": 11,
+      "finalish_percent": 52.38,
       "mapped": 21,
       "mapped_percent": 100.0,
       "nd": 0,
@@ -639,8 +639,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 11,
-        "final": 10,
+        "decompiled": 10,
+        "final": 11,
         "named": 0,
         "unknown": 0
       },
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T20:10:51.271464+00:00",
+  "generated_at": "2026-11-12T20:18:47.727270+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2391,10 +2391,10 @@
     },
     {
       "file": "GAME/SWITCH.C",
-      "finalish_percent": 47.62,
-      "mapped_non_final": 11,
+      "finalish_percent": 52.38,
+      "mapped_non_final": 10,
       "module": "GAME",
-      "non_final": 11,
+      "non_final": 10,
       "total": 21
     },
     {
@@ -2592,8 +2592,8 @@
   ],
   "modules": {
     "GAME": {
-      "finalish": 695,
-      "finalish_percent": 84.65,
+      "finalish": 696,
+      "finalish_percent": 84.77,
       "mapped": 630,
       "mapped_percent": 76.74,
       "nd": 4,
@@ -2601,8 +2601,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 5,
-        "decompiled": 126,
-        "final": 690,
+        "decompiled": 125,
+        "final": 691,
         "named": 0,
         "unknown": 0
       },
@@ -3160,8 +3160,8 @@
     }
   ],
   "overall": {
-    "finalish": 961,
-    "finalish_percent": 76.09,
+    "finalish": 962,
+    "finalish_percent": 76.17,
     "mapped": 879,
     "mapped_percent": 69.6,
     "nd": 23,
@@ -3169,8 +3169,8 @@
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 301,
-      "final": 878,
+      "decompiled": 300,
+      "final": 879,
       "named": 0,
       "unknown": 1
     },
