@@ -474,9 +474,58 @@ void UpdateBlood()//87B40(<), 89B84(<) (F)
 	}
 }
 
-void UpdateDrips()
+void UpdateDrips()//87CC8(<), 89D0C(<) (F)
 {
-	Unimpl();
+	struct DRIP_STRUCT* d = &Drips[0];
+	int i;
+
+	for (i = 0; i < 32; i++, d++)
+	{
+		struct FLOOR_INFO* floor;
+		unsigned char life;
+		int yvel;
+
+		if (!d->On)
+			continue;
+
+		life = (unsigned char)(d->Life - 1);
+
+		if (life == 0)
+		{
+			d->On = 0;
+			continue;
+		}
+
+		d->Life = (unsigned char)life;
+
+		if (life < 16)
+		{
+			d->R -= d->R >> 3;
+			d->G -= d->G >> 3;
+			d->B -= d->B >> 3;
+		}
+
+		yvel = d->Yvel + d->Gravity;
+
+		d->y += yvel >> 5;
+
+		/* Rain is blown sideways while the room exposes the drip to wind. */
+		if (room[d->RoomNumber].flags & 0x20)
+		{
+			d->x += SmokeWindX >> 1;
+			d->z += SmokeWindZ >> 1;
+		}
+
+		d->Yvel = (short)yvel;
+
+		floor = GetFloor(d->x, d->y, d->z, &d->RoomNumber);
+
+		if ((room[d->RoomNumber].flags & 1) ||
+			GetHeight(floor, d->x, d->y, d->z) < d->y)
+		{
+			d->On = 0;
+		}
+	}
 }
 
 void UpdateGunShells()
