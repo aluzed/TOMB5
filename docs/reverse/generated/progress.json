@@ -52,21 +52,21 @@
       "total": 11
     },
     "GAME/CONTROL.C": {
-      "finalish": 28,
-      "finalish_percent": 96.55,
-      "mapped": 26,
-      "mapped_percent": 89.66,
+      "finalish": 29,
+      "finalish_percent": 96.67,
+      "mapped": 27,
+      "mapped_percent": 90.0,
       "nd": 0,
       "repo_only": 3,
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
         "decompiled": 1,
-        "final": 28,
+        "final": 29,
         "named": 0,
         "unknown": 0
       },
-      "total": 29
+      "total": 30
     },
     "GAME/DEBRIS.C": {
       "finalish": 3,
@@ -154,21 +154,21 @@
       "total": 4
     },
     "GAME/EFFECT2.C": {
-      "finalish": 5,
-      "finalish_percent": 55.56,
-      "mapped": 8,
-      "mapped_percent": 88.89,
+      "finalish": 6,
+      "finalish_percent": 60.0,
+      "mapped": 9,
+      "mapped_percent": 90.0,
       "nd": 0,
       "repo_only": 1,
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
         "decompiled": 4,
-        "final": 5,
+        "final": 6,
         "named": 0,
         "unknown": 0
       },
-      "total": 9
+      "total": 10
     },
     "GAME/EFFECTS.C": {
       "finalish": 40,
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T14:59:47.485087+00:00",
+  "generated_at": "2026-11-12T15:20:59.191150+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2495,11 +2495,11 @@
     },
     {
       "file": "GAME/EFFECT2.C",
-      "finalish_percent": 55.56,
+      "finalish_percent": 60.0,
       "mapped_non_final": 4,
       "module": "GAME",
       "non_final": 4,
-      "total": 9
+      "total": 10
     },
     {
       "file": "GAME/NEWINV2.C",
@@ -2592,21 +2592,21 @@
   ],
   "modules": {
     "GAME": {
-      "finalish": 681,
-      "finalish_percent": 83.56,
-      "mapped": 624,
-      "mapped_percent": 76.56,
+      "finalish": 683,
+      "finalish_percent": 83.6,
+      "mapped": 626,
+      "mapped_percent": 76.62,
       "nd": 4,
       "repo_only": 191,
       "statuses": {
         "binary_matched": 0,
         "debugged": 5,
         "decompiled": 134,
-        "final": 676,
+        "final": 678,
         "named": 0,
         "unknown": 0
       },
-      "total": 815
+      "total": 817
     },
     "SPEC_PC_N": {
       "finalish": 1,
@@ -3160,23 +3160,23 @@
     }
   ],
   "overall": {
-    "finalish": 934,
-    "finalish_percent": 74.48,
-    "mapped": 870,
-    "mapped_percent": 69.38,
+    "finalish": 936,
+    "finalish_percent": 74.52,
+    "mapped": 872,
+    "mapped_percent": 69.43,
     "nd": 23,
     "repo_only": 384,
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
       "decompiled": 319,
-      "final": 851,
+      "final": 853,
       "named": 0,
       "unknown": 1
     },
-    "total": 1254
+    "total": 1256
   },
-  "source_rows": 1254,
+  "source_rows": 1256,
   "status_definitions": {
     "binary_matched": "Contains `(**)`.",
     "debugged": "Contains `(D)`; stronger than `(F)` for tracking.",

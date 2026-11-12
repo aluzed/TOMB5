@@ -317,9 +317,113 @@ void UpdateSmokeSparks()
 	Unimpl();
 }
 
-void UpdateBubbles()
+void UpdateBubbles()//88148(<), 8A18C(<) (F)
 {
-	Unimpl();
+	struct BUBBLE_STRUCT* b = &Bubbles[0];
+	int i;
+
+	for (i = 0; i < 40; i++, b++)
+	{
+		struct FLOOR_INFO* floor;
+		short room_number;
+		long x;
+		long y;
+		long z;
+		int speed;
+		int height;
+		int ceiling;
+		int size;
+
+		if (b->size == 0)
+			continue;
+
+		b->y_rot = (unsigned char)(b->y_rot + 6);
+		b->speed = (short)((unsigned short)b->speed + b->vel);
+
+		speed = (signed char)((unsigned short)b->speed & 0xFF);
+
+		x = b->pos.x;
+		y = b->pos.y - speed;
+		z = b->pos.z;
+
+		if (b->Flags & 1)
+		{
+			unsigned short xv = (unsigned short)b->Xvel;
+			unsigned short yv = (unsigned short)b->Yvel;
+			unsigned short zv = (unsigned short)b->Zvel;
+
+			x += xv >> 4;
+			y += yv >> 4;
+			z += zv >> 4;
+
+			b->Xvel = (short)(xv - (xv >> 3));
+			b->Yvel = (short)(yv - (yv >> 3));
+			b->Zvel = (short)(zv - (zv >> 3));
+		}
+		else
+		{
+			short* sincos = &rcossin_tbl[(b->y_rot & 0xFF) << 5];
+
+			x += (sincos[0] * 3) >> 16;
+			z += sincos[1] >> 16;
+		}
+
+		b->pos.x = x;
+		b->pos.y = y;
+		b->pos.z = z;
+
+		room_number = b->room_number;
+		floor = GetFloor(x, y, z, &room_number);
+
+		if (floor == NULL)
+		{
+			b->size = 0;
+			continue;
+		}
+
+		height = GetHeight(floor, x, y, z);
+
+		if (height < y)
+		{
+			b->size = 0;
+			continue;
+		}
+
+		if (room[room_number].flags & 1)
+		{
+			/* Still underwater: grow and shade the bubble. */
+			ceiling = GetCeiling(floor, x, y, z);
+
+			if (ceiling == -32512 || ceiling >= y)
+			{
+				b->size = 0;
+				continue;
+			}
+
+			if (b->size < b->dsize)
+				b->size++;
+
+			if (b->Flags & 1)
+			{
+				if (b->shade < 96)
+					b->shade = (unsigned char)(b->shade + 16);
+			}
+			else
+			{
+				if (b->shade < 144)
+					b->shade = (unsigned char)(b->shade + 8);
+			}
+
+			b->room_number = room_number;
+		}
+		else
+		{
+			/* Bubble broke the surface: spawn a ripple and remove it. */
+			size = (GetRandomControl() & 0xF) + 48;
+			TriggerRipple(x, room[b->room_number].maxceiling, z, (short)size, 2);
+			b->size = 0;
+		}
+	}
 }
 
 void UpdateSplashes()//8776C(<), 897B0(<) (F)

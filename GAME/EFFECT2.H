@@ -22,6 +22,7 @@ extern long SmokeCountR;
 extern struct SPARKS spark[128];
 extern short angle;
 
+extern void TriggerRipple(long x, long y, long z, short size, int flags);
 extern void ControlEnemyMissile(short fx_number);
 extern void ControlSmokeEmitter(short item_number);
 extern void KillEverything();

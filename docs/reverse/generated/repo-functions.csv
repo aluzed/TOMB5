@@ -1164,11 +1164,13 @@ final_psx_address,beta_psx_address,repo_function,file,line,markers,comment
 0x800899bc,0x80087978,UpdateDebris,GAME/CONTROL.C,330,<;<;F,"87978(<), 899BC(<) (F)"
 0x80089b84,0x80087b40,UpdateBlood,GAME/CONTROL.C,398,<;<;F,"87B40(<), 89B84(<) (F)"
 0x80089d0c,0x80087cc8,UpdateDrips,GAME/CONTROL.C,477,<;<;F,"87CC8(<), 89D0C(<) (F)"
+0x8008a18c,0x80088148,UpdateBubbles,GAME/CONTROL.C,320,<;<;F,"88148(<), 8A18C(<) (F)"
 0x8008c968,0x8008a924,DrawGunflashes,GAME/DRAW.C,202,<;<,8A924(<) 8C968(<)
 0x8008ca58,0x8008aa14,TriggerShatterSmoke,GAME/TOMB4FX.C,381,<;<;F,"8AA14(<), 8CA58(<) (F)"
 0x8008d20c,0x8008b1c8,ClearFires,GAME/CONTROL.C,1532,<;<;F,"8B1C8(<), 8D20C(<) (F)"
 0x8008d230,0x8008b1ec,ClearDynamics,GAME/CONTROL.C,1565,<;<;F,"8B1EC(<), 8D230(<) (F)"
 0x8008d33c,0x8008b2f8,GetFreeSpark,GAME/TOMB4FX.C,275,<;<;F,"8B2F8(<), 8D33C(<) (F)"
+0x8008d9cc,0x8008b988,TriggerRipple,GAME/EFFECT2.C,46,<;<;F,"8B988(<), 8D9CC(<) (F)"
 0x8008def0,0x8008beac,GetFreeBubble,GAME/TOMB4FX.C,326,<;<;F,"8BEAC(<), 8DEF0(<) (F)"
 0x8008df58,0x8008bf14,CreateBubble,GAME/TOMB4FX.C,356,<;<;F,"8BF14(<), 8DF58(<) (F)"
 0x8008f374,0x8008f374,CalcClipWindow_ONGTE,SPEC_PSXPC/BUBBLES.C,17,,"8F374,"

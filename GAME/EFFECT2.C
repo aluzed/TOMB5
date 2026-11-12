@@ -43,6 +43,34 @@ long SmokeCountL;
 long SmokeCountR;
 struct SPARKS spark[128];
 
+void TriggerRipple(long x, long y, long z, short size, int flags)//8B988(<), 8D9CC(<) (F)
+{
+	struct RIPPLE_STRUCT* r = &ripples[0];
+	int i;
+
+	for (i = 0; i < 32; i++, r++)
+	{
+		if (r->flags & 1)
+			continue;
+
+		r->flags = (char)(flags | 1);
+		r->life = (unsigned char)((GetRandomControl() & 0xF) + 0x30);
+		r->init = 1;
+		r->size = (unsigned char)size;
+		r->x = x;
+		r->y = y;
+		r->z = z;
+
+		if (flags & 0x40)
+		{
+			r->x = (GetRandomControl() & 0x7F) + x - 64;
+			r->z = (GetRandomControl() & 0x7F) + z - 64;
+		}
+
+		return;
+	}
+}
+
 void ControlEnemyMissile(short fx_number)//342D0, 347D0
 {
 	UNIMPLEMENTED();
