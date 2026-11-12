@@ -322,9 +322,124 @@ void UpdateBubbles()
 	Unimpl();
 }
 
-void UpdateSplashes()
+void UpdateSplashes()//8776C(<), 897B0(<) (F)
 {
-	Unimpl();
+	struct SPLASH_STRUCT* s = &splashes[0];
+	int i;
+
+	for (i = 0; i < 4; i++, s++)
+	{
+		int v;
+		int y;
+
+		if (!(s->flags & 1))
+			continue;
+
+		/* Inner ring. */
+		v = s->InnerRadVel;
+		s->InnerRad = (short)((unsigned short)s->InnerRad + (v >> 5));
+		s->InnerSize = (short)((unsigned short)s->InnerSize + (v >> 6));
+		s->InnerRadVel = (short)(v - (v >> 6));
+
+		/* Middle ring. */
+		v = s->MiddleRadVel;
+		s->MiddleRad = (short)((unsigned short)s->MiddleRad + (v >> 5));
+		s->MiddleSize = (short)((unsigned short)s->MiddleSize + (v >> 6));
+		s->MiddleRadVel = (short)(v - (v >> 6));
+
+		/* Outer ring. */
+		v = s->OuterRadVel;
+		s->OuterRad = (short)((unsigned short)s->OuterRad + (v >> 5));
+		s->OuterSize = (short)((unsigned short)s->OuterSize + (v >> 6));
+		s->OuterRadVel = (short)(v - (v >> 6));
+
+		/* Inner vertical motion. */
+		v = s->InnerYVel;
+		y = s->InnerY + (v >> 4);
+		v += 1024;
+
+		if (v >= 16385)
+			v = 8192;
+
+		s->InnerYVel = (short)v;
+		s->InnerY = (short)y;
+
+		if (y >= 0)
+		{
+			s->InnerY = 0;
+			s->life = (unsigned char)(s->life - 2);
+			s->flags = (char)(s->flags | 4);
+
+			if (s->life == 0)
+				s->flags = 0;
+		}
+		else if (y < -28672)
+		{
+			s->InnerY = -28672;
+		}
+
+		/* Middle vertical motion. */
+		v = s->MiddleYVel;
+		y = s->MiddleY + (v >> 4);
+		v += 896;
+
+		if (v >= 16385)
+			v = 8192;
+
+		s->MiddleYVel = (short)v;
+		s->MiddleY = (short)y;
+
+		if (y >= 0)
+		{
+			s->MiddleY = 0;
+			s->flags = (char)(s->flags | 8);
+		}
+		else if (y < -28672)
+		{
+			s->MiddleY = -28672;
+		}
+	}
+
+	for (i = 0; i < 32; i++)
+	{
+		struct RIPPLE_STRUCT* r = &ripples[i];
+		int flags = (unsigned char)r->flags;
+		int size;
+		int life;
+		int init;
+
+		if (!(flags & 1))
+			continue;
+
+		size = (unsigned char)r->size;
+
+		if (size < 252)
+		{
+			size += (flags & 2) ? 2 : 4;
+			r->size = (unsigned char)size;
+		}
+
+		life = (unsigned char)r->life;
+		init = (unsigned char)r->init;
+
+		if (init == 0)
+		{
+			life -= 3;
+			r->life = (unsigned char)life;
+
+			if ((life & 0xFF) >= 251)
+				r->flags = 0;
+		}
+		else if ((unsigned int)init < (unsigned int)life)
+		{
+			init += (flags & 2) ? 8 : 4;
+
+			if ((unsigned int)init >= (unsigned int)life)
+				init = 0;
+
+			r->init = (unsigned char)init;
+		}
+	}
 }
 
 void UpdateDebris()//87978(<), 899BC(<) (F)
