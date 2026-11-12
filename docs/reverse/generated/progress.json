@@ -1701,21 +1701,21 @@
       "total": 25
     },
     "SPEC_PSXPC_N/BUBBLES.C": {
-      "finalish": 1,
-      "finalish_percent": 50.0,
-      "mapped": 1,
-      "mapped_percent": 50.0,
+      "finalish": 2,
+      "finalish_percent": 66.67,
+      "mapped": 2,
+      "mapped_percent": 66.67,
       "nd": 0,
       "repo_only": 1,
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
         "decompiled": 1,
-        "final": 1,
+        "final": 2,
         "named": 0,
         "unknown": 0
       },
-      "total": 2
+      "total": 3
     },
     "SPEC_PSXPC_N/CALCHAIR.C": {
       "finalish": 1,
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T15:34:16.942582+00:00",
+  "generated_at": "2026-11-12T15:58:53.092381+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2660,21 +2660,21 @@
       "total": 144
     },
     "SPEC_PSXPC_N": {
-      "finalish": 122,
-      "finalish_percent": 57.55,
-      "mapped": 102,
-      "mapped_percent": 48.11,
+      "finalish": 123,
+      "finalish_percent": 57.75,
+      "mapped": 103,
+      "mapped_percent": 48.36,
       "nd": 12,
       "repo_only": 110,
       "statuses": {
         "binary_matched": 0,
         "debugged": 41,
         "decompiled": 89,
-        "final": 81,
+        "final": 82,
         "named": 0,
         "unknown": 1
       },
-      "total": 212
+      "total": 213
     }
   },
   "next_candidates": [
@@ -3160,23 +3160,23 @@
     }
   ],
   "overall": {
-    "finalish": 940,
-    "finalish_percent": 74.78,
-    "mapped": 873,
-    "mapped_percent": 69.45,
+    "finalish": 941,
+    "finalish_percent": 74.8,
+    "mapped": 874,
+    "mapped_percent": 69.48,
     "nd": 23,
     "repo_only": 384,
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
       "decompiled": 316,
-      "final": 857,
+      "final": 858,
       "named": 0,
       "unknown": 1
     },
-    "total": 1257
+    "total": 1258
   },
-  "source_rows": 1257,
+  "source_rows": 1258,
   "status_definitions": {
     "binary_matched": "Contains `(**)`.",
     "debugged": "Contains `(D)`; stronger than `(F)` for tracking.",

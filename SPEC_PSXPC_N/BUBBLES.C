@@ -183,7 +183,7 @@ void DrawPsxTile(long a0, long a1, long a2, long a3, long var_10)//8F770(<), 917
 	//locret_8F7D0
 }
 
-void TriggerDynamic(long x, long y, long z, int falloff, int r, int g, int b)
+void TriggerDynamic(long x, long y, long z, int falloff, int r, int g, int b)//8FE24(<), 91E68(<) (F)
 {
 	struct DYNAMIC* t3 = NULL;
 	struct DYNAMIC* t0 = NULL;
@@ -243,7 +243,7 @@ void TriggerDynamic(long x, long y, long z, int falloff, int r, int g, int b)
 		t3->g = g;
 		t3->b = b;
 
-		if (falloff >= 8)
+		if (falloff < 8)
 		{
 			t3->FalloffScale = 0x200000 / (falloff << 8);
 			t3->r = (r * falloff) >> 3;
