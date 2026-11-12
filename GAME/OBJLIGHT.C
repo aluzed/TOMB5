@@ -14,9 +14,30 @@ struct FOOTPRINT FootPrint[32];
 int FootPrintNum;
 
 //void /*$ra*/ TriggerAlertLight(long x /*$s2*/, long y /*$s3*/, long z /*$s1*/, long r /*$s5*/, long g /*stack 16*/, long b /*stack 20*/, long angle /*stack 24*/, int room_no /*stack 28*/, int falloff /*stack 32*/)
-void TriggerAlertLight(long x, long y, long z, long r, long g, long b, long angle, int room_no, int falloff)//5D018, 5D494
+void TriggerAlertLight(long x, long y, long z, long r, long g, long b, long angle, int room_no, int falloff)//5D018, 5D494 (F)
 {
-	UNIMPLEMENTED();
+	struct GAME_VECTOR start;
+	struct GAME_VECTOR target;
+	short sin;
+	short cos;
+
+	start.room_number = (short)room_no;
+	GetFloor(x, y, z, &start.room_number);
+
+	sin = rcossin_tbl[angle * 2];
+	cos = rcossin_tbl[angle * 2 + 1];
+
+	start.x = x;
+	start.y = y;
+	start.z = z;
+
+	target.x = x + sin * 4;
+	target.y = y;
+	target.z = z + cos * 4;
+	target.room_number = (short)room_no;
+
+	if (LOS(&start, &target) == 0)
+		TriggerDynamic(target.x, target.y, target.z, falloff, r, g, b);
 }
 
 void ControlStrobeLight(short item_number)//5D118(<), 5D594 ///@FIXME im not sure this is correct redo this

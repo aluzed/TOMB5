@@ -494,8 +494,8 @@
       "total": 12
     },
     "GAME/OBJLIGHT.C": {
-      "finalish": 3,
-      "finalish_percent": 50.0,
+      "finalish": 4,
+      "finalish_percent": 66.67,
       "mapped": 6,
       "mapped_percent": 100.0,
       "nd": 0,
@@ -503,8 +503,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 3,
-        "final": 3,
+        "decompiled": 2,
+        "final": 4,
         "named": 0,
         "unknown": 0
       },
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T15:58:53.092381+00:00",
+  "generated_at": "2026-11-12T15:59:29.263400+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2558,14 +2558,6 @@
       "total": 21
     },
     {
-      "file": "GAME/OBJLIGHT.C",
-      "finalish_percent": 50.0,
-      "mapped_non_final": 3,
-      "module": "GAME",
-      "non_final": 3,
-      "total": 6
-    },
-    {
       "file": "GAME/SAVEGAME.C",
       "finalish_percent": 66.67,
       "mapped_non_final": 3,
@@ -2588,12 +2580,20 @@
       "module": "SPEC_PSXPC",
       "non_final": 3,
       "total": 3
+    },
+    {
+      "file": "SPEC_PSXPC_N/LOADSAVE.C",
+      "finalish_percent": 0.0,
+      "mapped_non_final": 3,
+      "module": "SPEC_PSXPC_N",
+      "non_final": 3,
+      "total": 3
     }
   ],
   "modules": {
     "GAME": {
-      "finalish": 684,
-      "finalish_percent": 83.62,
+      "finalish": 685,
+      "finalish_percent": 83.74,
       "mapped": 627,
       "mapped_percent": 76.65,
       "nd": 4,
@@ -2601,8 +2601,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 5,
-        "decompiled": 134,
-        "final": 679,
+        "decompiled": 133,
+        "final": 680,
         "named": 0,
         "unknown": 0
       },
@@ -3160,8 +3160,8 @@
     }
   ],
   "overall": {
-    "finalish": 941,
-    "finalish_percent": 74.8,
+    "finalish": 942,
+    "finalish_percent": 74.88,
     "mapped": 874,
     "mapped_percent": 69.48,
     "nd": 23,
@@ -3169,8 +3169,8 @@
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 316,
-      "final": 858,
+      "decompiled": 315,
+      "final": 859,
       "named": 0,
       "unknown": 1
     },
