@@ -273,10 +273,39 @@ void CrowbarSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INF
 	return;
 }
 
-void JumpSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57980, 57E20
+void JumpSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57980, 57E20 (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+
+	if (!(input & IN_ACTION) || lara.gun_status != LG_NO_ARMS)
+		return;
+
+	if (l->current_anim_state != 11 && l->current_anim_state != 28)
+		return;
+
+	if (!l->gravity_status || l->fallspeed <= 0)
+		return;
+
+	if (item->current_anim_state != 0)
+		return;
+
+	if (!TestLaraPosition(JumpSwitchBounds, item, l))
+		return;
+
+	MoveLaraPosition(&JumpSwitchPos, item, l);
+
+	l->current_anim_state = 40;
+	l->anim_number = 414;
+	l->frame_number = anims[414].frame_base;
+	l->gravity_status = 0;
+	l->fallspeed = 0;
+
+	lara.gun_status = LG_HANDS_BUSY;
+
+	item->goal_anim_state = 1;
+	item->status = 1;
+
+	AddActiveItem(item_num);
 }
 
 void RailSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//576F4, 57B94
