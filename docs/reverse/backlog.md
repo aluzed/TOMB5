@@ -1,6 +1,6 @@
 # Backlog priorisée des fonctions reverse TOMB5
 
-Generated: `2026-11-12T16:02:16.570650+00:00`
+Generated: `2026-11-12T16:03:07.913292+00:00`
 Source: `docs/reverse/generated/repo-function-map.csv`
 CSV détaillé: `docs/reverse/generated/function-priority.csv`
 Story: `docs/stories/RE-004-priorisation-fonctions-non-finalisees.md`
@@ -41,11 +41,11 @@ Buckets:
 
 ## Summary
 
-- candidates total: `338` / repo rows `1258`
-- mapped candidates: `195`
+- candidates total: `337` / repo rows `1258`
+- mapped candidates: `194`
 - ND highlighted: `23`
-- P0: `35`; P1: `94`; P2: `209`
-- statuses: `debugged` `23`; `decompiled` `314`; `unknown` `1`
+- P0: `35`; P1: `94`; P2: `208`
+- statuses: `debugged` `23`; `decompiled` `313`; `unknown` `1`
 
 ## Lot 1 — P0 runtime / ND à clarifier
 
@@ -184,7 +184,7 @@ Buckets:
 - `GAME/TRAPS.C`
   - candidates: `15`; mapped: `15`; ND: `0`; top score: `3756`
 - `GAME/SWITCH.C`
-  - candidates: `15`; mapped: `15`; ND: `0`; top score: `2414`
+  - candidates: `14`; mapped: `14`; ND: `0`; top score: `2414`
 - `SPEC_PSXPC_N/MISC.C`
   - candidates: `13`; mapped: `9`; ND: `4`; top score: `2052`
 - `GAME/SETUP.C`

@@ -200,10 +200,34 @@ void FullBlockSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_I
 	return;
 }
 
-void FullBlockSwitchControl(short item_number)//57EB8, 58358
+void FullBlockSwitchControl(short item_number)//57EB8, 58358 (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_number];
+
+	if (item->anim_number == objects[item->object_number].anim_index + 2)
+	{
+		if (CurrentSequence < 3)
+		{
+			if (item->item_flags[0] == 0)
+			{
+				item->item_flags[0] = 1;
+				Sequences[CurrentSequence] = (unsigned char)item->trigger_flags;
+				CurrentSequence++;
+			}
+		}
+		else if (CurrentSequence >= 4)
+		{
+			item->goal_anim_state = 1;
+			item->item_flags[0] = 0;
+			item->flags &= ~6;
+
+			CurrentSequence++;
+			if (CurrentSequence >= 7)
+				CurrentSequence = 0;
+		}
+	}
+
+	AnimateItem(item);
 }
 
 void CrowbarSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57ACC, 57F6C
