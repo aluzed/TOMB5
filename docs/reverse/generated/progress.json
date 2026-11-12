@@ -341,8 +341,8 @@
       "total": 21
     },
     "GAME/LARAFIRE.C": {
-      "finalish": 7,
-      "finalish_percent": 43.75,
+      "finalish": 8,
+      "finalish_percent": 50.0,
       "mapped": 12,
       "mapped_percent": 75.0,
       "nd": 0,
@@ -350,8 +350,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 9,
-        "final": 7,
+        "decompiled": 8,
+        "final": 8,
         "named": 0,
         "unknown": 0
       },
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T18:49:58.305596+00:00",
+  "generated_at": "2026-11-12T18:50:16.744487+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2398,20 +2398,20 @@
       "total": 25
     },
     {
-      "file": "GAME/LARAFIRE.C",
-      "finalish_percent": 43.75,
-      "mapped_non_final": 6,
-      "module": "GAME",
-      "non_final": 9,
-      "total": 16
-    },
-    {
       "file": "GAME/DOOR.C",
       "finalish_percent": 20.0,
       "mapped_non_final": 8,
       "module": "GAME",
       "non_final": 8,
       "total": 10
+    },
+    {
+      "file": "GAME/LARAFIRE.C",
+      "finalish_percent": 50.0,
+      "mapped_non_final": 5,
+      "module": "GAME",
+      "non_final": 8,
+      "total": 16
     },
     {
       "file": "GAME/PICKUP.C",
@@ -2592,8 +2592,8 @@
   ],
   "modules": {
     "GAME": {
-      "finalish": 690,
-      "finalish_percent": 84.35,
+      "finalish": 691,
+      "finalish_percent": 84.47,
       "mapped": 627,
       "mapped_percent": 76.65,
       "nd": 4,
@@ -2601,8 +2601,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 5,
-        "decompiled": 128,
-        "final": 685,
+        "decompiled": 127,
+        "final": 686,
         "named": 0,
         "unknown": 0
       },
@@ -3160,8 +3160,8 @@
     }
   ],
   "overall": {
-    "finalish": 952,
-    "finalish_percent": 75.68,
+    "finalish": 953,
+    "finalish_percent": 75.76,
     "mapped": 874,
     "mapped_percent": 69.48,
     "nd": 23,
@@ -3169,8 +3169,8 @@
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 305,
-      "final": 869,
+      "decompiled": 304,
+      "final": 870,
       "named": 0,
       "unknown": 1
     },

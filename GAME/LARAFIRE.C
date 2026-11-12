@@ -188,9 +188,34 @@ int FireWeapon(int weapon_type, struct ITEM_INFO* target, struct ITEM_INFO* src,
 	return 0;
 }
 
-void AimWeapon(struct WEAPON_INFO* winfo, struct lara_arm* arm)//4826C, 486D0
+void AimWeapon(struct WEAPON_INFO* winfo, struct lara_arm* arm)//4826C, 486D0 (F)
 {
-	UNIMPLEMENTED();
+	short target_y;
+	short target_x;
+	short speed = winfo->aim_speed;
+
+	if (arm->lock)
+	{
+		target_y = lara.target_angles[0];
+		target_x = lara.target_angles[1];
+	}
+	else
+	{
+		target_y = 0;
+		target_x = 0;
+	}
+
+	if (arm->y_rot < target_y - speed || arm->y_rot > target_y + speed)
+		arm->y_rot = (short)(arm->y_rot + (arm->y_rot < target_y ? speed : -speed));
+	else
+		arm->y_rot = target_y;
+
+	if (arm->x_rot < target_x - speed || arm->x_rot > target_x + speed)
+		arm->x_rot = (short)(arm->x_rot + (arm->x_rot < target_x ? speed : -speed));
+	else
+		arm->x_rot = target_x;
+
+	arm->z_rot = 0;
 }
 
 void find_target_point(struct ITEM_INFO* item, struct GAME_VECTOR* target)//48150, 485B4 (F)

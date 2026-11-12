@@ -1,6 +1,6 @@
 # Backlog priorisée des fonctions reverse TOMB5
 
-Generated: `2026-11-12T18:49:58.372818+00:00`
+Generated: `2026-11-12T18:50:16.810344+00:00`
 Source: `docs/reverse/generated/repo-function-map.csv`
 CSV détaillé: `docs/reverse/generated/function-priority.csv`
 Story: `docs/stories/RE-004-priorisation-fonctions-non-finalisees.md`
@@ -41,11 +41,11 @@ Buckets:
 
 ## Summary
 
-- candidates total: `329` / repo rows `1258`
-- mapped candidates: `186`
+- candidates total: `328` / repo rows `1258`
+- mapped candidates: `185`
 - ND highlighted: `23`
-- P0: `35`; P1: `94`; P2: `200`
-- statuses: `debugged` `23`; `decompiled` `305`; `unknown` `1`
+- P0: `35`; P1: `94`; P2: `199`
+- statuses: `debugged` `23`; `decompiled` `304`; `unknown` `1`
 
 ## Lot 1 — P0 runtime / ND à clarifier
 
@@ -189,10 +189,10 @@ Buckets:
   - candidates: `12`; mapped: `0`; ND: `0`; top score: `800`
 - `SPEC_PSXPC_N/MISC.C`
   - candidates: `11`; mapped: `7`; ND: `4`; top score: `2052`
-- `GAME/LARAFIRE.C`
-  - candidates: `9`; mapped: `6`; ND: `0`; top score: `4768`
 - `GAME/DOOR.C`
   - candidates: `8`; mapped: `8`; ND: `0`; top score: `2452`
+- `GAME/LARAFIRE.C`
+  - candidates: `8`; mapped: `5`; ND: `0`; top score: `4768`
 - `GAME/PICKUP.C`
   - candidates: `7`; mapped: `7`; ND: `0`; top score: `3480`
 - `SPEC_PSXPC/MISC.C`
