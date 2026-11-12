@@ -681,8 +681,8 @@
       "total": 10
     },
     "GAME/TRAPS.C": {
-      "finalish": 15,
-      "finalish_percent": 50.0,
+      "finalish": 17,
+      "finalish_percent": 56.67,
       "mapped": 28,
       "mapped_percent": 93.33,
       "nd": 0,
@@ -690,8 +690,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 15,
-        "final": 15,
+        "decompiled": 13,
+        "final": 17,
         "named": 0,
         "unknown": 0
       },
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T20:21:14.626608+00:00",
+  "generated_at": "2026-11-12T20:31:02.371770+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2375,10 +2375,10 @@
     },
     {
       "file": "GAME/TRAPS.C",
-      "finalish_percent": 50.0,
-      "mapped_non_final": 15,
+      "finalish_percent": 56.67,
+      "mapped_non_final": 13,
       "module": "GAME",
-      "non_final": 15,
+      "non_final": 13,
       "total": 30
     },
     {
@@ -2592,8 +2592,8 @@
   ],
   "modules": {
     "GAME": {
-      "finalish": 698,
-      "finalish_percent": 85.02,
+      "finalish": 700,
+      "finalish_percent": 85.26,
       "mapped": 630,
       "mapped_percent": 76.74,
       "nd": 4,
@@ -2601,8 +2601,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 5,
-        "decompiled": 123,
-        "final": 693,
+        "decompiled": 121,
+        "final": 695,
         "named": 0,
         "unknown": 0
       },
@@ -3160,8 +3160,8 @@
     }
   ],
   "overall": {
-    "finalish": 964,
-    "finalish_percent": 76.33,
+    "finalish": 966,
+    "finalish_percent": 76.48,
     "mapped": 879,
     "mapped_percent": 69.6,
     "nd": 23,
@@ -3169,8 +3169,8 @@
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 298,
-      "final": 881,
+      "decompiled": 296,
+      "final": 883,
       "named": 0,
       "unknown": 1
     },

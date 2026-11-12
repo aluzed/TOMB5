@@ -1,6 +1,6 @@
 # TOMB5 reverse progress
 
-Generated: `2026-11-12T20:21:14.626608+00:00`
+Generated: `2026-11-12T20:31:02.371770+00:00`
 
 ## Status definitions
 
@@ -16,16 +16,16 @@ Generated: `2026-11-12T20:21:14.626608+00:00`
 - Repo functions in mapping
   - total: `1263`
   - mapped: `879` (`69.6%`)
-  - final/debug/binary-matched: `964` (`76.33%`)
-  - F: `881`; D: `83`; binary-matched: `0`; decompiled: `298`; named: `0`; unknown: `1`; ND: `23`
+  - final/debug/binary-matched: `966` (`76.48%`)
+  - F: `883`; D: `83`; binary-matched: `0`; decompiled: `296`; named: `0`; unknown: `1`; ND: `23`
 
 ## Modules
 
 - GAME
   - total: `821`
   - mapped: `630` (`76.74%`)
-  - final/debug/binary-matched: `698` (`85.02%`)
-  - F: `693`; D: `5`; binary-matched: `0`; decompiled: `123`; named: `0`; unknown: `0`; ND: `4`
+  - final/debug/binary-matched: `700` (`85.26%`)
+  - F: `695`; D: `5`; binary-matched: `0`; decompiled: `121`; named: `0`; unknown: `0`; ND: `4`
 - SPEC_PSXPC_N
   - total: `215`
   - mapped: `105` (`48.84%`)
@@ -62,9 +62,9 @@ Generated: `2026-11-12T20:21:14.626608+00:00`
   - mapped non-final: `2`
   - final/debug/binary-matched: `57.5%`
 - `GAME/TRAPS.C`
-  - non-final: `15` / `30`
-  - mapped non-final: `15`
-  - final/debug/binary-matched: `50.0%`
+  - non-final: `13` / `30`
+  - mapped non-final: `13`
+  - final/debug/binary-matched: `56.67%`
 - `GAME/SETUP.C`
   - non-final: `12` / `25`
   - mapped non-final: `0`

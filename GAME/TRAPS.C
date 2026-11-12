@@ -232,16 +232,43 @@ void CeilingTrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_I
 	return;
 }
 
-void TrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//593F8, 59874
+void TrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//593F8, 59874 (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+
+	if (item->current_anim_state == 1 &&
+		item->frame_number == anims[item->anim_number].frame_end)
+	{
+		if (TestBoundsCollide(item, l, coll->radius) &&
+			TestCollision(item, l) &&
+			l->hit_status)
+		{
+			ItemPushLara(item, l, coll, 0, 1);
+		}
+	}
 }
 
-void FallingBlockCollision(short item_number, struct ITEM_INFO* l, struct COLL_INFO* coll)//5947C, 598F8
+void FallingBlockCollision(short item_number, struct ITEM_INFO* l, struct COLL_INFO* coll)//5947C, 598F8 (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_number];
+
+	if (item->item_flags[0] != 0 || item->trigger_flags != 0)
+		return;
+
+	if (item->pos.y_pos != l->pos.y_pos)
+		return;
+
+	if ((item->pos.x_pos >> 10) != (l->pos.x_pos >> 10) ||
+		(item->pos.z_pos >> 10) != (l->pos.z_pos >> 10))
+		return;
+
+	SoundEffect(66, &item->pos, 0);
+
+	AddActiveItem(item_number);
+
+	item->status = 1;
+	item->flags |= IFLAG_ACTIVATION_MASK;
+	item->item_flags[0] = 0;
 }
 
 void FallingBlock(short item_number)//59558, 599D4 (F)
