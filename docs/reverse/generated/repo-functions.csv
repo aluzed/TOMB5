@@ -731,7 +731,7 @@ final_psx_address,beta_psx_address,repo_function,file,line,markers,comment
 0x80057f6c,0x80057acc,CrowbarSwitchCollision,GAME/SWITCH.C,185,,"57ACC, 57F6C"
 0x80058358,0x80057eb8,FullBlockSwitchControl,GAME/SWITCH.C,203,<;<;F,"57EB8, 58358 (F)"
 0x80058458,0x80057fb8,FullBlockSwitchCollision,GAME/SWITCH.C,173,,"57FB8, 58458"
-0x80058678,0x800581d8,CogSwitchControl,GAME/SWITCH.C,167,,"581D8, 58678"
+0x80058678,0x800581d8,CogSwitchControl,GAME/SWITCH.C,191,<;<;F,"581D8, 58678 (F)"
 0x800587f4,0x80058354,CogSwitchCollision,GAME/SWITCH.C,161,,"58354, 587F4"
 0x80058b14,0x80058674,CrowDoveSwitchControl,GAME/SWITCH.C,132,<;F,"58674(<), 58B14 (F)"
 0x80058be0,0x80058740,CrowDoveSwitchCollision,GAME/SWITCH.C,127,,"58740, 58BE0"

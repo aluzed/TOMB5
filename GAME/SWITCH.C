@@ -188,10 +188,47 @@ void CogSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* c
 	return;
 }
 
-void CogSwitchControl(short item_num)//581D8, 58678
+void CogSwitchControl(short item_num)//581D8, 58678 (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+
+	AnimateItem(item);
+
+	if (item->current_anim_state == 1)
+	{
+		if (item->goal_anim_state == 1)
+		{
+			if (!(input & IN_ACTION))
+			{
+				lara_item->goal_anim_state = 2;
+				item->goal_anim_state = 0;
+			}
+		}
+
+		if (lara_item->anim_number == 321 &&
+			lara_item->frame_number == anims[321].frame_base + 10)
+		{
+			struct ITEM_INFO* target = (struct ITEM_INFO*)lara.GeneralPtr;
+
+			target->item_flags[0] = 40;
+			SoundEffect(323, &target->pos, 0);
+		}
+	}
+	else
+	{
+		if (item->frame_number == anims[item->anim_number].frame_end)
+		{
+			item->current_anim_state = 0;
+			item->flags &= ~6;
+			RemoveActiveItem(item_num);
+
+			lara_item->anim_number = 11;
+			lara_item->goal_anim_state = 2;
+			lara_item->current_anim_state = 2;
+			lara_item->frame_number = anims[11].frame_base;
+			lara.gun_status = 0;
+		}
+	}
 }
 
 void FullBlockSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57FB8, 58458
