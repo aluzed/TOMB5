@@ -323,10 +323,126 @@ void FullBlockSwitchControl(short item_number)//57EB8, 58358 (F)
 	AnimateItem(item);
 }
 
-void CrowbarSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57ACC, 57F6C
+void CrowbarSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57ACC, 57F6C (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+	int state = 0;
+
+	if ((((input & IN_ACTION) ||
+		GLOBAL_inventoryitemchosen == CROWBAR_ITEM) &&
+		l->current_anim_state == 2 &&
+		l->anim_number == 103 &&
+		lara.gun_status == LG_NO_ARMS &&
+		item->item_flags[0] == 0) ||
+		(lara.IsMoving && lara.GeneralPtr == (void*)item_num))
+	{
+		if (item->current_anim_state == 0)
+		{
+			if (TestLaraPosition(CrowbarBounds, item, l))
+			{
+				if (!lara.IsMoving && GLOBAL_inventoryitemchosen != CROWBAR_ITEM)
+				{
+					state = -1;
+				}
+				else
+				{
+					if (MoveLaraPositionToItem(&CrowbarPos, item, l))
+					{
+						state = 1;
+						l->anim_number = 420;
+						l->frame_number = anims[420].frame_base;
+						item->goal_anim_state = 1;
+					}
+					else
+					{
+						lara.GeneralPtr = (void*)item_num;
+					}
+
+					GLOBAL_inventoryitemchosen = -1;
+				}
+			}
+			else if (lara.IsMoving && lara.GeneralPtr == (void*)item_num)
+			{
+				lara.IsMoving = 0;
+				lara.gun_status = LG_NO_ARMS;
+			}
+		}
+		else if (item->current_anim_state == 1)
+		{
+			l->pos.y_rot ^= 0x8000;
+
+			if (TestLaraPosition(CrowbarBounds2, item, l))
+			{
+				if (!lara.IsMoving && GLOBAL_inventoryitemchosen != CROWBAR_ITEM)
+				{
+					state = -1;
+				}
+				else
+				{
+					if (MoveLaraPositionToItem(&CrowbarPos2, item, l))
+					{
+						state = 1;
+						l->anim_number = 420;
+						l->frame_number = anims[420].frame_base;
+						item->goal_anim_state = 0;
+					}
+					else
+					{
+						lara.GeneralPtr = (void*)item_num;
+					}
+
+					GLOBAL_inventoryitemchosen = -1;
+				}
+			}
+			else if (lara.IsMoving && lara.GeneralPtr == (void*)item_num)
+			{
+				lara.IsMoving = 0;
+				lara.gun_status = LG_NO_ARMS;
+			}
+
+			l->pos.y_rot ^= 0x8000;
+		}
+	}
+
+	if (state == 1)
+	{
+		l->goal_anim_state = 40;
+		l->current_anim_state = 40;
+
+		lara.gun_status = LG_HANDS_BUSY;
+		lara.head_y_rot = 0;
+		lara.head_x_rot = 0;
+		lara.torso_y_rot = 0;
+		lara.torso_x_rot = 0;
+		lara.IsMoving = 0;
+
+		item->status = 1;
+
+		AddActiveItem(item_num);
+		AnimateItem(item);
+	}
+	else if (state == -1)
+	{
+		if (lara.crowbar)
+		{
+			GLOBAL_enterinventory = CROWBAR_ITEM;
+			return;
+		}
+
+		if (OldPickupPos.x != l->pos.x_pos || OldPickupPos.y != l->pos.y_pos || OldPickupPos.z != l->pos.z_pos)
+		{
+			OldPickupPos.x = l->pos.x_pos;
+			OldPickupPos.y = l->pos.y_pos;
+			OldPickupPos.z = l->pos.z_pos;
+			SayNo();
+		}
+	}
+	else if (TestBoundsCollide(item, l, coll->radius) &&
+		TestCollision(item, l) &&
+		l->hit_status)
+	{
+		ItemPushLara(item, l, coll, 0, 1);
+	}
 }
 
 void JumpSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57980, 57E20 (F)
