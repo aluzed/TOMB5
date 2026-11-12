@@ -91,9 +91,88 @@ void KillAllCurrentItems(short item_number)//3389C, 33D9C (F)
 	KillEverythingFlag = 1;
 }
 
-void TriggerDartSmoke(long x, long y, long z, long xv, long zv, long hit)//335B8, 33AB8
+void TriggerDartSmoke(long x, long y, long z, long xv, long zv, long hit)//335B8, 33AB8 (F)
 {
-	UNIMPLEMENTED();
+	struct SPARKS* sptr;
+	long dx;
+	long dz;
+
+	dx = lara_item->pos.x_pos - x;
+	dz = lara_item->pos.z_pos - z;
+
+	if (dx < -16384 || dx > 16384 || dz < -16384 || dz > 16384)
+		return;
+
+	sptr = &spark[GetFreeSpark()];
+
+	sptr->On = 1;
+	sptr->sR = 16;
+	sptr->sG = 8;
+	sptr->sB = 4;
+	sptr->dR = 64;
+	sptr->dG = 48;
+	sptr->dB = 32;
+	sptr->ColFadeSpeed = 8;
+	sptr->FadeToBlack = 4;
+	sptr->Life = sptr->sLife = (GetRandomControl() & 3) + 32;
+	sptr->TransType = 2;
+
+	sptr->x = x - 16 + (GetRandomControl() & 0x1F);
+	sptr->y = y - 16 + (GetRandomControl() & 0x1F);
+	sptr->z = z - 16 + (GetRandomControl() & 0x1F);
+
+	if (hit)
+	{
+		sptr->Xvel = (short)(-xv - 128 + (GetRandomControl() & 0xFF));
+		sptr->Yvel = (short)(-(GetRandomControl() & 3) - 4);
+		sptr->Zvel = (short)(-zv - 128 + (GetRandomControl() & 0xFF));
+	}
+	else
+	{
+		sptr->Xvel = (short)(xv ? -xv : (GetRandomControl() & 0xFF) - 128);
+		sptr->Yvel = (short)(-(GetRandomControl() & 3) - 4);
+		sptr->Zvel = (short)(zv ? -zv : (GetRandomControl() & 0xFF) - 128);
+	}
+
+	sptr->Friction = 3;
+
+	if (GetRandomControl() & 1)
+	{
+		sptr->Flags = 538;
+		sptr->RotAng = GetRandomControl() & 0xFFF;
+
+		if (GetRandomControl() & 1)
+			sptr->RotAdd = (char)(-(GetRandomControl() & 0xF) - 16);
+		else
+			sptr->RotAdd = (char)((GetRandomControl() & 0xF) + 16);
+	}
+	else
+	{
+		sptr->Flags = 522;
+	}
+
+	sptr->Scalar = 1;
+
+	{
+		long size = (GetRandomControl() & 0x3F) + 72;
+
+		if (hit)
+		{
+			size >>= 1;
+			sptr->Size = (unsigned char)(size >> 2);
+			sptr->MaxYvel = 0;
+			sptr->Gravity = 0;
+			sptr->dSize = (unsigned char)size;
+		}
+		else
+		{
+			sptr->sSize = (unsigned char)(size >> 4);
+			sptr->Size = (unsigned char)(size >> 4);
+			sptr->Gravity = (short)(-(GetRandomControl() & 3) - 4);
+			sptr->MaxYvel = (char)(-(GetRandomControl() & 3) - 4);
+			sptr->dSize = (unsigned char)size;
+		}
+	}
 }
 
 void TriggerWaterfallMist(long x, long y, long z, long angle)//331B4, 336B4

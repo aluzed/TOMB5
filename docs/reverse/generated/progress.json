@@ -154,8 +154,8 @@
       "total": 4
     },
     "GAME/EFFECT2.C": {
-      "finalish": 6,
-      "finalish_percent": 60.0,
+      "finalish": 7,
+      "finalish_percent": 70.0,
       "mapped": 9,
       "mapped_percent": 90.0,
       "nd": 0,
@@ -163,8 +163,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 4,
-        "final": 6,
+        "decompiled": 3,
+        "final": 7,
         "named": 0,
         "unknown": 0
       },
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T15:59:29.263400+00:00",
+  "generated_at": "2026-11-12T16:02:16.506702+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2494,14 +2494,6 @@
       "total": 8
     },
     {
-      "file": "GAME/EFFECT2.C",
-      "finalish_percent": 60.0,
-      "mapped_non_final": 4,
-      "module": "GAME",
-      "non_final": 4,
-      "total": 10
-    },
-    {
       "file": "GAME/NEWINV2.C",
       "finalish_percent": 93.85,
       "mapped_non_final": 4,
@@ -2540,6 +2532,14 @@
       "module": "SPEC_PSXPC_N",
       "non_final": 4,
       "total": 6
+    },
+    {
+      "file": "GAME/EFFECT2.C",
+      "finalish_percent": 70.0,
+      "mapped_non_final": 3,
+      "module": "GAME",
+      "non_final": 3,
+      "total": 10
     },
     {
       "file": "GAME/FLMTORCH.C",
@@ -2592,8 +2592,8 @@
   ],
   "modules": {
     "GAME": {
-      "finalish": 685,
-      "finalish_percent": 83.74,
+      "finalish": 686,
+      "finalish_percent": 83.86,
       "mapped": 627,
       "mapped_percent": 76.65,
       "nd": 4,
@@ -2601,8 +2601,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 5,
-        "decompiled": 133,
-        "final": 680,
+        "decompiled": 132,
+        "final": 681,
         "named": 0,
         "unknown": 0
       },
@@ -3160,8 +3160,8 @@
     }
   ],
   "overall": {
-    "finalish": 942,
-    "finalish_percent": 74.88,
+    "finalish": 943,
+    "finalish_percent": 74.96,
     "mapped": 874,
     "mapped_percent": 69.48,
     "nd": 23,
@@ -3169,8 +3169,8 @@
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 315,
-      "final": 859,
+      "decompiled": 314,
+      "final": 860,
       "named": 0,
       "unknown": 1
     },

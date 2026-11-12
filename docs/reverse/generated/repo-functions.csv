@@ -422,7 +422,7 @@ final_psx_address,beta_psx_address,repo_function,file,line,markers,comment
 0x8003328c,0x80032d8c,DetatchSpark,GAME/EFFECT2.C,155,F,"32D8C, 3328C (F)"
 0x800333ac,0x80032eac,TriggerSuperJetFlame,GAME/EFFECT2.C,76,F,"32EAC, 333AC (F)"
 0x800336b4,0x800331b4,TriggerWaterfallMist,GAME/EFFECT2.C,71,,"331B4, 336B4"
-0x80033ab8,0x800335b8,TriggerDartSmoke,GAME/EFFECT2.C,66,,"335B8, 33AB8"
+0x80033ab8,0x800335b8,TriggerDartSmoke,GAME/EFFECT2.C,94,<;<;F,"335B8, 33AB8 (F)"
 0x80033d9c,0x8003389c,KillAllCurrentItems,GAME/EFFECT2.C,61,F,"3389C, 33D9C (F)"
 0x80033dac,0x800338ac,KillEverything,GAME/EFFECT2.C,56,<;<;F,"338AC(<), 33DAC(<) (F)"
 0x80033db8,0x800338b8,ControlSmokeEmitter,GAME/EFFECT2.C,51,,"338B8, 33DB8"
