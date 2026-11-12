@@ -193,9 +193,19 @@ void AimWeapon(struct WEAPON_INFO* winfo, struct lara_arm* arm)//4826C, 486D0
 	UNIMPLEMENTED();
 }
 
-void find_target_point(struct ITEM_INFO* item, struct GAME_VECTOR* target)//48150, 485B4
+void find_target_point(struct ITEM_INFO* item, struct GAME_VECTOR* target)//48150, 485B4 (F)
 {
-	UNIMPLEMENTED();
+	short* bounds = GetBestFrame(item);
+	long xoff = bounds[0] + bounds[1];
+	long zoff = bounds[4] + bounds[5];
+	long yoff = bounds[2] + (bounds[3] - bounds[2]) / 3;
+	short sin = SIN(item->pos.y_rot);
+	short cos = COS(item->pos.y_rot);
+
+	target->x = item->pos.x_pos + ((cos * (xoff / 2) + sin * (zoff / 2)) >> W2V_SHIFT);
+	target->y = item->pos.y_pos + yoff;
+	target->z = item->pos.z_pos + ((cos * (zoff / 2) - sin * (xoff / 2)) >> W2V_SHIFT);
+	target->room_number = item->room_number;
 }
 
 void LaraGetNewTarget(struct WEAPON_INFO* winfo)//47B28, 47F8C
