@@ -1,6 +1,6 @@
 # TOMB5 reverse progress
 
-Generated: `2026-11-12T15:22:23.659360+00:00`
+Generated: `2026-11-12T15:33:23.807357+00:00`
 
 ## Status definitions
 
@@ -16,8 +16,8 @@ Generated: `2026-11-12T15:22:23.659360+00:00`
 - Repo functions in mapping
   - total: `1257`
   - mapped: `873` (`69.45%`)
-  - final/debug/binary-matched: `937` (`74.54%`)
-  - F: `854`; D: `83`; binary-matched: `0`; decompiled: `319`; named: `0`; unknown: `1`; ND: `23`
+  - final/debug/binary-matched: `938` (`74.62%`)
+  - F: `855`; D: `83`; binary-matched: `0`; decompiled: `318`; named: `0`; unknown: `1`; ND: `23`
 
 ## Modules
 
@@ -29,8 +29,8 @@ Generated: `2026-11-12T15:22:23.659360+00:00`
 - SPEC_PSXPC_N
   - total: `212`
   - mapped: `102` (`48.11%`)
-  - final/debug/binary-matched: `119` (`56.13%`)
-  - F: `78`; D: `41`; binary-matched: `0`; decompiled: `92`; named: `0`; unknown: `1`; ND: `12`
+  - final/debug/binary-matched: `120` (`56.6%`)
+  - F: `79`; D: `41`; binary-matched: `0`; decompiled: `91`; named: `0`; unknown: `1`; ND: `12`
 - SPEC_PSXPC
   - total: `144`
   - mapped: `88` (`61.11%`)

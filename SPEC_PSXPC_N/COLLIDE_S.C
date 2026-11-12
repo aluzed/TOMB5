@@ -50,12 +50,12 @@ void UpdateSky()//7CE88(<), 7EECC(<) (F)
 	}//locret_7CEFC
 }
 
-void UpdateLaraRoom(struct ITEM_INFO* item, int height)//7C58C, 7E5D0
+void UpdateLaraRoom(struct ITEM_INFO* item, int height)//7C58C, 7E5D0 (F)
 {
 	short room_number;//var_18
 
 	room_number = item->room_number;
-	item->floor = GetHeight(GetFloor(item->pos.x_pos, item->pos.y_pos + height, item->pos.z_pos, &room_number), lara_item->pos.x_pos, item->pos.y_pos + height, lara_item->pos.z_pos);
+	item->floor = GetHeight(GetFloor(item->pos.x_pos, item->pos.y_pos + height, item->pos.z_pos, &room_number), item->pos.x_pos, item->pos.y_pos + height, item->pos.z_pos);
 	if (item->room_number != room_number)
 	{
 		ItemNewRoom(lara.item_number, room_number);

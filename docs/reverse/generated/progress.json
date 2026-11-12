@@ -1769,8 +1769,8 @@
       "total": 15
     },
     "SPEC_PSXPC_N/COLLIDE_S.C": {
-      "finalish": 1,
-      "finalish_percent": 25.0,
+      "finalish": 2,
+      "finalish_percent": 50.0,
       "mapped": 3,
       "mapped_percent": 75.0,
       "nd": 0,
@@ -1778,8 +1778,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 3,
-        "final": 1,
+        "decompiled": 2,
+        "final": 2,
         "named": 0,
         "unknown": 0
       },
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T15:22:23.659360+00:00",
+  "generated_at": "2026-11-12T15:33:23.807357+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2660,8 +2660,8 @@
       "total": 144
     },
     "SPEC_PSXPC_N": {
-      "finalish": 119,
-      "finalish_percent": 56.13,
+      "finalish": 120,
+      "finalish_percent": 56.6,
       "mapped": 102,
       "mapped_percent": 48.11,
       "nd": 12,
@@ -2669,8 +2669,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 41,
-        "decompiled": 92,
-        "final": 78,
+        "decompiled": 91,
+        "final": 79,
         "named": 0,
         "unknown": 1
       },
@@ -3160,8 +3160,8 @@
     }
   ],
   "overall": {
-    "finalish": 937,
-    "finalish_percent": 74.54,
+    "finalish": 938,
+    "finalish_percent": 74.62,
     "mapped": 873,
     "mapped_percent": 69.45,
     "nd": 23,
@@ -3169,8 +3169,8 @@
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 319,
-      "final": 854,
+      "decompiled": 318,
+      "final": 855,
       "named": 0,
       "unknown": 1
     },
