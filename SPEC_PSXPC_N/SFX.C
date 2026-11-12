@@ -108,7 +108,7 @@ void SPU_FreeChannel(int channel_index)//91668, 936AC (F)
 	LabFreeChannel[LnFreeChannels++] = channel_index;
 }
 
-void S_SoundStopSample(int handle)
+void S_SoundStopSample(int handle)//91690(<), 936D4(<) (F)
 {
 	if (GtSFXEnabled == 0)
 	{
@@ -246,7 +246,7 @@ int S_SoundPlaySampleLooped(int a0, int a1, int a2, int a3, int arg_10)
 	}
 }
 
-int S_SoundSampleIsPlaying(int handle)//916F8(<), 9373C(<)
+int S_SoundSampleIsPlaying(int handle)//916F8(<), 9373C(<) (F)
 {
 	char status;
 

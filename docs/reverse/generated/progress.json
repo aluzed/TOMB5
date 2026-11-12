@@ -2228,21 +2228,21 @@
       "total": 2
     },
     "SPEC_PSXPC_N/SFX.C": {
-      "finalish": 3,
-      "finalish_percent": 50.0,
-      "mapped": 5,
-      "mapped_percent": 83.33,
+      "finalish": 5,
+      "finalish_percent": 71.43,
+      "mapped": 6,
+      "mapped_percent": 85.71,
       "nd": 0,
       "repo_only": 1,
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 3,
-        "final": 3,
+        "decompiled": 2,
+        "final": 5,
         "named": 0,
         "unknown": 0
       },
-      "total": 6
+      "total": 7
     },
     "SPEC_PSXPC_N/SHADOWS.C": {
       "finalish": 0,
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T18:50:16.744487+00:00",
+  "generated_at": "2026-11-12T19:51:04.607539+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2660,21 +2660,21 @@
       "total": 144
     },
     "SPEC_PSXPC_N": {
-      "finalish": 125,
-      "finalish_percent": 58.69,
-      "mapped": 103,
-      "mapped_percent": 48.36,
+      "finalish": 127,
+      "finalish_percent": 59.35,
+      "mapped": 104,
+      "mapped_percent": 48.6,
       "nd": 12,
       "repo_only": 110,
       "statuses": {
         "binary_matched": 0,
         "debugged": 41,
-        "decompiled": 87,
-        "final": 84,
+        "decompiled": 86,
+        "final": 86,
         "named": 0,
         "unknown": 1
       },
-      "total": 213
+      "total": 214
     }
   },
   "next_candidates": [
@@ -3160,23 +3160,23 @@
     }
   ],
   "overall": {
-    "finalish": 953,
-    "finalish_percent": 75.76,
-    "mapped": 874,
-    "mapped_percent": 69.48,
+    "finalish": 955,
+    "finalish_percent": 75.85,
+    "mapped": 875,
+    "mapped_percent": 69.5,
     "nd": 23,
     "repo_only": 384,
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 304,
-      "final": 870,
+      "decompiled": 303,
+      "final": 872,
       "named": 0,
       "unknown": 1
     },
-    "total": 1258
+    "total": 1259
   },
-  "source_rows": 1258,
+  "source_rows": 1259,
   "status_definitions": {
     "binary_matched": "Contains `(**)`.",
     "debugged": "Contains `(D)`; stronger than `(F)` for tracking.",
