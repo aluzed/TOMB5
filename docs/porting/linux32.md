@@ -1318,6 +1318,19 @@ La pile de rooms autour de 207/201 est un empilement 5D :
 Sans vue du maillage ou d’un walkthrough, les sauts à l’aveugle dans ces
 trous ne permettent pas de déterminer la route prévue.
 
+Le walkthrough Stella confirme les objectifs de Trajan’s Markets : les trois
+`PICKUP_ITEM4` (items 14/88/139) sont les **golden roses** (secrets), et la
+**golden coin** est `item 122` = `PUZZLE_ITEM3` (obj 174) en room 166
+(`83456,-1024,19968`). Collecte validée (`coin122-20261112/`) :
+`lara.puzzleitems[2]` 0→1, `item.status=3`.
+
+Placement validé (`hole42b-20261112/`, `hole42c-20261112/`) :
+`item 42` = `PUZZLE_HOLE3` (obj 244) en room 63 (`78336,-1024,15872`).
+`PuzzleDone` le transforme en `PUZZLE_DONE3` (obj 252, `status=2`,
+`flags=15904`) et active la **porte item 113** (obj 288, room 134,
+`76288,0,37376`) : `status=1`, `flags=15904`. C’est la porte « qui s’ouvre
+ailleurs » du walkthrough. Aucun flipmap n’est modifié.
+
 Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
 `UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis
 la marche nord retombe dans la room 207 et s’arrête à `77500,0,48031`.

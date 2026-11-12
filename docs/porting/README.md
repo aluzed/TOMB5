@@ -1,18 +1,18 @@
-## Progression vérifiée du 2026-11-08 (analyse géométrie, données)
+## Progression vérifiée du 2026-11-12
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-12T23:59:00+01:00. Linux32 provisoire.
+
+Trajan's Markets: walkthrough Stella confirme 3 golden roses = PICKUP_ITEM4 items 14/88/139 et golden coin = item122 PUZZLE_ITEM3 obj174 room166 83456,-1024,19968. Collecte validee (coin122-20261112): puzzleitems[2] 0->1, item.status=3. Placement valide (hole42b/hole42c-20261112): item42 PUZZLE_HOLE3 obj244 room63 78336,-1024,15872; PuzzleDone -> obj252 PUZZLE_DONE3 status=2 flags=15904 et active porte item113 obj288 room134 76288,0,37376 status=1 flags=15904. Aucun flipmap modifie. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-08
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-08T23:59:00+01:00. Linux32 provisoire.
 
-Analyse statique du niveau Trajan's Markets (NTSC USA, `TOMB5.BIN` data, LBA 18404, 252 rooms) par extraction du bloc `offsetRoomInfo`/`roomInfoLength` (le parseur doit utiliser `offsetRoomInfo`, pas un offset séquentiel). Vue du maillage/connectivité de l'empilement 5D, **non validée en jeu** :
-
-- `207` (75776,43008,-1024, mf=0, 6x4) : intérieur `sky=201 pit=255 fl=0` ; portails 10,219.
-- `201` (75776,43008,-2048) : `sky=199 pit=207 fl=-4` sur tout l'intérieur — **sol intégralement en puits vers 207** (pas atterrissable).
-- `199` (75776,43008,-4096) : `sky=200 pit=201` ; `200` (75776,43008,-6144) : `pit=199`. Puits `207→201→199→200` continu, non franchissable en montée par atterrissage.
-- **Aucun secteur `CLIMB`/`MONKEY`** dans la zone problème (wx 74000-84000, wz 34000-49000) ni ailleurs de pertinent (`CLIMB` niveau entier : rooms 16,95,222). Les transitions verticales sont des liens `sky_room`/`pit_room` + géométrie de rebord (pas d'échelle via floor_data).
-- Hub `209` (75776,38912,-2048, 6x6) `sky=11 pit=10`, portails 10/11/201/206/210/213. `207→10` praticable à plat ; `10` (75776,38912,-1024, `sky=209`) → `209` : transition sky/pit ~+256u (petit saut).
-- Branches depuis `209` : ouest `206↔208` (pile latérale) ; est `210(sky=48,pit=0)→211(sky=49,pit=54)→212(sky=5,pit=50)` — `212` relie `50` (salle de départ niveau 2, y=-1024) et `5` (y=-4096) ; nord `213(sky=45,pit=9)→214(sky=12,pit=46)` — `213↔9/45`, `214↔46/12`.
-- Montées ~+1024u sans `CLIMB` (saisie de rebord/saut à valider) : `209→11→13`, `214→12`/`213→45` (couche y=-4096, vers `202/13/200`), `210→48`/`211→49`/`212→5`.
-
-Route la plus plausible depuis le blocage `207` : éviter le puits `207/201` → `207→10→209` (saut 10→209), puis monter par `209→213→45` ou `209→213→214→12` (nord) ou `209→210→48` / vers `5` (est). **Validation moteur requise** (grab/géométrie des rebords, comportement `GetFloor`/`sky_room`). Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d ; tests 4174 PASS. Aucun Done global.
+Analyse géométrie données Trajan's Markets (NTSC, LBA 18404, 252 rooms, offsetRoomInfo/roomInfoLength) : puits 207->201->199->200 intégralement pit (non atterrissable), aucun CLIMB/MONKEY floor_data dans la zone. Hub 209 (portails 10/11/201/206/210/213) ; 207->10 plat, 10->209 +256u sky/pit ; montées +1024u sans CLIMB à valider (209->11,213->45,214->12,210->48,211->49,212->5). Route plausible 207->10->209 puis branche nord (213/214 vers 45/12/202) ou est (210-212 vers 48/49/5, 212<->50 départ). Non validé en jeu. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
 

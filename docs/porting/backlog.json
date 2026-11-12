@@ -1495,6 +1495,15 @@
       ],
       "status": "In progress",
       "summary": "Analyse géométrie données Trajan's Markets (NTSC, LBA 18404, 252 rooms, offsetRoomInfo/roomInfoLength) : puits 207->201->199->200 intégralement pit (non atterrissable), aucun CLIMB/MONKEY floor_data dans la zone. Hub 209 (portails 10/11/201/206/210/213) ; 207->10 plat, 10->209 +256u sky/pit ; montées +1024u sans CLIMB à valider (209->11,213->45,214->12,210->48,211->49,212->5). Route plausible 207->10->209 puis branche nord (213/214 vers 45/12/202) ou est (210-212 vers 48/49/5, 212<->50 départ). Non validé en jeu. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
+    },
+    {
+      "date": "2026-11-12",
+      "authorization_until": "2026-11-12T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Trajan's Markets: walkthrough Stella confirme 3 golden roses = PICKUP_ITEM4 items 14/88/139 et golden coin = item122 PUZZLE_ITEM3 obj174 room166 83456,-1024,19968. Collecte validee (coin122-20261112): puzzleitems[2] 0->1, item.status=3. Placement valide (hole42b/hole42c-20261112): item42 PUZZLE_HOLE3 obj244 room63 78336,-1024,15872; PuzzleDone -> obj252 PUZZLE_DONE3 status=2 flags=15904 et active porte item113 obj288 room134 76288,0,37376 status=1 flags=15904. Aucun flipmap modifie. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
     }
   ]
 }
