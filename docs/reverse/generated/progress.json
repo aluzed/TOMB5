@@ -2024,8 +2024,8 @@
       "total": 4
     },
     "SPEC_PSXPC_N/MATHS.C": {
-      "finalish": 21,
-      "finalish_percent": 52.5,
+      "finalish": 23,
+      "finalish_percent": 57.5,
       "mapped": 11,
       "mapped_percent": 27.5,
       "nd": 0,
@@ -2033,8 +2033,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
-        "decompiled": 19,
-        "final": 21,
+        "decompiled": 17,
+        "final": 23,
         "named": 0,
         "unknown": 0
       },
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T15:33:23.807357+00:00",
+  "generated_at": "2026-11-12T15:34:16.942582+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2358,20 +2358,20 @@
       "total": 25
     },
     {
-      "file": "SPEC_PSXPC_N/MATHS.C",
-      "finalish_percent": 52.5,
-      "mapped_non_final": 4,
-      "module": "SPEC_PSXPC_N",
-      "non_final": 19,
-      "total": 40
-    },
-    {
       "file": "SPEC_PSXPC/MATHS.C",
       "finalish_percent": 33.33,
       "mapped_non_final": 4,
       "module": "SPEC_PSXPC",
       "non_final": 18,
       "total": 27
+    },
+    {
+      "file": "SPEC_PSXPC_N/MATHS.C",
+      "finalish_percent": 57.5,
+      "mapped_non_final": 2,
+      "module": "SPEC_PSXPC_N",
+      "non_final": 17,
+      "total": 40
     },
     {
       "file": "GAME/SWITCH.C",
@@ -2660,8 +2660,8 @@
       "total": 144
     },
     "SPEC_PSXPC_N": {
-      "finalish": 120,
-      "finalish_percent": 56.6,
+      "finalish": 122,
+      "finalish_percent": 57.55,
       "mapped": 102,
       "mapped_percent": 48.11,
       "nd": 12,
@@ -2669,8 +2669,8 @@
       "statuses": {
         "binary_matched": 0,
         "debugged": 41,
-        "decompiled": 91,
-        "final": 79,
+        "decompiled": 89,
+        "final": 81,
         "named": 0,
         "unknown": 1
       },
@@ -3160,8 +3160,8 @@
     }
   ],
   "overall": {
-    "finalish": 938,
-    "finalish_percent": 74.62,
+    "finalish": 940,
+    "finalish_percent": 74.78,
     "mapped": 873,
     "mapped_percent": 69.45,
     "nd": 23,
@@ -3169,8 +3169,8 @@
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
-      "decompiled": 318,
-      "final": 855,
+      "decompiled": 316,
+      "final": 857,
       "named": 0,
       "unknown": 1
     },

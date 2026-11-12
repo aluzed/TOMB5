@@ -317,7 +317,7 @@ void mUnitMatrix()
 	UNIMPLEMENTED();
 }
 
-void mPushUnitMatrix()//76534(<), 78578(<)
+void mPushUnitMatrix()//76534(<), 78578(<) (F)
 {
 	setrot(++Matrix, 0x1000, 0, 0x1000, 0, 0x1000);
 }
@@ -1152,7 +1152,7 @@ void GetBounds()//76A28
 	UNIMPLEMENTED();
 }
 
-void mSetTrans(long x, long y, long z)//76AF4(<), 78B38(<)
+void mSetTrans(long x, long y, long z)//76AF4(<), 78B38(<) (F)
 {
 	TRX = x;
 	TRY = y;
