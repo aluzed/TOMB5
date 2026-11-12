@@ -1,6 +1,6 @@
 # TOMB5 reverse progress
 
-Generated: `2026-11-12T15:20:59.191150+00:00`
+Generated: `2026-11-12T15:22:23.659360+00:00`
 
 ## Status definitions
 
@@ -14,18 +14,18 @@ Generated: `2026-11-12T15:20:59.191150+00:00`
 ## Overall
 
 - Repo functions in mapping
-  - total: `1256`
-  - mapped: `872` (`69.43%`)
-  - final/debug/binary-matched: `936` (`74.52%`)
-  - F: `853`; D: `83`; binary-matched: `0`; decompiled: `319`; named: `0`; unknown: `1`; ND: `23`
+  - total: `1257`
+  - mapped: `873` (`69.45%`)
+  - final/debug/binary-matched: `937` (`74.54%`)
+  - F: `854`; D: `83`; binary-matched: `0`; decompiled: `319`; named: `0`; unknown: `1`; ND: `23`
 
 ## Modules
 
 - GAME
-  - total: `817`
-  - mapped: `626` (`76.62%`)
-  - final/debug/binary-matched: `683` (`83.6%`)
-  - F: `678`; D: `5`; binary-matched: `0`; decompiled: `134`; named: `0`; unknown: `0`; ND: `4`
+  - total: `818`
+  - mapped: `627` (`76.65%`)
+  - final/debug/binary-matched: `684` (`83.62%`)
+  - F: `679`; D: `5`; binary-matched: `0`; decompiled: `134`; named: `0`; unknown: `0`; ND: `4`
 - SPEC_PSXPC_N
   - total: `212`
   - mapped: `102` (`48.11%`)

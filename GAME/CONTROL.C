@@ -312,9 +312,125 @@ void UpdateFireSparks()
 	Unimpl();
 }
 
-void UpdateSmokeSparks()
+void UpdateSmokeSparks()//87558(<), 8959C(<) (F)
 {
-	Unimpl();
+	struct SMOKE_SPARKS* s = &smoke_spark[0];
+	int defbase = objects[DEFAULT_SPRITES].mesh_index;
+	int i;
+
+	for (i = 0; i < 32; i++, s++)
+	{
+		int sLife;
+		int life;
+		int fade;
+		int def;
+		int yvel;
+		int xvel;
+		int zvel;
+		int maxvel;
+		int friction;
+
+		if (!s->On)
+			continue;
+
+		life = (unsigned char)s->Life - 2;
+		s->Life = (char)life;
+
+		if (life <= 0)
+		{
+			s->On = 0;
+			continue;
+		}
+
+		sLife = (unsigned char)s->sLife;
+
+		if (sLife - life < (unsigned char)s->ColFadeSpeed)
+		{
+			fade = ((sLife - life) << 16) / s->ColFadeSpeed;
+			s->Shade = (unsigned char)(s->sShade + (((s->dShade - s->sShade) * fade) >> 16));
+		}
+		else if (life < (unsigned char)s->FadeToBlack)
+		{
+			fade = (((unsigned char)s->FadeToBlack - life) << 16) / (unsigned char)s->FadeToBlack;
+			fade = ((unsigned char)s->dShade * (0x10000 - fade)) >> 16;
+
+			s->Shade = (unsigned char)fade;
+
+			if (fade < 8)
+			{
+				s->On = 0;
+				continue;
+			}
+		}
+		else
+		{
+			s->Shade = s->dShade;
+		}
+
+		fade = sLife != 0 ? ((sLife - life) << 16) / sLife : 0;
+
+		if (s->Shade < 24)
+			def = defbase + 2;
+		else if (s->Shade < 80)
+			def = defbase + 1;
+		else
+			def = defbase;
+
+		s->Def = (unsigned char)def;
+
+		if (s->Flags & 0x10)
+		{
+			s->RotAng = (short)((s->RotAng + s->RotAdd) & 0xFFF);
+		}
+
+		yvel = s->Yvel + s->Gravity;
+		maxvel = s->MaxYvel;
+
+		if (maxvel != 0)
+		{
+			maxvel <<= 5;
+
+			if (yvel < 0)
+			{
+				if (yvel < maxvel)
+					yvel = maxvel;
+			}
+			else if (yvel > maxvel)
+			{
+				yvel = maxvel;
+			}
+		}
+
+		xvel = s->Xvel;
+		zvel = s->Zvel;
+		friction = s->Friction;
+
+		if (friction & 0xF)
+		{
+			xvel -= xvel >> (friction & 0xF);
+			zvel -= zvel >> (friction & 0xF);
+
+			s->Xvel = (short)xvel;
+			s->Zvel = (short)zvel;
+		}
+
+		if (friction >> 4)
+			yvel -= yvel >> (friction >> 4);
+
+		s->Yvel = (short)yvel;
+
+		if (s->Flags & 0x100)
+		{
+			s->x += SmokeWindX >> 1;
+			s->z += SmokeWindZ >> 1;
+		}
+
+		s->x += xvel >> 5;
+		s->y += yvel >> 5;
+		s->z += zvel >> 5;
+
+		s->Size = (unsigned char)(s->sSize + (((s->dSize - s->sSize) * fade) >> 16));
+	}
 }
 
 void UpdateBubbles()//88148(<), 8A18C(<) (F)

@@ -52,21 +52,21 @@
       "total": 11
     },
     "GAME/CONTROL.C": {
-      "finalish": 29,
-      "finalish_percent": 96.67,
-      "mapped": 27,
-      "mapped_percent": 90.0,
+      "finalish": 30,
+      "finalish_percent": 96.77,
+      "mapped": 28,
+      "mapped_percent": 90.32,
       "nd": 0,
       "repo_only": 3,
       "statuses": {
         "binary_matched": 0,
         "debugged": 0,
         "decompiled": 1,
-        "final": 29,
+        "final": 30,
         "named": 0,
         "unknown": 0
       },
-      "total": 30
+      "total": 31
     },
     "GAME/DEBRIS.C": {
       "finalish": 3,
@@ -2347,7 +2347,7 @@
       "total": 4
     }
   },
-  "generated_at": "2026-11-12T15:20:59.191150+00:00",
+  "generated_at": "2026-11-12T15:22:23.659360+00:00",
   "hot_files": [
     {
       "file": "SPEC_PSXPC_N/ANIMITEM.C",
@@ -2592,21 +2592,21 @@
   ],
   "modules": {
     "GAME": {
-      "finalish": 683,
-      "finalish_percent": 83.6,
-      "mapped": 626,
-      "mapped_percent": 76.62,
+      "finalish": 684,
+      "finalish_percent": 83.62,
+      "mapped": 627,
+      "mapped_percent": 76.65,
       "nd": 4,
       "repo_only": 191,
       "statuses": {
         "binary_matched": 0,
         "debugged": 5,
         "decompiled": 134,
-        "final": 678,
+        "final": 679,
         "named": 0,
         "unknown": 0
       },
-      "total": 817
+      "total": 818
     },
     "SPEC_PC_N": {
       "finalish": 1,
@@ -3160,23 +3160,23 @@
     }
   ],
   "overall": {
-    "finalish": 936,
-    "finalish_percent": 74.52,
-    "mapped": 872,
-    "mapped_percent": 69.43,
+    "finalish": 937,
+    "finalish_percent": 74.54,
+    "mapped": 873,
+    "mapped_percent": 69.45,
     "nd": 23,
     "repo_only": 384,
     "statuses": {
       "binary_matched": 0,
       "debugged": 83,
       "decompiled": 319,
-      "final": 853,
+      "final": 854,
       "named": 0,
       "unknown": 1
     },
-    "total": 1256
+    "total": 1257
   },
-  "source_rows": 1256,
+  "source_rows": 1257,
   "status_definitions": {
     "binary_matched": "Contains `(**)`.",
     "debugged": "Contains `(D)`; stronger than `(F)` for tracking.",
