@@ -1,6 +1,6 @@
 # Backlog priorisée des fonctions reverse TOMB5
 
-Generated: `2026-11-12T16:08:01.487507+00:00`
+Generated: `2026-11-12T17:46:19.358159+00:00`
 Source: `docs/reverse/generated/repo-function-map.csv`
 CSV détaillé: `docs/reverse/generated/function-priority.csv`
 Story: `docs/stories/RE-004-priorisation-fonctions-non-finalisees.md`
@@ -41,11 +41,11 @@ Buckets:
 
 ## Summary
 
-- candidates total: `335` / repo rows `1258`
-- mapped candidates: `192`
+- candidates total: `330` / repo rows `1258`
+- mapped candidates: `187`
 - ND highlighted: `23`
-- P0: `35`; P1: `94`; P2: `206`
-- statuses: `debugged` `23`; `decompiled` `311`; `unknown` `1`
+- P0: `35`; P1: `94`; P2: `201`
+- statuses: `debugged` `23`; `decompiled` `306`; `unknown` `1`
 
 ## Lot 1 — P0 runtime / ND à clarifier
 
@@ -183,26 +183,26 @@ Buckets:
   - candidates: `17`; mapped: `2`; ND: `0`; top score: `3122`
 - `GAME/TRAPS.C`
   - candidates: `15`; mapped: `15`; ND: `0`; top score: `3756`
-- `SPEC_PSXPC_N/MISC.C`
-  - candidates: `13`; mapped: `9`; ND: `4`; top score: `2052`
 - `GAME/SWITCH.C`
   - candidates: `12`; mapped: `12`; ND: `0`; top score: `2414`
 - `GAME/SETUP.C`
   - candidates: `12`; mapped: `0`; ND: `0`; top score: `800`
+- `SPEC_PSXPC_N/MISC.C`
+  - candidates: `11`; mapped: `7`; ND: `4`; top score: `2052`
 - `GAME/LARAFIRE.C`
   - candidates: `10`; mapped: `7`; ND: `0`; top score: `4768`
-- `SPEC_PSXPC/MISC.C`
-  - candidates: `9`; mapped: `6`; ND: `0`; top score: `1533`
 - `GAME/DOOR.C`
   - candidates: `8`; mapped: `8`; ND: `0`; top score: `2452`
 - `GAME/PICKUP.C`
   - candidates: `7`; mapped: `7`; ND: `0`; top score: `3480`
-- `SPEC_PSXPC/SFX.C`
-  - candidates: `7`; mapped: `4`; ND: `0`; top score: `1399`
+- `SPEC_PSXPC/MISC.C`
+  - candidates: `7`; mapped: `4`; ND: `0`; top score: `1533`
 - `SPEC_PSXPC/PROFILE.C`
   - candidates: `7`; mapped: `0`; ND: `0`; top score: `-170`
 - `GAME/LARA.C`
   - candidates: `6`; mapped: `6`; ND: `0`; top score: `3643`
+- `SPEC_PSXPC/SFX.C`
+  - candidates: `6`; mapped: `3`; ND: `0`; top score: `1399`
 - `GAME/LARAFLAR.C`
   - candidates: `5`; mapped: `5`; ND: `0`; top score: `2652`
 

@@ -1,6 +1,6 @@
 # TOMB5 reverse progress
 
-Generated: `2026-11-12T16:08:01.421813+00:00`
+Generated: `2026-11-12T17:46:19.291489+00:00`
 
 ## Status definitions
 
@@ -16,8 +16,8 @@ Generated: `2026-11-12T16:08:01.421813+00:00`
 - Repo functions in mapping
   - total: `1258`
   - mapped: `874` (`69.48%`)
-  - final/debug/binary-matched: `946` (`75.2%`)
-  - F: `863`; D: `83`; binary-matched: `0`; decompiled: `311`; named: `0`; unknown: `1`; ND: `23`
+  - final/debug/binary-matched: `951` (`75.6%`)
+  - F: `868`; D: `83`; binary-matched: `0`; decompiled: `306`; named: `0`; unknown: `1`; ND: `23`
 
 ## Modules
 
@@ -29,13 +29,13 @@ Generated: `2026-11-12T16:08:01.421813+00:00`
 - SPEC_PSXPC_N
   - total: `213`
   - mapped: `103` (`48.36%`)
-  - final/debug/binary-matched: `123` (`57.75%`)
-  - F: `82`; D: `41`; binary-matched: `0`; decompiled: `89`; named: `0`; unknown: `1`; ND: `12`
+  - final/debug/binary-matched: `125` (`58.69%`)
+  - F: `84`; D: `41`; binary-matched: `0`; decompiled: `87`; named: `0`; unknown: `1`; ND: `12`
 - SPEC_PSXPC
   - total: `144`
   - mapped: `88` (`61.11%`)
-  - final/debug/binary-matched: `66` (`45.83%`)
-  - F: `66`; D: `0`; binary-matched: `0`; decompiled: `78`; named: `0`; unknown: `0`; ND: `0`
+  - final/debug/binary-matched: `69` (`47.92%`)
+  - F: `69`; D: `0`; binary-matched: `0`; decompiled: `75`; named: `0`; unknown: `0`; ND: `0`
 - SPEC_PSX
   - total: `79`
   - mapped: `55` (`69.62%`)
@@ -77,14 +77,6 @@ Generated: `2026-11-12T16:08:01.421813+00:00`
   - non-final: `10` / `16`
   - mapped non-final: `7`
   - final/debug/binary-matched: `37.5%`
-- `SPEC_PSXPC/MISC.C`
-  - non-final: `9` / `17`
-  - mapped non-final: `6`
-  - final/debug/binary-matched: `47.06%`
-- `SPEC_PSXPC_N/MISC.C`
-  - non-final: `9` / `18`
-  - mapped non-final: `6`
-  - final/debug/binary-matched: `50.0%`
 - `GAME/DOOR.C`
   - non-final: `8` / `10`
   - mapped non-final: `8`
@@ -93,10 +85,14 @@ Generated: `2026-11-12T16:08:01.421813+00:00`
   - non-final: `7` / `14`
   - mapped non-final: `7`
   - final/debug/binary-matched: `50.0%`
-- `SPEC_PSXPC/SFX.C`
-  - non-final: `7` / `13`
+- `SPEC_PSXPC/MISC.C`
+  - non-final: `7` / `17`
   - mapped non-final: `4`
-  - final/debug/binary-matched: `46.15%`
+  - final/debug/binary-matched: `58.82%`
+- `SPEC_PSXPC_N/MISC.C`
+  - non-final: `7` / `18`
+  - mapped non-final: `4`
+  - final/debug/binary-matched: `61.11%`
 - `SPEC_PSXPC/PROFILE.C`
   - non-final: `7` / `7`
   - mapped non-final: `0`
@@ -105,6 +101,10 @@ Generated: `2026-11-12T16:08:01.421813+00:00`
   - non-final: `6` / `177`
   - mapped non-final: `6`
   - final/debug/binary-matched: `96.61%`
+- `SPEC_PSXPC/SFX.C`
+  - non-final: `6` / `13`
+  - mapped non-final: `3`
+  - final/debug/binary-matched: `53.85%`
 - `GAME/COLLIDE.C`
   - non-final: `5` / `11`
   - mapped non-final: `5`

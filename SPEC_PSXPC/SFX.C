@@ -103,7 +103,7 @@ void S_SoundStopSample(int handle)//91690(<), 936D4(<)
 	//loc_916CC
 }
 
-void S_SoundStopAllSamples()//91D34, 93D80
+void S_SoundStopAllSamples()//91D34, 93D80 (F)
 {
 	if (GtSFXEnabled == 0)
 	{

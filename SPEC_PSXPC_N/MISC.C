@@ -242,7 +242,7 @@ void LOAD_VSyncHandler() //5F074(<), 5FD54(<) (F)
 	return;
 }
 
-void LOAD_DrawEnable(unsigned char isEnabled) //5F2C8, 5FFA8
+void LOAD_DrawEnable(unsigned char isEnabled) //5F2C8, 5FFA8 (F)
 {
 	LtLoadingBarEnabled = isEnabled;
 }
@@ -363,7 +363,7 @@ void GPU_GetScreenPosition(short* x, short* y) //5F34C, ? (*) (F) (D) (ND)
 	return;
 }
 
-void GPU_SetScreenPosition(short x, short y) //5F360(<), 60040(<)
+void GPU_SetScreenPosition(short x, short y) //5F360(<), 60040(<) (F)
 {
 	db.disp[0].screen.x = x;
 	db.disp[0].screen.y = y;
