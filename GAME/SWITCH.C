@@ -364,10 +364,91 @@ void JumpSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* 
 	AddActiveItem(item_num);
 }
 
-void RailSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//576F4, 57B94
+void RailSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//576F4, 57B94 (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+	int can_move;
+	int flag = 0;
+
+	can_move = ((input & IN_ACTION) &&
+		l->current_anim_state == 2 &&
+		l->anim_number == 103 &&
+		lara.gun_status == LG_NO_ARMS) ||
+		(lara.IsMoving && lara.GeneralPtr == (void*)item_num);
+
+	if (can_move)
+	{
+		if (item->current_anim_state == 0)
+		{
+			if (TestLaraPosition(RailSwitchBounds, item, l))
+			{
+				if (MoveLaraPositionToItem(&RailSwitchPos, item, l))
+				{
+					item->goal_anim_state = 1;
+					flag = 1;
+				}
+				else
+				{
+					lara.GeneralPtr = (void*)item_num;
+				}
+			}
+			else if (lara.IsMoving && lara.GeneralPtr == (void*)item_num)
+			{
+				lara.IsMoving = 0;
+				lara.gun_status = LG_NO_ARMS;
+			}
+		}
+		else if (item->current_anim_state == 1)
+		{
+			l->pos.y_rot ^= 0x8000;
+
+			if (TestLaraPosition(RailSwitchBounds2, item, l))
+			{
+				if (MoveLaraPositionToItem(&RailSwitchPos2, item, l))
+				{
+					item->goal_anim_state = 0;
+					flag = 1;
+				}
+				else
+				{
+					lara.GeneralPtr = (void*)item_num;
+				}
+			}
+			else if (lara.IsMoving && lara.GeneralPtr == (void*)item_num)
+			{
+				lara.IsMoving = 0;
+				lara.gun_status = LG_NO_ARMS;
+			}
+
+			l->pos.y_rot ^= 0x8000;
+		}
+	}
+
+	if (flag)
+	{
+		l->anim_number = 324;
+		l->goal_anim_state = 97;
+		l->current_anim_state = 97;
+		l->frame_number = anims[324].frame_base;
+
+		lara.gun_status = LG_HANDS_BUSY;
+		lara.head_y_rot = 0;
+		lara.head_x_rot = 0;
+		lara.torso_y_rot = 0;
+		lara.torso_x_rot = 0;
+		lara.IsMoving = 0;
+
+		item->status = 1;
+
+		AddActiveItem(item_num);
+		AnimateItem(item);
+	}
+	else if (TestBoundsCollide(item, l, coll->radius) &&
+		TestCollision(item, l) &&
+		l->hit_status)
+	{
+		ItemPushLara(item, l, coll, 0, 1);
+	}
 }
 
 void TurnSwitchCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//57210, 576B0 (F)
