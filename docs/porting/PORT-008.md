@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum apres le gouffre (crosswalk/climb-20261113): Lara poursuit jusqu'a 43931,768,52224 room12 puis bute sur l'issue fermee; sauts simples state15/28 retombent au meme point. Passage prevu = rebord au-dessus de la fosse de lave: saut vers l'est avec Action pour s'y suspendre, shimmy gauche, coin, retablissement dans le conduit. Crash intermittent DrawAggregatedSplits LIBGPU.C:436 via VSync->LOAD_VSyncHandler->DrawOTag et pile DEL_CDFS_Read/LoadLevel/DoTitle au demarrage du niveau 3 avant deplacement; le franchissement du gouffre a reussi dans crumble6. Ce crash de transition/rechargement est a traiter separement. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum premier gouffre franchi (crumble6-20261113): le trigger d'effondrement se prend face a l'est y_rot=0x4000. Depuis 40000,0,52224 room12, Lara entre room8, dalles status=1, saut state=3 pendant la chute, reception y=768, poursuite jusqu'a 43931,768,52224 room12. Items 6-12/14-18 actifs puis active=0 (tombes). Aucun SIGSEGV. Le crash FlameControl/DrawAggregatedSplits precedent venait de la direction opposee (marche ouest -> lave derriere le trigger -> mort -> rechargement de niveau corrompu). Le chemin est est franchissable. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

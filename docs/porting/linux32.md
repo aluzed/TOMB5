@@ -1722,3 +1722,19 @@ venait donc de la direction opposée : en marchant vers l’ouest depuis la
 cellule de trigger, Lara sortait de la zone et tombait dans la lave
 derrière, déclenchant la mort puis le rechargement de niveau corrompu.
 Le chemin prévu (est) est, lui, franchissable.
+
+Suite immédiate après le gouffre (`crosswalk-20261113/`, `climb-20261113/`) :
+Lara poursuit jusqu’à `43931,768,52224` (room 12) puis bute sur
+l’issue fermée ; les sauts simples (`state=15/28`) retombent au même
+point. Le passage prévu est donc bien le **rebord au-dessus de la fosse
+de lave** : saut vers l’est avec Action maintenue pour s’y suspendre,
+puis shimmy vers la gauche, passage du coin et rétablissement dans le
+conduit.
+
+Attention : l’extension de test a rencontré un crash **intermittent**
+`DrawAggregatedSplits` (`LIBGPU.C:436`) via
+`VSync → LOAD_VSyncHandler → DrawOTag` et une pile
+`DEL_CDFS_Read/LoadLevel/DoTitle` au démarrage du niveau 3, avant même
+le déplacement de Lara. Le franchissement du gouffre, lui, a réussi dans
+une exécution (`crumble6`). Ce crash de transition/rechargement doit être
+traité séparément de la géométrie du niveau.
