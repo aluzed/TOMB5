@@ -1677,3 +1677,14 @@ rejouer la traversée du gouffre de lave.
 Build : `build-gameplay59`, SHA256
 `9b604c38fceea138c2e96c7d2f6257e20a23ccc69a535108bab9ab5d9fecc965`,
 **4177 PASS**.
+
+Isolement du crash (`burn2-20261113/`) : un `LaraBurn()` forcé au
+démarrage de The Colosseum crée bien l’effet de feu
+(`lara.burn=1`, `effects` valide) et **ne provoque pas de SIGSEGV**
+dans `FlameControl` sur 120 s. Le crash du test `crumble2` n’est donc pas
+le chemin de brûlure seul : il dépend des items `CRUMBLING_FLOOR` /
+`FallingBlock` et des effets qu’ils manipulent pendant l’effondrement
+(`FlameControl` sur un slot d’effet dont l’état a été corrompu par
+l’effondrement). Prochaine investigation : instrumentation de
+`FallingBlock`/`KillItem`/`RemoveActiveItem` pendant l’effondrement,
+avec un backtrace complet des registres et de la pile.

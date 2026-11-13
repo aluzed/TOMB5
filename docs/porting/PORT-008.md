@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum crash effondrement isole (burn2-20261113): LaraBurn() force au demarrage du niveau cree l'effet de feu (lara.burn=1, effects valide) et ne provoque aucun SIGSEGV dans FlameControl sur 120s. Donc le crash de crumble2 n'est pas le chemin de brulure seul: il depend des items CRUMBLING_FLOOR/FallingBlock et des effets manipules pendant l'effondrement (FlameControl sur slot d'effet corrompu). Prochain: instrumentation FallingBlock/KillItem/RemoveActiveItem pendant l'effondrement avec backtrace registres+pile. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum sols qui s'effondrent: FALLING_BLOCK/FALLING_BLOCK2/CRUMBLING_FLOOR non assignes alors que FallingBlock/Collision/Floor/Ceiling existent dans TRAPS.C. PortInitialiseFallingBlock2 (mesh_bits=1) ajoute dans MOVEBLOK.C car TRAPS.C non recompilable (COLLIDE.C depend de MoveLaraPositionToItem absent des objets build57; GTEREG casse la compilation stricte). SETUP assigne control/collision/floor/ceiling + saves avec cast ABI long*->int*. Runtime crumble/crumble2-20261113: depuis 40000,0,52224 (room12 puis room8 y=256), trigger room14 active items 6-12/14-18 status=1 active=1, y tremble 0->2->7->9. Puis SIGSEGV dans FlameControl (GetLaraJointPos effet de brulure) via QuickControlPhase->ControlPhase: LavaBurn/FlameControl, chemin de brulure incomplet. Prochain correctif: securiser GetLaraJointPos/FlameControl. build-gameplay59 SHA256 9b604c38fceea138c2e96c7d2f6257e20a23ccc69a535108bab9ab5d9fecc965; 4177 PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
