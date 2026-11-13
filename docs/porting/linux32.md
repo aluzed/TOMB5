@@ -1535,3 +1535,35 @@ téléportant Lara sur la dernière pente, puis le glissement et le trigger
 `TO_FINISH` sont exécutés par le moteur. Les symboles ont été posés par
 sonde (`PuzzleDone` + `_TestTriggers`), pas par navigation d'inventaire.
 La traversée réelle porte 106 → room 70 est, elle, jouée.
+
+### Entrée dans The Colosseum — repérage (13 novembre 2026, build-gameplay58)
+
+Après la fin de Trajan's Markets, `DoLevel(name=3, gfCurrentLevel=3)` charge
+le niveau 3. État de départ relevé (`level3-recon-20261113/`) :
+`lara room=1 pos=96768,-384,52736`, 125 rooms, 110 items.
+
+Objets utiles du début de niveau :
+
+- `item 100` = `PUSHABLE_OBJECT1` en room 112, `79360,4864,54784`
+  (bloc à anneau de la première salle secrète) ;
+- `item 99` = `PICKUP_ITEM4` (golden rose) en room 112,
+  `81408,4864,57856` ;
+- `item 5` = `TELEPORTER` et items 6–19 = `CRUMBLING_FLOOR`/`EARTHQUAKE`
+  en room 8 autour de `X40448..43520, Z51712..53760` (effondrement
+  au-dessus de la lave) ;
+- `item 75` = `PICKUP_ITEM4`, `item 124` = six `TEETH_SPIKES`
+  (salle finale), etc.
+
+Parcours réellement joué au démarrage (`level3walk-20261113/`) : le
+glissement d'introduction part de `96768,-384,52736` (room 1), traverse
+`room 20` (`x≈92025..85435`, `y` 3718 → 4352), puis `room 2` et s'arrête à
+`77925,4351,52736` (cellule `xx=3 zz=2` de la room 2). La marche vers
+l'ouest y est bloquée ; le carrefour de la room 2 ouvre au nord
+(`zz=0` → rooms 22/5) et au sud (`zz=3` → rooms 19/4). Le bloc
+`PUSHABLE_OBJECT1` est au sud de ce carrefour (`Z54784`).
+
+Limite identifiée : `PUSHABLE_OBJECT1..5` n'ont ni `initialise`, ni
+`control`, ni `collision` dans `PortSetupGameplayObjects` ; le premier
+secret (golden rose item 99) et le passage du bloc ne sont donc pas
+jouables tant que ce comportement n'est pas porté depuis la source PC.
+C'est le prochain travail moteur pour The Colosseum.
