@@ -1504,6 +1504,15 @@
       ],
       "status": "In progress",
       "summary": "Trajan's Markets: walkthrough Stella confirme 3 golden roses = PICKUP_ITEM4 items 14/88/139 et golden coin = item122 PUZZLE_ITEM3 obj174 room166 83456,-1024,19968. Collecte validee (coin122-20261112): puzzleitems[2] 0->1, item.status=3. Placement valide (hole42b/hole42c-20261112): item42 PUZZLE_HOLE3 obj244 room63 78336,-1024,15872; PuzzleDone -> obj252 PUZZLE_DONE3 status=2 flags=15904 et active porte item113 obj288 room134 76288,0,37376 status=1 flags=15904. Aucun flipmap modifie. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
+    },
+    {
+      "date": "2026-11-13",
+      "authorization_until": "2026-11-13T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Trajan's Markets: porte item113 activee par la golden coin (status=1 flags=15904). DoorControl(113) initialise data, anim=601 frame=0. Teleport a 76288,0,37900 reassigne room83 y=-2048; marche sud s'arrete a 76288,-2048,35941. Porte activee mais franchissement encore bloque par l'empilement 5D room134/83. Preuve walk134-20261113/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global."
     }
   ]
 }

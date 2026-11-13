@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
+Trajan's Markets: porte item113 activee par la golden coin (status=1 flags=15904). DoorControl(113) initialise data, anim=601 frame=0. Teleport a 76288,0,37900 reassigne room83 y=-2048; marche sud s'arrete a 76288,-2048,35941. Porte activee mais franchissement encore bloque par l'empilement 5D room134/83. Preuve walk134-20261113/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-11-12
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-12T23:59:00+01:00. Linux32 provisoire.

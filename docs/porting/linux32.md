@@ -1331,6 +1331,13 @@ Placement validé (`hole42b-20261112/`, `hole42c-20261112/`) :
 `76288,0,37376`) : `status=1`, `flags=15904`. C’est la porte « qui s’ouvre
 ailleurs » du walkthrough. Aucun flipmap n’est modifié.
 
+Tentative de traversée (`walk134-20261113/`) : `DoorControl(113)` initialise
+`data` et laisse `status=1`, `flags=15904`, `anim=601`, `frame=0`.
+Le téléport à `76288,0,37900` est reassigné en **room 83** (`y=-2048`) ;
+la marche sud s’arrête à `76288,-2048,35941`. La porte est donc bien
+activée, mais son franchissement relève encore de l’empilement 5D
+(room 134 vs room 83).
+
 Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
 `UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis
 la marche nord retombe dans la room 207 et s’arrête à `77500,0,48031`.
