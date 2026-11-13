@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum hang3/hang4-20261113: detection d'etat par log state=11 trop grossiere pour declencher le shimmy au bon moment; selon le timing Lara part en diagonale et retombe dans le puits state=8 a 41719,5980,54164 room14. Les accroches state=11 et la montee fonctionnent mais la sequence hang->shimmy->coin->pull-up exigera un pilotage par waypoints/captures au lieu d'un tap+lecture de log. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum suspension (hang2-20261113): avec Action+Up et Saut en boucle pendant la traversee, Lara enchaine les accroches state=11 REACH et monte le puits y258->419->1145->2522->4095->5789->6015 rooms 8/12/26/14 puis meurt state=8 a 43513,6015,52224. Les mecaniques accroche/relevement fonctionnent mais l'automatisation saut+Action grimpe trop haut au lieu du shimmy lateral prevu. Il faut une sequence controlee: une accroche, Left pour longer, passage du coin, Up+Action pour se retablir dans le conduit. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

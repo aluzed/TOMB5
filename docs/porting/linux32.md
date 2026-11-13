@@ -1749,3 +1749,12 @@ d’accroche/relèvement fonctionnent donc, mais l’automatisation
 shimmy latéral prévu. Il faut une séquence contrôlée : une accroche,
 `Left` pour longer, passage du coin, puis `Up+Action` pour se rétablir
 dans le conduit.
+
+Essais supplémentaires (`hang3-20261113/`, `hang4-20261113/`) : la
+détection d’état par lecture du log (`state=11`) est trop grossière
+pour déclencher le shimmy au bon moment ; selon le timing, Lara est
+envoyée en diagonale puis retombe dans le puits (`state=8` à
+`41719,5980,54164`, room 14). Les accroches (`state=11`) et la montée
+fonctionnent, mais la séquence hang → shimmy → coin → pull-up demandera
+un pilotage par waypoints (ou des captures) plutôt qu’un simple
+tap+lecture de log.
