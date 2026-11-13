@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+Trajan's Markets: triggers des receptacles VENUS/MARS ciblent item106 CLOSED_DOOR1 obj300 room116 51712,-256,27136 + effets portal/flamme/X-ray. Correctif moteur build-gameplay58: PortSetupGameplayObjects assigne DoorControl/DoorCollision aux CLOSED_DOOR1..6 non-MIP comme le setup PC. Apres placement des symboles, item106 passe a status=1 flags=15904 data initialise et DoorControl(106) l'anime; avant, control NULL laissait la porte inactive. Traversee reelle de la porte restant a jouer. Build propre encore bloque par declarations preexistantes (anims COLLIDE, GetFloor OBJLIGHT, input TRAPS, TestCollision/GLOBAL_ SWITCH); build58 produit par recompilation SETUP.C + link des objets build57. SHA256 f00f70e094d8ecb250ec872088aad6422a75d7d62e7ee8e4941c1ba1b60b7410; tests 4177 PASS. Preuve closeddoor-20261113/. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 Trajan's Markets: symboles VENUS/MARS valides. item49 PUZZLE_ITEM5 room64 collecte (puzzleitems[4]=1 status=3); item63 PUZZLE_ITEM4 room69 collecte (puzzleitems[3]=1 status=3). Placement item95 PUZZLE_HOLE4 et item96 PUZZLE_HOLE5 -> objets253/254 PUZZLE_DONE4/5 status=1 flags=15904. Aucun flipmap modifie ni porte 284-295 apres placement; porte finale des deux symboles reste a identifier (trigger hors plage ou cutscene/fin). Preuve symbols-20261113/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

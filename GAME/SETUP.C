@@ -997,6 +997,16 @@ static void PortSetupGameplayObjects(void)
 			objects[i].collision = &DoorCollision;
 			objects[i].control = &DoorControl;
 		}
+		else if (i >= CLOSED_DOOR1 && i <= CLOSED_DOOR6 && !(i & 1))
+		{
+			/* Portes "closed" (item 106 etc.) : le trigger des symboles
+			 * les cible en TO_OBJECT ; sans contrôle elles restent inactives. */
+			objects[i].collision = &DoorCollision;
+			objects[i].control = &DoorControl;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+			objects[i].save_mesh = TRUE;
+		}
 		else if (i == DOUBLE_DOORS)
 		{
 			objects[i].collision = &DoubleDoorCollision;

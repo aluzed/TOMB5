@@ -1377,8 +1377,23 @@ Symboles VENUS/MARS validés (`symbols-20261113/`) :
   `flags=15904`.
 
 Aucun flipmap n’est modifié et aucune porte de la plage 284–295 ne change
-d’état après le placement. La porte finale déclenchée par les deux symboles
-reste à identifier (trigger hors de cette plage ou cutscene/fin de niveau).
+d’état après le placement. Les triggers des deux réceptacles ciblent
+cependant `item 106` (`CLOSED_DOOR1`, obj 300, room 116,
+`51712,-256,27136`) en plus des effets (portal, flammes, X-ray).
+
+Correctif moteur (`build-gameplay58`, `closeddoor-20261113/`) :
+`PortSetupGameplayObjects` assigne désormais `DoorControl` / `DoorCollision`
+aux objets `CLOSED_DOOR1..CLOSED_DOOR6` (non-MIP), comme le setup PC.
+Après placement des symboles, `item 106` passe à `status=1`,
+`flags=15904`, `data` initialisé, et `DoorControl(106)` l’anime. Le contrôle
+manquait auparavant (`control == NULL`), ce qui laissait la porte inactive.
+La traversée réelle de cette porte reste à jouer.
+
+Remarque build : le build propre échoue encore sur des déclarations
+préexistantes (`anims` dans COLLIDE.C, `GetFloor` dans OBJLIGHT.C, `input`
+dans TRAPS.C, `TestCollision`/`GLOBAL_*` dans SWITCH.C). `build-gameplay58`
+a été produit en recompilant uniquement `SETUP.C` puis en reliant les objets
+de `build-gameplay57`.
 
 Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
 `UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis
