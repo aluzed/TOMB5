@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+Trajan's Markets: geometrie corrigee (GetFloor PSX transpose index=zz+xx*x_size). Salle 116: receptacles cellules xx1/zz4 et xx1/zz6, passage ouest xx0/zz5 -> room70, porte item106 CLOSED_DOOR1 a 51712,-256,27136. Traversee reelle validee walkgate-20261113: 52000,-256,27136 face ouest -> room116->70 a x50585 -> room204 a x49097 (y -256->1536 par pit_room=204); blocage a x47205 sur cellule solide xx5/zz2 de room204 (X46080..47104), sauts sans effet (spike/spike2/spike3-20261113). Caverne finale: pont zz2 y=1536 avec TEETH_SPIKES items132-137 X44544..50688; room241 corniche y0/2304/3584 ouvre room233; room233 couloir X33792..43008 Z25600..28672, sol 2304->9728 vers l'ouest, trigger TO_FINISH idx5606 en X37888,Z26624. levelend2-20261113: depuis 42100,2304,27136 glissement scripte state24 anim70 jusqu'a x38887 y6680 -> gfLevelComplete=3, puis DoLevel name=3 gfCurrentLevel=3: The Colosseum charge. Limites: pont a pointes non franchi (mur plein), fin atteinte par teleport sur la derniere pente puis glissement+trigger executes par le moteur; symboles poses par sonde PuzzleDone+_TestTriggers. Preuves geom-20261113, geo2-20261113, walkgate-20261113, spike*-20261113, finish-20261113, levelend2-20261113. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 Trajan's Markets: triggers des receptacles VENUS/MARS ciblent item106 CLOSED_DOOR1 obj300 room116 51712,-256,27136 + effets portal/flamme/X-ray. Correctif moteur build-gameplay58: PortSetupGameplayObjects assigne DoorControl/DoorCollision aux CLOSED_DOOR1..6 non-MIP comme le setup PC. Apres placement des symboles, item106 passe a status=1 flags=15904 data initialise et DoorControl(106) l'anime; avant, control NULL laissait la porte inactive. Traversee reelle de la porte restant a jouer. Build propre encore bloque par declarations preexistantes (anims COLLIDE, GetFloor OBJLIGHT, input TRAPS, TestCollision/GLOBAL_ SWITCH); build58 produit par recompilation SETUP.C + link des objets build57. SHA256 f00f70e094d8ecb250ec872088aad6422a75d7d62e7ee8e4941c1ba1b60b7410; tests 4177 PASS. Preuve closeddoor-20261113/. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

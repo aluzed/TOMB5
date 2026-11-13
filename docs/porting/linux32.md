@@ -1477,3 +1477,61 @@ PORT-002/menu et gameplay non validés.
 ## Analyse géométrie Trajan's Markets, empilement 5D 207/201/214/213 (données, 2026-11-08, non validée en jeu)
 
 Extraction NTSC USA LBA 18404 (252 rooms) via `offsetRoomInfo`/`roomInfoLength`. Puits `207(75776,43008,-1024) sky=201 → 201 pit=207,sky=199 → 199 pit=201,sky=200 → 200 pit=199` : aucun sol atterrissable (201 intérieur tout `pit=207`). Aucun `CLIMB`/`MONKEY` floor_data dans la zone. Hub `209(sky=11,pit=10, portails 10/11/201/206/210/213)` : `207→10` plat, `10→209` +256u (sky/pit). Montées +1024u sans `CLIMB` (rebord à valider) : nord `213(sky=45)→45`, `214(sky=12)→12` (vers `202`) ; est `210→48/211→49/212→5` (`212↔50` départ). Route plausible : `207→10→209` puis branche nord ou est ; **validation moteur requise**. Détail : [runtime-level.md](runtime-level.md).
+
+### Porte des symboles franchie et fin de Trajan's Markets (13 novembre 2026, build-gameplay58)
+
+Géométrie corrigée de la salle des symboles (`geom-20261113/`, `geo2-20261113/`) :
+
+- `room 116` (X50176..56320, Z21504..31744), sol principal `y=-256`.
+  Les deux réceptacles sont aux cellules `xx=1 zz=4` (X51200..52224,
+  Z25600..26624) et `xx=1 zz=6` (Z27648..28672). Les triggers `KEY` 2907 et
+  2915 ciblent `item 95`/`item 96` puis `item 106` (`CLOSED_DOOR1`) et les
+  effets 103/102/101/97 (flamme, X-ray, portal).
+- Le passage ouest de la salle est la cellule `xx=0 zz=5`
+  (X50176..51200, Z26624..27648), avec `index` de porte vers `room 70`.
+  La porte `item 106` est placée à `51712,-256,27136`, juste devant ce
+  passage ; les deux réceptacles l'encadrent au nord et au sud.
+- Le moteur `GetFloor` PSX est **transposé** : `index = zz + xx*x_size`
+  (`x_size` = nombre de cellules en Z, `y_size` = nombre en X). Les dumps
+  antérieurs qui utilisaient `zz*x_size+xx` étaient donc transposés.
+
+Traversée réelle de la porte (`walkgate-20261113/`) : après placement des
+deux symboles (même chemin que le jeu : `PuzzleDone` + `_TestTriggers` sur
+les cellules des réceptacles), `DoorControl(106)` anime la porte
+(`status=1`, `flags=15904`, `anim=613`). Depuis `52000,-256,27136` face à
+l'ouest, la marche réelle passe `room 116 → room 70` à `x=50585`, puis
+`room 204` à `x=49097` (`y` passe de `-256` à `1536` par le trou
+`pit_room=204`). Elle s'arrête à `x=47205` : la cellule `xx=5 zz=2` de la
+room 204 (`X46080..47104`) a `floor=1536`, `ceiling=0` et un `index` de
+porte vers la room 70 ; elle est traitée comme un mur plein. Les sauts
+successifs ne la franchissent pas (`spike-20261113/`, `spike2-20261113/`,
+`spike3-20261113/`).
+
+Géométrie de la caverne finale :
+
+- la rangée `zz=2` de la room 204 est un pont surélevé à `y=1536` avec six
+  `TEETH_SPIKES` (items 132–137, X44544..50688, Z27136) ; `TEETH_SPIKES`
+  n'a aucun contrôle/collision dans le port, mais le pont est coupé par la
+  cellule solide ci-dessus ;
+- à l'ouest, `room 241` (X40960..44032, Z25600..28672) forme la corniche
+  intermédiaire (`y=0/2304/3584`) et sa cellule `xx=0 zz=1` ouvre sur
+  `room 233` ;
+- `room 233` (X33792..43008, Z25600..28672) est un couloir descendant dont
+  le sol remonte vers l'ouest de `2304` à `9728` ; le trigger `TO_FINISH`
+  (idx 5606) est en `xx=4 zz=1`, soit **X37888, Z26624** ;
+- le déclencheur final est donc bien `FINISH:0` en room 233, et non une
+  porte de la plage 284–295.
+
+Fin de niveau et transition (`finish-20261113/`, `levelend2-20261113/`) :
+depuis `42100,2304,27136` (room 233), la pente déclenche le glissement
+scripté (`state=24`, `anim=70`) vers l'ouest : `42100 → 41029 → 39958 →
+38887`, `y` 2304 → 6680. En entrant dans la cellule du trigger,
+`gfLevelComplete` passe à **3** ; `DoLevel` est ensuite appelé avec
+`name=3` et `gfCurrentLevel=3` : **The Colosseum** est chargé.
+
+Limites honnêtes de ce jalon : le pont à pointes n'a pas été franchi en
+marche/saut (mur plein en X46080..47104) ; la fin a été atteinte en
+téléportant Lara sur la dernière pente, puis le glissement et le trigger
+`TO_FINISH` sont exécutés par le moteur. Les symboles ont été posés par
+sonde (`PuzzleDone` + `_TestTriggers`), pas par navigation d'inventaire.
+La traversée réelle porte 106 → room 70 est, elle, jouée.
