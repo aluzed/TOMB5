@@ -1367,6 +1367,19 @@ le bassin. Les symboles VENUS/MARS sont probablement parmi les objets
 La room 70 contient le mécanisme `ANIMATING5` et la trappe `item 71`
 (Mouth of Truth), près du bassin.
 
+Symboles VENUS/MARS validés (`symbols-20261113/`) :
+- `item 49` = `PUZZLE_ITEM5` (room 64) collecté : `puzzleitems[4]=1`,
+  `status=3` ;
+- `item 63` = `PUZZLE_ITEM4` (room 69) collecté : `puzzleitems[3]=1`,
+  `status=3` ;
+- placement dans `item 95` (`PUZZLE_HOLE4`) et `item 96`
+  (`PUZZLE_HOLE5`) : objets 253/254 (`PUZZLE_DONE4/5`), `status=1`,
+  `flags=15904`.
+
+Aucun flipmap n’est modifié et aucune porte de la plage 284–295 ne change
+d’état après le placement. La porte finale déclenchée par les deux symboles
+reste à identifier (trigger hors de cette plage ou cutscene/fin de niveau).
+
 Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
 `UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis
 la marche nord retombe dans la room 207 et s’arrête à `77500,0,48031`.
