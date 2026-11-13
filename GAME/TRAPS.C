@@ -23,6 +23,7 @@
 	#include "BUBBLES.H"
 	#include "GETSTUFF.H"
 	#include "CALCLARA.H"
+	#include "PSXINPUT.H"
 #endif
 
 #include <stdio.h>

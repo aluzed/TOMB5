@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum: recompilation TRAPS.C rendue possible (PSXINPUT.H + weak SetLaraPosition/MoveLaraPositionToItem copies de COLLIDE.C dans MOVEBLOK.C, car COLLIDE.C.o build57 les omet). build-gameplay59 SHA256 ef47e93331245163904e384a2c8a8ae92b15e44cf3dd6461e6598d67af7f66f1. Le crash change de forme (crumble4/crumble5-20261113): SIGSEGV reproductible dans DrawAggregatedSplits EMULATOR/LIBGPU.C:436 via VSync->LOAD_VSyncHandler->DrawOTag, taille DEL_CDFS_Read negative (-16388) et pile remontant a DoTitle/LoadLevel. Ce n'est plus FlameControl: l'effondrement+lave corrompent l'etat memoire (FallingBlock/KillItem/effects), symptome dependant de l'objet TRAPS lie. Prochain: instrumentation FallingBlock/KillItem/AddActiveItem/effects avec build entierement propre. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum crash effondrement isole (burn2-20261113): LaraBurn() force au demarrage du niveau cree l'effet de feu (lara.burn=1, effects valide) et ne provoque aucun SIGSEGV dans FlameControl sur 120s. Donc le crash de crumble2 n'est pas le chemin de brulure seul: il depend des items CRUMBLING_FLOOR/FallingBlock et des effets manipules pendant l'effondrement (FlameControl sur slot d'effet corrompu). Prochain: instrumentation FallingBlock/KillItem/RemoveActiveItem pendant l'effondrement avec backtrace registres+pile. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

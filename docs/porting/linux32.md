@@ -1688,3 +1688,23 @@ le chemin de brûlure seul : il dépend des items `CRUMBLING_FLOOR` /
 l’effondrement). Prochaine investigation : instrumentation de
 `FallingBlock`/`KillItem`/`RemoveActiveItem` pendant l’effondrement,
 avec un backtrace complet des registres et de la pile.
+
+Tentative de recompilation propre de `TRAPS.C` : `PSXINPUT.H` ajouté
+(corrige l’erreur préexistante `input`), et deux définitions **faibles**
+ajoutées dans `MOVEBLOK.C` (`SetLaraPosition`, `MoveLaraPositionToItem`,
+copiées de `GAME/COLLIDE.C`) pour combler les symboles absents du
+`COLLIDE.C.o` de build57. `TRAPS.C` compile et se lie
+(`build-gameplay59`, SHA256
+`ef47e93331245163904e384a2c8a8ae92b15e44cf3dd6461e6598d67af7f66f1`).
+
+Le crash change de forme (`crumble4/`, `crumble5-20261113/`) : il devient
+un SIGSEGV reproductible dans `DrawAggregatedSplits`
+(`EMULATOR/LIBGPU.C:436`) via `VSync → LOAD_VSyncHandler → DrawOTag`,
+avec une taille de lecture CD **négative** (`DEL_CDFS_Read size=-16388`)
+et une pile qui remonte à `DoTitle`/`LoadLevel`. Ce n’est plus
+`FlameControl` : l’effondrement + la lave corrompent l’état mémoire
+(probablement via `FallingBlock`/`KillItem`/effets), et le symptôme
+dépend de l’objet `TRAPS.C` lié. Prochaine étape : instrumentation de
+`FallingBlock`/`KillItem`/`AddActiveItem` et de `effects` pendant
+l’effondrement, avec un build entièrement propre pour éliminer les
+objets hétérogènes.
