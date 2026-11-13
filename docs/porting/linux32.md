@@ -1567,3 +1567,51 @@ Limite identifiée : `PUSHABLE_OBJECT1..5` n'ont ni `initialise`, ni
 secret (golden rose item 99) et le passage du bloc ne sont donc pas
 jouables tant que ce comportement n'est pas porté depuis la source PC.
 C'est le prochain travail moteur pour The Colosseum.
+
+### Blocs poussables portés — The Colosseum (13 novembre 2026, build-gameplay59)
+
+`PUSHABLE_OBJECT1..5` n’avaient ni `initialise`, ni `control`, ni
+`collision`. Portage depuis `game/moveblok.cpp` de la source PC :
+
+- nouveau module `GAME/MOVEBLOK.C` / `MOVEBLOK.H` :
+  `InitialiseMovingBlock`, `MovableBlock`, `MovableBlockCollision`,
+  `TestBlockPush`, `TestBlockPull` ;
+- `PortCollidedObjects` : sous-ensemble local de `GetCollidedObjects`
+  (la version globale du port est un stub ; les blocs ne consultent que
+  la liste d’items, sans statiques) ;
+- `PortSetupGameplayObjects` assigne ces trois handlers à
+  `PUSHABLE_OBJECT1..PUSHABLE_OBJECT5` (`save_position`, `save_flags`).
+
+Réception jouée (`push100e-20261113/`, `push100f-20261113/`,
+`build-gameplay59`, SHA256 `52c73c373ee86ed6c5c3a08e60eb14c51cb9350550f38797079551f759b0b4a3`) :
+
+- `item 100` (bloc à anneau, room 112, `79360,4864,54784`), bounds
+  `[-512,512,-1024,0,-512,512]` ;
+- depuis le sud (`55300,4864,54784` face au nord), `MovableBlockCollision`
+  accroche Lara : `MoveLaraPosition` la cale à `79360,4864,55391`,
+  `state=38` (`PUSHABLE_GRAB`), `anim=120` ;
+- à la fin de l’animation ready (frame 2067), `IN_FORWARD` déclenche
+  `state=36` (`PUSHABLE_PUSH`), `anim=123`, `item 100.status=1` ;
+- le bloc suit la main : `z` 54784 → 54583 → 54427 → 54346 → 54092 →
+  53929 → 53790, puis se cale à **53760** (−1024) ; Lara sort par
+  `anim=417` (`PUSHABLE_PUSH_TO_STAND`) et `TestTriggers` est appelé à la
+  nouvelle position ; `item 100.status` revient à 0.
+- L’approche par le nord échoue : le snap place Lara à `54177`, que
+  `UpdateLaraRoom` réassigne à la **room 19** alors que le bloc est en
+  room 112 ; `PortCollideItems` n’appelle donc plus le handler et la
+  transition ready→push ne part pas. C’est une limite de l’empilement de
+  rooms, pas du portage.
+
+Limite préexistante confirmée : `GetSpheres` est `UNIMPLEMENTED()` dans
+`SPEC_PSXPC_N/SPHERES.C`, donc `TestCollision` renvoie toujours 0 et
+`ObjectCollision` ne repousse pas Lara contre les objets. Le bloc peut
+être traversé si Lara marche dedans sans être accrochée ; l’accroche
+`TestLaraPosition`/`MoveLaraPosition` fonctionne, elle. Prochain travail :
+`GetSpheres` pour rétablir la collision solide générale.
+
+Le secret lui-même (golden rose `item 99`, room 112,
+`81408,4864,57856`) n’a pas encore été ramassé : le bloc a seulement été
+poussé d’une case vers le nord. Le build propre reste bloqué par les
+déclarations préexistantes ; `build-gameplay59` a été produit en
+recompilant `MOVEBLOK.C` et `SETUP.C` puis en ajoutant l’objet au
+`link.txt` de `build-gameplay58`.

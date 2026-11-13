@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum: portage PUSHABLE_OBJECT1..5 depuis game/moveblok.cpp (nouveau GAME/MOVEBLOK.C/.H: InitialiseMovingBlock, MovableBlock, MovableBlockCollision, TestBlockPush/Pull + PortCollidedObjects sous-ensemble local car GetCollidedObjects global est un stub). PortSetupGameplayObjects assigne initialise/control/collision + save_position/save_flags. build-gameplay59 SHA256 52c73c373ee86ed6c5c3a08e60eb14c51cb9350550f38797079551f759b0b4a3; tests 4177 PASS. Runtime push100e/push100f: item100 room112 79360,4864,54784 bounds -512..512/-1024..0; depuis le sud 55300 face nord, accroche state38 anim120 snap 79360,4864,55391; fin ready frame 2067 + IN_FORWARD -&gt; state36 anim123 status1; bloc z 54784-&gt;53760 (-1024) puis anim417 et TestTriggers; status revient 0. Approche nord echoue: snap 54177 reassigne room19 alors que le bloc est room112, donc PortCollideItems ne dispatche plus (limite empilement rooms). Limite preexistante: GetSpheres UNIMPLEMENTED dans SPEC_PSXPC_N/SPHERES.C donc TestCollision=0 et ObjectCollision ne repousse pas; le bloc est traversable sans accroche. Golden rose item99 81408,4864,57856 pas encore ramassee. Build59 produit en recompilant MOVEBLOK.C+SETUP.C et ajout objet au link.txt de build58 (build propre toujours bloque par declarations preexistantes). Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum: niveau 3 charge via DoLevel name=3 gfCurrentLevel=3. Recon level3-recon-20261113: 125 rooms, 110 items, Lara room1 96768,-384,52736. Objets: item100 PUSHABLE_OBJECT1 room112 79360,4864,54784; item99 PICKUP_ITEM4 room112 81408,4864,57856; item5 TELEPORTER + items6-19 CRUMBLING_FLOOR/EARTHQUAKE room8 X40448..43520 Z51712..53760; item124 six TEETH_SPIKES. Parcours joue level3walk-20261113: glissement initial 96768,-384,52736 room1 -&gt; room20 x92025..85435 y3718-&gt;4352 -&gt; room2, arret 77925,4351,52736 cellule xx3/zz2; carrefour room2 ouvre zz0-&gt;rooms22/5 et zz3-&gt;rooms19/4; bloc pushable au sud Z54784. Blocage moteur: PUSHABLE_OBJECT1..5 sans initialise/control/collision dans PortSetupGameplayObjects, donc premier secret et passage du bloc non jouables; portage PC a faire. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

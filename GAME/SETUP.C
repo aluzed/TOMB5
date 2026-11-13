@@ -29,6 +29,7 @@
 
 #include "LOT.H"
 #include "MALLOC.H"
+#include "MOVEBLOK.H"
 
 #include "NEWINV2.H"
 #include "OBJECTS.H"
@@ -1006,6 +1007,16 @@ static void PortSetupGameplayObjects(void)
 			objects[i].save_flags = TRUE;
 			objects[i].save_anim = TRUE;
 			objects[i].save_mesh = TRUE;
+		}
+		else if (i >= PUSHABLE_OBJECT1 && i <= PUSHABLE_OBJECT5)
+		{
+			/* Blocs poussables (The Colosseum, item 100) : handlers absents
+			 * du port, portes depuis game/moveblok.cpp. */
+			objects[i].initialise = &InitialiseMovingBlock;
+			objects[i].control = &MovableBlock;
+			objects[i].collision = &MovableBlockCollision;
+			objects[i].save_position = TRUE;
+			objects[i].save_flags = TRUE;
 		}
 		else if (i == DOUBLE_DOORS)
 		{
