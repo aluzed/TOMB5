@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum premier secret: apres push du bloc item100 z54784->53760, Lara replaciee dans la case liberee 79360,4864,54784 face au sud-est marche jusqu'a 81570,4864,58071 room112 sans obstacle (rose99-20261113): passage ouvert. Ramassage golden rose item99 81408,4864,57856 echoue de peu (rose99b-20261113): PickUpCollision->MoveLaraPosition tolerance 256, cible z=57756, arret a z=58022 (delta 266), TestLaraPosition passe. Marche lente Shift_R inoperante dans l'automatisation (input=0x2c0 sans IN_FORWARD); 3 essais suivants bloques sur demarrage titre cutscene11 en boucle. Reste a rejouer en teleportant Lara sur 81408,4864,57756 puis Action. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum: portage PUSHABLE_OBJECT1..5 depuis game/moveblok.cpp (nouveau GAME/MOVEBLOK.C/.H: InitialiseMovingBlock, MovableBlock, MovableBlockCollision, TestBlockPush/Pull + PortCollidedObjects sous-ensemble local car GetCollidedObjects global est un stub). PortSetupGameplayObjects assigne initialise/control/collision + save_position/save_flags. build-gameplay59 SHA256 52c73c373ee86ed6c5c3a08e60eb14c51cb9350550f38797079551f759b0b4a3; tests 4177 PASS. Runtime push100e/push100f: item100 room112 79360,4864,54784 bounds -512..512/-1024..0; depuis le sud 55300 face nord, accroche state38 anim120 snap 79360,4864,55391; fin ready frame 2067 + IN_FORWARD -> state36 anim123 status1; bloc z 54784->53760 (-1024) puis anim417 et TestTriggers; status revient 0. Approche nord echoue: snap 54177 reassigne room19 alors que le bloc est room112, donc PortCollideItems ne dispatche plus (limite empilement rooms). Limite preexistante: GetSpheres UNIMPLEMENTED dans SPEC_PSXPC_N/SPHERES.C donc TestCollision=0 et ObjectCollision ne repousse pas; le bloc est traversable sans accroche. Golden rose item99 81408,4864,57856 pas encore ramassee. Build59 produit en recompilant MOVEBLOK.C+SETUP.C et ajout objet au link.txt de build58 (build propre toujours bloque par declarations preexistantes). Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

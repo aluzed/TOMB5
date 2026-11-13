@@ -1615,3 +1615,22 @@ poussé d’une case vers le nord. Le build propre reste bloqué par les
 déclarations préexistantes ; `build-gameplay59` a été produit en
 recompilant `MOVEBLOK.C` et `SETUP.C` puis en ajoutant l’objet au
 `link.txt` de `build-gameplay58`.
+
+### Premier secret de The Colosseum — état (13 novembre 2026)
+
+Après le portage des blocs poussables, le bloc `item 100` a été poussé
+d’une case (`z 54784 → 53760`) puis Lara a été replacée dans la case
+libérée `79360,4864,54784` face au sud-est (`rose99-20261113/`). La marche
+atteint `81570,4864,58071` (room 112) sans obstacle : le passage vers la
+salle du secret est donc ouvert après la poussée.
+
+Le ramassage de la golden rose `item 99` (`81408,4864,57856`) échoue de
+peu (`rose99b-20261113/`) : `PickUpCollision` exige
+`MoveLaraPosition`, qui tolère 256 unités ; la cible est
+`z = 57856 - 100 = 57756` et Lara s’arrête à `z = 58022`, soit 266 unités.
+`TestLaraPosition` passe, mais le snap échoue de 10 unités. Le pas de
+marche (`Shift_R`) n’a pas fonctionné dans l’automatisation
+(`input=0x2c0`, sans `IN_FORWARD`) et les tentatives suivantes sont
+restées bloquées sur le démarrage titre (cutscene 11 en boucle, trois
+essais). Le ramassage reste donc à rejouer en téléportant Lara sur la
+cible exacte `81408,4864,57756` puis en maintenant Action.
