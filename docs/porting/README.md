@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum suspension (hang2-20261113): avec Action+Up et Saut en boucle pendant la traversee, Lara enchaine les accroches state=11 REACH et monte le puits y258->419->1145->2522->4095->5789->6015 rooms 8/12/26/14 puis meurt state=8 a 43513,6015,52224. Les mecaniques accroche/relevement fonctionnent mais l'automatisation saut+Action grimpe trop haut au lieu du shimmy lateral prevu. Il faut une sequence controlee: une accroche, Left pour longer, passage du coin, Up+Action pour se retablir dans le conduit. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum apres le gouffre (crosswalk/climb-20261113): Lara poursuit jusqu'a 43931,768,52224 room12 puis bute sur l'issue fermee; sauts simples state15/28 retombent au meme point. Passage prevu = rebord au-dessus de la fosse de lave: saut vers l'est avec Action pour s'y suspendre, shimmy gauche, coin, retablissement dans le conduit. Crash intermittent DrawAggregatedSplits LIBGPU.C:436 via VSync->LOAD_VSyncHandler->DrawOTag et pile DEL_CDFS_Read/LoadLevel/DoTitle au demarrage du niveau 3 avant deplacement; le franchissement du gouffre a reussi dans crumble6. Ce crash de transition/rechargement est a traiter separement. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

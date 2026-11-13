@@ -1738,3 +1738,14 @@ Attention : l’extension de test a rencontré un crash **intermittent**
 le déplacement de Lara. Le franchissement du gouffre, lui, a réussi dans
 une exécution (`crumble6`). Ce crash de transition/rechargement doit être
 traité séparément de la géométrie du niveau.
+
+Essai de suspension (`hang2-20261113/`) : en maintenant **Action + Up**
+et en tapant Saut pendant la traversée, Lara enchaîne les accroches de
+rebord (`state=11 REACH`) et monte le long du puits :
+`y 258 → 419 → 1145 → 2522 → 4095 → 5789 → 6015` (rooms 8/12/26/14),
+puis meurt (`state=8`) à `43513,6015,52224`. Les mécaniques
+d’accroche/relèvement fonctionnent donc, mais l’automatisation
+« saut+Action en boucle » grimpe trop haut au lieu de faire le
+shimmy latéral prévu. Il faut une séquence contrôlée : une accroche,
+`Left` pour longer, passage du coin, puis `Up+Action` pour se rétablir
+dans le conduit.
