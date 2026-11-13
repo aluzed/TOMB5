@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum premier secret valide (rose99h-20261113): apres push du bloc item100 z54784->53760, teleport Lara a 81408,4864,57400 (decalage collision +356 en Z -> 57756 = cible PickUpPosition item99 a 57856 z-100); maintien Action -> PickUpCollision MoveLaraPosition, state=39 STATE_LARA_PICKUP, item99.status=3 ITEM_INVISIBLE. Golden rose collectee. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum premier secret: apres push du bloc item100 z54784->53760, Lara replaciee dans la case liberee 79360,4864,54784 face au sud-est marche jusqu'a 81570,4864,58071 room112 sans obstacle (rose99-20261113): passage ouvert. Ramassage golden rose item99 81408,4864,57856 echoue de peu (rose99b-20261113): PickUpCollision->MoveLaraPosition tolerance 256, cible z=57756, arret a z=58022 (delta 266), TestLaraPosition passe. Marche lente Shift_R inoperante dans l'automatisation (input=0x2c0 sans IN_FORWARD); 3 essais suivants bloques sur demarrage titre cutscene11 en boucle. Reste a rejouer en teleportant Lara sur 81408,4864,57756 puis Action. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

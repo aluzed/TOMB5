@@ -1634,3 +1634,12 @@ marche (`Shift_R`) n’a pas fonctionné dans l’automatisation
 restées bloquées sur le démarrage titre (cutscene 11 en boucle, trois
 essais). Le ramassage reste donc à rejouer en téléportant Lara sur la
 cible exacte `81408,4864,57756` puis en maintenant Action.
+
+Mise à jour : la golden rose a été ramassée (`rose99h-20261113/`).
+Le téléport à `81408,4864,57400` subit le décalage de collision habituel
+(+356 en Z) et laisse Lara à `57756`, exactement la cible de
+`PickUpPosition` (`item 99` est en `57856`, `z - 100`). Maintien
+d’Action : `PickUpCollision` cale Lara (`MoveLaraPosition`), passe
+`state=39` (`STATE_LARA_PICKUP`) et `item 99.status=3`
+(`ITEM_INVISIBLE`). Le premier secret de The Colosseum est donc validé
+après la poussée du bloc.
