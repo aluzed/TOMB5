@@ -1708,3 +1708,17 @@ dépend de l’objet `TRAPS.C` lié. Prochaine étape : instrumentation de
 `FallingBlock`/`KillItem`/`AddActiveItem` et de `effects` pendant
 l’effondrement, avec un build entièrement propre pour éliminer les
 objets hétérogènes.
+
+Franchissement du premier gouffre (`crumble6-20261113/`) : le trigger
+d’effondrement se prend en regardant vers l’**est** (`y_rot=0x4000`),
+pas vers l’ouest. Depuis `40000,0,52224` (room 12), Lara entre dans la
+room 8, les dalles s’activent (`status=1`), elle saute (`state=3`) quand
+la grille commence à tomber, puis se réceptionne à `y=768` et poursuit
+jusqu’à `43931,768,52224` (room 12). Les items 6–12 et 14–18 finissent
+`active=0` (tombés). **Aucun SIGSEGV.**
+
+Le crash `FlameControl`/`DrawAggregatedSplits` des essais précédents
+venait donc de la direction opposée : en marchant vers l’ouest depuis la
+cellule de trigger, Lara sortait de la zone et tombait dans la lave
+derrière, déclenchant la mort puis le rechargement de niveau corrompu.
+Le chemin prévu (est) est, lui, franchissable.

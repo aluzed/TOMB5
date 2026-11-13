@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum premier gouffre franchi (crumble6-20261113): le trigger d&#x27;effondrement se prend face a l&#x27;est y_rot=0x4000. Depuis 40000,0,52224 room12, Lara entre room8, dalles status=1, saut state=3 pendant la chute, reception y=768, poursuite jusqu&#x27;a 43931,768,52224 room12. Items 6-12/14-18 actifs puis active=0 (tombes). Aucun SIGSEGV. Le crash FlameControl/DrawAggregatedSplits precedent venait de la direction opposee (marche ouest -&gt; lave derriere le trigger -&gt; mort -&gt; rechargement de niveau corrompu). Le chemin est est franchissable. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum: recompilation TRAPS.C rendue possible (PSXINPUT.H + weak SetLaraPosition/MoveLaraPositionToItem copies de COLLIDE.C dans MOVEBLOK.C, car COLLIDE.C.o build57 les omet). build-gameplay59 SHA256 ef47e93331245163904e384a2c8a8ae92b15e44cf3dd6461e6598d67af7f66f1. Le crash change de forme (crumble4/crumble5-20261113): SIGSEGV reproductible dans DrawAggregatedSplits EMULATOR/LIBGPU.C:436 via VSync-&gt;LOAD_VSyncHandler-&gt;DrawOTag, taille DEL_CDFS_Read negative (-16388) et pile remontant a DoTitle/LoadLevel. Ce n&#x27;est plus FlameControl: l&#x27;effondrement+lave corrompent l&#x27;etat memoire (FallingBlock/KillItem/effects), symptome dependant de l&#x27;objet TRAPS lie. Prochain: instrumentation FallingBlock/KillItem/AddActiveItem/effects avec build entierement propre. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
