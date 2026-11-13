@@ -74,6 +74,15 @@ static void ClearMovableBlockSplitters(long x, long y, long z, short room_number
 	}
 }
 
+/* Initialiseur des sols/blocs qui s'effondrent (CRUMBLING_FLOOR,
+ * FALLING_BLOCK). TRAPS.C ne peut pas encore etre recompile (COLLIDE.C
+ * depend d'un MoveLaraPositionToItem absent des objets de build57), donc
+ * ce petit helper vit ici en attendant un build propre. */
+void PortInitialiseFallingBlock2(short item_number)
+{
+	items[item_number].mesh_bits = 1;
+}
+
 void InitialiseMovingBlock(short item_number)
 {
 	struct ITEM_INFO* item = &items[item_number];

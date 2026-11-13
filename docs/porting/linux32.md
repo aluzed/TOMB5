@@ -1643,3 +1643,37 @@ d’Action : `PickUpCollision` cale Lara (`MoveLaraPosition`), passe
 `state=39` (`STATE_LARA_PICKUP`) et `item 99.status=3`
 (`ITEM_INVISIBLE`). Le premier secret de The Colosseum est donc validé
 après la poussée du bloc.
+
+### Sols qui s’effondrent — The Colosseum (13 novembre 2026, build-gameplay59)
+
+`FALLING_BLOCK`, `FALLING_BLOCK2` et `CRUMBLING_FLOOR` n’étaient pas
+assignés, alors que `FallingBlock`, `FallingBlockCollision`,
+`FallingBlockFloor` et `FallingBlockCeiling` existent déjà dans
+`GAME/TRAPS.C`.
+
+- `PortInitialiseFallingBlock2` (`mesh_bits = 1`) a été ajouté dans
+  `GAME/MOVEBLOK.C` : `TRAPS.C` ne peut pas encore être recompilé
+  (`COLLIDE.C` dépend d’un `MoveLaraPositionToItem` absent des objets
+  de build57, et l’include GTEREG casse la compilation stricte).
+- `PortSetupGameplayObjects` assigne le contrôle, la collision, le
+  `floor`/`ceiling` et les sauvegardes à
+  `FALLING_BLOCK..CRUMBLING_FLOOR`, avec un cast ABI-compatible pour
+  `FallingBlockFloor/Ceiling` (`long*` → `int*`).
+
+Essai runtime (`crumble-20261113/`, `crumble2-20261113/`) : depuis
+`40000,0,52224` (room 12, puis room 8 à `y=256`), le trigger de la
+room 14 active bien les items 6–12 et 14–18 (`status=1`, `active=1`) ;
+leurs `y` tremblent (0 → 2 → 7 → 9). Le mécanisme d’effondrement est
+donc branché.
+
+Il déclenche toutefois un **SIGSEGV dans `FlameControl`**
+(`GetLaraJointPos` sur l’effet de brûlure), via
+`QuickControlPhase → ControlPhase`. La chute dans la lave active
+`LavaBurn`/`FlameControl`, et le chemin de brûlure de Lara est
+incomplet dans le port. Prochain correctif : sécuriser
+`GetLaraJointPos`/`FlameControl` pour les effets de feu, avant de
+rejouer la traversée du gouffre de lave.
+
+Build : `build-gameplay59`, SHA256
+`9b604c38fceea138c2e96c7d2f6257e20a23ccc69a535108bab9ab5d9fecc965`,
+**4177 PASS**.

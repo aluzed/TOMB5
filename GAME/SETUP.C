@@ -1018,6 +1018,19 @@ static void PortSetupGameplayObjects(void)
 			objects[i].save_position = TRUE;
 			objects[i].save_flags = TRUE;
 		}
+		else if (i >= FALLING_BLOCK && i <= CRUMBLING_FLOOR)
+		{
+			/* Sols qui s'effondrent (The Colosseum) et blocs tombants :
+			 * handlers presents dans TRAPS.C mais jamais assignes. */
+			objects[i].initialise = &PortInitialiseFallingBlock2;
+			objects[i].control = &FallingBlock;
+			objects[i].collision = &FallingBlockCollision;
+			objects[i].floor = (void(*)(struct ITEM_INFO*, int, int, int, int*))&FallingBlockFloor;
+			objects[i].ceiling = (void(*)(struct ITEM_INFO*, int, int, int, int*))&FallingBlockCeiling;
+			objects[i].save_position = TRUE;
+			objects[i].save_flags = TRUE;
+			objects[i].save_mesh = TRUE;
+		}
 		else if (i == DOUBLE_DOORS)
 		{
 			objects[i].collision = &DoubleDoorCollision;

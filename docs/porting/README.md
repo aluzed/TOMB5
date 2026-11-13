@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum sols qui s'effondrent: FALLING_BLOCK/FALLING_BLOCK2/CRUMBLING_FLOOR non assignes alors que FallingBlock/Collision/Floor/Ceiling existent dans TRAPS.C. PortInitialiseFallingBlock2 (mesh_bits=1) ajoute dans MOVEBLOK.C car TRAPS.C non recompilable (COLLIDE.C depend de MoveLaraPositionToItem absent des objets build57; GTEREG casse la compilation stricte). SETUP assigne control/collision/floor/ceiling + saves avec cast ABI long*->int*. Runtime crumble/crumble2-20261113: depuis 40000,0,52224 (room12 puis room8 y=256), trigger room14 active items 6-12/14-18 status=1 active=1, y tremble 0->2->7->9. Puis SIGSEGV dans FlameControl (GetLaraJointPos effet de brulure) via QuickControlPhase->ControlPhase: LavaBurn/FlameControl, chemin de brulure incomplet. Prochain correctif: securiser GetLaraJointPos/FlameControl. build-gameplay59 SHA256 9b604c38fceea138c2e96c7d2f6257e20a23ccc69a535108bab9ab5d9fecc965; 4177 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum premier secret valide (rose99h-20261113): apres push du bloc item100 z54784->53760, teleport Lara a 81408,4864,57400 (decalage collision +356 en Z -> 57756 = cible PickUpPosition item99 a 57856 z-100); maintien Action -> PickUpCollision MoveLaraPosition, state=39 STATE_LARA_PICKUP, item99.status=3 ITEM_INVISIBLE. Golden rose collectee. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
