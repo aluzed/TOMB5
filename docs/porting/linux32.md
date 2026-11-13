@@ -1338,6 +1338,16 @@ la marche sud s’arrête à `76288,-2048,35941`. La porte est donc bien
 activée, mais son franchissement relève encore de l’empilement 5D
 (room 134 vs room 83).
 
+Données de rooms (`rooms134b-20261113/`) :
+- room 134 : `X70656..75776`, `Z34816..41984`, `minfloor=0`, sol principal 0.
+- room 83 : `X74752..80896`, `Z34816..37888`, `minfloor=-2048`.
+- la porte 113 (`76288,0,37376`) est juste à l’est de la room 134, entre
+  134 (haut, y=0) et 83 (bas, y=-2048).
+L’approche correcte est donc depuis la room 134, à `x≈75000, y=0,
+z=37376`, en marchant vers l’est à travers la porte. Les deux tentatives de
+marche (`walk134-20261113/`, `walk134b-20261113/`) ont été interrompues par
+des redémarrages serveur avant la sortie de la room.
+
 Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
 `UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis
 la marche nord retombe dans la room 207 et s’arrête à `77500,0,48031`.
