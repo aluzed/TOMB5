@@ -1344,9 +1344,13 @@ Données de rooms (`rooms134b-20261113/`) :
 - la porte 113 (`76288,0,37376`) est juste à l’est de la room 134, entre
   134 (haut, y=0) et 83 (bas, y=-2048).
 L’approche correcte est donc depuis la room 134, à `x≈75000, y=0,
-z=37376`, en marchant vers l’est à travers la porte. Les deux tentatives de
-marche (`walk134-20261113/`, `walk134b-20261113/`) ont été interrompues par
-des redémarrages serveur avant la sortie de la room.
+z=37376`, en marchant vers l’est à travers la porte.
+
+Traversée validée (`walk134c-20261113/`) : depuis
+`75000,0,37376` (room 134), la marche est passe par `76335,0,37376`
+(room 134, au-delà de la porte 113) puis `77792,256,37376` (room 46) et
+s’arrête à `78747,768,37376`. La porte de la golden coin est donc bien
+franchie et ramène dans la zone de la cour (room 46).
 
 Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
 `UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis

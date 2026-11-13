@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+Trajan's Markets: porte113 franchie! Depuis room134 75000,0,37376 marche est -> 76335,0,37376 room134 (au-dela de la porte) -> 77792,256,37376 room46 -> arret 78747,768,37376. La porte de la golden coin ramene dans la cour (room46). Preuve walk134c-20261113/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 Trajan's Markets, porte 113: room134 X70656..75776 Z34816..41984 minfloor=0; room83 X74752..80896 Z34816..37888 minfloor=-2048; porte 113 a 76288,0,37376 entre les deux. Approche correcte depuis room134 a x~75000,y=0,z=37376 en marchant vers l'est. Les tentatives walk134/walk134b ont ete interrompues par redemarrages serveur avant la sortie. Preuve rooms134b-20261113/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
