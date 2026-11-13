@@ -220,16 +220,135 @@ void TrapDoorControl(short item_number)//58D08(<), 59184 (F)
 	return;
 }
 
-void FloorTrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//58E80, 592FC
+void FloorTrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//58E80, 592FC (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+	int can_move;
+
+	can_move = ((input & IN_ACTION) &&
+		item->status != 1 &&
+		l->current_anim_state == 2 &&
+		l->anim_number == 103 &&
+		lara.gun_status == LG_NO_ARMS) ||
+		(lara.IsMoving && lara.GeneralPtr == (void*)item_num);
+
+	if (can_move)
+	{
+		if (TestLaraPosition(FloorTrapDoorBounds, item, l))
+		{
+			if (MoveLaraPositionToItem(&FloorTrapDoorPos, item, l))
+			{
+				l->anim_number = 317;
+				l->current_anim_state = 93;
+				l->frame_number = anims[317].frame_base;
+
+				lara.IsMoving = 0;
+				lara.head_y_rot = 0;
+				lara.head_x_rot = 0;
+				lara.torso_y_rot = 0;
+				lara.torso_x_rot = 0;
+				lara.gun_status = LG_HANDS_BUSY;
+
+				AddActiveItem(item_num);
+
+				item->goal_anim_state = 1;
+				item->status = 1;
+
+				UseForcedFixedCamera = 1;
+				ForcedFixedCamera.x = l->pos.x_pos - (SIN(l->pos.y_rot) >> 1);
+				ForcedFixedCamera.z = l->pos.z_pos - (COS(l->pos.y_rot) >> 1);
+				ForcedFixedCamera.y = l->pos.y_pos - 2048;
+
+				if (ForcedFixedCamera.y < room[l->room_number].maxceiling)
+					ForcedFixedCamera.y = room[l->room_number].maxceiling;
+
+				ForcedFixedCamera.room_number = l->room_number;
+			}
+			else
+			{
+				lara.GeneralPtr = (void*)item_num;
+			}
+		}
+	}
+	else if (l->current_anim_state == 1)
+	{
+		UseForcedFixedCamera = 0;
+	}
+
+	if (l->current_anim_state == 1 &&
+		l->frame_number == anims[l->anim_number].frame_end)
+	{
+		if (TestBoundsCollide(item, l, coll->radius) &&
+			TestCollision(item, l) &&
+			l->hit_status)
+		{
+			ItemPushLara(item, l, coll, 0, 1);
+		}
+	}
 }
 
-void CeilingTrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//5912C, 595A8
+void CeilingTrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//5912C, 595A8 (F)
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_num];
+	int test_front;
+	int test_back;
+
+	test_front = TestLaraPosition(CeilingTrapDoorBounds, item, l);
+
+	l->pos.y_rot ^= 0x8000;
+	test_back = TestLaraPosition(CeilingTrapDoorBounds, item, l);
+	l->pos.y_rot ^= 0x8000;
+
+	if ((input & IN_ACTION) &&
+		item->status != 1 &&
+		l->current_anim_state == 28 &&
+		l->gravity_status &&
+		lara.gun_status == LG_NO_ARMS &&
+		(test_front || test_back))
+	{
+		MoveLaraPosition(&CeilingTrapDoorPos, item, l);
+
+		if (test_back)
+			lara_item->pos.y_rot ^= 0x8000;
+
+		l->anim_number = 318;
+		l->current_anim_state = 94;
+		l->frame_number = anims[318].frame_base;
+		l->fallspeed = 0;
+
+		lara.head_y_rot = 0;
+		lara.head_x_rot = 0;
+		lara.torso_y_rot = 0;
+		lara.torso_x_rot = 0;
+		lara.gun_status = LG_HANDS_BUSY;
+
+		AddActiveItem(item_num);
+
+		item->goal_anim_state = 1;
+		item->gravity_status = 0;
+		item->status = 1;
+
+		UseForcedFixedCamera = 1;
+		ForcedFixedCamera.x = l->pos.x_pos - (SIN(l->pos.y_rot) >> 2);
+		ForcedFixedCamera.y = l->pos.y_pos + 1024;
+		ForcedFixedCamera.z = l->pos.z_pos - (COS(l->pos.y_rot) >> 2);
+		ForcedFixedCamera.room_number = l->room_number;
+	}
+	else if (l->current_anim_state == 1)
+	{
+		UseForcedFixedCamera = 0;
+	}
+
+	if (l->current_anim_state == 1 &&
+		l->frame_number == anims[l->anim_number].frame_end)
+	{
+		if (TestBoundsCollide(item, l, coll->radius) &&
+			TestCollision(item, l) &&
+			l->hit_status)
+		{
+			ItemPushLara(item, l, coll, 0, 1);
+		}
+	}
 }
 
 void TrapDoorCollision(short item_num, struct ITEM_INFO* l, struct COLL_INFO* coll)//593F8, 59874 (F)

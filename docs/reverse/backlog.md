@@ -1,6 +1,6 @@
 # Backlog priorisée des fonctions reverse TOMB5
 
-Generated: `2026-11-12T20:31:02.435971+00:00`
+Generated: `2026-11-13T06:28:15.767430+00:00`
 Source: `docs/reverse/generated/repo-function-map.csv`
 CSV détaillé: `docs/reverse/generated/function-priority.csv`
 Story: `docs/stories/RE-004-priorisation-fonctions-non-finalisees.md`
@@ -41,11 +41,11 @@ Buckets:
 
 ## Summary
 
-- candidates total: `320` / repo rows `1263`
-- mapped candidates: `177`
+- candidates total: `318` / repo rows `1263`
+- mapped candidates: `175`
 - ND highlighted: `23`
-- P0: `35`; P1: `91`; P2: `194`
-- statuses: `debugged` `23`; `decompiled` `296`; `unknown` `1`
+- P0: `35`; P1: `89`; P2: `194`
+- statuses: `debugged` `23`; `decompiled` `294`; `unknown` `1`
 
 ## Lot 1 — P0 runtime / ND à clarifier
 
@@ -181,10 +181,10 @@ Buckets:
   - candidates: `18`; mapped: `4`; ND: `0`; top score: `2902`
 - `SPEC_PSXPC_N/MATHS.C`
   - candidates: `17`; mapped: `2`; ND: `0`; top score: `3122`
-- `GAME/TRAPS.C`
-  - candidates: `13`; mapped: `13`; ND: `0`; top score: `3756`
 - `GAME/SETUP.C`
   - candidates: `12`; mapped: `0`; ND: `0`; top score: `800`
+- `GAME/TRAPS.C`
+  - candidates: `11`; mapped: `11`; ND: `0`; top score: `3756`
 - `SPEC_PSXPC_N/MISC.C`
   - candidates: `10`; mapped: `6`; ND: `4`; top score: `2052`
 - `GAME/DOOR.C`
@@ -208,61 +208,61 @@ Buckets:
 
 ## Lot 4 — P2 / pré-tri mapping
 
-- `#127` `0x8005c0f8` `ControlTwoBlockPlatform` — `P2` score `1798`
+- `#125` `0x8005c0f8` `ControlTwoBlockPlatform` — `P2` score `1798`
   - source: `GAME/TRAPS.C:556`; Ghidra: `0x8005c0f8` `FUN_8005c0f8`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `0`, callees `6`, body_size `488`
   - why: adresse Ghidra disponible; 6 callee(s); body_size 488; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#128` `0x8002dab8` `Load_and_Init_Cutseq` — `P2` score `1784`
+- `#126` `0x8002dab8` `Load_and_Init_Cutseq` — `P2` score `1784`
   - source: `GAME/DELTAPAK.C:3221`; Ghidra: `0x8002dab8` `FUN_8002dab8`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `1`, callees `8`, body_size `284`
   - why: adresse Ghidra disponible; 1 caller(s); 8 callee(s); body_size 284; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#129` `0x80062dc8` `DisplayFiles` — `P2` score `1779`
+- `#127` `0x80062dc8` `DisplayFiles` — `P2` score `1779`
   - source: `SPEC_PSX/LOADSAVE.C:44`; Ghidra: `0x80062dc8` `FUN_80062dc8`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `0`, callees `7`, body_size `664`
   - why: adresse Ghidra disponible; 7 callee(s); body_size 664; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#130` `0x80058be0` `CrowDoveSwitchCollision` — `P2` score `1776`
+- `#128` `0x80058be0` `CrowDoveSwitchCollision` — `P2` score `1776`
   - source: `GAME/SWITCH.C:127`; Ghidra: `0x80058be0` `FUN_80058be0`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `0`, callees `4`, body_size `536`
   - why: adresse Ghidra disponible; 4 callee(s); body_size 536; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#131` `0x8002bd60` `UnderwaterDoorCollision` — `P2` score `1771`
+- `#129` `0x8002bd60` `UnderwaterDoorCollision` — `P2` score `1771`
   - source: `GAME/DOOR.C:112`; Ghidra: `0x8002bd60` `FUN_8002bd60`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `0`, callees `5`, body_size `496`
   - why: adresse Ghidra disponible; 5 callee(s); body_size 496; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#132` `0x80079b30` `mQuickW2VMatrix` — `P2` score `1766`
+- `#130` `0x80079b30` `mQuickW2VMatrix` — `P2` score `1766`
   - source: `SPEC_PSXPC_N/MATHS.C:15`; Ghidra: `0x80079b30` `FUN_80079b30`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `4`, callees `0`, body_size `236`
   - why: adresse Ghidra disponible; 4 caller(s); body_size 236; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#133` `0x80057138` `PulleyCollision` — `P2` score `1756`
+- `#131` `0x80057138` `PulleyCollision` — `P2` score `1756`
   - source: `GAME/SWITCH.C:328`; Ghidra: `0x80057138` `FUN_80057138`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `0`, callees `4`, body_size `516`
   - why: adresse Ghidra disponible; 4 callee(s); body_size 516; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#134` `0x80063060` `LoadGame` — `P2` score `1750`
+- `#132` `0x80063060` `LoadGame` — `P2` score `1750`
   - source: `SPEC_PSXPC_N/LOADSAVE.C:119`; Ghidra: `0x80063060` `FUN_80063060`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `2`, callees `4`, body_size `320`
   - why: adresse Ghidra disponible; 2 caller(s); 4 callee(s); body_size 320; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#135` `0x8008ff20` `GetStringLength` — `P2` score `1742`
+- `#133` `0x8008ff20` `GetStringLength` — `P2` score `1742`
   - source: `SPEC_PSXPC_N/TEXT_S.C:401`; Ghidra: `0x8008ff20` `FUN_8008ff20`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `3`, callees `0`, body_size `332`
   - why: adresse Ghidra disponible; 3 caller(s); body_size 332; statut decompiled
   - next: Comparer Ghidra/MIPS, valider types/bit-fields, puis décider F ou D.
-- `#136` `0x80062dc8` `DisplayFiles` — `P2` score `1739`
+- `#134` `0x80062dc8` `DisplayFiles` — `P2` score `1739`
   - source: `SPEC_PSXPC/LOADSAVE.C:35`; Ghidra: `0x80062dc8` `FUN_80062dc8`
   - status: `decompiled`; markers: `none`; ND: `no`; runtime: `no`
   - graph: callers `0`, callees `7`, body_size `664`
