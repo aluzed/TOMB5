@@ -1758,3 +1758,14 @@ envoyée en diagonale puis retombe dans le puits (`state=8` à
 fonctionnent, mais la séquence hang → shimmy → coin → pull-up demandera
 un pilotage par waypoints (ou des captures) plutôt qu’un simple
 tap+lecture de log.
+
+Confirmation (`hang5-20261113/`) : avec `Action+Up` et un tap Saut
+toutes les 0,6 s, Lara ne passe jamais en `state=10 HANG` : chaque
+accroche (`state=11`) est suivie d’un nouveau saut, d’où la montée du
+puits jusqu’à la mort à `43513,6015,52224`. La séquence correcte est
+donc : **un seul saut** vers le rebord (Action maintenue), puis arrêt
+immédiat des taps et relâchement de `Up` pour laisser le hang s’établir,
+avant `Left` (shimmy) et `Up+Action` (rétablissement). L’automatisation
+actuelle ne peut pas distinguer le premier `state=11` des suivants
+depuis le log ; il faut un retour d’état plus fin (lecture mémoire par
+frame plutôt que parsing du log).

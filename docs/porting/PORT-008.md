@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum hang5-20261113: avec Action+Up et tap Saut toutes les 0,6s, Lara ne passe jamais en state=10 HANG; chaque accroche state=11 est suivie d'un nouveau saut, d'ou montee du puits jusqu'a la mort 43513,6015,52224. Sequence correcte: un seul saut vers le rebord Action maintenue, puis arret des taps et relachement de Up pour etablir le hang, avant Left (shimmy) et Up+Action (retablissement). L'automatisation ne distingue pas le premier state=11 des suivants depuis le log; il faut un retour d'etat par frame (lecture memoire) au lieu du parsing de log. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum hang3/hang4-20261113: detection d'etat par log state=11 trop grossiere pour declencher le shimmy au bon moment; selon le timing Lara part en diagonale et retombe dans le puits state=8 a 41719,5980,54164 room14. Les accroches state=11 et la montee fonctionnent mais la sequence hang->shimmy->coin->pull-up exigera un pilotage par waypoints/captures au lieu d'un tap+lecture de log. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
