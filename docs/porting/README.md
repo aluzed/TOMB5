@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
 
+Trajan's Markets: retour rue pavee valide (walk0-20261113). Depuis room46 78747,768,37376 marche nord puis est -> room10 78747,256,40027 -> room0 81614,256,42988 -> 83118,0,43975. Boucle golden coin bouclee. Prochaine zone: rue pavee, petite porte mur blanc, allee, bassin. Symboles VENUS/MARS probablement PUZZLE_ITEM5 item49 room64 55808,1792,34304; PUZZLE_ITEM4 item63 room69 45568,1792,43520; PUZZLE_ITEM1 item129 room196 56832,4864,52736. Room70 contient ANIMATING5 et trappe item71 (Mouth of Truth) pres du bassin. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-13
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-13T23:59:00+01:00. Linux32 provisoire.
+
 Trajan's Markets: porte113 franchie! Depuis room134 75000,0,37376 marche est -> 76335,0,37376 room134 (au-dela de la porte) -> 77792,256,37376 room46 -> arret 78747,768,37376. La porte de la golden coin ramene dans la cour (room46). Preuve walk134c-20261113/. Build-gameplay57 SHA256 5b104499da49733526656e8fdbc4b4fb1fdadb4ee8a06752e57b1c020976373d; tests 4174 PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

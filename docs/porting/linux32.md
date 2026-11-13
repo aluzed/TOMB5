@@ -1352,6 +1352,21 @@ Traversée validée (`walk134c-20261113/`) : depuis
 s’arrête à `78747,768,37376`. La porte de la golden coin est donc bien
 franchie et ramène dans la zone de la cour (room 46).
 
+Retour à la rue pavée validé (`walk0-20261113/`) : depuis
+`78747,768,37376` (room 46), marche nord puis est :
+`78747,256,40027` (room 10) → `81614,256,42988` (room 0) →
+`83118,0,43975` (room 0, rue pavée). La boucle de la golden coin est
+donc bouclée.
+
+Prochaine zone : la rue pavée, la petite porte du mur blanc, l’allée et
+le bassin. Les symboles VENUS/MARS sont probablement parmi les objets
+`PUZZLE_ITEM` restants :
+- item 49 (`PUZZLE_ITEM5`) room 64, `55808,1792,34304` ;
+- item 63 (`PUZZLE_ITEM4`) room 69, `45568,1792,43520` ;
+- item 129 (`PUZZLE_ITEM1`) room 196, `56832,4864,52736`.
+La room 70 contient le mécanisme `ANIMATING5` et la trappe `item 71`
+(Mouth of Truth), près du bassin.
+
 Tentative de téléportation dans la room 201 à `77500,-1024,43500` :
 `UpdateLaraRoom` reassigne la room à **10** (empilement 5D des rooms), puis
 la marche nord retombe dans la room 207 et s’arrête à `77500,0,48031`.
