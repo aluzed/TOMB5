@@ -1769,3 +1769,13 @@ avant `Left` (shimmy) et `Up+Action` (rétablissement). L’automatisation
 actuelle ne peut pas distinguer le premier `state=11` des suivants
 depuis le log ; il faut un retour d’état plus fin (lecture mémoire par
 frame plutôt que parsing du log).
+
+Nouvelle mesure (`hang6-20261113/`) avec relâchement immédiat des
+touches dès `state=11` : le saut est déclenché à `42444,419`, l’accroche
+apparaît à `42907,1145`, puis **même avec `input=0x0`** Lara continue de
+monter `2522 → 4095 → 5789` en `state=9` et meurt à `43513,6015`
+(rooms 26/14). Ce n’est donc pas un problème de timing d’entrée : c’est
+la collision/empilement des rooms 12/26/14 qui la propulse vers le haut
+pendant `REACH`. Prochaine investigation : `lara_col_reach` /
+`GetLaraCollisionInfo` / `ShiftItem` dans cet empilement, avant toute
+automatisation hang/shimmy.
