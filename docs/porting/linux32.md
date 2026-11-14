@@ -1973,3 +1973,19 @@ Les sauts tentés depuis le bord de la fosse n’ont pas franchi le petit
 gap (Lara reste au bord). Prochain essai : saut lancé depuis plus loin,
 ou accroche du rebord d’en face (`doorsill`) puis shimmy vers la niche
 de gauche.
+
+### Corniche : mur franc à l’ouest (14 novembre 2026)
+
+Depuis la corniche réelle (`43364,768` puis marche jusqu’à
+`43109,768,52325`, room 12, yrot=-16384), la cellule `xx=4`
+(`41984..43008`) est un **mur** : `floor=1024`, `ceiling=0` (masse
+pleine). Les essais :
+- `Action+Up` : aucun déplacement (`state=2`) ;
+- `Up` seul : bloqué (`state=2`) ;
+- `Up+Saut` : `state=15` puis `state=14 GRAB_TO_FALL` — le saut est
+  défléchi par `LaraDeflectEdgeJump`, pas d’accroche.
+
+Le passage ouest depuis la corniche n’est donc pas le hang attendu. La
+fosse visible en contrebas correspond aux rooms 26/14 ; le « doorsill »
+doit être le rebord de la plateforme 1024, à atteindre depuis l’autre
+côté (room 8 / relief), ou via une exploration nord/sud de la corniche.

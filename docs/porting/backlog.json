@@ -1774,6 +1774,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum session visuelle dalles inertes: objects[CRUMBLING_FLOOR].control=0 au chargement niveau3 garde les dalles solides; Lara parcourt de facon fiable 40000,0 -> 43931,768 room12 sans mourir. Harnais: xdotool ne delivre les touches que si windowactivate --sync puis windowfocus --sync juste avant chaque touche; import vole le focus; le bp CF W w>=160 detache GDB trop tot. Cartographie: grande salle de pierre, grande porte bois/portcullis fermee (issue), banniere rouge, fenetre grillagee; fosse de lave au centre/bord avec corniche; de l'autre cote du petit gouffre le relief vert etoile + bloc rouge (deja atteint par chute); niches sombres laterales candidates crawlspace. Les sauts depuis le bord n'ont pas franchi le petit gap (Lara reste au bord). Prochain: saut lance de plus loin ou accroche du rebord d'en face puis shimmy vers la niche de gauche. Aucun Done global."
+    },
+    {
+      "date": "2026-11-14",
+      "authorization_until": "2026-11-14T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum corniche mur franc ouest: depuis 43364,768 puis marche a 43109,768,52325 room12 yrot=-16384, la cellule xx4 41984..43008 est un mur (floor=1024 ceiling=0 masse pleine). Action+Up aucun deplacement state2; Up seul bloque state2; Up+Saut state15 puis state14 GRAB_TO_FALL, saut deflechi par LaraDeflectEdgeJump, pas d'accroche. Le passage ouest depuis la corniche n'est pas le hang attendu; la fosse visible en contrebas correspond aux rooms 26/14; le doorsill doit etre le rebord de la plateforme 1024, a atteindre depuis l'autre cote room8/relief ou via exploration nord/sud de la corniche. Aucun Done global."
     }
   ]
 }
