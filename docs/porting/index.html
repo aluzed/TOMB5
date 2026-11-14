@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum precision accroche: LaraDeflectEdgeJump GAME/LARA.C; state=14 GRAB_TO_FALL observe en sautant depuis la corniche 43109,768 correspond a un saut qui heurte une face avant CT_FRONT avec mid_floor&lt;=128: Lara rebondit et retombe, pas d&#x27;accroche. L&#x27;accroche reelle est dans lara_col_reach si IN_ACTION maintenu et LaraTestEdgeCatch renvoie une arete edge=(pos.y+bounds[2])&amp;-STEP_L. Depuis cette corniche le saut avec Action percute le mur du puits; bonne approche a determiner (bord exact, saut sans Action puis Action, ou chute controlee) et a tester avec retour visuel. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-14
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum correction d&#x27;interpretation axe Y: dans le moteur TR Y croit vers le bas; les suites 2522-&gt;4095-&gt;5789-&gt;6144 apres le rebord sont une chute dans la fosse de lave, pas une propulsion. Morts a 43513,6015 / 41719,5980 / 40337,6144 = chutes au fond du puits. FallingBlock (pos.y_pos += item_flags[1]) fait bien descendre les dalles; l&#x27;interpretation montee des notes precedentes est corrigee. Route: apres le gouffre, marcher ouest depuis la corniche 43109,768 descend sur la plateforme floor=1024 puis les trous pit_room=26 de room12 jusqu&#x27;a la lave. Passage correct = accroche au rebord puis shimmy depuis le bord exact. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

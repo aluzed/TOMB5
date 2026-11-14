@@ -1915,3 +1915,14 @@ corniche `43109,768` fait descendre sur la plateforme `floor=1024` puis
 dans les trous `pit_room=26` de la room 12, jusqu’à la lave. Le passage
 correct reste l’accroche au rebord (hang) puis le shimmy, à déclencher
 depuis le bord exact de la corniche.
+
+Précision sur l’accroche (`LaraDeflectEdgeJump`, `GAME/LARA.C`) : le
+`state=14 GRAB_TO_FALL` observé en sautant depuis la corniche
+`43109,768` correspond à un saut qui heurte une **face avant**
+(`CT_FRONT`) avec `mid_floor <= 128` : Lara rebondit et retombe, elle
+n’accroche pas. L’accroche réelle se fait dans `lara_col_reach` quand
+`IN_ACTION` est maintenu et que `LaraTestEdgeCatch` renvoie une arête
+(`edge = (pos.y + bounds[2]) & -STEP_L`). Depuis cette corniche, le saut
+avec Action percute le mur du puits : la bonne approche reste à
+déterminer (bord exact, saut sans Action puis Action, ou chute
+contrôlée) et devra être testée avec retour visuel.
