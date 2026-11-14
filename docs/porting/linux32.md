@@ -1805,3 +1805,34 @@ continue à monter, et meurt plus haut. Ce n’est pas `ShiftItem` ni un
 `edge` géant : c’est la vitesse du saut/`fallspeed` en `REACH`.
 Prochain essai : saut à l’arrêt (sans `Up`) ou simple chute contrôlée
 depuis le bord, avec `Action` pour l’accroche.
+
+### Géométrie du puits et exploration visuelle (14 novembre 2026)
+
+Dump `grid3-20261114/` (rooms 8/12/14/26/27, orientation corrigée) :
+
+- room 12 (`x=37888,z=50176`) : la corniche où se tient Lara est la cellule
+  `xx=5 zz=2` (`43008..44032, 52224..53248`), sol **768** ; les cellules
+  `xx=1..4, zz=1..3` ont `floor=1024` et `pit_room=26` (plateforme
+  surélevée de 256, avec puits vers la room 26) ;
+- room 8 (`x=38912,z=50176,y=-1024`) : sols 0 avec `pit_room=12` et
+  `sky_room=25` ;
+- room 26 (`x=37888,z=49152,y=1024`) : sols 1024–3072, avec
+  `pit_room=14` au centre ;
+- room 14 (`x=38912,z=50176,y=3072`) : sols ~5120–6144, `pit_room=26`.
+
+Exploration manuelle avec journal `probe_play2` :
+
+1. téléport sur la corniche `43109,768,52540` face à l’ouest ;
+2. en avançant, Lara chute dans la room 8 et se réceptionne à
+   `42593,256,52540` (room 8, `state=2`) ;
+3. marche vers l’ouest jusqu’à `40314,256,52540`, devant un grand
+   relief étoilé et un **bloc rouge** (candidat bouton) ;
+4. l’appui Action n’a pas été enregistré dans les échantillons
+   (`input=0x0`), puis le jeu a basculé sur
+   `DOLEVEL name=121 gfCurrentLevel=18 complete=128` et le processus a
+   disparu : transition/rechargement corrompu, cohérent avec le bug de
+   mort/rechargement déjà observé.
+
+Conclusion : le puits est franchi en tombant de la corniche 768 vers la
+room 8 (256), qui contient le relief/levier ; l’instabilité de
+transition reste le principal obstacle à une traversée continue.

@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum geometrie puits + exploration visuelle: dump grid3-20261114 rooms 8/12/14/26/27. Room12 corniche xx5/zz2 sol 768; cellules xx1..4 zz1..3 floor=1024 pit_room=26 (plateforme +256 et puits). Room8 sols 0 pit_room=12 sky=25. Room26 sols 1024-3072 pit_room=14. Room14 sols ~5120-6144 pit_room=26. Exploration manuelle probe_play2: teleport 43109,768,52540 ouest -&gt; chute room8 42593,256 -&gt; marche a 40314,256 devant relief etoile + bloc rouge (candidat bouton); Action non enregistree (input=0x0) puis DOLEVEL name=121 gfCurrentLevel=18 complete=128 et processus disparu: transition/rechargement corrompu, coherent avec le bug mort/rechargement. Le puits se franchit en tombant 768-&gt;256 room8; instabilite de transition = principal obstacle. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-14
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum shift-20261114: pendant REACH, ShiftItem ne produit aucun deplacement vertical (shift.y=0), seuls shift.x=-47 lateraux; pourtant pos.y monte 497-&gt;545-&gt;599-&gt;...-&gt;1715 et mid_floor decroit 5391-&gt;4173 =&gt; vitesse verticale negative (vers le haut) sur tout le REACH. Le saut Up+Action+Saut au bord a une trajectoire ascendante anormalement longue: Lara depasse le rebord, monte et meurt plus haut. Ce n&#x27;est ni ShiftItem ni un edge geant mais la vitesse du saut/fallspeed en REACH. Prochain essai: saut a l&#x27;arret sans Up ou chute controlee depuis le bord avec Action. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
