@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum edge2-20261114: au REACH sur le rebord pos=42914,1049,52224 fs=90 front_floor=-281 front_ceiling=-4383 mid_floor=4839 mid_ceiling=-4383 coll_type=1; LaraTestEdgeCatch renvoie 0 (hdif=pos.y+bounds[2] reste dans le meme octet apres fallspeed). Pas d'accroche sur cette frame; la montee observee vient des frames suivantes/ShiftItem dans l'empilement, pas d'un edge geant. La sonde finish a provoque un SIGSEGV artificiel au retour (eax=0): instrumentation non intrusive requise. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-14
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum hang6-20261113: saut declenche a 42444,419, accroche state=11 a 42907,1145, puis meme avec input=0x0 Lara monte 2522->4095->5789 en state=9 et meurt a 43513,6015 rooms 26/14. Ce n'est pas le timing d'entree mais la collision/empilement des rooms 12/26/14 qui la propulse vers le haut pendant REACH. Prochaine investigation: lara_col_reach / GetLaraCollisionInfo / ShiftItem dans cet empilement avant toute automatisation hang/shimmy. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

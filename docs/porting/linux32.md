@@ -1779,3 +1779,16 @@ la collision/empilement des rooms 12/26/14 qui la propulse vers le haut
 pendant `REACH`. Prochaine investigation : `lara_col_reach` /
 `GetLaraCollisionInfo` / `ShiftItem` dans cet empilement, avant toute
 automatisation hang/shimmy.
+
+Instrumentation de l’accroche (`edge2-20261114/`) : au moment du
+`REACH` sur le rebord, `pos=42914,1049,52224`, `fallspeed=90`,
+`front_floor=-281`, `front_ceiling=-4383`, `mid_floor=4839`,
+`mid_ceiling=-4383`, `coll_type=1`. `LaraTestEdgeCatch` renvoie **0**
+(pas de franchissement de frontière 256 : `hdif = pos.y + bounds[2]`
+reste dans le même octet après ajout de `fallspeed`). L’accroche n’a
+donc pas lieu sur cette frame ; la montée observée ensuite vient des
+frames suivantes / du `ShiftItem` dans l’empilement, pas d’un seul
+`edge` géant. La sonde `finish` a par ailleurs provoqué un SIGSEGV
+artificiel au retour de `LaraTestEdgeCatch` (`eax=0`) : il faudra une
+instrumentation non intrusive (breakpoint temporaire + logique dans la
+source) pour la suite.
