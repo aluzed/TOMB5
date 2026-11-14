@@ -85,9 +85,9 @@ void KillEffect(short fx_num)//42178, 425CC (F)
 		else if (next_fx_active != -1)
 		{
 			short linknum;
-			for (linknum = effects[next_fx_active].next_active; linknum != -1; linknum = effects[linknum].next_active)
+			for (linknum = next_fx_active; linknum != -1; linknum = effects[linknum].next_active)
 			{
-				if (linknum == fx_num)
+				if (effects[linknum].next_active == fx_num)
 				{
 					effects[linknum].next_active = fx->next_active;
 					break;
@@ -102,11 +102,11 @@ void KillEffect(short fx_num)//42178, 425CC (F)
 		else if (room[fx->room_number].fx_number != -1)
 		{
 			short linknum;
-			for (linknum = effects[room[fx->room_number].fx_number].next_fx; linknum != -1; linknum = effects[linknum].next_fx)
+			for (linknum = room[fx->room_number].fx_number; linknum != -1; linknum = effects[linknum].next_fx)
 			{
-				if (linknum == fx_num)
+				if (effects[linknum].next_fx == fx_num)
 				{
-					effects[room[fx->room_number].fx_number].next_fx = fx->next_fx;
+					effects[linknum].next_fx = fx->next_fx;
 					break;
 				}
 			}
@@ -384,9 +384,9 @@ void KillItem(short item_num)//41950, 41DA4 (F)
 		else if (next_item_active != -1)
 		{
 			short linknum;
-			for (linknum = items[next_item_active].next_active; linknum != -1; linknum = items[linknum].next_active)
+			for (linknum = next_item_active; linknum != -1; linknum = items[linknum].next_active)
 			{
-				if (linknum == item_num)
+				if (items[linknum].next_active == item_num)
 				{
 					items[linknum].next_active = item->next_active;
 					break;
@@ -403,11 +403,11 @@ void KillItem(short item_num)//41950, 41DA4 (F)
 			else if (room[item->room_number].item_number != -1)
 			{
 				short linknum;
-				for (linknum = items[room[item->room_number].item_number].next_item; linknum != -1; linknum = items[linknum].next_item)
+				for (linknum = room[item->room_number].item_number; linknum != -1; linknum = items[linknum].next_item)
 				{
-					if (linknum == item_num)
+					if (items[linknum].next_item == item_num)
 					{
-						items[room[item->room_number].item_number].next_item = item->next_item;
+						items[linknum].next_item = item->next_item;
 						break;
 					}
 				}

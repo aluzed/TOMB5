@@ -1872,3 +1872,29 @@ La cause racine de l’afflux (>200 entrées dans une frame) reste à
 identifier : elle suggère une boucle ou des doublons dans la liste
 active des dalles. Le garde-fou empêche la corruption mémoire et la
 transition invalide.
+
+### Cause racine de l’afflux : désenchaînement incorrect (14 novembre 2026)
+
+`RemoveActiveItem` utilise une boucle « prédécesseur » correcte, mais
+`KillItem` et `KillEffect` utilisaient une boucle fautive :
+```
+for (linknum = items[next_item_active].next_active; ...)
+    if (linknum == item_num) items[linknum].next_active = item->next_active;
+```
+Elle ne retire pas l’élément de la chaîne (elle réécrit son propre
+`next_active`). L’élément tué reste donc dans la liste active ; comme
+`item->active` est remis à FALSE, `AddActiveItem` le réinsère au début →
+**doublons** à chaque frame → la boucle de contrôle appelle
+`FallingBlock` des centaines de fois → `ItemNewRoomNo` dépasse 256.
+
+Correctif (même schéma que la source PC et `RemoveActiveItem`) :
+- `KillItem` : liste active et liste d’items de room ;
+- `KillEffect` : liste active FX et liste FX de room.
+
+Validation (`watch4-20261114/`, build
+SHA256 `74bcbe08beea961af02fc408b10fb118decba9c22f69924715735b7e74a27348`) :
+sur la même séquence, **aucun `INRN BAD` (>200)**, aucun `GFLC128`,
+aucun `DOLEVEL` parasite ; seul le chargement normal `name=3` apparaît.
+La corruption mémoire est éliminée à la racine (le garde-fou `< 256`
+reste en défense). Lara meurt ensuite à `40337,6144` (room 14) sur le
+chemin de brûlure/lave, qui reste un problème distinct.
