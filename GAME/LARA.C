@@ -6318,7 +6318,120 @@ int TestLaraVault(struct ITEM_INFO* item /*s0*/, struct COLL_INFO* coll/*s2*/)//
 		jr      $ra
 		addiu   $sp, 0x28
 #endif
-	return 0;
+	// Port PC (TOMB5 pc/game/lara.cpp TestLaraVault).
+	if (!(input & IN_ACTION) || lara.gun_status != LG_NO_ARMS || coll->coll_type != CT_FRONT)
+		return 0;
+
+	angle = item->pos.y_rot;
+
+	if (angle >= -0x1554 && angle <= 0x1554)
+		angle = 0;
+	else if (angle >= 0x2AAC && angle <= 0x5554)
+		angle = 0x4000;
+	else if (angle >= 0x6AAB || angle <= -0x6AAB)
+		angle = -0x8000;
+	else if (angle >= -0x5554 && angle <= -0x2AAC)
+		angle = -0x4000;
+
+	if (angle & 0x3FFF)
+		return 0;
+
+	hdif = coll->front_floor;
+	slope = (coll->left_floor2 - coll->right_floor2 >= 60) ||
+	        (coll->right_floor2 - coll->left_floor2 >= 60);
+
+	if (hdif >= -640 && hdif <= -384)
+	{
+		if (slope || hdif - coll->front_ceiling < 0 || coll->left_floor2 - coll->left_ceiling2 < 0 || coll->right_floor2 - coll->right_ceiling2 < 0)
+			return 0;
+
+		item->anim_number = ANIMATION_LARA_CLIMB_2CLICK;
+		item->frame_number = anims[ANIMATION_LARA_CLIMB_2CLICK].frame_base;
+		item->current_anim_state = STATE_LARA_GRABBING;
+		item->goal_anim_state = STATE_LARA_STOP;
+		item->pos.y_pos += hdif + 512;
+		lara.gun_status = LG_HANDS_BUSY;
+	}
+	else if (hdif >= -896 && hdif <= -640)
+	{
+		if (slope || hdif - coll->front_ceiling < 0 || coll->left_floor2 - coll->left_ceiling2 < 0 || coll->right_floor2 - coll->right_ceiling2 < 0)
+			return 0;
+
+		item->anim_number = ANIMATION_LARA_CLIMB_3CLICK;
+		item->frame_number = anims[ANIMATION_LARA_CLIMB_3CLICK].frame_base;
+		item->current_anim_state = STATE_LARA_GRABBING;
+		item->goal_anim_state = STATE_LARA_STOP;
+		item->pos.y_pos += hdif + 768;
+		lara.gun_status = LG_HANDS_BUSY;
+	}
+	else if (!slope && hdif >= -1920 && hdif <= -896)
+	{
+		item->anim_number = ANIMATION_LARA_STAY_SOLID;
+		item->frame_number = anims[ANIMATION_LARA_STAY_SOLID].frame_base;
+		item->goal_anim_state = STATE_LARA_JUMP_UP;
+		item->current_anim_state = STATE_LARA_STOP;
+		lara.calc_fallspeed = (short)(-3 - phd_sqrt_asm(hdif * -12 + -9600));
+		AnimateLara(item);
+	}
+	else
+	{
+		if (!lara.climb_status)
+			return 0;
+
+		if (hdif > -1920 || lara.water_status == LW_WADE || coll->left_floor2 > -1920 || coll->right_floor2 > -2048 || coll->mid_ceiling > -1158)
+		{
+			if ((hdif < -1024 || coll->front_ceiling >= 506) && coll->mid_ceiling <= -518)
+			{
+				ShiftItem(item, coll);
+
+				if (LaraTestClimbStance(item, coll))
+				{
+					item->anim_number = ANIMATION_LARA_STAY_SOLID;
+					item->frame_number = anims[ANIMATION_LARA_STAY_SOLID].frame_base;
+					item->goal_anim_state = STATE_LARA_LADDER_IDLE;
+					item->current_anim_state = STATE_LARA_STOP;
+					AnimateLara(item);
+					item->pos.y_rot = angle;
+					lara.gun_status = LG_HANDS_BUSY;
+					return 1;
+				}
+			}
+
+			return 0;
+		}
+
+		item->anim_number = ANIMATION_LARA_STAY_SOLID;
+		item->frame_number = anims[ANIMATION_LARA_STAY_SOLID].frame_base;
+		item->goal_anim_state = STATE_LARA_JUMP_UP;
+		item->current_anim_state = STATE_LARA_STOP;
+		lara.calc_fallspeed = -116;
+		AnimateLara(item);
+	}
+
+	item->pos.y_rot = angle;
+	ShiftItem(item, coll);
+	angle = (unsigned short)(item->pos.y_rot + 0x2000) / 0x4000;
+
+	switch (angle)
+	{
+	case NORTH:
+		item->pos.z_pos = (item->pos.z_pos | 1023) - 100;
+		break;
+
+	case EAST:
+		item->pos.x_pos = (item->pos.x_pos | 1023) - 100;
+		break;
+
+	case SOUTH:
+		item->pos.z_pos = (item->pos.z_pos & ~1023) + 100;
+		break;
+
+	case WEST:
+		item->pos.x_pos = (item->pos.x_pos & ~1023) + 100;
+		break;
+	}
+
+	return 1;
 }
 
 int LaraTestClimbStance(struct ITEM_INFO* item, struct COLL_INFO* coll)//11F78, 12028

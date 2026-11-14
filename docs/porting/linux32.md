@@ -2021,3 +2021,82 @@ Prochain travail moteur : porter `TestLaraVault` depuis le bloc ASM PSX
 présent dans le fichier (ou la source PC), puis revalider la corniche et
 les marches du niveau. C’est probablement le déblocage clé de cette zone
 et de plusieurs autres.
+
+### Port de `TestLaraVault` et harnais d’autoload rapide (15 novembre 2026)
+
+#### Moteur : `TestLaraVault` portée
+
+`GAME/LARA.C` terminait `TestLaraVault` par `return 0;` (tout le code
+PSX sous `#if 0`). La fonction est maintenant portée depuis
+`TOMB5pc/game/lara.cpp` : vault 2 clics (`ANIMATION_LARA_CLIMB_2CLICK`,
+50), vault 3 clics (`ANIMATION_LARA_CLIMB_3CLICK`, 42), saut vertical
+(`ANIMATION_LARA_STAY_SOLID` + `STATE_LARA_JUMP_UP`), et
+`LaraTestClimbStance` pour la posture de grimpe. `lara.calc_fallspeed`
+utilise `phd_sqrt_asm`. Compilation et édition de liens OK
+(`build-gameplay59`, SHA256 `2ee56425fc744ed43d7c6806d01b9e4bbe3f005c85f4c53fb0ddc4790279d66c`),
+**4177 tests PASS**. Validation runtime de la montée de marche encore à
+faire.
+
+#### Harnais rapide : autoload de sauvegarde au titre
+
+`TOMB5_AUTOLOAD=1` fait charger `TOMB5.SAV` par `TitleOptions` dès le
+titre (`PortSave_Read` → `FromTitle=1` → `sgRestoreGame` →
+`PortSave_ApplyPending`). Avec `vpad` alimenté par un FIFO et une boucle
+`start`/`a`, le niveau 3 est atteint en **~60 s** au lieu de ~4 min.
+Le format de sauvegarde v4 est compacté : offsets `x=8620`, `y=8624`,
+`z=8628`, `y_rot=8634`, `room=8638`, `checksum=8654` (FNV-1a sur les
+octets 0..8653). Il est donc possible de **patcher la position de
+départ** pour sonder une zone précise, sans refaire le niveau.
+
+Limite connue : le démarrage est instable ; parfois gdb reste sur
+`[New Thread ...]` sans `[EMU] Initialising Emulator.`. Relancer alors
+le couple `vpad`/`MAIN`. La sauvegarde de reprise à la corniche a été
+conservée (`/tmp/opencode/TOMB5.corniche.sav`) et restaurée.
+
+#### Géométrie mesurée dans le puits de lave
+
+- La corniche (`room 12`, `43109,768,52502`) est la **seule** cellule à
+  `floor=768` ; ses voisines nord/sud/ouest ont `floor=1024` avec
+  `pit_room=26`, puis `room 26` a `pit_room=14`. Une apparition à
+  `42000,1024,52224` **chute jusqu’à `y=5888`** (`room 14`) : le grand
+  sol de pierre visible dans les captures est le **fond du puits**, pas
+  un sol praticable.
+- Au-dessus : `sky_room=8`. Un saut vertical depuis la corniche atteint
+  la grille de `room 8` à `y=256` (`FallingBlockFloor` renvoie
+  `item->pos.y_pos + 256`). Le sol de `room 8` est un trou
+  (`pit_room=12`) couvert par les 12 dalles `CRUMBLING_FLOOR`.
+- Saut vers le nord depuis la corniche : `LaraDeflectEdgeJump` reçoit
+  `CT_FRONT`, `front_floor=-512`, `front_ceiling=-4102`. La sonde avant
+  touche une dalle de `room 8` à `y=256` (item à `43520,0,51712`), soit
+  une marche de 512 au-dessus des pieds : le saut est donc défléchi.
+  **Le « doorsill » ne peut pas être atteint depuis la corniche par un
+  saut avant ; il faut venir du couloir au-dessus (`y=256`).**
+- Cellules du passage nord de `room 12` (`xx3/4 zz0`) :
+  `floor=2048`, `ceiling=1024`, soit un couloir de 1024 de haut. C’est
+  le candidat « doorsill + crawlspace » (seuil à 2048, sous le couloir
+  à 256). Autres hauteurs : `room 92` et `room 25` `floor=-1024`
+  (au-dessus ; `room 92` est le balcon derrière la grille métallique
+  donnant sur l’arène), `room 26` ~2816-3072, `room 27` ~2816,
+  `room 14` 5120-6144 (lave).
+
+#### Boutons et pièges du port
+
+- Le bouton carré `SWITCH_TYPE1` de `room 0` (`57400,7680,52736`) est
+  bien dans une salle sombre avec un squelette sur le mur droit ; le
+  déclencheur `SWITCH` est en `r0 xx2 zz3` (`57344,52224`, `key=0`).
+  Une pression d’Action pile sur la cellule de déclencheur n’a pas
+  lancé l’animation d’interrupteur (`state=2`) : position/orientation
+  exactes encore à déterminer.
+- Une apparition dans `room 6` (`60928,6400,49664`) provoque un
+  **SIGSEGV** dans `InterpolateMatrix_AI` (`ANIMITEM.C:1502`). À
+  documenter comme fragilité du port ; ne pas sonder cette salle par
+  téléportation tant que ce n’est pas corrigé.
+
+#### Prochaine étape
+
+Se placer sur le couloir de `room 8` (`y=256`), rejoindre son bord nord
+au-dessus du passage (`x 40960..43008`, `z≈51200`), puis se laisser
+tomber / reculer avec **Action** pour accrocher le seuil à `2048`.
+Ensuite : shimmy à gauche, passage du coin, remontée dans le couloir
+(crawlspace), puis salle du bouton et ouverture de l’issue. Aucun
+`DONE` global.

@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
+The Colosseum: port de TestLaraVault depuis la source PC (vault 2/3 clics, saut vertical, LaraTestClimbStance) - build-gameplay59 SHA256 2ee56425, 4177 tests PASS, validation runtime a faire. Harnais rapide: TOMB5_AUTOLOAD=1 recharge TOMB5.SAV au titre (PortSave_Read/ApplyPending), niveau 3 atteint en ~60s via vpad FIFO; format v4 offsets x8620 y8624 z8628 yrot8634 room8638 checksum8654 FNV-1a, patching de position possible. Demarrage instable: parfois blocage sur [New Thread] sans EMU init, relancer. Geometrie puits: corniche room12 43109,768 seule cellule floor=768; voisines floor=1024 pit_room=26 puis room26 pit_room=14; spawn 42000,1024,52224 chute a y=5888 room14 -> le grand sol visible est le fond du puits. Au-dessus sky_room=8; saut vertical atteint la grille room8 a y=256 (FallingBlockFloor item+256); sol room8 trou pit_room=12 couvert par 12 dalles CRUMBLING_FLOOR. Saut nord depuis corniche: LaraDeflectEdgeJump CT_FRONT front_floor=-512 front_ceiling=-4102, la sonde touche une dalle room8 a 43520,0,51712 (marche de 512 au-dessus) -> saut deflechi; le doorsill ne peut pas etre atteint depuis la corniche, il faut venir du couloir room8 y=256. Passage nord room12 xx3/4 zz0 floor=2048 ceiling=1024: candidat doorsill/crawlspace sous le couloir. Room92/25 floor=-1024 (room92 = balcon derriere grille sur l'arene), room26 ~2816-3072, room27 ~2816, room14 5120-6144 lave. Bouton room0 57400,7680,52736: salle sombre avec squelette, trigger r0 xx2 zz3 57344,52224 key=0; Action sur la cellule n'a pas lance l'animation (state=2), position exacte a determiner. Spawn room6 60928,6400,49664 -> SIGSEGV InterpolateMatrix_AI ANIMITEM.C:1502 (fragilite port). Prochaine etape: depuis le couloir room8 y=256, bord nord au-dessus du passage x40960..43008 z~51200, se laisser tomber/reculer avec Action pour accrocher le seuil a 2048, shimmy gauche, coin, crawlspace, bouton, issue. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-11-14
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
