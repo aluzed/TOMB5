@@ -1898,3 +1898,20 @@ aucun `DOLEVEL` parasite ; seul le chargement normal `name=3` apparaît.
 La corruption mémoire est éliminée à la racine (le garde-fou `< 256`
 reste en défense). Lara meurt ensuite à `40337,6144` (room 14) sur le
 chemin de brûlure/lave, qui reste un problème distinct.
+
+### Correction d’interprétation de l’axe Y (14 novembre 2026)
+
+Dans le moteur TR, **Y croît vers le bas** : les suites
+`2522 → 4095 → 5789 → 6144` observées après le rebord ne sont pas une
+propulsion vers le haut mais une **chute dans la fosse de lave**. Les
+morts à `43513,6015` / `41719,5980` / `40337,6144` sont donc des chutes
+au fond du puits, pas un bug de vitesse verticale. Le comportement
+`FallingBlock` (`pos.y_pos += item_flags[1]`) fait bien descendre les
+dalles ; l’interprétation « montée » des notes précédentes est corrigée
+ici.
+
+Conséquence de route : après le gouffre, marcher vers l’ouest depuis la
+corniche `43109,768` fait descendre sur la plateforme `floor=1024` puis
+dans les trous `pit_room=26` de la room 12, jusqu’à la lave. Le passage
+correct reste l’accroche au rebord (hang) puis le shimmy, à déclencher
+depuis le bord exact de la corniche.

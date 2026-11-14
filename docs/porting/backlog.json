@@ -1738,6 +1738,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum cause racine afflux ItemNewRooms: RemoveActiveItem utilise une boucle predecesseur correcte mais KillItem et KillEffect utilisaient une boucle fautive qui ne retire pas l'element de la chaine (reecrit son propre next_active). L'element tue reste dans la liste active; item->active=FALSE puis AddActiveItem le reinsere => doublons chaque frame => FallingBlock appele des centaines de fois => ItemNewRoomNo>256. Correctif meme schema que PC/RemoveActiveItem: KillItem liste active + liste items de room; KillEffect liste active FX + liste FX de room. Validation watch4-20261114 build SHA256 74bcbe08beea961af02fc408b10fb118decba9c22f69924715735b7e74a27348: aucun INRN BAD (>200), aucun GFLC128, aucun DOLEVEL parasite, seul name=3 normal. Corruption memoire eliminee a la racine (garde-fou <256 conserve). Lara meurt ensuite a 40337,6144 room14 sur le chemin brulure/lave, probleme distinct. 4177 PASS. Aucun Done global."
+    },
+    {
+      "date": "2026-11-14",
+      "authorization_until": "2026-11-14T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum correction d'interpretation axe Y: dans le moteur TR Y croit vers le bas; les suites 2522->4095->5789->6144 apres le rebord sont une chute dans la fosse de lave, pas une propulsion. Morts a 43513,6015 / 41719,5980 / 40337,6144 = chutes au fond du puits. FallingBlock (pos.y_pos += item_flags[1]) fait bien descendre les dalles; l'interpretation montee des notes precedentes est corrigee. Route: apres le gouffre, marcher ouest depuis la corniche 43109,768 descend sur la plateforme floor=1024 puis les trous pit_room=26 de room12 jusqu'a la lave. Passage correct = accroche au rebord puis shimmy depuis le bord exact. Aucun Done global."
     }
   ]
 }
