@@ -1989,3 +1989,18 @@ Le passage ouest depuis la corniche n’est donc pas le hang attendu. La
 fosse visible en contrebas correspond aux rooms 26/14 ; le « doorsill »
 doit être le rebord de la plateforme 1024, à atteindre depuis l’autre
 côté (room 8 / relief), ou via une exploration nord/sud de la corniche.
+
+### Point de reprise rapide à la corniche (14 novembre 2026)
+
+`F5` fonctionne en jeu et écrit `TOMB5.SAV` :
+`[SAVE] wrote TOMB5.SAV: level 3 room 12 X 43364 Y 768 Z 52325`.
+La sauvegarde capture donc l’état exact de la corniche. En revanche,
+`F6` est refusé pendant le jeu (`load ignored during gameplay; press F6
+at the title`) : le rechargement rapide ne se fait qu’au **titre**. Pour
+les expériences d’accroche, il faut donc relancer le jeu et presser F6
+au titre — bien plus court que refaire le gouffre.
+
+La corniche est par ailleurs un cul-de-sac à l’ouest (mur) et bordée de
+trous `pit_room=26` au nord/sud (`floor=1024`, `pit` en zz1/zz3). Le
+« doorsill » est à chercher depuis la plateforme 1024 ou l’autre côté du
+puits.

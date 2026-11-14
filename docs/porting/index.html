@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum point de reprise rapide corniche: F5 fonctionne en jeu et ecrit TOMB5.SAV [SAVE] wrote TOMB5.SAV: level 3 room 12 X 43364 Y 768 Z 52325. F6 refuse pendant le jeu (load ignored during gameplay; press F6 at the title); rechargement rapide seulement au titre. Pour les experiences d&#x27;accroche: relancer le jeu et F6 au titre, plus court que refaire le gouffre. Corniche cul-de-sac a l&#x27;ouest (mur) et bordee de trous pit_room=26 au nord/sud (floor=1024, pit en zz1/zz3). Doorsill a chercher depuis la plateforme 1024 ou l&#x27;autre cote du puits. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-14
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum corniche mur franc ouest: depuis 43364,768 puis marche a 43109,768,52325 room12 yrot=-16384, la cellule xx4 41984..43008 est un mur (floor=1024 ceiling=0 masse pleine). Action+Up aucun deplacement state2; Up seul bloque state2; Up+Saut state15 puis state14 GRAB_TO_FALL, saut deflechi par LaraDeflectEdgeJump, pas d&#x27;accroche. Le passage ouest depuis la corniche n&#x27;est pas le hang attendu; la fosse visible en contrebas correspond aux rooms 26/14; le doorsill doit etre le rebord de la plateforme 1024, a atteindre depuis l&#x27;autre cote room8/relief ou via exploration nord/sud de la corniche. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
