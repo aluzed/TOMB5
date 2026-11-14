@@ -27,9 +27,12 @@ void EffectNewRoom(short fx_num, short room_number)//42320, 42774 (F)
 {
 	if(InItemControlLoop)
 	{
-		ItemNewRooms[ItemNewRoomNo][0] = fx_num;
-		ItemNewRooms[ItemNewRoomNo][1] = room_number;
-		ItemNewRoomNo++;
+		if (ItemNewRoomNo < 256)
+		{
+			ItemNewRooms[ItemNewRoomNo][0] = fx_num;
+			ItemNewRooms[ItemNewRoomNo][1] = room_number;
+			ItemNewRoomNo++;
+		}
 	}
 	else
 	{
@@ -63,8 +66,11 @@ void KillEffect(short fx_num)//42178, 425CC (F)
 {
 	if (InItemControlLoop)
 	{
-		ItemNewRooms[ItemNewRoomNo][0] = fx_num | 0x8000;
-		ItemNewRoomNo++;
+		if (ItemNewRoomNo < 256)
+		{
+			ItemNewRooms[ItemNewRoomNo][0] = fx_num | 0x8000;
+			ItemNewRoomNo++;
+		}
 	}
 	else
 	{
@@ -356,8 +362,11 @@ void KillItem(short item_num)//41950, 41DA4 (F)
 {
 	if (InItemControlLoop)
 	{
-		ItemNewRooms[ItemNewRoomNo][0] = item_num | 0x8000;
-		ItemNewRoomNo++;
+		if (ItemNewRoomNo < 256)
+		{
+			ItemNewRooms[ItemNewRoomNo][0] = item_num | 0x8000;
+			ItemNewRoomNo++;
+		}
 	}
 	else
 	{
@@ -449,9 +458,12 @@ void ItemNewRoom(short item_num, short room_number)//7C608(<), 7E64C(<) (F)
 {
 	if (InItemControlLoop)
 	{
-		ItemNewRooms[ItemNewRoomNo][0] = item_num;
-		ItemNewRooms[ItemNewRoomNo][1] = room_number;
-		ItemNewRoomNo++;
+		if (ItemNewRoomNo < 256)
+		{
+			ItemNewRooms[ItemNewRoomNo][0] = item_num;
+			ItemNewRooms[ItemNewRoomNo][1] = room_number;
+			ItemNewRoomNo++;
+		}
 	}
 	else
 	{

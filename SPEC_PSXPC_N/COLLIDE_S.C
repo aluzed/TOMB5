@@ -67,9 +67,12 @@ void ItemNewRoom(short item_num /*a3*/, short room_number /*t1*/)
 #if 1//Actually taken from PC :/
 	if (InItemControlLoop)
 	{
-		ItemNewRooms[ItemNewRoomNo][0] = item_num;
-		ItemNewRooms[ItemNewRoomNo][1] = room_number;
-		ItemNewRoomNo++;
+		if (ItemNewRoomNo < 256)
+		{
+			ItemNewRooms[ItemNewRoomNo][0] = item_num;
+			ItemNewRooms[ItemNewRoomNo][1] = room_number;
+			ItemNewRoomNo++;
+		}
 	}
 	else
 	{
@@ -109,8 +112,11 @@ void ItemNewRoom(short item_num /*a3*/, short room_number /*t1*/)
 
 	if (InItemControlLoop != 0)
 	{
-		ItemNewRooms[ItemNewRoomNo][0] = item_num;
-		ItemNewRooms[ItemNewRoomNo++][1] = room_number;
+		if (ItemNewRoomNo < 256)
+		{
+			ItemNewRooms[ItemNewRoomNo][0] = item_num;
+			ItemNewRooms[ItemNewRoomNo++][1] = room_number;
+		}
 		return;
 	}
 	//loc_7C648

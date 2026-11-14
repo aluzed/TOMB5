@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum correctif debordement ItemNewRooms: watchpoint watch2-20261114 montre que pendant la chute des dalles FallingBlock->KillItem fait depasser ItemNewRoomNo 200 (201,202,203...) ; la file ItemNewRooms[256][2] deborde et ecrase gfLevelComplete a 128, gfCurrentLevel=18, DoLevel name=121, fin du process. Correctif defensif: toutes les ecritures ItemNewRooms bornees par ItemNewRoomNo<256 (EffectNewRoom, KillEffect, KillItem, ItemNewRoom dans GAME/ITEMS.C et SPEC_PSXPC_N/COLLIDE_S.C). Validation watch3-20261114: meme sequence, build SHA256 1276c879abd1b116efeae11152654c772de38bec1eb0bbad58f98736bfd1211c, aucun GFLC128, aucun DOLEVEL parasite, jeu reste niveau 3, Lara vivante 40037,256,52540. 4177 PASS. Cause racine de l'afflux (>200 entrees/frame) a identifier: boucle/doublons liste active des dalles. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-14
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum analyse statique transition corrompue: gfCurrentLevel=18 car gfStatus==3 fait gfCurrentLevel=gfLevelComplete et gfLevelComplete=128 (0x80), impossible pour une fin normale (gfCurrentLevel+1). gfCurrentLevel=18 sort de gfScriptOffset[] et DoLevel recoit un couple garbage (name=121). Aucune affectation normale de gfLevelComplete ne produit 128: corruption memoire (octet ecrase). Piste: instrumenter gfLevelComplete et structures voisines pendant l'effondrement/chute, ou build entierement propre. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

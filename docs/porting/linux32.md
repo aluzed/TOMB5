@@ -1847,3 +1847,28 @@ produit 128 : il s’agit d’une **corruption mémoire** (octet écrasé), pas
 d’une valeur de gameflow. Piste : instrumenter les écritures sur
 `gfLevelComplete`/les structures voisines pendant l’effondrement et la
 chute, ou exécuter cette section avec un build entièrement propre.
+
+### Correctif : débordement de la file `ItemNewRooms` (14 novembre 2026)
+
+Watchpoints (`watch2-20261114/`) : pendant la chute des dalles,
+`FallingBlock` appelle `KillItem` et `ItemNewRoomNo` dépasse **200**
+(201, 202, 203…). La file `ItemNewRooms[256][2]` déborde alors et
+l’écriture hors bornes écrase `gfLevelComplete` à **128** ; le gameflow
+passe `gfCurrentLevel=18`, `DoLevel` reçoit un nom garbage (121) et le
+jeu se termine.
+
+Correctif défensif basé sur cette preuve : toutes les écritures dans
+`ItemNewRooms` sont bornées par `ItemNewRoomNo < 256`
+(`EffectNewRoom`, `KillEffect`, `KillItem`, `ItemNewRoom` dans
+`GAME/ITEMS.C` et `SPEC_PSXPC_N/COLLIDE_S.C`).
+
+Validation (`watch3-20261114/`) : même séquence (corniche → room 8 →
+relief/bouton → Action + 6 s) avec le build corrigé
+(SHA256 `1276c879abd1b116efeae11152654c772de38bec1eb0bbad58f98736bfd1211c`) :
+**aucun `GFLC128`**, aucun `DOLEVEL` parasite, le jeu reste au niveau 3
+et Lara est vivante à `40037,256,52540`. Tests : **4177 PASS**.
+
+La cause racine de l’afflux (>200 entrées dans une frame) reste à
+identifier : elle suggère une boucle ou des doublons dans la liste
+active des dalles. Le garde-fou empêche la corruption mémoire et la
+transition invalide.
