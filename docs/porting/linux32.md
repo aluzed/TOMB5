@@ -2004,3 +2004,20 @@ La corniche est par ailleurs un cul-de-sac à l’ouest (mur) et bordée de
 trous `pit_room=26` au nord/sud (`floor=1024`, `pit` en zz1/zz3). Le
 « doorsill » est à chercher depuis la plateforme 1024 ou l’autre côté du
 puits.
+
+### Cause du blocage à la corniche : `TestLaraVault` manquant (14 novembre 2026)
+
+La corniche est un creux à `y=768` entouré de cellules à `floor=1024`
+(**marche de 256**). Ni la marche (`Up`), ni `Action+Up`, ni le saut
+(`Up+Saut` → `GRAB_TO_FALL`) ne la franchissent. La cause est identifiée :
+
+`TestLaraVault` (`GAME/LARA.C`) contient tout le code PSX dans un bloc
+`#if 0` et se termine par `return 0;`. Or c’est cette fonction qui gère
+le **vault/step-up** (montée de marche, appui, passage par-dessus un
+obstacle bas). Sans elle, toute marche de 256 est un mur et les sauts
+sont défléchis.
+
+Prochain travail moteur : porter `TestLaraVault` depuis le bloc ASM PSX
+présent dans le fichier (ou la source PC), puis revalider la corniche et
+les marches du niveau. C’est probablement le déblocage clé de cette zone
+et de plusieurs autres.

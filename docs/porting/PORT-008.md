@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum cause blocage corniche: corniche creux y=768 entoure de cellules floor=1024 (marche de 256); ni Up, ni Action+Up, ni Up+Saut (GRAB_TO_FALL) ne la franchissent. Cause identifiee: TestLaraVault GAME/LARA.C a tout le code PSX dans #if 0 et termine par return 0; c'est cette fonction qui gere le vault/step-up. Sans elle toute marche de 256 est un mur et les sauts sont deflechis. Prochain travail moteur: porter TestLaraVault depuis le bloc ASM PSX present dans le fichier (ou source PC), puis revalider la corniche et les marches du niveau. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-14
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum point de reprise rapide corniche: F5 fonctionne en jeu et ecrit TOMB5.SAV [SAVE] wrote TOMB5.SAV: level 3 room 12 X 43364 Y 768 Z 52325. F6 refuse pendant le jeu (load ignored during gameplay; press F6 at the title); rechargement rapide seulement au titre. Pour les experiences d'accroche: relancer le jeu et F6 au titre, plus court que refaire le gouffre. Corniche cul-de-sac a l'ouest (mur) et bordee de trous pit_room=26 au nord/sud (floor=1024, pit en zz1/zz3). Doorsill a chercher depuis la plateforme 1024 ou l'autre cote du puits. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
