@@ -1836,3 +1836,14 @@ Exploration manuelle avec journal `probe_play2` :
 Conclusion : le puits est franchi en tombant de la corniche 768 vers la
 room 8 (256), qui contient le relief/levier ; l’instabilité de
 transition reste le principal obstacle à une traversée continue.
+
+Analyse statique de la transition corrompue : `gfCurrentLevel` devient 18
+parce que `gfStatus==3` fait `gfCurrentLevel = gfLevelComplete`, et
+`gfLevelComplete` vaut ici **128** (0x80) — valeur impossible pour une
+fin normale (`gfCurrentLevel + 1`). `gfCurrentLevel=18` sort ensuite de la
+table `gfScriptOffset[]`, et `DoLevel(gf[3],gf[4])` reçoit un couple
+garbage (`name=121`). Aucune affectation normale de `gfLevelComplete` ne
+produit 128 : il s’agit d’une **corruption mémoire** (octet écrasé), pas
+d’une valeur de gameflow. Piste : instrumenter les écritures sur
+`gfLevelComplete`/les structures voisines pendant l’effondrement et la
+chute, ou exécuter cette section avec un build entièrement propre.

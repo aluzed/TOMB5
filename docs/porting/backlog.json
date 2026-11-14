@@ -1711,6 +1711,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum geometrie puits + exploration visuelle: dump grid3-20261114 rooms 8/12/14/26/27. Room12 corniche xx5/zz2 sol 768; cellules xx1..4 zz1..3 floor=1024 pit_room=26 (plateforme +256 et puits). Room8 sols 0 pit_room=12 sky=25. Room26 sols 1024-3072 pit_room=14. Room14 sols ~5120-6144 pit_room=26. Exploration manuelle probe_play2: teleport 43109,768,52540 ouest -> chute room8 42593,256 -> marche a 40314,256 devant relief etoile + bloc rouge (candidat bouton); Action non enregistree (input=0x0) puis DOLEVEL name=121 gfCurrentLevel=18 complete=128 et processus disparu: transition/rechargement corrompu, coherent avec le bug mort/rechargement. Le puits se franchit en tombant 768->256 room8; instabilite de transition = principal obstacle. Aucun Done global."
+    },
+    {
+      "date": "2026-11-14",
+      "authorization_until": "2026-11-14T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum analyse statique transition corrompue: gfCurrentLevel=18 car gfStatus==3 fait gfCurrentLevel=gfLevelComplete et gfLevelComplete=128 (0x80), impossible pour une fin normale (gfCurrentLevel+1). gfCurrentLevel=18 sort de gfScriptOffset[] et DoLevel recoit un couple garbage (name=121). Aucune affectation normale de gfLevelComplete ne produit 128: corruption memoire (octet ecrase). Piste: instrumenter gfLevelComplete et structures voisines pendant l'effondrement/chute, ou build entierement propre. Aucun Done global."
     }
   ]
 }
