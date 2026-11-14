@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum shift-20261114: pendant REACH, ShiftItem ne produit aucun deplacement vertical (shift.y=0), seuls shift.x=-47 lateraux; pourtant pos.y monte 497-&gt;545-&gt;599-&gt;...-&gt;1715 et mid_floor decroit 5391-&gt;4173 =&gt; vitesse verticale negative (vers le haut) sur tout le REACH. Le saut Up+Action+Saut au bord a une trajectoire ascendante anormalement longue: Lara depasse le rebord, monte et meurt plus haut. Ce n&#x27;est ni ShiftItem ni un edge geant mais la vitesse du saut/fallspeed en REACH. Prochain essai: saut a l&#x27;arret sans Up ou chute controlee depuis le bord avec Action. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-14
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum edge2-20261114: au REACH sur le rebord pos=42914,1049,52224 fs=90 front_floor=-281 front_ceiling=-4383 mid_floor=4839 mid_ceiling=-4383 coll_type=1; LaraTestEdgeCatch renvoie 0 (hdif=pos.y+bounds[2] reste dans le meme octet apres fallspeed). Pas d&#x27;accroche sur cette frame; la montee observee vient des frames suivantes/ShiftItem dans l&#x27;empilement, pas d&#x27;un edge geant. La sonde finish a provoque un SIGSEGV artificiel au retour (eax=0): instrumentation non intrusive requise. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

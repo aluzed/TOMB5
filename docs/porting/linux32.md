@@ -1792,3 +1792,16 @@ frames suivantes / du `ShiftItem` dans l’empilement, pas d’un seul
 artificiel au retour de `LaraTestEdgeCatch` (`eax=0`) : il faudra une
 instrumentation non intrusive (breakpoint temporaire + logique dans la
 source) pour la suite.
+
+Mesure du déplacement (`shift-20261114/`) : pendant le `REACH`,
+`ShiftItem` ne produit **aucun** déplacement vertical (`shift.y = 0` à
+chaque frame) ; seuls des `shift.x = -47` corrigent la position
+latérale. Pourtant `pos.y` monte régulièrement (`497 → 545 → 599 → …
+→ 1715`) et `mid_floor` décroît (5391 → 4173), ce qui signifie que la
+vitesse verticale est **négative (vers le haut)** sur toute la durée du
+`REACH`. Le saut déclenché par `Up+Action+Saut` au bord a donc une
+trajectoire ascendante anormalement longue : Lara dépasse le rebord,
+continue à monter, et meurt plus haut. Ce n’est pas `ShiftItem` ni un
+`edge` géant : c’est la vitesse du saut/`fallspeed` en `REACH`.
+Prochain essai : saut à l’arrêt (sans `Up`) ou simple chute contrôlée
+depuis le bord, avec `Action` pour l’accroche.
