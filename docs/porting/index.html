@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum reproductibilite franchissement (hangA/B/C-20261114): trois tentatives, le franchissement du gouffre est tres sensible au timing; selon le saut Lara retombe dans la fosse state=8 y~5888 avant la corniche. Le saut reussi de crumble6 n&#x27;est pas reproductible a volonte en temps reel; le teleport direct 43109,768 est reecrit par UpdateLaraRoom vers room8 42593,256 donc inutilisable. Pour etudier l&#x27;accroche: save/load F5/F6 apres corniche, ou desactiver les dalles pendant le test, ou pilotage par numero de frame. Les tentatives d&#x27;accroche (marche Action, saut Action, Action+Back) n&#x27;ont pas encore ete executees depuis la corniche reelle. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-14
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-14T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum precision accroche: LaraDeflectEdgeJump GAME/LARA.C; state=14 GRAB_TO_FALL observe en sautant depuis la corniche 43109,768 correspond a un saut qui heurte une face avant CT_FRONT avec mid_floor&lt;=128: Lara rebondit et retombe, pas d&#x27;accroche. L&#x27;accroche reelle est dans lara_col_reach si IN_ACTION maintenu et LaraTestEdgeCatch renvoie une arete edge=(pos.y+bounds[2])&amp;-STEP_L. Depuis cette corniche le saut avec Action percute le mur du puits; bonne approche a determiner (bord exact, saut sans Action puis Action, ou chute controlee) et a tester avec retour visuel. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

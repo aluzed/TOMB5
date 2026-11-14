@@ -1926,3 +1926,23 @@ n’accroche pas. L’accroche réelle se fait dans `lara_col_reach` quand
 avec Action percute le mur du puits : la bonne approche reste à
 déterminer (bord exact, saut sans Action puis Action, ou chute
 contrôlée) et devra être testée avec retour visuel.
+
+### Reproductibilité du franchissement (14 novembre 2026)
+
+Trois nouvelles tentatives (`hangA/hangB/hangC`) montrent que le
+franchissement du gouffre est **très sensible au timing** : selon le
+moment du saut, Lara retombe dans la fosse (`state=8`, `y≈5888`) avant
+d’atteindre la corniche. Le saut réussi de `crumble6` n’est pas
+reproductible à volonté avec des taps clavier en temps réel, et le
+téléport direct sur la corniche `43109,768` est réécrit par
+`UpdateLaraRoom` vers la room 8 (`42593,256`), donc inutilisable tel
+quel.
+
+Pour étudier l’accroche de corniche de façon déterministe, il faut :
+- soit un **save/load rapide** (F5/F6) une fois la corniche atteinte ;
+- soit désactiver les dalles pour la session de test (instrumentation)
+  afin d’isoler le hang ;
+- soit un pilotage par numéro de frame plutôt que par temps réel.
+Les tentatives d’accroche elles-mêmes (marche avec Action, saut avec
+Action, Action+Back) n’ont pas encore été exécutées depuis la corniche
+réelle.
