@@ -1765,6 +1765,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum reproductibilite franchissement (hangA/B/C-20261114): trois tentatives, le franchissement du gouffre est tres sensible au timing; selon le saut Lara retombe dans la fosse state=8 y~5888 avant la corniche. Le saut reussi de crumble6 n'est pas reproductible a volonte en temps reel; le teleport direct 43109,768 est reecrit par UpdateLaraRoom vers room8 42593,256 donc inutilisable. Pour etudier l'accroche: save/load F5/F6 apres corniche, ou desactiver les dalles pendant le test, ou pilotage par numero de frame. Les tentatives d'accroche (marche Action, saut Action, Action+Back) n'ont pas encore ete executees depuis la corniche reelle. Aucun Done global."
+    },
+    {
+      "date": "2026-11-14",
+      "authorization_until": "2026-11-14T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum session visuelle dalles inertes: objects[CRUMBLING_FLOOR].control=0 au chargement niveau3 garde les dalles solides; Lara parcourt de facon fiable 40000,0 -> 43931,768 room12 sans mourir. Harnais: xdotool ne delivre les touches que si windowactivate --sync puis windowfocus --sync juste avant chaque touche; import vole le focus; le bp CF W w>=160 detache GDB trop tot. Cartographie: grande salle de pierre, grande porte bois/portcullis fermee (issue), banniere rouge, fenetre grillagee; fosse de lave au centre/bord avec corniche; de l'autre cote du petit gouffre le relief vert etoile + bloc rouge (deja atteint par chute); niches sombres laterales candidates crawlspace. Les sauts depuis le bord n'ont pas franchi le petit gap (Lara reste au bord). Prochain: saut lance de plus loin ou accroche du rebord d'en face puis shimmy vers la niche de gauche. Aucun Done global."
     }
   ]
 }

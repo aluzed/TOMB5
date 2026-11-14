@@ -1946,3 +1946,30 @@ Pour étudier l’accroche de corniche de façon déterministe, il faut :
 Les tentatives d’accroche elles-mêmes (marche avec Action, saut avec
 Action, Action+Back) n’ont pas encore été exécutées depuis la corniche
 réelle.
+
+### Session visuelle avec dalles inertes (14 novembre 2026)
+
+Pour isoler l’accroche, `objects[CRUMBLING_FLOOR].control = 0` est posé
+au chargement du niveau 3 : les dalles restent solides. Lara parcourt
+alors **de façon fiable** `40000,0 → 43931,768` (room 12) sans mourir.
+
+Enseignements du harnais :
+- `xdotool` ne délivre les touches que si `windowactivate --sync` puis
+  `windowfocus --sync` sont appelés **juste avant** chaque touche ;
+  `import` (capture) vole le focus et il faut le reprendre.
+- Le breakpoint de log `CF W` avec `$w >= 160` détache GDB trop tôt et
+  coupe le retour d’état ; il faut augmenter la borne pour les sessions
+  longues.
+
+Cartographie visuelle de la salle (room 12, après le pont) :
+- grande salle de pierre, **grande porte en bois/portcullis fermée**
+  (l’issue), bannière rouge, fenêtre grillagée en hauteur ;
+- **fosse de lave** au centre/bord, avec la corniche où se tient Lara ;
+- de l’autre côté du petit gouffre : le **relief vert étoilé** avec le
+  bloc rouge (déjà atteint par chute dans une session précédente) ;
+- niches sombres latérales (candidats crawlspace).
+
+Les sauts tentés depuis le bord de la fosse n’ont pas franchi le petit
+gap (Lara reste au bord). Prochain essai : saut lancé depuis plus loin,
+ou accroche du rebord d’en face (`doorsill`) puis shimmy vers la niche
+de gauche.
