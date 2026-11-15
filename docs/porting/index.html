@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum combat: port de xLOS/zLOS/ClipTarget (GAME/CONTROL.C) rendant LOS fonctionnel; port de GetSpheres (SPEC_PSXPC_N/SPHERES.C, matrices m*, Matrix-&gt;tx/ty/tz, TRX/TRY/TRZ); port de LaraTargetInfo, LaraGetNewTarget, FireWeapon (GAME/LARAFIRE.C, LJ_RHAND, baddie_slots, Slist, phd_GenerateW2V/phd_mxptr M20-M22). Etat: le port possede deja un PistolHandler simplifie (ciblage direct + HitTarget/CreatureDie, sans LOS) qui permet de tirer; FireWeapon/LaraTargetInfo dispo mais pas encore branches. Restent GetTargetOnLOS, DoProperDetection, ObjectOnLOS2/DoRayBox (DoRayBox stub), AnimatePistols/RifleHandler, puis gladiatr.cpp et guardian.cpp. Build-gameplay59 SHA256 8f3e47cf19238424110112c10224c8e0f77afa835899261baffaecb58f196139, 4177 tests PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum validation runtime lion: save patchee pres du lion de room17 (item29, spawn 46568,1024,54784) et activation forcee (status=1, EnableBaddieAI(29,1)); le lion se deplace et s&#x27;anime sans crash: (45562,1024,54875)-&gt;(42462,1024,58589), state=1, hp=40, puis s&#x27;arrete. Le coeur IA (CreatureAIInfo, CalculateTarget, CreatureAnimation, CreatureTurn, CreateZone) s&#x27;execute reellement. Poursuite/attaque de Lara non validee (le lion suit pour l&#x27;instant son trajet/patrouille); a tester avec ai_bits et combat. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

@@ -2305,3 +2305,26 @@ Relevé : `(45562,1024,54875)` → `(42462,1024,58589)`, `state=1`,
 s’exécute donc réellement. La **poursuite/attaque** de Lara n’a pas été
 validée (le lion suit pour l’instant son trajet/patrouille) ; à tester
 avec l’assignation `ai_bits` et le combat.
+
+### Combat : LOS, sphères, ciblage et FireWeapon (15 novembre 2026)
+
+Portés :
+- `xLOS`, `zLOS`, `ClipTarget` (`GAME/CONTROL.C`) : la fonction `LOS`
+  renvoie désormais un vrai résultat (murs/sols/plafonds) ;
+- `GetSpheres` (`SPEC_PSXPC_N/SPHERES.C`) : sphères de collision des
+  meshes (matrices `m*`, `Matrix->tx/ty/tz`, `TRX/TRY/TRZ`) ;
+- `LaraTargetInfo`, `LaraGetNewTarget`, `FireWeapon`
+  (`GAME/LARAFIRE.C`), avec `LJ_RHAND`, `baddie_slots`, `Slist`,
+  `phd_GenerateW2V`/`phd_mxptr[M20..M22]`.
+
+État du combat : le port possède déjà un `PistolHandler` **simplifié**
+(ciblage direct + `HitTarget`/`CreatureDie`, sans LOS) qui permet de
+tirer. `FireWeapon`/`LaraTargetInfo` sont maintenant disponibles mais
+pas encore branchés sur ce handler. Restent à porter :
+`GetTargetOnLOS`, `DoProperDetection`, `ObjectOnLOS2`/`DoRayBox`
+(`DoRayBox` est un stub), `AnimatePistols`/`RifleHandler`, puis
+`gladiatr.cpp` et `guardian.cpp`.
+
+Build `build-gameplay59` : SHA256
+`8f3e47cf19238424110112c10224c8e0f77afa835899261baffaecb58f196139`,
+**4177 tests PASS**.

@@ -15,6 +15,13 @@
 #include "FLMTORCH.H"
 #include "CONTROL.H"
 #include "CAMERA.H"
+#include "CALCLARA.H"
+#include "3D_GEN.H"
+#include "GETSTUFF.H"
+#include "SPHERE.H"
+#include "SPHERES.H"
+#include "MATHS.H"
+#include "LOT.H"
 
 #ifdef PC_VERSION
 #include "GAME.H"
@@ -182,10 +189,84 @@ void HitTarget(struct ITEM_INFO* item, struct GAME_VECTOR* hitpos, int damage, i
 	item->hit_points -= damage;
 }
 
-int FireWeapon(int weapon_type, struct ITEM_INFO* target, struct ITEM_INFO* src, short* angles)//48328, 4878C
+int FireWeapon(int weapon_type, struct ITEM_INFO* target, struct ITEM_INFO* src, short* angles)
 {
-	UNIMPLEMENTED();
-	return 0;
+	struct WEAPON_INFO* winfo;
+	struct SPHERE* sptr;
+	static struct PHD_3DPOS bum_view;
+	static struct GAME_VECTOR bum_vdest;
+	static struct GAME_VECTOR bum_vsrc;
+	short* ammo;
+	int r, nSpheres, bestdist, best;
+	short room_number;
+
+	bum_view.x_pos = 0;
+	bum_view.y_pos = 0;
+	bum_view.z_pos = 0;
+	GetLaraJointPos((struct PHD_VECTOR*)&bum_view, LJ_RHAND);
+	ammo = get_current_ammo_pointer(weapon_type);
+
+	if (!ammo[0])
+		return 0;
+
+	if (ammo[0] != -1)
+		ammo[0]--;
+
+	winfo = &weapons[weapon_type];
+	bum_view.x_pos = src->pos.x_pos;
+	bum_view.z_pos = src->pos.z_pos;
+	bum_view.x_rot = (short)(winfo->shot_accuracy * (GetRandomControl() - 0x4000) / 0x10000 + angles[1]);
+	bum_view.y_rot = (short)(winfo->shot_accuracy * (GetRandomControl() - 0x4000) / 0x10000 + angles[0]);
+	bum_view.z_rot = 0;
+	phd_GenerateW2V(&bum_view);
+
+	nSpheres = GetSpheres(target, Slist, 0);
+	best = -1;
+	bestdist = 0x7FFFFFFF;
+
+	for (int i = 0; i < nSpheres; i++)
+	{
+		sptr = &Slist[i];
+		r = sptr->r;
+
+		if (abs(sptr->x) < r && abs(sptr->y) < r && sptr->z > r &&
+			(sptr->x * sptr->x + sptr->y * sptr->y) <= (r * r))
+		{
+			if (sptr->z - r < bestdist)
+			{
+				bestdist = sptr->z - r;
+				best = i;
+			}
+		}
+	}
+
+	lara.has_fired = 1;
+	lara.Fired = 1;
+	bum_vsrc.x = bum_view.x_pos;
+	bum_vsrc.y = bum_view.y_pos;
+	bum_vsrc.z = bum_view.z_pos;
+	room_number = src->room_number;
+	GetFloor(bum_view.x_pos, bum_view.y_pos, bum_view.z_pos, &room_number);
+	bum_vsrc.room_number = room_number;
+
+	if (best < 0)
+	{
+		bum_vdest.x = bum_vsrc.x + (20480 * phd_mxptr[M20] >> W2V_SHIFT);
+		bum_vdest.y = bum_vsrc.y + (20480 * phd_mxptr[M21] >> W2V_SHIFT);
+		bum_vdest.z = bum_vsrc.z + (20480 * phd_mxptr[M22] >> W2V_SHIFT);
+		GetTargetOnLOS(&bum_vsrc, &bum_vdest, 0, 1);
+		return -1;
+	}
+
+	savegame.Game.AmmoHits++;
+	bum_vdest.x = bum_vsrc.x + (bestdist * phd_mxptr[M20] >> W2V_SHIFT);
+	bum_vdest.y = bum_vsrc.y + (bestdist * phd_mxptr[M21] >> W2V_SHIFT);
+	bum_vdest.z = bum_vsrc.z + (bestdist * phd_mxptr[M22] >> W2V_SHIFT);
+
+	if (!GetTargetOnLOS(&bum_vsrc, &bum_vdest, 0, 1))
+		HitTarget(target, &bum_vdest, winfo->damage, 0);
+
+	return 1;
 }
 
 void AimWeapon(struct WEAPON_INFO* winfo, struct lara_arm* arm)//4826C, 486D0 (F)
@@ -233,14 +314,213 @@ void find_target_point(struct ITEM_INFO* item, struct GAME_VECTOR* target)//4815
 	target->room_number = item->room_number;
 }
 
-void LaraGetNewTarget(struct WEAPON_INFO* winfo)//47B28, 47F8C
+void LaraGetNewTarget(struct WEAPON_INFO* winfo)
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item;
+	struct ITEM_INFO* bestitem;
+	static struct ITEM_INFO* TargetList[8];
+	static struct ITEM_INFO* LastTargets[8];
+	struct creature_info* creature;
+	struct GAME_VECTOR src, target;
+	long x, y, z, slot, dist, maxdist, maxdist2, bestdist;
+	short ang[2];
+	short bestyrot, targets, match;
+
+	if (BinocularRange)
+	{
+		lara.target = 0;
+		return;
+	}
+
+	bestitem = 0;
+	src.x = lara_item->pos.x_pos;
+	src.y = lara_item->pos.y_pos - 650;
+	src.z = lara_item->pos.z_pos;
+	src.room_number = lara_item->room_number;
+	bestyrot = 0x7FFF;
+	bestdist = 0x7FFFFFFF;
+	maxdist = winfo->target_dist;
+	maxdist2 = maxdist * maxdist;
+	creature = baddie_slots;
+	targets = 0;
+
+	for (slot = 0; slot < 5; slot++, creature++)
+	{
+		if (creature->item_num == -1)
+			continue;
+
+		item = &items[creature->item_num];
+
+		if (item->hit_points <= 0)
+			continue;
+
+		x = item->pos.x_pos - src.x;
+		y = item->pos.y_pos - src.y;
+		z = item->pos.z_pos - src.z;
+
+		if (abs(x) <= maxdist && abs(y) <= maxdist && abs(z) <= maxdist)
+		{
+			dist = x * x + y * y + z * z;
+
+			if (dist < maxdist2)
+			{
+				find_target_point(item, &target);
+
+				if (LOS(&src, &target))
+				{
+					phd_GetVectorAngles(target.x - src.x, target.y - src.y, target.z - src.z, ang);
+					ang[0] -= (lara.torso_y_rot + lara_item->pos.y_rot);
+					ang[1] -= (lara.torso_x_rot + lara_item->pos.x_rot);
+
+					if (ang[0] >= winfo->lock_angles[0] && ang[0] <= winfo->lock_angles[1] &&
+						ang[1] >= winfo->lock_angles[2] && ang[1] <= winfo->lock_angles[3])
+					{
+						TargetList[targets] = item;
+						targets++;
+
+						if (abs(ang[0]) < bestyrot + 2730 && dist < bestdist)
+						{
+							bestdist = dist;
+							bestyrot = abs(ang[0]);
+							bestitem = item;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	TargetList[targets] = 0;
+
+	if (TargetList[0])
+	{
+		for (slot = 0; slot < 8; ++slot)
+		{
+			if (!TargetList[slot])
+				lara.target = 0;
+
+			if (TargetList[slot] == lara.target)
+				break;
+		}
+
+		if (savegame.AutoTarget || (input & IN_LOOK))
+		{
+			if (!lara.target)
+			{
+				lara.target = bestitem;
+				LastTargets[0] = 0;
+			}
+			else if (input & IN_LOOK)
+			{
+				lara.target = 0;
+
+				for (match = 0; match < 8; ++match)
+				{
+					if (!TargetList[match])
+						break;
+
+					for (slot = 0; slot < 8; ++slot)
+					{
+						if (!LastTargets[slot])
+						{
+							slot = 8;
+							break;
+						}
+
+						if (LastTargets[slot] == TargetList[match])
+							break;
+					}
+
+					if (slot == 8)
+					{
+						lara.target = TargetList[match];
+						break;
+					}
+				}
+
+				if (!lara.target)
+				{
+					lara.target = bestitem;
+					LastTargets[0] = 0;
+				}
+			}
+		}
+	}
+	else
+		lara.target = 0;
+
+	if (lara.target != LastTargets[0])
+	{
+		for (slot = 7; slot > 0; slot--)
+			LastTargets[slot] = LastTargets[slot - 1];
+
+		LastTargets[0] = lara.target;
+	}
+
+	LaraTargetInfo(winfo);
 }
 
-void LaraTargetInfo(struct WEAPON_INFO* winfo)//4789C, 47D00
+void LaraTargetInfo(struct WEAPON_INFO* winfo)
 {
-	UNIMPLEMENTED();
+	struct GAME_VECTOR src, target;
+	short ang[2];
+
+	if (!lara.target)
+	{
+		lara.right_arm.lock = 0;
+		lara.left_arm.lock = 0;
+		lara.target_angles[0] = 0;
+		lara.target_angles[1] = 0;
+		return;
+	}
+
+	src.x = 0;
+	src.y = 0;
+	src.z = 0;
+	GetLaraJointPos((struct PHD_VECTOR*)&src, LJ_RHAND);
+
+	src.x = lara_item->pos.x_pos;
+	src.z = lara_item->pos.z_pos;
+	src.room_number = lara_item->room_number;
+	find_target_point(lara.target, &target);
+	phd_GetVectorAngles(target.x - src.x, target.y - src.y, target.z - src.z, ang);
+	ang[0] -= lara_item->pos.y_rot;
+	ang[1] -= lara_item->pos.x_rot;
+
+	if (LOS(&src, &target))
+	{
+		if (ang[0] >= winfo->lock_angles[0] && ang[0] <= winfo->lock_angles[1] &&
+			ang[1] >= winfo->lock_angles[2] && ang[1] <= winfo->lock_angles[3])
+		{
+			lara.left_arm.lock = 1;
+			lara.right_arm.lock = 1;
+			lara.target_angles[0] = ang[0];
+			lara.target_angles[1] = ang[1];
+			return;
+		}
+
+		if (lara.left_arm.lock)
+		{
+			if (ang[0] < winfo->left_angles[0] || ang[0] > winfo->left_angles[1] ||
+				ang[1] < winfo->left_angles[2] || ang[1] > winfo->left_angles[3])
+				lara.left_arm.lock = 0;
+		}
+
+		if (lara.right_arm.lock)
+		{
+			if (ang[0] < winfo->right_angles[0] || ang[0] > winfo->right_angles[1] ||
+				ang[1] < winfo->left_angles[2] || ang[1] > winfo->left_angles[3])
+				lara.right_arm.lock = 0;
+		}
+	}
+	else
+	{
+		lara.right_arm.lock = 0;
+		lara.left_arm.lock = 0;
+	}
+
+	lara.target_angles[0] = ang[0];
+	lara.target_angles[1] = ang[1];
 }
 
 void InitialiseNewWeapon()//4772C, 47B90 (F)

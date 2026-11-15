@@ -4865,14 +4865,244 @@ int LOS(struct GAME_VECTOR* start, struct GAME_VECTOR* target)//79460(<), 7B4A4(
 #if PC_VERSION 
 int xLOS(struct GAME_VECTOR* start, struct GAME_VECTOR* target)
 {
-	UNIMPLEMENTED();
-	return 0;
+	struct FLOOR_INFO* floor;
+	long dx, dy, dz, x, y, z;
+	short room_number, last_room;
+
+	dx = target->x - start->x;
+
+	if (!dx)
+		return 1;
+
+	dy = 1024 * (target->y - start->y) / dx;
+	dz = 1024 * (target->z - start->z) / dx;
+	number_los_rooms = 1;
+	los_rooms[0] = start->room_number;
+	room_number = start->room_number;
+	last_room = start->room_number;
+
+	if (dx < 0)
+	{
+		x = start->x & ~1023;
+		y = ((x - start->x) * dy >> 10) + start->y;
+		z = ((x - start->x) * dz >> 10) + start->z;
+
+		while (x > target->x)
+		{
+			floor = GetFloor(x, y, z, &room_number);
+
+			if (room_number != last_room)
+			{
+				last_room = room_number;
+				los_rooms[number_los_rooms] = room_number;
+				number_los_rooms++;
+			}
+
+			if (y > GetHeight(floor, x, y, z) || y < GetCeiling(floor, x, y, z))
+			{
+				target->x = x;
+				target->y = y;
+				target->z = z;
+				target->room_number = room_number;
+				return -1;
+			}
+
+			floor = GetFloor(x - 1, y, z, &room_number);
+
+			if (room_number != last_room)
+			{
+				last_room = room_number;
+				los_rooms[number_los_rooms] = room_number;
+				number_los_rooms++;
+			}
+
+			if (y > GetHeight(floor, x - 1, y, z) || y < GetCeiling(floor, x - 1, y, z))
+			{
+				target->x = x;
+				target->y = y;
+				target->z = z;
+				target->room_number = last_room;
+				return 0;
+			}
+
+			x -= 1024;
+			y -= dy;
+			z -= dz;
+		}
+	}
+	else
+	{
+		x = start->x | 0x3FF;
+		y = ((x - start->x) * dy >> 10) + start->y;
+		z = ((x - start->x) * dz >> 10) + start->z;
+
+		while (x < target->x)
+		{
+			floor = GetFloor(x, y, z, &room_number);
+
+			if (room_number != last_room)
+			{
+				last_room = room_number;
+				los_rooms[number_los_rooms] = room_number;
+				number_los_rooms++;
+			}
+
+			if (y > GetHeight(floor, x, y, z) || y < GetCeiling(floor, x, y, z))
+			{
+				target->x = x;
+				target->y = y;
+				target->z = z;
+				target->room_number = room_number;
+				return -1;
+			}
+
+			floor = GetFloor(x + 1, y, z, &room_number);
+
+			if (room_number != last_room)
+			{
+				last_room = room_number;
+				los_rooms[number_los_rooms] = room_number;
+				number_los_rooms++;
+			}
+
+			if (y > GetHeight(floor, x + 1, y, z) || y < GetCeiling(floor, x + 1, y, z))
+			{
+				target->x = x;
+				target->y = y;
+				target->z = z;
+				target->room_number = last_room;
+				return 0;
+			}
+
+			x += 1024;
+			y += dy;
+			z += dz;
+		}
+	}
+
+	target->room_number = room_number;
+	return 1;
 }
 
 int zLOS(struct GAME_VECTOR* start, struct GAME_VECTOR* target)
 {
-	UNIMPLEMENTED();
-	return 0;
+	struct FLOOR_INFO* floor;
+	long dx, dy, dz, x, y, z;
+	short room_number, last_room;
+
+	dz = target->z - start->z;
+
+	if (!dz)
+		return 1;
+
+	dx = 1024 * (target->x - start->x) / dz;
+	dy = 1024 * (target->y - start->y) / dz;
+	number_los_rooms = 1;
+	los_rooms[0] = start->room_number;
+	room_number = start->room_number;
+	last_room = start->room_number;
+
+	if (dz < 0)
+	{
+		z = start->z & ~1023;
+		x = ((z - start->z) * dx >> 10) + start->x;
+		y = ((z - start->z) * dy >> 10) + start->y;
+
+		while (z > target->z)
+		{
+			floor = GetFloor(x, y, z, &room_number);
+
+			if (room_number != last_room)
+			{
+				last_room = room_number;
+				los_rooms[number_los_rooms] = room_number;
+				number_los_rooms++;
+			}
+
+			if (y > GetHeight(floor, x, y, z) || y < GetCeiling(floor, x, y, z))
+			{
+				target->x = x;
+				target->y = y;
+				target->z = z;
+				target->room_number = room_number;
+				return -1;
+			}
+
+			floor = GetFloor(x, y, z - 1, &room_number);
+
+			if (room_number != last_room)
+			{
+				last_room = room_number;
+				los_rooms[number_los_rooms] = room_number;
+				number_los_rooms++;
+			}
+
+			if (y > GetHeight(floor, x, y, z - 1) || y < GetCeiling(floor, x, y, z - 1))
+			{
+				target->x = x;
+				target->y = y;
+				target->z = z;
+				target->room_number = last_room;
+				return 0;
+			}
+
+			z -= 1024;
+			x -= dx;
+			y -= dy;
+		}
+	}
+	else
+	{
+		z = start->z | 0x3FF;
+		x = ((z - start->z) * dx >> 10) + start->x;
+		y = ((z - start->z) * dy >> 10) + start->y;
+
+		while (z < target->z)
+		{
+			floor = GetFloor(x, y, z, &room_number);
+
+			if (room_number != last_room)
+			{
+				last_room = room_number;
+				los_rooms[number_los_rooms] = room_number;
+				number_los_rooms++;
+			}
+
+			if (y > GetHeight(floor, x, y, z) || y < GetCeiling(floor, x, y, z))
+			{
+				target->x = x;
+				target->y = y;
+				target->z = z;
+				target->room_number = room_number;
+				return -1;
+			}
+
+			floor = GetFloor(x, y, z + 1, &room_number);
+
+			if (room_number != last_room)
+			{
+				last_room = room_number;
+				los_rooms[number_los_rooms] = room_number;
+				number_los_rooms++;
+			}
+
+			if (y > GetHeight(floor, x, y, z + 1) || y < GetCeiling(floor, x, y, z + 1))
+			{
+				target->x = x;
+				target->y = y;
+				target->z = z;
+				target->room_number = last_room;
+				return 0;
+			}
+
+			z += 1024;
+			x += dx;
+			y += dy;
+		}
+	}
+
+	target->room_number = room_number;
+	return 1;
 }
 #endif
 
@@ -4963,8 +5193,62 @@ int CheckNoColFloorTriangle(struct FLOOR_INFO* floor, int x, int z)// (F)
 
 int ClipTarget(struct GAME_VECTOR* start, struct GAME_VECTOR* target, struct FLOOR_INFO* floor)
 {
-	UNIMPLEMENTED();
-	return 0;
+	struct GAME_VECTOR src;
+	long dx, dy, dz;
+	short room_no;
+
+	room_no = target->room_number;
+
+	if (target->y > GetHeight(floor, target->x, target->y, target->z))
+	{
+		src.x = (7 * (target->x - start->x) >> 3) + start->x;
+		src.y = (7 * (target->y - start->y) >> 3) + start->y;
+		src.z = (7 * (target->z - start->z) >> 3) + start->z;
+
+		for (int i = 3; i > 0; i--)
+		{
+			dx = ((target->x - src.x) * i >> 2) + src.x;
+			dy = ((target->y - src.y) * i >> 2) + src.y;
+			dz = ((target->z - src.z) * i >> 2) + src.z;
+
+			if (dy < GetHeight(GetFloor(dx, dy, dz, &room_no), dx, dy, dz))
+				break;
+		}
+
+		target->x = dx;
+		target->y = dy;
+		target->z = dz;
+		target->room_number = room_no;
+		return 0;
+	}
+
+	room_no = target->room_number;
+	floor = GetFloor(target->x, target->y, target->z, &room_no);
+
+	if (target->y < GetCeiling(floor, target->x, target->y, target->z))
+	{
+		src.x = (7 * (target->x - start->x) >> 3) + start->x;
+		src.y = (7 * (target->y - start->y) >> 3) + start->y;
+		src.z = (7 * (target->z - start->z) >> 3) + start->z;
+
+		for (int i = 3; i > 0; i--)
+		{
+			dx = ((target->x - src.x) * i >> 2) + src.x;
+			dy = ((target->y - src.y) * i >> 2) + src.y;
+			dz = ((target->z - src.z) * i >> 2) + src.z;
+
+			if (dy > GetCeiling(GetFloor(dx, dy, dz, &room_no), dx, dy, dz))
+				break;
+		}
+
+		target->x = dx;
+		target->y = dy;
+		target->z = dz;
+		target->room_number = room_no;
+		return 0;
+	}
+
+	return 1;
 }
 
 #if !(PSX_VERSION || SAT_VERSION)

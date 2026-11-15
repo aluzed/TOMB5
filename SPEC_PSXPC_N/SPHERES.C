@@ -12,8 +12,112 @@
 
 int GetSpheres(struct ITEM_INFO* item, struct SPHERE* sptr, int worldspace)
 {
-	UNIMPLEMENTED();
-	return 0;
+	struct object_info* obj;
+	short** meshpp;
+	long* bone;
+	short* meshp;
+	short* frame;
+	short* rot;
+	short* extra_rot;
+	long x, y, z, poppush;
+
+	if (!item)
+		return 0;
+
+	if (worldspace & 1)
+	{
+		x = item->pos.x_pos;
+		y = item->pos.y_pos;
+		z = item->pos.z_pos;
+		mPushUnitMatrix();
+		Matrix->tx = 0;
+		Matrix->ty = 0;
+		Matrix->tz = 0;
+		TRX = 0;
+		TRY = 0;
+		TRZ = 0;
+	}
+	else
+	{
+		x = 0;
+		y = 0;
+		z = 0;
+		mPushMatrix();
+		mTranslateAbsXYZ(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos);
+	}
+
+	mRotYXZ(item->pos.y_rot, item->pos.x_rot, item->pos.z_rot);
+
+	frame = GetBestFrame(item);
+	mTranslateXYZ(frame[6], frame[7], frame[8]);
+
+	rot = frame + 9;
+	mRotSuperPackedYXZ(&rot, 0);
+
+	obj = &objects[item->object_number];
+	meshpp = &meshes[obj->mesh_index];
+	meshp = *meshpp;
+	meshpp += 2;
+	bone = &bones[obj->bone_index];
+
+	mPushMatrix();
+
+	if (!(worldspace & 2))
+		mTranslateXYZ(meshp[0], meshp[1], meshp[2]);
+
+	sptr->x = x + Matrix->tx;
+	sptr->y = y + Matrix->ty;
+	sptr->z = z + Matrix->tz;
+	sptr->r = meshp[3];
+	sptr++;
+	mPopMatrix();
+
+	extra_rot = (short*)item->data;
+
+	for (int i = 0; i < obj->nmeshes - 1; i++)
+	{
+		poppush = *bone++;
+
+		if (poppush & 1)
+			mPopMatrix();
+
+		if (poppush & 2)
+			mPushMatrix();
+
+		mTranslateXYZ(bone[0], bone[1], bone[2]);
+		mRotSuperPackedYXZ(&rot, 0);
+
+		if ((poppush & 0x1C) && extra_rot)
+		{
+			if (poppush & 8)
+				mRotY(*extra_rot++);
+
+			if (poppush & 4)
+				mRotX(*extra_rot++);
+
+			if (poppush & 0x10)
+				mRotZ(*extra_rot++);
+		}
+
+		meshp = *meshpp;
+		mPushMatrix();
+
+		if (!(worldspace & 2))
+			mTranslateXYZ(meshp[0], meshp[1], meshp[2]);
+
+		sptr->x = x + Matrix->tx;
+		sptr->y = y + Matrix->ty;
+		sptr->z = z + Matrix->tz;
+		sptr->r = meshp[3];
+		sptr++;
+		mPopMatrix();
+
+		bone += 3;
+		meshpp += 2;
+	}
+
+	mPopMatrix();
+	return obj->nmeshes;
 }
 
 void GetJointAbsPosition(struct ITEM_INFO* item, struct PHD_VECTOR* pos, int joint)//8E860(<) 908A4(<) (F)
