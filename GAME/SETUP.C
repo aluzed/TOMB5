@@ -35,6 +35,7 @@
 #include "OBJECTS.H"
 #include "OBJLIGHT.H"
 #include "PICKUP.H"
+#include "ROPE.H"
 
 #include "SAVEGAME.H"
 #include "SPECIFIC.H"
@@ -959,6 +960,8 @@ static void PortSetupGameplayObjects(void)
 {
 	int i;
 
+	init_all_ropes();
+
 	for (i = 0; i < NUMBER_OBJECTS; i++)
 	{
 		if (!objects[i].loaded)
@@ -1054,6 +1057,14 @@ static void PortSetupGameplayObjects(void)
 		else if (i == PULLEY)
 		{
 			objects[i].collision = &PulleyCollision;
+		}
+		else if (i == ROPE)
+		{
+			objects[i].initialise = &InitialiseRope;
+			objects[i].control = &RopeControl;
+			objects[i].collision = &RopeCollision;
+			objects[i].using_drawanimating_item = FALSE;
+			objects[i].save_flags = TRUE;
 		}
 		else if (i == RAISING_BLOCK1 || i == RAISING_BLOCK2)
 		{

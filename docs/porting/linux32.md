@@ -2210,3 +2210,36 @@ Il manque encore le **côté objet** de la corde, qui vit dans
 `RopeNodeCollision`, `AlignLaraToRope`, et l’assignation
 `objects[ROPE].initialise/control` dans `PortSetupGameplayObjects`.
 Sans cela, le puzzle de corde du Colosseum reste inactif.
+
+### Corde : côté objet porté (15 novembre 2026)
+
+Ajouté dans `GAME/ROPE.C` (port de `TOMB5pc/game/rope.cpp`) :
+`CreateRope`, `InitialiseRope`, `GetRopePos`, `mDotProduct`, `vMul`,
+`mCrossProduct`, `phd_GetMatrixAngles`, `ModelRigidRope`, `ModelRigid`,
+`SetPendulumPoint`, `CalculateRope`, `RopeNodeCollision`,
+`AlignLaraToRope`, `RopeCollision`, `RopeControl`, `init_all_ropes`.
+`RopeList` (PC) → `Ropes[]`, `phd_PushUnitMatrix`/`phd_RotYXZ`/
+`phd_PopMatrix` → `mPushUnitMatrix`/`mRotYXZ`/`mPopMatrix`,
+`phd_sin/cos` → `SIN/COS` (même échelle 4096 + `W2V_SHIFT` 12),
+`phd_sqrt` → `phd_sqrt_asm`, `phd_atan` → `phd_atan_asm`.
+
+Intégration :
+- `objects[ROPE]` reçoit `initialise = InitialiseRope`,
+  `control = RopeControl`, `collision = RopeCollision`,
+  `using_drawanimating_item = FALSE`, `save_flags = TRUE` ;
+- `init_all_ropes()` est appelé au début de `PortSetupGameplayObjects` ;
+- `DelAlignLaraToRope` (`LARAMISC.C`), appelé chaque frame quand
+  `lara.RopePtr != -1`, appelle désormais `AlignLaraToRope`.
+
+Build `build-gameplay59` : SHA256
+`047825bd33bf22615b2b6059c0755773ce03b21b7fcbee37842707861f6d6e3d`,
+**4177 tests PASS**.
+
+Non porté : le **rendu** de la corde (`DrawRopeList`,
+`ProjectRopePoints`) — le `ROPE_STRUCT` PSX du port n’a pas le champ
+`Coords[24][3]` du PC ; la physique/le contrôle sont en place, mais la
+corde reste invisible tant qu’un rendu PSX dédié n’est pas ajouté.
+
+Découverte annexe : `HIGH_OBJECT1` (socle qui monte, gemme du Colosseum)
+n’a **ni** `initialise` **ni** `control` dans `PortSetupGameplayObjects` ;
+`InitialiseRaisingPlinth`/`ControlRaisingPlinth` ne sont pas portés.

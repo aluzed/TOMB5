@@ -1,5 +1,7 @@
 #include "LARAMISC.H"
 
+#include "ROPE.H"
+
 #include "SPECIFIC.H"
 #include "LARA.H"
 #include "COLLIDE.H"
@@ -128,9 +130,11 @@ void GetLaraDeadlyBounds()//4B408(<), 4B86C (F)
 #endif
 }
 
+/* AlignLaraToRope (TOMB5pc/game/rope.cpp:505) : le nom PSX est
+ * DelAlignLaraToRope ; appelé chaque frame quand Lara est sur la corde. */
 void DelAlignLaraToRope(struct ITEM_INFO* item)//4B3D8, 4B83C
 {
-	UNIMPLEMENTED();
+	AlignLaraToRope(item);
 }
 
 void InitialiseLaraAnims(struct ITEM_INFO* item)//4B340(<), 4B7A4 (F)
