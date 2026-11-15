@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum IA creatures: port du coeur depuis TOMB5pc game/box.cpp et lot.cpp - CreatureAIInfo, CalculateTarget, CreatureAnimation, CreatureTurn, CreatureMood, GetCreatureMood, CreatureKill, GetAITarget (BOX.C) et CreateZone (LOT.C). Adaptations phd_sin/cos-&gt;SIN/COS, phd_atan-&gt;phd_atan_asm, SQUARE-&gt;multiplications, AS_*-&gt;STATE_LARA_* (AS_MONKEY180-&gt;STATE_LARA_MONKEYSWING_TURNAROUND, AS_HANG2DUCK-&gt;STATE_LARA_CLIMB_TO_CRAWL), IFL_*-&gt;IFLAG_*, TOSSPAD dispo, ROOM_UNDERWATER-&gt;0x1. Assignation lion dans PortSetupGameplayObjects: InitialiseLion, LionControl, CreatureCollision, hit_points 40, radius 341, pivot_length 50, object_mip 5120, intelligent, HitEffect 1, save flags, bones 24/76 |=8. Build-gameplay59 SHA256 91ed84c3aa96a446406f2cced8644257e877ba1b7447378159222338ff7234d7, 4177 tests PASS. Validation runtime lion a faire; gladiateur (gladiatr.cpp) et statue (guardian.cpp) restent a porter, ainsi que le combat LARAFIRE. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum socle montant + poulie: port de InitialiseRaisingPlinth et ControlRaisingPlinth (GAME/TRAPS.C, sources init.cpp:1149 et andrea.cpp:480) avec correspondances IFL_TRIGGERED-&gt;IFLAG_TRIGGERED, IFL_CODEBITS-&gt;IFLAG_ACTIVATION_MASK, IFL_CLEARBODY 0x8000-&gt;IFLAG_KILLED; port de InitialisePulley (init.cpp:444); objects[HIGH_OBJECT1] initialise/control/collision=ObjectCollision/save_position/save_flags; objects[PULLEY] InitialisePulley/SwitchControl/PulleyCollision/save_flags/save_anim. Validation runtime (save patchee a la poulie room49 41472,2816,29500): apres 3 pressions Action, poulie status 1-&gt;0, socle HIGH_OBJECT1 monte de y=2304 a y=1536 (3x256) et gemme PUZZLE_ITEM4_COMBO2 suit de y=1792 a y=976 (socle-560). Chaine poulie-&gt;trigger-&gt;socle validee de bout en bout. Build-gameplay59 SHA256 a8a0915e1921d45d7a0247801243e3834fe5bdcd7e37936ce029eaef6f2a9769, 4177 tests PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

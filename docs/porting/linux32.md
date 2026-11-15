@@ -2268,3 +2268,28 @@ fonctionne donc de bout en bout.
 Build `build-gameplay59` : SHA256
 `a8a0915e1921d45d7a0247801243e3834fe5bdcd7e37936ce029eaef6f2a9769`,
 **4177 tests PASS**.
+
+### IA créatures : cœur porté, lion assigné (15 novembre 2026)
+
+Portés depuis `TOMB5pc/game/box.cpp` et `lot.cpp` :
+- `CreatureAIInfo`, `CalculateTarget`, `CreatureAnimation`,
+  `CreatureTurn`, `CreatureMood`, `GetCreatureMood`, `CreatureKill`,
+  `GetAITarget` (`GAME/BOX.C`) ;
+- `CreateZone` (`GAME/LOT.C`).
+
+Adaptations : `phd_sin/cos` → `SIN/COS`, `phd_atan` → `phd_atan_asm`,
+`SQUARE` → multiplications explicites, `AS_*` → `STATE_LARA_*`
+(`AS_MONKEY180`→`STATE_LARA_MONKEYSWING_TURNAROUND`,
+`AS_HANG2DUCK`→`STATE_LARA_CLIMB_TO_CRAWL`), `IFL_*` → `IFLAG_*`,
+`TOSSPAD` disponible dans le port, `ROOM_UNDERWATER` → `0x1`.
+
+Assignation du **lion** dans `PortSetupGameplayObjects` :
+`InitialiseLion`, `LionControl`, `CreatureCollision`, `hit_points=40`,
+`radius=341`, `pivot_length=50`, `object_mip=5120`, `intelligent`,
+`HitEffect=1`, flags de sauvegarde et `bones[...] |= 8` (24/76).
+
+Build `build-gameplay59` : SHA256
+`91ed84c3aa96a446406f2cced8644257e877ba1b7447378159222338ff7234d7`,
+**4177 tests PASS**. Validation runtime du lion à faire (activation +
+poursuite/attaque) ; le gladiateur (`gladiatr.cpp`) et la statue
+(`guardian.cpp`) restent à porter, ainsi que le combat (LARAFIRE).

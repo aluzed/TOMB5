@@ -24,6 +24,7 @@
 #include "HEALTH.H"
 #include "ITEMS.H"
 #include "LARA.H"
+#include "LION.H"
 #include "LARAFIRE.H"
 #include "LARAMISC.H"
 
@@ -1061,6 +1062,26 @@ static void PortSetupGameplayObjects(void)
 			objects[i].collision = &PulleyCollision;
 			objects[i].save_flags = TRUE;
 			objects[i].save_anim = TRUE;
+		}
+		else if (i == LION)
+		{
+			objects[i].initialise = &InitialiseLion;
+			objects[i].control = &LionControl;
+			objects[i].collision = &CreatureCollision;
+			objects[i].shadow_size = 128;
+			objects[i].hit_points = 40;
+			objects[i].pivot_length = 50;
+			objects[i].radius = 341;
+			objects[i].bite_offset = 0;
+			objects[i].object_mip = 5120;
+			objects[i].intelligent = TRUE;
+			objects[i].HitEffect = 1;
+			objects[i].save_position = TRUE;
+			objects[i].save_hitpoints = TRUE;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+			bones[objects[i].bone_index + 24] |= 8;
+			bones[objects[i].bone_index + 76] |= 8;
 		}
 		else if (i == ROPE)
 		{
