@@ -2502,3 +2502,12 @@ Build `build-gameplay59` : SHA256
 Build `build-gameplay59` : SHA256
 `fff7b798ff64b25b9d497d011f815d66992b75a9785bae3cb60abf721be6dfb3`,
 **4177 tests PASS**.
+
+Note complémentaire : l’animation **dormante** de `ROMAN_GOD`
+(`anim_index+16`, état 13) est stable — plus de 125 itérations de
+`DrawRooms` dans la room 90 sans crash, avec `EnableBaddieAI(79,1)`.
+Le SIGSEGV n’apparaît que lorsqu’on force l’état éveillé (`goal=1`),
+donc probablement via une transition d’animation (`GetChange`) qui
+sélectionne une animation dont les données de rotation ne correspondent
+pas au squelette de 17 os. La séquence de déclenchement réelle du niveau
+doit être reproduite avant de conclure.
