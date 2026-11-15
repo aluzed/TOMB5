@@ -2578,3 +2578,34 @@ niveau.
 Build `build-gameplay59` : SHA256
 `0925ce7e402e0928a375d6d0d1037bfead225b7bc4432e8fd0da0f3e5091247c`,
 **4177 tests PASS**.
+
+### ROMAN_GOD : attaques validées en partie (15 novembre 2026)
+
+Cartographie des animations de `ROMAN_GOD` (`objects[61].anim_index`) :
+
+| état | anim | frames |
+|------|------|--------|
+| 1 | 560 / 569 / 570 | 0–69, 578–599, 600–621 |
+| 2 | 561 | 70–265 |
+| 3 | 562 | 266–318 |
+| 4 | 563 | 319–385 |
+| 5 | 564 | 386–437 |
+| 7 | 566 / 567 / 568 | 498–577 |
+| 9 | 571 / 572 | 622–689 |
+| 10 | 573 | 690–744 |
+| 11 | 574 | 745–836 |
+| 12 | 575 | 837–935 |
+| 13 | 576 | 837–997 |
+
+Avec Lara à 800 unités et l’état 3 forcé (`anim 562`) :
+- l’attaque s’exécute, et **deux shockwaves sont créées** à la frame
+  `frame_base + 34` (`ShockWaves[0/1].life = 48`) ;
+- l’IA enchaîne ensuite état 10 (demi-tour) puis état 2 (charge) et
+  **crée des éclairs** (`Lightning[0].Life = 24`) ;
+- aucun crash sur plus de 250 itérations.
+
+Lara n’a pas encore perdu de PV : le test de collision vertical des
+shockwaves (`sw->y` vs `bounds` de Lara) ne passe pas dans ce montage ;
+à régler/valider lors d’une attaque en conditions réelles. Les
+shockwaves ne sont pas encore dessinées (`DrawShockwaves` non porté),
+seuls les éclairs le sont.

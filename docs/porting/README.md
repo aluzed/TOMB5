@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum ROMAN_GOD attaques validees en partie: cartographie des animations (state1 560/569/570, state2 561, state3 562, state4 563, state5 564, state7 566/567/568, state9 571/572, state10 573, state11 574, state12 575, state13 576). Avec Lara a 800 unites et etat 3 force (anim 562): l'attaque s'execute, deux shockwaves creees a frame_base+34 (ShockWaves[0/1].life=48); l'IA enchaine etat 10 puis etat 2 et cree des eclairs (Lightning[0].Life=24); aucun crash sur 250+ iterations. Lara n'a pas perdu de PV: test vertical des shockwaves (sw->y vs bounds de Lara) ne passe pas dans ce montage, a valider en conditions reelles. DrawShockwaves non porte (seuls les eclairs sont dessines). Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum deplacement des creatures: AnimateItem (GAME/CONTROL.C) omettait tout le bloc vitesse de control.cpp (velocity/acceleration/Xvelocity/Xacceleration -> item->speed puis translation pos.x/z via SIN/COS y_rot et y_rot+0x4000). Sans ce bloc aucune creature ne se deplacait (animation sur place), ce qui empechait aussi ROMAN_GOD de se rapprocher de Lara. Le else est implemente, la branche gravite reste inchangee. Validation: ROMAN_GOD se deplace reellement en etat 7 (51968,66043 -> 51924,65985 -> 51429,66041 -> 51708,65595); corniche 200 frames sans crash; tests 4177 PASS. Diagnostic AI: info.distance=27563485 (distance au carre), tbox=rbox=245; la statue reste trop loin (>2560) pour passer en attaque dans le montage synthetique, rapprochement/cheminement a verifier avec la sequence reelle du niveau. Build-gameplay59 SHA256 0925ce7e402e0928a375d6d0d1037bfead225b7bc4432e8fd0da0f3e5091247c. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
