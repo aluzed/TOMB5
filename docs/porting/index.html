@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum mise a jour des effets + degats shockwave: UpdateSparks/UpdateFireSparks/UpdateSmokeSparks/UpdateBubbles/UpdateSplashes/UpdateDebris/UpdateBlood/UpdateDrips/UpdateGunShells/UpdateShockwaves/UpdateLightning etaient dans un bloc #if PC_VERSION non compile pour PSXPC et leurs appels dans la branche PSX de ControlPhase etaient commentes; les effets etaient crees mais jamais mis a jour (duree de vie figee, aucun degat). Corrections: garde #if PC_VERSION || PSXPC_TEST, appels reactivees dans ControlPhase (sparks, fire, smoke, bubbles, splashes, debris, blood, drips, gunshells, shockwaves, lightning), stubs Unimpl-&gt;UNIMPLEMENTED, UpdatePulseColour/UpdateSky gardes PC_VERSION (doublons PSXPC dans TEXT_S.C/DRAWSKY), TriggerRicochetSpark limite a PC_VERSION, EFFECT2.C.o obsolete sans TriggerRipple recompile, GetBestFrame (CALCLARA.C) branches inversees corrigees d&#x27;apres draw.cpp. Validation: attaque ROMAN_GOD etat 3, shockwaves mises a jour et infligent des degats (lara hp 1000-&gt;724); corniche 200 frames sans crash; 4177 tests PASS. Build-gameplay59 SHA256 3dc02e2826d56b657381f156220574b1862569b014434ac94e41d4ab27c32d9c. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum ROMAN_GOD attaques validees en partie: cartographie des animations (state1 560/569/570, state2 561, state3 562, state4 563, state5 564, state7 566/567/568, state9 571/572, state10 573, state11 574, state12 575, state13 576). Avec Lara a 800 unites et etat 3 force (anim 562): l&#x27;attaque s&#x27;execute, deux shockwaves creees a frame_base+34 (ShockWaves[0/1].life=48); l&#x27;IA enchaine etat 10 puis etat 2 et cree des eclairs (Lightning[0].Life=24); aucun crash sur 250+ iterations. Lara n&#x27;a pas perdu de PV: test vertical des shockwaves (sw-&gt;y vs bounds de Lara) ne passe pas dans ce montage, a valider en conditions reelles. DrawShockwaves non porte (seuls les eclairs sont dessines). Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

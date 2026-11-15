@@ -2609,3 +2609,38 @@ shockwaves (`sw->y` vs `bounds` de Lara) ne passe pas dans ce montage ;
 à régler/valider lors d’une attaque en conditions réelles. Les
 shockwaves ne sont pas encore dessinées (`DrawShockwaves` non porté),
 seuls les éclairs le sont.
+
+### Mise à jour des effets réellement active + dégâts shockwave (15 novembre 2026)
+
+Les fonctions `UpdateSparks`, `UpdateFireSparks`, `UpdateSmokeSparks`,
+`UpdateBubbles`, `UpdateSplashes`, `UpdateDebris`, `UpdateBlood`,
+`UpdateDrips`, `UpdateGunShells`, `UpdateShockwaves` et
+`UpdateLightning` étaient dans un bloc `#if PC_VERSION` **non compilé**
+pour PSXPC, et leurs appels dans la branche PSX de `ControlPhase`
+étaient commentés. Résultat : les effets étaient créés mais jamais
+mis à jour (durée de vie figée, aucun dégât).
+
+Corrections :
+- garde du bloc passée à `#if PC_VERSION || PSXPC_TEST` ;
+- appels réactivés dans `ControlPhase` (branche PSX/PSXPC) :
+  sparks, fire, smoke, bubbles, splashes, debris, blood, drips,
+  gunshells, shockwaves, lightning ;
+- stubs `Unimpl()` remplacés par `UNIMPLEMENTED()` ;
+- `UpdatePulseColour` et `UpdateSky` gardés en `#if PC_VERSION`
+  (doublons PSXPC déjà fournis par `TEXT_S.C` / `DRAWSKY`) ;
+- appel ambigu à `TriggerRicochetSpark` limité à `#if PC_VERSION` ;
+- `EFFECT2.C.o` était obsolète et ne contenait pas `TriggerRipple` :
+  recompilé.
+- `GetBestFrame` (`CALCLARA.C`) avait ses deux branches inversées
+  (`ret > rate/2` renvoyait la mauvaise frame) : corrigé d’après
+  `draw.cpp`.
+
+Validation :
+- attaque ROMAN_GOD état 3 : les shockwaves se mettent à jour et
+  **infligent des dégâts** (`lara_item->hit_points` 1000 → 724) ;
+- la sauvegarde de la corniche tourne 200 frames sans crash avec tous
+  les updaters d’effets actifs ;
+- 4177 tests PASS.
+
+Build `build-gameplay59` : SHA256
+`3dc02e2826d56b657381f156220574b1862569b014434ac94e41d4ab27c32d9c`.

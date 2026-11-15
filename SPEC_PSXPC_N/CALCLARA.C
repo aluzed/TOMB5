@@ -2174,12 +2174,12 @@ short* GetBestFrame(struct ITEM_INFO* item)//858C8(<)
 	v0 = GetFrames_CL(item, &var_10[0], &var_8);
 	v1 = var_8 >> 1;
 
-	if ((var_8 >> 1) < v0)
+	if (v0 > (var_8 >> 1))
 	{
-		return (short*)var_10[0];
+		return (short*)var_10[1];
 	}
 	else
 	{
-		return (short*)var_10[1];
+		return (short*)var_10[0];
 	}
 }

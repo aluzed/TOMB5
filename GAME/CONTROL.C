@@ -302,7 +302,7 @@ BYTE byte_86BBA3 = 0;
 
 char byte_A3660;
 
-#if PC_VERSION
+#if PC_VERSION || PSXPC_TEST
 void UpdateSparks()
 {
 	/* Porté depuis TOMB5pc/game/effect2.cpp (UpdateSparks), 128 slots PSX. */
@@ -495,7 +495,7 @@ void UpdateSparks()
 
 void UpdateFireSparks()
 {
-	Unimpl();
+	UNIMPLEMENTED();
 }
 
 void UpdateSmokeSparks()//87558(<), 8959C(<) (F)
@@ -1051,17 +1051,17 @@ void UpdateDrips()//87CC8(<), 89D0C(<) (F)
 
 void UpdateGunShells()
 {
-	Unimpl();
+	UNIMPLEMENTED();
 }
 
 void UpdateRats()
 {
-	Unimpl();
+	UNIMPLEMENTED();
 }
 
 void UpdateBats()
 {
-	Unimpl();
+	UNIMPLEMENTED();
 }
 
 void UpdateShockwaves()
@@ -1137,11 +1137,14 @@ void UpdateLightning()
 			pVel++;
 		}
 
+#if PC_VERSION
 		if (GlobalCounter & 2 && lptr->Flags & 0x10 && lptr->Life > 18)
 			TriggerRicochetSpark((struct GAME_VECTOR*)&lptr->Point[3], GetRandomControl() << 1, 2, 0);
+#endif
 	}
 }
 
+#if PC_VERSION
 void UpdatePulseColour()
 {
 	unsigned int localPulseCnt = PulseCnt = (++PulseCnt & 0x1F);
@@ -1164,12 +1167,14 @@ void UpdatePulseColour()
 		FontShades[1][i].specular.rgbcd = c2;
 	}
 }
+#endif
 
 void KlaxonTremor()
 {
-	Unimpl();
+	UNIMPLEMENTED();
 }
 
+#if PC_VERSION
 void UpdateSky()
 {
 	if (gfLevelFlags & GF_LVOP_LAYER1_USED)
@@ -1200,6 +1205,7 @@ void UpdateSky()
 		}
 	}
 }
+#endif
 
 #endif
 
@@ -2154,15 +2160,15 @@ long ControlPhase(long nframes, int demo_mode)//1D538(<), 1D6CC(!) //DO NOT TOUC
 			}
 		}//loc_1E15C
 
-		///UpdateSparks();
-		///UpdateFireSparks();
-		///UpdateSmokeSparks();
-		///UpdateBubbles();
-		///UpdateSplashes();
-		///UpdateDebris();
-		///UpdateBlood();
-		///UpdateDrips();
-		///UpdateGunShells();
+		UpdateSparks();
+		UpdateFireSparks();
+		UpdateSmokeSparks();
+		UpdateBubbles();
+		UpdateSplashes();
+		UpdateDebris();
+		UpdateBlood();
+		UpdateDrips();
+		UpdateGunShells();
 
 		if (RelocPtr[MOD_RAT] != NULL)
 		{
@@ -2179,7 +2185,8 @@ long ControlPhase(long nframes, int demo_mode)//1D538(<), 1D6CC(!) //DO NOT TOUC
 			///((VOIDFUNCVOID*)RelocPtr[MOD_SPIDER][5])();
 		}
 		//loc_1E204
-		///UpdateShockwaves();
+		UpdateShockwaves();
+		UpdateLightning();
 
 		//loc_1E1E4
 		if (RelocPtr[MOD_LIGHTNG] != NULL)
