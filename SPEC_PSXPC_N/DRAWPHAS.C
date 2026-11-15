@@ -596,6 +596,7 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 
 	 S_DrawSparks();
 	 DrawLightning();
+	 DrawShockwaves();
 
 	lara_item->pos.x_pos = sp.x;
 	lara_item->pos.y_pos = sp.y;

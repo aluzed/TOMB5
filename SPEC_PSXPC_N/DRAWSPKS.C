@@ -156,6 +156,63 @@ static void EmitLightningQuad(long x0, long y0, long x1, long y1, long width, lo
 	db.polyptr += sizeof(POLY_FT4);
 }
 
+
+void DrawShockwaves()
+{
+	/* Rendu PSXPC approximatif : anneau de sprites le long du rayon
+	   externe de chaque shockwave (la version PC utilise un quad
+	   texture). Les rayons sont des short : on les relit en non signe
+	   pour retrouver 40960 depuis 0xA000. */
+	struct SHOCKWAVE_STRUCT* sw;
+	long i, j, sx, sy, zv, size, r, g, b, x, z;
+	long radius, inner, outer, ang;
+
+	for (i = 0; i < 16; i++)
+	{
+		sw = &ShockWaves[i];
+
+		if (!sw->life)
+			continue;
+
+		inner = (unsigned short)sw->InnerRad;
+		outer = (unsigned short)sw->OuterRad;
+		radius = inner + ((outer - inner) >> 1);
+
+		if (radius <= 0 || radius > 65535)
+			continue;
+
+		r = sw->r;
+		g = sw->g;
+		b = sw->b;
+
+		if (sw->life < 8)
+		{
+			r = (r * sw->life) >> 3;
+			g = (g * sw->life) >> 3;
+			b = (b * sw->life) >> 3;
+		}
+
+		for (j = 0; j < 48; j++)
+		{
+			ang = (j * 65536) / 48;
+			x = sw->x + ((radius * SIN(ang)) >> W2V_SHIFT);
+			z = sw->z + ((radius * COS(ang)) >> W2V_SHIFT);
+
+			if (!ProjectEffectPoint(x, sw->y, z, &sx, &sy, &zv))
+				continue;
+
+			size = 256000 / zv;
+
+			if (size < 2)
+				size = 2;
+			else if (size > 48)
+				size = 48;
+
+			EmitSprite(sx, sy, 14, size, r, g, b);
+		}
+	}
+}
+
 void DrawLightning()
 {
 	/* Version PSXPC de DrawLightning (reference TOMB5pc/specific/specificfx.cpp).

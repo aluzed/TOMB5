@@ -76,6 +76,7 @@ extern struct LIGHTNING_STRUCT* TriggerLightning(struct PHD_VECTOR* a1, struct P
 extern void TriggerShockwave(struct PHD_3DPOS* pos, short inner_rad, short outer_rad, int speed, char r, char g, char b, char life, short angle, short flags);
 extern void TriggerShockwaveHitEffect(long x, long y, long z, long rgb, short dir, long speed);
 extern void DrawLightning();
+extern void DrawShockwaves();
 extern void TriggerCoinGlow();
 extern int GetFreeSpider();
 extern void TriggerSmallSplash(int x, int y, int z, int num);

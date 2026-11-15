@@ -2644,3 +2644,25 @@ Validation :
 
 Build `build-gameplay59` : SHA256
 `3dc02e2826d56b657381f156220574b1862569b014434ac94e41d4ab27c32d9c`.
+
+### Rendu des shockwaves (15 novembre 2026)
+
+`DrawShockwaves` (`SPEC_PSXPC_N/DRAWSPKS.C`) est porté en version PSXPC :
+pour chaque shockwave active, 48 points sont répartis sur le rayon
+moyen `(InnerRad + OuterRad) / 2` (relu en non signé pour retrouver
+40960 depuis `0xA000`), projetés à l’écran puis dessinés avec le sprite
+`DEFAULT_SPRITES + 14`, avec fondu de couleur sur les 8 dernières
+frames. Appelé dans `DrawPhase` après `DrawLightning`.
+
+Validation visuelle : une shockwave injectée autour de Lara affiche un
+anneau jaune visible (`swvis.png`). Le rendu est approximatif (anneau
+de sprites au lieu du quad texturé PC) mais lisible.
+
+Remarque : le menu « level select » (activé par `PlayAnyLevel`) affiche
+bien la sélection, mais choisir Trajan’s Markets démarre encore le
+niveau 1 (sauvegarde F5 : `level 1`). Ce chemin de débogage n’est pas
+utilisé pour la campagne ; la validation de GUARDIAN reste synthétique.
+
+Build `build-gameplay59` : SHA256
+`847b137c2ea5dd3ac23d811249ee94729344ef2a3cf197b915143badf7ccaf28`,
+**4177 tests PASS**.

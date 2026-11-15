@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum rendu des shockwaves: DrawShockwaves PSXPC (DRAWSPKS.C) trace 48 points sur le rayon moyen (InnerRad+OuterRad)/2 relu en non signe pour retrouver 40960 depuis 0xA000, projection ecran, sprite DEFAULT_SPRITES+14, fondu sur les 8 dernieres frames; appele dans DrawPhase apres DrawLightning. Validation visuelle: shockwave injectee autour de Lara -&gt; anneau jaune visible (swvis.png); rendu approximatif (anneau de sprites au lieu du quad texture PC). Remarque: le level select (PlayAnyLevel) affiche la selection mais choisir Trajan&#x27;s Markets demarre encore le niveau 1 (save F5 level 1); chemin de debug non utilise pour la campagne, validation GUARDIAN reste synthetique. Build-gameplay59 SHA256 847b137c2ea5dd3ac23d811249ee94729344ef2a3cf197b915143badf7ccaf28, 4177 tests PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum mise a jour des effets + degats shockwave: UpdateSparks/UpdateFireSparks/UpdateSmokeSparks/UpdateBubbles/UpdateSplashes/UpdateDebris/UpdateBlood/UpdateDrips/UpdateGunShells/UpdateShockwaves/UpdateLightning etaient dans un bloc #if PC_VERSION non compile pour PSXPC et leurs appels dans la branche PSX de ControlPhase etaient commentes; les effets etaient crees mais jamais mis a jour (duree de vie figee, aucun degat). Corrections: garde #if PC_VERSION || PSXPC_TEST, appels reactivees dans ControlPhase (sparks, fire, smoke, bubbles, splashes, debris, blood, drips, gunshells, shockwaves, lightning), stubs Unimpl-&gt;UNIMPLEMENTED, UpdatePulseColour/UpdateSky gardes PC_VERSION (doublons PSXPC dans TEXT_S.C/DRAWSKY), TriggerRicochetSpark limite a PC_VERSION, EFFECT2.C.o obsolete sans TriggerRipple recompile, GetBestFrame (CALCLARA.C) branches inversees corrigees d&#x27;apres draw.cpp. Validation: attaque ROMAN_GOD etat 3, shockwaves mises a jour et infligent des degats (lara hp 1000-&gt;724); corniche 200 frames sans crash; 4177 tests PASS. Build-gameplay59 SHA256 3dc02e2826d56b657381f156220574b1862569b014434ac94e41d4ab27c32d9c. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
