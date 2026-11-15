@@ -2036,25 +2036,23 @@ void CreatureAIInfo(struct ITEM_INFO* item, struct AI_info* info)
 	info->bite = info->ahead && enemy->hit_points > 0 && abs(enemy->pos.y_pos - item->pos.y_pos) <= 512;
 }
 
-int CreatureActive(short item_number)//218B0(<), ? (F)
+int CreatureActive(short item_number)
 {
+	/* Porté depuis TOMB5pc/game/box.cpp (CreatureActive). */
 	struct ITEM_INFO* item = &items[item_number];
 
 	if (item->flags & IFLAG_KILLED)
-	{
-		if (item->status != ITEM_INVISIBLE)
-		{
-			return 1;
-		}
+		return 0;
 
-		if (EnableBaddieAI(item_number, 0) != 0)
-		{
-			item->status = ITEM_DEACTIVATED;
-			return 1;
-		}
+	if (item->status == ITEM_INVISIBLE)
+	{
+		if (!EnableBaddieAI(item_number, 0))
+			return 0;
+
+		item->status = ITEM_ACTIVE;
 	}
 
-	return 0;
+	return 1;
 }
 
 void InitialiseCreature(short item_number)//21800(<), ? (F)

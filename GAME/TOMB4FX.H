@@ -67,7 +67,7 @@ extern void ControlElectricFence(short item_number);
 extern void ControlTeleporter(short item_number);
 extern void DrawWeaponMissile(struct ITEM_INFO *item);
 extern void TriggerLaraDrips();
-#if PC_VERSION
+#if PC_VERSION || PSXPC_VERSION || PSXPC_TEST
 extern short DoBloodSplat(long x, long y, long z, short random, short y_rot, short room_number);
 extern void TriggerRicochetSpark(struct GAME_VECTOR* pos, int angle, int num, int a4);
 #endif

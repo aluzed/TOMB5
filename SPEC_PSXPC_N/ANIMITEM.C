@@ -1499,9 +1499,9 @@ void InterpolateMatrix_AI(int v1, int* fp)
 		t3 = (t3 + t4) >> 1;
 
 		((short*)a0)[0] = v0;
-		((short*)a3)[1] = a3;
-		((short*)t1)[2] = t1;
-		((short*)t3)[3] = t3;
+		((short*)a0)[1] = a3;
+		((short*)a0)[2] = t1;
+		((short*)a0)[3] = t3;
 
 		v0 = ((short*)a1)[4];
 		v1 = ((short*)a2)[4];
@@ -1670,9 +1670,9 @@ void InterpolateMatrix_AI(int v1, int* fp)
 	}
 
 	((short*)a0)[8] = v0;
-	((short*)a0)[5] = a3;
-	((short*)a0)[6] = t1;
-	((short*)a0)[7] = t3;
+	((int*)a0)[5] = a3;
+	((int*)a0)[6] = t1;
+	((int*)a0)[7] = t3;
 }
 
 void iPushMatrix_AI(int* fp)//81E60

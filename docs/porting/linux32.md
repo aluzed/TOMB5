@@ -2450,3 +2450,55 @@ lorsqu’un slot d’éclair n’a pas pu être créé.
 Build `build-gameplay59` : SHA256
 `55246b16ea9bbc6b87a59cb07aa0e6dde272b91fc0ec7961d6ff600effffc011`,
 **4177 tests PASS**.
+
+### ROMAN_GOD (statue du Colosseum) et corrections d’animation (15 novembre 2026)
+
+#### Port
+- `GAME/ROMANGOD.C` / `.H` créés depuis `TOMB5pc/game/romangod.cpp`
+  (775 lignes) : `TriggerRomanGodSparks`, `TriggerRomanGodMissile`,
+  `TriggerRomanGodLightningGlow`, `TriggerRomanGodPowerupFlames`,
+  `TriggerRomangodGravel`, `InitialiseRomangod`, `RomangodControl`.
+- `TriggerRomanGodMissileFlame` existait déjà dans `GAME/EFFECT2.C`
+  (pas de doublon).
+- `struct RG_TARGET` ajouté à `GAME/TYPES.H`.
+- Assigné dans `PortSetupGameplayObjects` : `InitialiseRomangod` /
+  `RomangodControl`, `CreatureCollision`, `hit_points=300`,
+  `radius=256`, `pivot_length=50`, `object_mip=5120`, `intelligent`,
+  `HitEffect=2`, flags de sauvegarde, `bones[24/52] |= 8|4` et les 17
+  meshes `MESHSWAP1`.
+- `ROMANGOD.C.o` ajouté au `link.txt` du build (le glob CMake ne le
+  voit qu’après reconfiguration).
+
+#### Corrections de bugs bloquants
+1. **`CreatureActive`** (`GAME/BOX.C`) était inversé : il ne renvoyait
+   1 que si `IFLAG_KILLED`, donc les contrôles de créatures ne
+   s’exécutaient pas normalement. Réécrit selon `box.cpp` :
+   `IFLAG_KILLED -> 0`, `status == ITEM_INVISIBLE -> EnableBaddieAI`
+   puis `status = ITEM_ACTIVE`, sinon 1.
+2. **`InterpolateMatrix_AI`** (`SPEC_PSXPC_N/ANIMITEM.C`) : quatre
+   écritures utilisaient `a3`/`t1`/`t3` (valeurs interpolées) comme
+   pointeurs au lieu de `a0` (destination), et les trois translations
+   étaient écrites en `short` au lieu d’`int`. Corrigé : plus de
+   SIGSEGV dans `InterpolateMatrix_AI` (crash observé auparavant en
+   room 6 du Colosseum).
+
+#### Validation runtime
+- La sauvegarde de la corniche (niveau 3) tourne **200 frames sans
+  crash** après les corrections (`SANITY OK`).
+- La statue `obj=61` (`room 90`, `48640,512,69120`) est bien
+  initialisée au chargement (`anim = anim_index+16`, `state=13`,
+  position décalée de 486 vers l’avant).
+- Activation forcée (`EnableBaddieAI(79,1)`, `status=1`,
+  `AddItemActive(79)`) + téléport de Lara en `48640,512,70144` :
+  `data` est alloué, le contrôle démarre.
+- **Blocage restant** : SIGSEGV dans
+  `iRotSuperPackedYXZ_AI` (`ANIMITEM.C:1422`) pendant l’animation
+  interpolée de la statue (17 os) ; le pointeur de rotations de la
+  frame suivante (`fp[33]`) part hors de la zone de frames. Le même
+  type de crash était déjà noté pour un spawn en room 6. L’animation
+  interpolée des objets à nombreux os reste donc à corriger avant de
+  valider le combat réel contre la statue.
+
+Build `build-gameplay59` : SHA256
+`fff7b798ff64b25b9d497d011f815d66992b75a9785bae3cb60abf721be6dfb3`,
+**4177 tests PASS**.

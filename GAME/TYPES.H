@@ -1433,6 +1433,15 @@ struct GUARDIAN_TARGET
  /* 0x22 */ short Ydiff;
 };
 
+struct RG_TARGET
+{
+ /* 0x00 */ long dynx;
+ /* 0x04 */ long dyny;
+ /* 0x08 */ long dynz;
+ /* 0x0C */ struct LIGHTNING_STRUCT* pulptr[8];
+ /* 0x2C */ char dynval;
+};
+
 struct HAIR_STRUCT
 {
  /* 0x00 */ struct PHD_3DPOS pos; // size=20, offset=0
