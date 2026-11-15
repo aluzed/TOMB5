@@ -76,18 +76,6 @@ char GetDoor(struct FLOOR_INFO* floor)
 	return -1;
 }
 
-int xLOS(struct GAME_VECTOR* start, struct GAME_VECTOR* target)
-{
-	UNIMPLEMENTED();
-	return 0;
-}
-
-int zLOS(struct GAME_VECTOR* start, struct GAME_VECTOR* target)
-{
-	UNIMPLEMENTED();
-	return 0;
-}
-
 long CheckNoColFloorTriangle(struct FLOOR_INFO* floor, long x, long z)//(F)
 {
 	unsigned short* fd;//$v1

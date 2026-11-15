@@ -17,6 +17,7 @@
 #include "EFFECTS.H"
 #include "DELTAPAK.H"
 #include "SOUND.H"
+#include "GAMEFLOW.H"
 #ifdef PC_VERSION
 #include "GLOBAL.H"
 #include "GAME.H"
@@ -103,6 +104,7 @@ struct BUBBLE_STRUCT Bubbles[40]; // offset 0xA80FC
 struct DRIP_STRUCT Drips[32]; // offset 0xA85FC
 struct SHOCKWAVE_STRUCT ShockWaves[16]; // offset 0xA7C3C
 struct FIRE_LIST fires[32]; // offset 0xA8D7C
+struct LIGHTNING_STRUCT Lightning[16];
 
 void SetFadeClip(short height, short speed)//34A8C(<), 34F8C(<) (F)
 {
@@ -619,9 +621,287 @@ void TriggerExplosionSmokeEnd(int x, int y, int z, int a4)// (F)
 	sptr->Size = size >> 2;
 }
 
+void TriggerExplosionSmoke(long x, long y, long z, long uw)
+{
+	/* Porté depuis TOMB5pc/game/effect2.cpp (TriggerExplosionSmoke). */
+	struct SPARKS* sptr;
+	long dx, dz;
+
+	dx = lara_item->pos.x_pos - x;
+	dz = lara_item->pos.z_pos - z;
+
+	if (dx < -0x4000 || dx > 0x4000 || dz < -0x4000 || dz > 0x4000)
+		return;
+
+	sptr = &spark[GetFreeSpark()];
+	sptr->On = 1;
+
+	if (!uw)
+	{
+		sptr->sR = 196;
+		sptr->sG = 196;
+		sptr->sB = 196;
+		sptr->dR = 128;
+		sptr->dG = 128;
+		sptr->dB = 128;
+	}
+	else
+	{
+		sptr->sR = 144;
+		sptr->sG = 144;
+		sptr->sB = 144;
+		sptr->dR = 64;
+		sptr->dG = 64;
+		sptr->dB = 64;
+	}
+
+	sptr->ColFadeSpeed = 2;
+	sptr->FadeToBlack = 8;
+	sptr->TransType = 3;
+	sptr->Life = (GetRandomControl() & 3) + 10;
+	sptr->sLife = sptr->Life;
+	sptr->x = (GetRandomControl() & 0x1FF) + x - 256;
+	sptr->y = (GetRandomControl() & 0x1FF) + y - 256;
+	sptr->z = (GetRandomControl() & 0x1FF) + z - 256;
+	sptr->Xvel = (short)(((GetRandomControl() & 0xFFF) - 2048) >> 2);
+	sptr->Yvel = (short)((GetRandomControl() & 0xFF) - 128);
+	sptr->Zvel = (short)(((GetRandomControl() & 0xFFF) - 2048) >> 2);
+
+	if (uw)
+		sptr->Friction = 2;
+	else
+		sptr->Friction = 6;
+
+	sptr->Flags = SF_ROTATE | SF_DEF | SF_SCALE;
+	sptr->RotAng = GetRandomControl() & 0xFFF;
+	sptr->Scalar = 1;
+	sptr->RotAdd = (GetRandomControl() & 0xF) + 16;
+	sptr->Gravity = -3 - (GetRandomControl() & 3);
+	sptr->MaxYvel = -4 - (GetRandomControl() & 3);
+	sptr->dSize = (GetRandomControl() & 0x1F) + 128;
+	sptr->sSize = sptr->dSize >> 2;
+	sptr->Size = sptr->sSize >> 2;
+}
+
 void TriggerExplosionSparks(int x, int y, int z, int a4, int a5, int a6, short room_no)
 {
-	UNIMPLEMENTED();
+	/* Porté depuis TOMB5pc/game/effect2.cpp (TriggerExplosionSparks). */
+	struct SPARKS* sptr;
+	struct SP_DYNAMIC* pDL;
+	long scalar, mirror, i;
+	unsigned char extras_table[4];
+	unsigned char r, g, b;
+
+	extras_table[0] = 0;
+	extras_table[1] = 4;
+	extras_table[2] = 7;
+	extras_table[3] = 10;
+	scalar = 0;
+	mirror = 0;
+
+	if (room_no < 0)
+	{
+		room_no = -room_no;
+		scalar = 1;
+	}
+
+	if (room_no == gfMirrorRoom && gfLevelFlags & GF_MIRROR)
+		mirror = 1;
+
+	do
+	{
+		sptr = &spark[GetFreeSpark()];
+		sptr->On = 1;
+		sptr->sR = 255;
+
+		if (a6 == 1)
+		{
+			sptr->sG = (GetRandomControl() & 0x3F) + 128;
+			sptr->sB = 32;
+			sptr->dR = 192;
+			sptr->dG = (GetRandomControl() & 0x1F) + 64;
+			sptr->dB = 0;
+			sptr->ColFadeSpeed = 7;
+			sptr->FadeToBlack = 8;
+			sptr->TransType = 2;
+			sptr->Life = (GetRandomControl() & 7) + 16;
+			sptr->sLife = sptr->Life;
+			sptr->RoomNumber = (unsigned char)room_no;
+		}
+		else
+		{
+			sptr->sG = (GetRandomControl() & 0xF) + 32;
+			sptr->sB = 0;
+			sptr->dR = (GetRandomControl() & 0x3F) + 192;
+			sptr->dG = (GetRandomControl() & 0x3F) + 128;
+			sptr->dB = 32;
+			sptr->ColFadeSpeed = 8;
+			sptr->FadeToBlack = 16;
+			sptr->TransType = 2;
+			sptr->Life = (GetRandomControl() & 7) + 24;
+			sptr->sLife = sptr->Life;
+		}
+
+		sptr->extras = (unsigned char)(a4 | ((extras_table[a4] + (GetRandomControl() & 7) + 28) << 3));
+		sptr->Dynamic = (char)a5;
+
+		if (a5 == -2)
+		{
+			for (i = 0; i < 8; i++)
+			{
+				pDL = &spark_dynamics[i];
+
+				if (!pDL->On)
+				{
+					pDL->On = 1;
+					pDL->Falloff = 4;
+
+					if (a6 == 1)
+						pDL->Flags = 2;
+					else
+						pDL->Flags = 1;
+
+					sptr->Dynamic = (char)i;
+					break;
+				}
+			}
+
+			if (i == 8)
+				sptr->Dynamic = -1;
+		}
+
+		sptr->Xvel = (short)((GetRandomControl() & 0xFFF) - 2048);
+		sptr->Yvel = (short)((GetRandomControl() & 0xFFF) - 2048);
+		sptr->Zvel = (short)((GetRandomControl() & 0xFFF) - 2048);
+
+		if (a5 != -2 || a6 == 1)
+		{
+			sptr->x = (GetRandomControl() & 0x1F) + x - 16;
+			sptr->y = (GetRandomControl() & 0x1F) + y - 16;
+			sptr->z = (GetRandomControl() & 0x1F) + z - 16;
+		}
+		else
+		{
+			sptr->x = (GetRandomControl() & 0x1FF) + x - 256;
+			sptr->y = (GetRandomControl() & 0x1FF) + y - 256;
+			sptr->z = (GetRandomControl() & 0x1FF) + z - 256;
+		}
+
+		if (a6 == 1)
+			sptr->Friction = 17;
+		else
+			sptr->Friction = 51;
+
+		if (GetRandomControl() & 1)
+		{
+			if (a6 == 1)
+				sptr->Flags = SF_UNWATER | SF_ROTATE | SF_DEF | SF_SCALE;
+			else
+				sptr->Flags = SF_ROTATE | SF_DEF | SF_SCALE;
+
+			sptr->RotAng = GetRandomControl() & 0xFFF;
+			sptr->RotAdd = (GetRandomControl() & 0xFF) + 128;
+		}
+		else if (a6 == 1)
+			sptr->Flags = SF_UNWATER | SF_DEF | SF_SCALE;
+		else
+			sptr->Flags = SF_DEF | SF_SCALE;
+
+		sptr->Scalar = 3;
+		sptr->Gravity = 0;
+		sptr->Size = (GetRandomControl() & 0xF) + 40;
+		sptr->sSize = sptr->Size << scalar;
+		sptr->dSize = sptr->Size << (scalar + 1);
+		sptr->Size <<= scalar;
+		sptr->MaxYvel = 0;
+
+		if (a6 == 2)
+		{
+			r = sptr->sR;
+			g = sptr->sG;
+			b = sptr->sB;
+			sptr->sR = b;
+			sptr->sG = r;
+			sptr->sB = g;
+
+			r = sptr->dR;
+			g = sptr->dG;
+			b = sptr->dB;
+			sptr->dR = b;
+			sptr->dG = r;
+			sptr->dB = g;
+
+			sptr->Flags |= SF_GREEN;
+		}
+		else if (a4)
+			TriggerExplosionSmoke(x, y, z, a6);
+		else
+			TriggerExplosionSmokeEnd(x, y, z, a6);
+
+		z = 2 * gfMirrorZPlane - z;
+		mirror--;
+	} while (mirror >= 0);
+}
+
+void TriggerShockwaveHitEffect(long x, long y, long z, long rgb, short dir, long speed)
+{
+	/* Porté depuis TOMB5pc/game/tomb4fx.cpp (TriggerShockwaveHitEffect). */
+	struct SPARKS* sptr;
+	long dx, dz, xvel, zvel;
+
+	dx = lara_item->pos.x_pos - x;
+	dz = lara_item->pos.z_pos - z;
+
+	if (dx < -0x4000 || dx > 0x4000 || dz < -0x4000 || dz > 0x4000)
+		return;
+
+	sptr = &spark[GetFreeSpark()];
+	sptr->On = 1;
+	sptr->sR = 0;
+	sptr->sG = 0;
+	sptr->sB = 0;
+	sptr->dR = (rgb >> 16) & 0xFF;
+	sptr->dG = (rgb >> 8) & 0xFF;
+	sptr->dB = rgb & 0xFF;
+	sptr->ColFadeSpeed = 4;
+	sptr->FadeToBlack = 8;
+	sptr->TransType = 2;
+	sptr->Life = (GetRandomControl() & 3) + 16;
+	sptr->sLife = sptr->Life;
+	speed += GetRandomControl() & 0xF;
+	xvel = speed * SIN(dir) >> (W2V_SHIFT - 4);
+	zvel = speed * COS(dir) >> (W2V_SHIFT - 4);
+
+	if (GetRandomControl() & 1)
+		dir += 0x4000;
+	else
+		dir -= 0x4000;
+
+	speed = (GetRandomControl() & 0x1FF) - 256;
+	x += speed * SIN(dir) >> W2V_SHIFT;
+	z += speed * COS(dir) >> W2V_SHIFT;
+	sptr->x = (GetRandomControl() & 0x1F) + x - 16;
+	sptr->y = (GetRandomControl() & 0x1F) + y - 16;
+	sptr->z = (GetRandomControl() & 0x1F) + z - 16;
+	sptr->Xvel = (short)xvel;
+	sptr->Yvel = (short)(-512 - (GetRandomControl() & 0x1FF));
+	sptr->Zvel = (short)zvel;
+	sptr->Friction = 3;
+	sptr->Flags = SF_ROTATE | SF_DEF | SF_SCALE;
+	sptr->RotAng = GetRandomControl() & 0xFFF;
+
+	if (GetRandomControl() & 1)
+		sptr->RotAdd = -16 - (GetRandomControl() & 0xF);
+	else
+		sptr->RotAdd = (GetRandomControl() & 0xF) + 16;
+
+	sptr->Scalar = 1;
+	sptr->Def = objects[DEFAULT_SPRITES].mesh_index + 14;
+	sptr->MaxYvel = 0;
+	sptr->Gravity = (GetRandomControl() & 0x3F) + 64;
+	sptr->Size = (GetRandomControl() & 0x1F) + 32;
+	sptr->sSize = sptr->Size;
+	sptr->dSize = sptr->Size >> 2;
 }
 
 int GetFreeShockwave()// (F)
@@ -928,9 +1208,53 @@ void Richochet(struct GAME_VECTOR* pos)// (F)
 	SoundEffect(SFX_LARA_RICOCHET, (struct PHD_3DPOS*)pos, SFX_DEFAULT);
 }
 
-void TriggerLightning(struct PHD_VECTOR* a1, struct PHD_VECTOR* a2, char a3, int a4, char a5, char a6, char a7)
+/* Porté depuis TOMB5pc/game/tomb4fx.cpp (TriggerLightning). */
+struct LIGHTNING_STRUCT* TriggerLightning(struct PHD_VECTOR* a1, struct PHD_VECTOR* a2, char a3, int a4, char a5, char a6, char a7)
 {
-	UNIMPLEMENTED();
+	struct LIGHTNING_STRUCT* lptr;
+	char* vptr;
+
+	for (int i = 0; i < 16; i++)
+	{
+		lptr = &Lightning[i];
+
+		if (!lptr->Life)
+		{
+			lptr->Point[0].x = a1->x;
+			lptr->Point[0].y = a1->y;
+			lptr->Point[0].z = a1->z;
+			lptr->Point[1].x = ((a1->x * 3) + a2->x) >> 2;
+			lptr->Point[1].y = ((a1->y * 3) + a2->y) >> 2;
+			lptr->Point[1].z = ((a1->z * 3) + a2->z) >> 2;
+			lptr->Point[2].x = ((a2->x * 3) + a1->x) >> 2;
+			lptr->Point[2].y = ((a2->y * 3) + a1->y) >> 2;
+			lptr->Point[2].z = ((a2->z * 3) + a1->z) >> 2;
+			lptr->Point[3].x = a2->x;
+			lptr->Point[3].y = a2->y;
+			lptr->Point[3].z = a2->z;
+			vptr = &lptr->Xvel1;
+
+			for (int j = 0; j < 6; j++)
+				*vptr++ = (GetRandomControl() % a3) - (a3 >> 1);
+
+			for (int j = 0; j < 3; j++)
+			{
+				if (a5 & 2)
+					*vptr++ = (GetRandomControl() % a3) - (a3 >> 1);
+				else
+					*vptr++ = 0;
+			}
+
+			lptr->Flags = a5;
+			*(long*)&lptr->r = a4;
+			lptr->Segments = a7;
+			lptr->Rand = a3;
+			lptr->Size = a6;
+			return lptr;
+		}
+	}
+
+	return 0;
 }
 
 void TriggerCoinGlow()

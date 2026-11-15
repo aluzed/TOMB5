@@ -41,6 +41,7 @@ extern struct BUBBLE_STRUCT Bubbles[40]; // offset 0xA80FC
 extern struct DRIP_STRUCT Drips[32]; // offset 0xA85FC
 extern struct SHOCKWAVE_STRUCT ShockWaves[16]; // offset 0xA7C3C
 extern struct FIRE_LIST fires[32]; // offset 0xA8D7C
+extern struct LIGHTNING_STRUCT Lightning[16];
 
 extern void SetFadeClip(short height, short speed);
 extern void UpdateFadeClip();
@@ -71,7 +72,10 @@ extern short DoBloodSplat(long x, long y, long z, short random, short y_rot, sho
 extern void TriggerRicochetSpark(struct GAME_VECTOR* pos, int angle, int num, int a4);
 #endif
 extern void Richochet(struct GAME_VECTOR* pos);
-extern void TriggerLightning(struct PHD_VECTOR* a1, struct PHD_VECTOR* a2, char a3, int a4, char a5, char a6, char a7);
+extern struct LIGHTNING_STRUCT* TriggerLightning(struct PHD_VECTOR* a1, struct PHD_VECTOR* a2, char a3, int a4, char a5, char a6, char a7);
+extern void TriggerShockwave(struct PHD_3DPOS* pos, short inner_rad, short outer_rad, int speed, char r, char g, char b, char life, short angle, short flags);
+extern void TriggerShockwaveHitEffect(long x, long y, long z, long rgb, short dir, long speed);
+extern void DrawLightning();
 extern void TriggerCoinGlow();
 extern int GetFreeSpider();
 extern void TriggerSmallSplash(int x, int y, int z, int num);

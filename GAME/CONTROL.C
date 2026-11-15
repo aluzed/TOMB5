@@ -1,5 +1,6 @@
 #include "CONTROL.H"
 #include "CALCHAIR.H"
+#include "CALCLARA.H"
 
 #if PSX_VERSION || PSXPC_VERSION
 #include "COLLIDE_S.H"
@@ -304,7 +305,192 @@ char byte_A3660;
 #if PC_VERSION
 void UpdateSparks()
 {
-	Unimpl();
+	/* Porté depuis TOMB5pc/game/effect2.cpp (UpdateSparks), 128 slots PSX. */
+	struct SPARKS* sptr;
+	struct SP_DYNAMIC* dynamic;
+	short* bounds;
+	long fade, uw, rad, rnd, x, y, z, r, g, b, falloff;
+
+	bounds = GetBoundsAccurate(lara_item);
+	DeadlyBounds[0] = lara_item->pos.x_pos + bounds[0];
+	DeadlyBounds[1] = lara_item->pos.x_pos + bounds[1];
+	DeadlyBounds[2] = lara_item->pos.y_pos + bounds[2];
+	DeadlyBounds[3] = lara_item->pos.y_pos + bounds[3];
+	DeadlyBounds[4] = lara_item->pos.z_pos + bounds[4];
+	DeadlyBounds[5] = lara_item->pos.z_pos + bounds[5];
+
+	for (int i = 0; i < 128; i++)
+	{
+		sptr = &spark[i];
+
+		if (!sptr->On)
+			continue;
+
+		sptr->Life--;
+
+		if (!sptr->Life)
+		{
+			if (sptr->Dynamic != -1)
+				spark_dynamics[sptr->Dynamic].On = 0;
+
+			sptr->On = 0;
+			continue;
+		}
+
+		if (sptr->sLife - sptr->Life < sptr->ColFadeSpeed)
+		{
+			fade = ((sptr->sLife - sptr->Life) << 16) / sptr->ColFadeSpeed;
+			sptr->R = (unsigned char)(sptr->sR + ((fade * (sptr->dR - sptr->sR)) >> 16));
+			sptr->G = (unsigned char)(sptr->sG + ((fade * (sptr->dG - sptr->sG)) >> 16));
+			sptr->B = (unsigned char)(sptr->sB + ((fade * (sptr->dB - sptr->sB)) >> 16));
+		}
+		else if (sptr->Life < sptr->FadeToBlack)
+		{
+			fade = ((sptr->Life - sptr->FadeToBlack) << 16) / sptr->FadeToBlack + 0x10000;
+			sptr->R = (unsigned char)((sptr->dR * fade) >> 16);
+			sptr->G = (unsigned char)((sptr->dG * fade) >> 16);
+			sptr->B = (unsigned char)((sptr->dB * fade) >> 16);
+
+			if (sptr->R < 8 && sptr->G < 8 && sptr->B < 8)
+			{
+				sptr->On = 0;
+				continue;
+			}
+		}
+		else
+		{
+			sptr->R = sptr->dR;
+			sptr->G = sptr->dG;
+			sptr->B = sptr->dB;
+		}
+
+		if (sptr->Life == sptr->FadeToBlack && sptr->Flags & SF_UNWATER)
+			sptr->dSize >>= 2;
+
+		if (sptr->Flags & SF_ROTATE)
+			sptr->RotAng = (sptr->RotAng + sptr->RotAdd) & 0xFFF;
+
+		if (sptr->sLife - sptr->Life == sptr->extras >> 3 && sptr->extras & 7)
+		{
+			if (sptr->Flags & SF_UNWATER)
+				uw = 1;
+			else if (sptr->Flags & SF_GREEN)
+				uw = 2;
+			else
+				uw = 0;
+
+			for (int j = 0; j < (sptr->extras & 7); j++)
+			{
+				TriggerExplosionSparks(sptr->x, sptr->y, sptr->z, (sptr->extras & 7) - 1, sptr->Dynamic, uw, sptr->RoomNumber);
+				sptr->Dynamic = -1;
+			}
+
+			if (uw == 1)
+				TriggerExplosionBubble(sptr->x, sptr->y, sptr->z, sptr->RoomNumber);
+
+			sptr->extras = 0;
+		}
+
+		fade = ((sptr->sLife - sptr->Life) << 16) / sptr->sLife;
+		sptr->Yvel += sptr->Gravity;
+
+		if (sptr->MaxYvel)
+		{
+			if (sptr->Yvel < 0 && sptr->Yvel < sptr->MaxYvel << 5 || sptr->Yvel > 0 && sptr->Yvel > sptr->MaxYvel << 5)
+				sptr->Yvel = sptr->MaxYvel << 5;
+		}
+
+		if (sptr->Friction & 0xF)
+		{
+			sptr->Xvel -= sptr->Xvel >> (sptr->Friction & 0xF);
+			sptr->Zvel -= sptr->Zvel >> (sptr->Friction & 0xF);
+		}
+
+		if (sptr->Friction & 0xF0)
+			sptr->Yvel -= sptr->Yvel >> (sptr->Friction >> 4);
+
+		sptr->x += sptr->Xvel >> 5;
+		sptr->y += sptr->Yvel >> 5;
+		sptr->z += sptr->Zvel >> 5;
+
+		if (sptr->Flags & SF_OUTSIDE)
+		{
+			sptr->x += SmokeWindX >> 1;
+			sptr->z += SmokeWindZ >> 1;
+		}
+
+		sptr->Size = (unsigned char)(sptr->sSize + ((fade * (sptr->dSize - sptr->sSize)) >> 16));
+
+		if (sptr->Flags & SF_FIRE && !lara.burn || sptr->Flags & SF_DAMAGE)
+		{
+			rad = sptr->Size << sptr->Scalar >> 1;
+
+			if (sptr->x + rad > DeadlyBounds[0] && sptr->x - rad < DeadlyBounds[1] &&
+				sptr->y + rad > DeadlyBounds[2] && sptr->y - rad < DeadlyBounds[3] &&
+				sptr->z + rad > DeadlyBounds[4] && sptr->z - rad < DeadlyBounds[5])
+			{
+				if (sptr->Flags & SF_FIRE)
+					LaraBurn();
+				else
+					lara_item->hit_points -= 2;
+			}
+		}
+	}
+
+	for (int i = 0; i < 128; i++)
+	{
+		sptr = &spark[i];
+
+		if (!sptr->On || sptr->Dynamic == -1)
+			continue;
+
+		dynamic = &spark_dynamics[sptr->Dynamic];
+
+		if (dynamic->Flags & 3)
+		{
+			rnd = GetRandomControl();
+			x = sptr->x + 16 * (rnd & 0xF);
+			y = sptr->y + (rnd & 0xF0);
+			z = sptr->z + ((rnd >> 4) & 0xF0);
+			falloff = sptr->sLife - sptr->Life - 1;
+
+			if (falloff < 2)
+			{
+				if (dynamic->Falloff < 28)
+					dynamic->Falloff += 6;
+
+				r = 255 - (falloff << 3) - (rnd & 0x1F);
+				g = 255 - (falloff << 4) - (rnd & 0x1F);
+				b = 255 - (falloff << 6) - (rnd & 0x1F);
+			}
+			else if (falloff < 4)
+			{
+				if (dynamic->Falloff < 28)
+					dynamic->Falloff += 6;
+
+				r = 255 - (falloff << 3) - (rnd & 0x1F);
+				g = 128 - (falloff << 3);
+				b = 128 - (falloff << 5);
+
+				if (b < 0)
+					b = 0;
+			}
+			else
+			{
+				if (dynamic->Falloff > 0)
+					dynamic->Falloff--;
+
+				r = 224 + (rnd & 0x1F);
+				g = 128 + ((rnd >> 4) & 0x1F);
+				b = (rnd >> 8) & 0x3F;
+			}
+
+			if (sptr->Flags & SF_GREEN)
+				TriggerDynamic(x, y, z, dynamic->Falloff > 31 ? 31 : dynamic->Falloff, (int)b, (int)r, (int)g);
+			else
+				TriggerDynamic(x, y, z, dynamic->Falloff > 31 ? 31 : dynamic->Falloff, (int)r, (int)g, (int)b);
+		}
+	}
 }
 
 void UpdateFireSparks()
@@ -880,12 +1066,80 @@ void UpdateBats()
 
 void UpdateShockwaves()
 {
-	Unimpl();
+	/* Porté depuis TOMB5pc/game/tomb4fx.cpp (UpdateShockwaves). */
+	struct SHOCKWAVE_STRUCT* sw;
+	short* bounds;
+	long dx, dz, dist;
+	short dir;
+
+	for (int i = 0; i < 16; i++)
+	{
+		sw = &ShockWaves[i];
+
+		if (!sw->life)
+			continue;
+
+		sw->life--;
+
+		if (!sw->life)
+			continue;
+
+		sw->OuterRad += sw->Speed;
+		sw->InnerRad += sw->Speed >> 1;
+		sw->Speed -= sw->Speed >> 4;
+
+		if (lara_item->hit_points >= 0 && sw->Flags & 3)
+		{
+			bounds = GetBestFrame(lara_item);
+			dx = lara_item->pos.x_pos - sw->x;
+			dz = lara_item->pos.z_pos - sw->z;
+			dist = phd_sqrt_asm(dx * dx + dz * dz);
+
+			if (sw->y > lara_item->pos.y_pos + bounds[2] && sw->y < bounds[3] + lara_item->pos.y_pos + 256 &&
+				dist > sw->InnerRad && dist < sw->OuterRad)
+			{
+				dir = (short)phd_atan_asm(dz, dx);
+				TriggerShockwaveHitEffect(lara_item->pos.x_pos, sw->y, lara_item->pos.z_pos, *(long*)&sw->r, dir, sw->Speed);
+				lara_item->hit_points -= sw->Speed >> (((sw->Flags & 2) != 0) + 2);
+			}
+			else
+				sw->Temp = 0;
+		}
+	}
 }
 
 void UpdateLightning()
 {
-	Unimpl();
+	/* Porté depuis TOMB5pc/game/tomb4fx.cpp (UpdateLightning). */
+	struct LIGHTNING_STRUCT* lptr;
+	long* pPoint;
+	char* pVel;
+
+	for (int i = 0; i < 16; i++)
+	{
+		lptr = &Lightning[i];
+
+		if (!lptr->Life)
+			continue;
+
+		lptr->Life -= 2;
+
+		if (!lptr->Life)
+			continue;
+
+		pPoint = &lptr->Point[1].x;
+		pVel = &lptr->Xvel1;
+
+		for (int j = 0; j < 9; j++)
+		{
+			*pPoint++ += *pVel << 1;
+			*pVel -= *pVel >> 4;
+			pVel++;
+		}
+
+		if (GlobalCounter & 2 && lptr->Flags & 0x10 && lptr->Life > 18)
+			TriggerRicochetSpark((struct GAME_VECTOR*)&lptr->Point[3], GetRandomControl() << 1, 2, 0);
+	}
 }
 
 void UpdatePulseColour()
@@ -4862,7 +5116,7 @@ int LOS(struct GAME_VECTOR* start, struct GAME_VECTOR* target)//79460(<), 7B4A4(
 	return 0;
 }
 
-#if PC_VERSION 
+#if PC_VERSION || PSXPC_TEST
 int xLOS(struct GAME_VECTOR* start, struct GAME_VECTOR* target)
 {
 	struct FLOOR_INFO* floor;

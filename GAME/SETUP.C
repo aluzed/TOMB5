@@ -25,6 +25,7 @@
 #include "ITEMS.H"
 #include "LARA.H"
 #include "LION.H"
+#include "GUARDIAN.H"
 #include "LARAFIRE.H"
 #include "LARAMISC.H"
 
@@ -1107,6 +1108,19 @@ static void PortSetupGameplayObjects(void)
 
 			for (int lp = 0; lp < 16; lp++)
 				meshes[objects[i].mesh_index + (lp * 2) + 1] = meshes[objects[MESHSWAP1].mesh_index + (lp * 2)];
+		}
+		else if (i == GUARDIAN)
+		{
+			objects[i].initialise = &InitialiseGuardian;
+			objects[i].control = &GuardianControl;
+			objects[i].collision = &CreatureCollision;
+			objects[i].explodable_meshbits = 6;
+			objects[i].HitEffect = 3;
+			objects[i].save_position = TRUE;
+			objects[i].save_hitpoints = TRUE;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+			objects[i].save_mesh = TRUE;
 		}
 		else if (i == ROPE)
 		{

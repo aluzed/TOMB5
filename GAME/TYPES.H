@@ -186,6 +186,10 @@ enum msoff {
 
 #define RGBONLY(r, g, b) ((b & 0xFF) | (((g & 0xFF) | ((r & 0xFF) << 8)) << 8))
 #define RGBA(r, g, b, a) (RGBONLY(r, g, b) | ((a) << 24))
+#define CLRA(clr) ((clr >> 24) & 0xFF)
+#define CLRR(clr) ((clr >> 16) & 0xFF)
+#define CLRG(clr) ((clr >> 8) & 0xFF)
+#define CLRB(clr) ((clr) & 0xFF)
 #define ARGB(r, g, b, a) (RGBA(b, g, r, a))
 
 #define NO_ROOM 0xFF
@@ -1390,6 +1394,43 @@ struct SHOCKWAVE_STRUCT
  /* 0x17 */ unsigned char life; // size=0, offset=23
  /* 0x18 */ short Speed; // size=0, offset=24
  /* 0x1A */ short Temp; // size=0, offset=26
+};
+
+struct LIGHTNING_STRUCT
+{
+ /* 0x00 */ struct PHD_VECTOR Point[4];
+ /* 0x30 */ unsigned char r;
+ /* 0x31 */ unsigned char g;
+ /* 0x32 */ unsigned char b;
+ /* 0x33 */ unsigned char Life;
+ /* 0x34 */ char Xvel1;
+ /* 0x35 */ char Yvel1;
+ /* 0x36 */ char Zvel1;
+ /* 0x37 */ char Xvel2;
+ /* 0x38 */ char Yvel2;
+ /* 0x39 */ char Zvel2;
+ /* 0x3A */ char Xvel3;
+ /* 0x3B */ char Yvel3;
+ /* 0x3C */ char Zvel3;
+ /* 0x3D */ unsigned char Size;
+ /* 0x3E */ unsigned char Flags;
+ /* 0x3F */ unsigned char Rand;
+ /* 0x40 */ unsigned char Segments;
+ /* 0x41 */ unsigned char Pad[3];
+};
+
+struct GUARDIAN_TARGET
+{
+ /* 0x00 */ long x;
+ /* 0x04 */ long y;
+ /* 0x08 */ long z;
+ /* 0x0C */ struct LIGHTNING_STRUCT* elptr[2];
+ /* 0x14 */ struct LIGHTNING_STRUCT* blptr[4];
+ /* 0x1C */ char ricochet[2];
+ /* 0x1E */ char TrackSpeed;
+ /* 0x1F */ char TrackLara;
+ /* 0x20 */ short Xdiff;
+ /* 0x22 */ short Ydiff;
 };
 
 struct HAIR_STRUCT

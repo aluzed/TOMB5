@@ -2384,3 +2384,69 @@ basculement vers le pipeline PC.
 Build `build-gameplay59` : SHA256
 `c8569e9784a70ed9e478b2847054ba82d79b45396e1f6c686dfdc8a31108e282`,
 **4177 tests PASS**.
+
+### Sous-système d’effets (éclairs, explosions, étincelles) et statue (15 novembre 2026)
+
+#### Types et données
+- `struct LIGHTNING_STRUCT` et `struct GUARDIAN_TARGET` ajoutés à `GAME/TYPES.H`.
+- `struct LIGHTNING_STRUCT Lightning[16]` dans `GAME/TOMB4FX.C`.
+- Enum `spark_flags` (`SF_FIRE`, `SF_SCALE`, `SF_DEF`, `SF_ROTATE`,
+  `SF_FX`, `SF_ITEM`, `SF_DAMAGE`, `SF_UNWATER`, …) et macros
+  `CLRR/CLRG/CLRB/CLRA` ajoutées.
+- `TriggerDynamic` et `TriggerExplosionSmoke` déclarés pour PSXPC.
+
+#### Mécanique portée (source `TOMB5pc/game/tomb4fx.cpp` / `effect2.cpp`)
+- `TriggerLightning` retourne désormais un pointeur et **la durée de vie
+  est l’octet alpha de la couleur** (`*(long*)&lptr->r = rgb`), comme sur PC.
+- `TriggerExplosionSparks`, `TriggerExplosionSmoke`,
+  `TriggerShockwaveHitEffect`.
+- `UpdateSparks` (128 slots PSX), `UpdateShockwaves`, `UpdateLightning`
+  (déplacement des 9 points, ricochets).
+- `mRotBoundingBoxNoPersp` porté dans `SPEC_PSXPC_N/MATHS.C`.
+
+#### Rendu PSXPC
+- `S_DrawSparks` (`SPEC_PSXPC_N/DRAWSPKS.C`) projette chaque spark avec
+  `w2v_matrix` + `camera.pos` + `phd_persp` et émet un sprite
+  (`MGDrawSprite`, défaut `DEFAULT_SPRITES`).
+- `DrawLightning` calcule les 32 points de la courbe comme sur PC puis
+  émet des rubans `POLY_FT4` semi-transparents (sprite 28) avec largeur
+  fonction de la profondeur et fondu de couleur sur les 16 dernières frames.
+- `S_DrawSparks()` et `DrawLightning()` sont appelés dans
+  `DrawPhase` (à l’endroit où le code PSX les commentait).
+
+#### Correction importante : `xLOS`/`zLOS`
+Les implémentations PC de `xLOS`/`zLOS` étaient dans une section
+`#if PC_VERSION` **non compilée** pour PSXPC ; les stubs
+`UNIMPLEMENTED()` de `SPEC_PSXPC_N/GETSTUFF.C` étaient seuls liés, donc
+`LOS()` échouait toujours. La garde est passée à
+`#if PC_VERSION || PSXPC_TEST` et les stubs ont été supprimés.
+`ClipTarget` était déjà compilé. Cela débloque le ciblage, le combat et
+la statue.
+
+#### Statue (`guardian.cpp`)
+`GAME/GUARDIAN.C` est maintenant complet (`InitialiseGuardian`,
+`TriggerGuardianSparks`, `TriggerBaseLightning`, `GuardianControl`) et
+assigné dans `PortSetupGameplayObjects` (`CreatureCollision`,
+`explodable_meshbits=6`, `HitEffect=3`, flags de sauvegarde).
+Deux gardes défensifs évitent un déréférencement de `gt.elptr[i]`
+lorsqu’un slot d’éclair n’a pas pu être créé.
+
+#### Validation runtime
+- Injection GDB d’un `TriggerLightning` vertical au centre de l’écran
+  (sauvegarde de la corniche, niveau 3) : ruban d’éclair blanc visible,
+  épaisseur et position correctes.
+- Statue synthétique dans l’arène du Colosseum (item 79, `obj=61` copié
+  vers l’objet 65, données d’item reconstruites) :
+  - `LOS` passe (`item_flags[0]` 0→1) ;
+  - la statue « tombe » puis passe en attaque (`item_flags[0]=2`) ;
+  - `TriggerBaseLightning` crée des éclairs (`Lightning[].Life=50`) ;
+  - éclairs **verts visibles** autour de la tête, halo dynamique vert
+    sur Lara, plus de 270 itérations sans crash.
+- La statue réelle se trouve dans **Trajan’s Markets** (`obj=65`,
+  `room 69`, `45568,1792,43520`) et non dans le Colosseum. La validation
+  in-situ reste à faire : le menu « level select » du port démarre
+  actuellement le niveau 1 (pas de sauvegarde de niveau 2 disponible).
+
+Build `build-gameplay59` : SHA256
+`55246b16ea9bbc6b87a59cb07aa0e6dde272b91fc0ec7961d6ff600effffc011`,
+**4177 tests PASS**.

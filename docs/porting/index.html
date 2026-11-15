@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum effets + statue: ajout LIGHTNING_STRUCT/GUARDIAN_TARGET (TYPES.H), Lightning[16], spark_flags et CLRR/CLRG/CLRB/CLRA. Port de TriggerLightning (retourne un pointeur, Life = octet alpha de rgb), TriggerExplosionSparks, TriggerExplosionSmoke, TriggerShockwaveHitEffect, UpdateSparks (128 slots), UpdateShockwaves, UpdateLightning, mRotBoundingBoxNoPersp. Rendu PSXPC: S_DrawSparks (projection w2v_matrix+camera.pos+phd_persp, MGDrawSprite) et DrawLightning (32 points courbe PC, rubans POLY_FT4 sprite 28, fondu vie) appeles dans DrawPhase. Correction majeure: xLOS/zLOS etaient dans #if PC_VERSION non compile et les stubs UNIMPLEMENTED de SPEC_PSXPC_N/GETSTUFF.C etaient seuls lies (LOS toujours faux); garde passee a #if PC_VERSION || PSXPC_TEST et stubs supprimes; ClipTarget deja compile. GUARDIAN.C complet (InitialiseGuardian, TriggerGuardianSparks, TriggerBaseLightning, GuardianControl) et assigne dans PortSetupGameplayObjects (CreatureCollision, explodable_meshbits 6, HitEffect 3, save flags); deux gardes defensifs sur gt.elptr[i] evitant un null deref si aucun slot d&#x27;eclair. Validation runtime: eclair vertical injecte visible (corniche niveau 3); statue synthetique dans l&#x27;arene (item79 obj61 copie vers objet65, data reconstruite): LOS passe (f0 0-&gt;1), chute puis attaque (f0=2), TriggerBaseLightning cree des eclairs Life=50, eclairs verts visibles et halo dynamique vert sur Lara, &gt;270 iterations sans crash. La statue reelle est dans Trajan&#x27;s Markets (obj65 room69 45568,1792,43520); validation in-situ restante car le level select du port demarre le niveau 1 et aucune sauvegarde niveau 2 n&#x27;existe. Build-gameplay59 SHA256 55246b16ea9bbc6b87a59cb07aa0e6dde272b91fc0ec7961d6ff600effffc011, 4177 tests PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum pistolets: port de AnimatePistols (GAME/LARA2GUN.C) depuis lara2gun.cpp:110 - fumee SmokeCountL/R + TriggerGunSmoke, FireWeapon aux deux bras, recul p-&gt;RecoilAnim/winfo-&gt;recoil_frame, flash, douilles TriggerGunShell, sons, savegame.Game.AmmoUsed; joints LJ_LHAND/LJ_RHAND. Important: le port utilise encore son PistolHandler simplifie (ciblage direct + HitTarget), donc AnimatePistols/FireWeapon ne sont pas encore branches dans LaraGun; prets pour le basculement vers le pipeline PC. Build-gameplay59 SHA256 c8569e9784a70ed9e478b2847054ba82d79b45396e1f6c686dfdc8a31108e282, 4177 tests PASS. Reste guardian.cpp bloque par le sous-systeme lightning/effects (LIGHTNING_STRUCT, TriggerLightning retournant un pointeur, TriggerShockwave, mRotBoundingBoxNoPersp, rendu). Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
