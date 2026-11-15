@@ -1990,6 +1990,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum corniche: apres les corrections GetBestFrame/animation/AnimateItem, test runtime sur la sauvegarde corniche 43364,768,52325 room12. Si l'on remet GLOBAL_playing_cutseq=0, cutseq_trig=0, globoncuttrig=0 et bDisableLaraControl=0 a chaque frame (comme probe_free.gdb), Lara repond aux entrees; depuis 43364,768,51900, Up+Action (vault) franchit la marche de 512 et place Lara a 43364,256,51900 room 8 (etage superieur des grilles/dalles). C'est le pas de 512 qui bloquait TestLaraVault; la correction de GetBestFrame (branches inversees) semble avoir debloque la detection de rebord/vault. Etat sauvegarde /tmp/opencode/TOMB5.room8.sav (level 3, room 8, 43364,256,51900). L'exploration de l'etage 8 n'a pas encore trouve le crawlspace/le bouton; camera montre un couloir et des alcoves a y=256. Attention: sans reset des variables de cutscene, Lara reste figee apres le chargement de la corniche. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum room 8 (etage des grilles): cartographie runtime autour de 43364,256,51900: sol walkable boites 14-19 a y~1024 (f=4), reste NO_HEIGHT; objets CRUMBLING_FLOOR obj105 en damier, TELEPORTER 387, EARTHQUAKE 366, CAMERA_TARGET 409, PUZZLE_HOLE4 245, ANIMATING15_MIP 445 a 43520,0,52736 (probable porte/sortie de droite); aucun SWITCH_TYPE dans rooms 8/12, le bouton du crawlspace est un element anime/trigger d'une autre room (25/26 probable). Le vault depuis la corniche atteint la room 8 mais la sortie de droite reste fermee car le bouton n'a pas ete presse: le raccourci ne remplace pas hang->traverse->crawlspace->bouton. Sauvegarde /tmp/opencode/TOMB5.room8.sav. Aucun Done global."
     }
   ]
 }

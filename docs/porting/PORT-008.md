@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-11-16
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
+
+The Colosseum room 8 (etage des grilles): cartographie runtime autour de 43364,256,51900: sol walkable boites 14-19 a y~1024 (f=4), reste NO_HEIGHT; objets CRUMBLING_FLOOR obj105 en damier, TELEPORTER 387, EARTHQUAKE 366, CAMERA_TARGET 409, PUZZLE_HOLE4 245, ANIMATING15_MIP 445 a 43520,0,52736 (probable porte/sortie de droite); aucun SWITCH_TYPE dans rooms 8/12, le bouton du crawlspace est un element anime/trigger d'une autre room (25/26 probable). Le vault depuis la corniche atteint la room 8 mais la sortie de droite reste fermee car le bouton n'a pas ete presse: le raccourci ne remplace pas hang->traverse->crawlspace->bouton. Sauvegarde /tmp/opencode/TOMB5.room8.sav. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-11-15
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.

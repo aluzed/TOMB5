@@ -2691,3 +2691,23 @@ couloir et des alcôves au niveau 256.
 
 Point d’attention : sans le reset des variables de cutscene, Lara reste
 figée après le chargement de la sauvegarde de la corniche.
+
+### Room 8 (étage des grilles) : contenu et limite du raccourci
+
+Cartographie runtime de la room 8 autour de Lara (`43364,256,51900`) :
+
+- sol walkable : boîtes 14–19 à `y≈1024` (secteurs `f=4`) ;
+- le reste de la grille est `NO_HEIGHT` (`-32512`) ;
+- objets présents : `CRUMBLING_FLOOR` (obj 105) en damier, `TELEPORTER`
+  (387), `EARTHQUAKE` (366), `CAMERA_TARGET` (409), `PUZZLE_HOLE4`
+  (245), `ANIMATING15_MIP` (445) à `43520,0,52736` (probablement la
+  porte/sortie de droite) ;
+- aucun `SWITCH_TYPE*` dans les rooms 8/12 : le « bouton » du walkthrough
+  est donc un élément animé/trigger d’une autre room (probablement 25/26).
+
+Le vault depuis la corniche permet d’atteindre la room 8, mais **la
+sortie de droite reste fermée** car le bouton du crawlspace n’a pas été
+pressé. Le raccourci ne remplace donc pas la séquence
+hang → traverse → crawlspace → bouton.
+
+Sauvegarde d’état : `/tmp/opencode/TOMB5.room8.sav`.
