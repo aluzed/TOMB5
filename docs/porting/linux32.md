@@ -2367,3 +2367,20 @@ patrouille ; la poursuite et l’attaque de Lara restent à valider.
 Build `build-gameplay59` : SHA256
 `984219c308ef545a6dc6b99a6a2a31658112fe3806605a80c5fd07d57835fb32`,
 **4177 tests PASS**.
+
+### Pistolets : `AnimatePistols` porté (15 novembre 2026)
+
+`AnimatePistols` (`GAME/LARA2GUN.C`) est porté depuis
+`TOMB5pc/game/lara2gun.cpp:110` : fumée (`SmokeCountL/R`,
+`TriggerGunSmoke`), `FireWeapon` aux deux bras, recul
+(`p->RecoilAnim`, `winfo->recoil_frame`), flash, douilles, sons et
+`savegame.Game.AmmoUsed`. Les joints sont `LJ_LHAND`/`LJ_RHAND`.
+
+**Important** : le port utilise encore son `PistolHandler` simplifié
+(ciblage direct + `HitTarget`), donc `AnimatePistols`/`FireWeapon` ne
+sont pas encore branchés dans `LaraGun`. Ils sont prêts pour le
+basculement vers le pipeline PC.
+
+Build `build-gameplay59` : SHA256
+`c8569e9784a70ed9e478b2847054ba82d79b45396e1f6c686dfdc8a31108e282`,
+**4177 tests PASS**.

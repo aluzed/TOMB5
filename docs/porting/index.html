@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum pistolets: port de AnimatePistols (GAME/LARA2GUN.C) depuis lara2gun.cpp:110 - fumee SmokeCountL/R + TriggerGunSmoke, FireWeapon aux deux bras, recul p-&gt;RecoilAnim/winfo-&gt;recoil_frame, flash, douilles TriggerGunShell, sons, savegame.Game.AmmoUsed; joints LJ_LHAND/LJ_RHAND. Important: le port utilise encore son PistolHandler simplifie (ciblage direct + HitTarget), donc AnimatePistols/FireWeapon ne sont pas encore branches dans LaraGun; prets pour le basculement vers le pipeline PC. Build-gameplay59 SHA256 c8569e9784a70ed9e478b2847054ba82d79b45396e1f6c686dfdc8a31108e282, 4177 tests PASS. Reste guardian.cpp bloque par le sous-systeme lightning/effects (LIGHTNING_STRUCT, TriggerLightning retournant un pointeur, TriggerShockwave, mRotBoundingBoxNoPersp, rendu). Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum gladiateur: port de InitialiseGladiator et GladiatorControl (source gladiatr.cpp) dans GAME/LION.C (evite un nouvel objet au lien), assignation dans PortSetupGameplayObjects avec CreatureCollision, hit_points 20, radius 102, pivot_length 50, object_mip 5120, intelligent, HitEffect 1, save flags, bones 24/52 |=8|4, 16 meshes MESHSWAP1 (mesh_index+lp*2+1). Validation runtime item26 room15 49664,1024,54784 active (status=1, EnableBaddieAI(26,1)): deplacement/animation sans crash (49624,1024,55040)-&gt;(46580,1024,58567), state=1, hp=20; comme le lion il suit son trajet/patrouille, poursuite/attaque a valider. Build-gameplay59 SHA256 984219c308ef545a6dc6b99a6a2a31658112fe3806605a80c5fd07d57835fb32, 4177 tests PASS. Reste guardian.cpp (statue) et finitions combat. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
