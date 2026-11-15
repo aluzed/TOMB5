@@ -1083,6 +1083,31 @@ static void PortSetupGameplayObjects(void)
 			bones[objects[i].bone_index + 24] |= 8;
 			bones[objects[i].bone_index + 76] |= 8;
 		}
+		else if (i == GLADIATOR)
+		{
+			objects[i].initialise = &InitialiseGladiator;
+			objects[i].control = &GladiatorControl;
+			objects[i].collision = &CreatureCollision;
+			objects[i].shadow_size = 128;
+			objects[i].hit_points = 20;
+			objects[i].pivot_length = 50;
+			objects[i].radius = 102;
+			objects[i].bite_offset = 0;
+			objects[i].object_mip = 5120;
+			objects[i].intelligent = TRUE;
+			objects[i].HitEffect = 1;
+			objects[i].save_position = TRUE;
+			objects[i].save_hitpoints = TRUE;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+			bones[objects[i].bone_index + 24] |= 8;
+			bones[objects[i].bone_index + 24] |= 4;
+			bones[objects[i].bone_index + 52] |= 8;
+			bones[objects[i].bone_index + 52] |= 4;
+
+			for (int lp = 0; lp < 16; lp++)
+				meshes[objects[i].mesh_index + (lp * 2) + 1] = meshes[objects[MESHSWAP1].mesh_index + (lp * 2)];
+		}
 		else if (i == ROPE)
 		{
 			objects[i].initialise = &InitialiseRope;

@@ -2347,3 +2347,23 @@ nouveaux symboles.
 Build `build-gameplay59` : SHA256
 `b49584390388cd94cfd917cf243d1485b8253ca581870eceb9a07f82f1dac500`,
 **4177 tests PASS**.
+
+### Gladiateur porté et validé en déplacement (15 novembre 2026)
+
+`InitialiseGladiator` et `GladiatorControl` (source
+`TOMB5pc/game/gladiatr.cpp`) sont portés dans `GAME/LION.C` (pour éviter
+d’ajouter un objet au lien) et assignés dans
+`PortSetupGameplayObjects` : `CreatureCollision`, `hit_points=20`,
+`radius=102`, `pivot_length=50`, `object_mip=5120`, `intelligent`,
+`HitEffect=1`, flags de sauvegarde, `bones[24/52] |= 8|4`, et les
+16 meshes `MESHSWAP1` (`meshes[mesh_index + lp*2 + 1]`).
+
+**Validation runtime** : item 26 (`room 15`, `49664,1024,54784`)
+activé (`status=1`, `EnableBaddieAI(26,1)`) → le gladiateur se déplace
+et s’anime sans crash : `(49624,1024,55040)` → `(46580,1024,58567)`,
+`state=1`, `hp=20`. Comme le lion, il suit pour l’instant son trajet /
+patrouille ; la poursuite et l’attaque de Lara restent à valider.
+
+Build `build-gameplay59` : SHA256
+`984219c308ef545a6dc6b99a6a2a31658112fe3806605a80c5fd07d57835fb32`,
+**4177 tests PASS**.

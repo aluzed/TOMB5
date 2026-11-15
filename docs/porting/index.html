@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum gladiateur: port de InitialiseGladiator et GladiatorControl (source gladiatr.cpp) dans GAME/LION.C (evite un nouvel objet au lien), assignation dans PortSetupGameplayObjects avec CreatureCollision, hit_points 20, radius 102, pivot_length 50, object_mip 5120, intelligent, HitEffect 1, save flags, bones 24/52 |=8|4, 16 meshes MESHSWAP1 (mesh_index+lp*2+1). Validation runtime item26 room15 49664,1024,54784 active (status=1, EnableBaddieAI(26,1)): deplacement/animation sans crash (49624,1024,55040)-&gt;(46580,1024,58567), state=1, hp=20; comme le lion il suit son trajet/patrouille, poursuite/attaque a valider. Build-gameplay59 SHA256 984219c308ef545a6dc6b99a6a2a31658112fe3806605a80c5fd07d57835fb32, 4177 tests PASS. Reste guardian.cpp (statue) et finitions combat. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum combat rayon: port de RayBoxIntersect et DoRayBox dans SPEC_PSXPC_N/GETSTUFF.C (signature PSXPC 10 args adaptee avec PHD_3DPOS local; mPushUnitMatrix/mRotY/Matrix-&gt;m* echelle 4096 + W2V_SHIFT 12, Normalise, GetSpheres, Slist/ShatterItem, ClosestItem/ClosestCoord/ClosestDist). Important build: les objets SPHERES.C.o et GETSTUFF.C.o doivent etre ecrits dans CMakeFiles/TombRaiderChronicles_PSXPC_N.dir/&lt;nom&gt;.C.o et non dans __/SPEC_PSXPC_N/, sinon le lien n&#x27;inclut pas les nouveaux symboles (corrige). Build-gameplay59 SHA256 b49584390388cd94cfd917cf243d1485b8253ca581870eceb9a07f82f1dac500, 4177 tests PASS. Restent GetTargetOnLOS, DoProperDetection, ObjectOnLOS2/DoRayBox branchement, AnimatePistols/RifleHandler, gladiatr.cpp/guardian.cpp. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
