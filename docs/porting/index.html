@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum hang: port de LaraHangLeftCornerTest et LaraHangRightCornerTest depuis TOMB5pc game/lara.cpp (5492/5339). ANIM_GRABLEDGE PC96 -&gt; ANIMATION_LARA_HANG_IDLE 96; calculs de coin ^1023, LeftClimbTab/RightClimbTab, IsValidHangPos, LaraFloorFront, lara.CornerX/Z; branches climb_status et hang simple conservees. Build-gameplay59 SHA256 d17c247b1a31b6d7847503c1967015b4adc1148176caf37e46cd55a4828fc303, 4177 tests PASS. Validation runtime de la transition STATE_LARA_CLIMB_CORNER_LEFT_INNER/OUTER encore a faire: le harnais force l&#x27;etat HANG mais le trigger CAMERA:0 de la corniche relance une cutscene qui court-circuite DrawRooms/LaraControl, donc l&#x27;entree n&#x27;est pas traitee; verifier en jeu normal sur une corniche avec un vrai coin. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum: TestLaraVault portee mais ne debloque pas la corniche. Au bord nord 43685,768,52325 face nord, Action+Up laisse state=2 sans deplacement. Raison dans TestLaraVault: slope=abs(left_floor2-right_floor2)&gt;=60; autour de la corniche 1x1 les sols gauche/droite sont des puits a profondeurs differentes (room26/14), donc slope vrai et retour 0 avant le vault 2 clics; la marche de 512 (front_floor=-512) n&#x27;est pas grimpable ici. Sondes par sauvegarde: le patch TOMB5.SAV fonctionne mais apparition couloir room8 (42496,256,51712 ou 40835,256,51304 room8) -&gt; boucle 100% CPU avant premier DrawRooms, ecran fige; apparition passage nord room12 (42000,2048,50600 ou 51000 room12) -&gt; UpdateLaraRoom remonte Lara en room92 y=-1024. Ce n&#x27;est pas un couloir horizontal a 2048 mais un puits vertical vers room92. room92 observee: petit sol pierre -1024 derriere grille metallique donnant sur l&#x27;arene (balcon de la grande salle); room25 meme niveau -1024 ouverte sur room8. Conclusion: le doorsill n&#x27;est pas le passage nord a 2048, il implique room92/25 au-dessus; route exacte corniche-&gt;doorsill-&gt;crawlspace a etablir. Seule sauvegarde de reprise fiable: corniche 43364,768. Aucune correction gameplay speculative. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

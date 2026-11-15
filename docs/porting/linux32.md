@@ -2133,3 +2133,22 @@ implique `room 92`/`25` au-dessus. La seule sauvegarde de reprise
 fiable reste celle de la corniche (`43364,768`). La route exacte
 corniche → doorsill → crawlspace reste à établir ; aucune correction
 de gameplay n’a été tentée sans preuve.
+
+### Hang : tests de coin portés (15 novembre 2026)
+
+`LaraHangLeftCornerTest` et `LaraHangRightCornerTest` (`GAME/LARA.C`)
+étaient vides (`UNIMPLEMENTED(); return 0;`). Ils sont maintenant portés
+depuis `TOMB5pc/game/lara.cpp` (`lara.cpp:5492` et `5339`) :
+- `ANIM_GRABLEDGE` (PC 96) → `ANIMATION_LARA_HANG_IDLE` (96) ;
+- mêmes calculs de coin (`^ 1023`, tables `LeftClimbTab`/`RightClimbTab`,
+  `IsValidHangPos`, `LaraFloorFront`, `lara.CornerX/CornerZ`) ;
+- les deux branches `climb_status` et hang simple sont conservées.
+
+Build `build-gameplay59` : SHA256
+`d17c247b1a31b6d7847503c1967015b4adc1148176caf37e46cd55a4828fc303`,
+**4177 tests PASS**. La validation runtime (transition
+`STATE_LARA_CLIMB_CORNER_LEFT_INNER/OUTER` au passage du coin) reste à
+faire : le harnais de test force l’état `HANG`, mais le trigger
+`CAMERA:0` de la corniche relance une cutscene qui court-circuite
+`DrawRooms`/`LaraControl`, donc l’entrée n’est pas traitée. À vérifier
+en jeu normal, sur une corniche avec un vrai coin.

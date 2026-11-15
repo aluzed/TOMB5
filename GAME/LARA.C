@@ -5273,16 +5273,297 @@ int TestHangSwingIn(struct ITEM_INFO* item, short angle)//14104, 141B4 (F)
 	return h != BAD_HEIGHT && h - y > 0 && c - y < -400 && y - c - 819 > -72;
 }
 
+/* Portés depuis TOMB5pc/game/lara.cpp (LaraHangLeftCornerTest /
+ * LaraHangRightCornerTest). ANIM_GRABLEDGE (PC 96) correspond à
+ * ANIMATION_LARA_HANG_IDLE dans l'ordre d'animation du port. */
 int LaraHangLeftCornerTest(struct ITEM_INFO* item, struct COLL_INFO* coll)//13C24, 13CD4
 {
-	UNIMPLEMENTED();
-	return 0;
+	int oldx, oldz, front, x, z, flag;
+	short oldy, angle;
+
+	if (item->anim_number != ANIMATION_LARA_HANG_IDLE || coll->hit_static)
+		return 0;
+
+	oldx = item->pos.x_pos;
+	oldy = item->pos.y_rot;
+	oldz = item->pos.z_pos;
+	front = coll->front_floor;
+	angle = (unsigned short)(item->pos.y_rot + 0x2000) / 0x4000;
+
+	switch (angle)
+	{
+	case NORTH:
+	case SOUTH:
+		x = (oldx & ~1023) - (oldz & 1023) + 1024;
+		z = (oldz & ~1023) - (oldx & 1023) + 1024;
+		break;
+
+	default:
+		x = oldx ^ ((unsigned short)oldx ^ (unsigned short)oldz) & 1023;
+		z = oldz ^ ((unsigned short)oldx ^ (unsigned short)oldz) & 1023;
+		break;
+	}
+
+	item->pos.x_pos = x;
+	item->pos.z_pos = z;
+	item->pos.y_rot -= 0x4000;
+	lara.CornerX = x;
+	lara.CornerZ = z;
+	flag = -IsValidHangPos(item, coll);
+
+	if (flag)
+	{
+		if (lara.climb_status)
+		{
+			if (!(GetClimbTrigger(x, item->pos.y_pos, z, item->room_number) & RightClimbTab[angle]))
+				flag = 0;
+		}
+		else if (abs(front - coll->front_floor) > 60)
+			flag = 0;
+	}
+
+	if (!flag)
+	{
+		item->pos.x_pos = oldx;
+		item->pos.y_rot = oldy;
+		item->pos.z_pos = oldz;
+		lara.move_angle = oldy;
+
+		if (LaraFloorFront(item, item->pos.y_rot - 0x4000, 116) < 0)
+			return 0;
+
+		switch (angle)
+		{
+		case NORTH:
+			x = (item->pos.x_pos ^ ((unsigned short)item->pos.x_pos ^ (unsigned short)item->pos.z_pos) & 1023) - 1024;
+			z = ((unsigned short)item->pos.x_pos ^ item->pos.z_pos) & 1023 ^ (item->pos.z_pos + 1024);
+			break;
+
+		case SOUTH:
+			x = (((unsigned short)item->pos.x_pos ^ (unsigned short)item->pos.z_pos) & 1023) ^ (item->pos.x_pos + 1024);
+			z = (((unsigned short)item->pos.x_pos ^ (unsigned short)item->pos.z_pos) & 1023) ^ (item->pos.z_pos - 1024);
+			break;
+
+		case WEST:
+			x = (item->pos.x_pos & ~1023) - (item->pos.z_pos & 1023);
+			z = (item->pos.z_pos & ~1023) - (item->pos.x_pos & 1023);
+			break;
+
+		default:
+			x = ((item->pos.x_pos + 1024) & ~1023) - (item->pos.z_pos & 1023) + 1024;
+			z = ((item->pos.z_pos + 1024) & ~1023) - (item->pos.x_pos & 1023) + 1024;
+			break;
+		}
+
+		item->pos.x_pos = x;
+		item->pos.z_pos = z;
+		item->pos.y_rot += 0x4000;
+		lara.CornerX = x;
+		lara.CornerZ = z;
+		flag = IsValidHangPos(item, coll);
+
+		if (flag)
+		{
+			item->pos.x_pos = oldx;
+			item->pos.y_rot = oldy;
+			item->pos.z_pos = oldz;
+			lara.move_angle = oldy;
+
+			if (lara.climb_status)
+			{
+				if (!(GetClimbTrigger(x, item->pos.y_pos, z, item->room_number) & LeftClimbTab[angle]))
+				{
+					front = LaraFloorFront(item, item->pos.y_rot, 116);
+
+					if (abs(coll->front_floor - front) > 60 || front < -768)
+						flag = 0;
+				}
+			}
+			else
+			{
+				if (abs(front - coll->front_floor) <= 60)
+				{
+					switch (angle)
+					{
+					case NORTH:
+						if ((oldx & 1023) > 512)
+							flag = 0;
+						break;
+
+					case EAST:
+						if ((oldz & 1023) < 512)
+							flag = 0;
+						break;
+
+					case SOUTH:
+						if ((oldx & 1023) < 512)
+							flag = 0;
+						break;
+
+					case WEST:
+						if ((oldz & 1023) > 512)
+							flag = 0;
+						break;
+					}
+				}
+				else
+					flag = 0;
+			}
+
+			return flag;
+		}
+	}
+
+	item->pos.x_pos = oldx;
+	item->pos.y_rot = oldy;
+	item->pos.z_pos = oldz;
+	lara.move_angle = oldy;
+	return flag;
 }
 
 int LaraHangRightCornerTest(struct ITEM_INFO* item, struct COLL_INFO* coll)//13738, 137E8
 {
-	UNIMPLEMENTED();
-	return 0;
+	int oldx, oldz, front, x, z, flag;
+	short oldy, angle;
+
+	if (item->anim_number != ANIMATION_LARA_HANG_IDLE || coll->hit_static)
+		return 0;
+
+	oldx = item->pos.x_pos;
+	oldy = item->pos.y_rot;
+	oldz = item->pos.z_pos;
+	front = coll->front_floor;
+	angle = (unsigned short)(item->pos.y_rot + 0x2000) / 0x4000;
+
+	switch (angle)
+	{
+	case NORTH:
+	case SOUTH:
+		x = oldx ^ ((unsigned short)oldx ^ (unsigned short)oldz) & 1023;
+		z = oldz ^ ((unsigned short)oldx ^ (unsigned short)oldz) & 1023;
+		break;
+
+	default:
+		x = (oldx & ~1023) - (oldz & 1023) + 1024;
+		z = (oldz & ~1023) - (oldx & 1023) + 1024;
+		break;
+	}
+
+	item->pos.x_pos = x;
+	item->pos.z_pos = z;
+	item->pos.y_rot += 0x4000;
+	lara.CornerX = x;
+	lara.CornerZ = z;
+	flag = -IsValidHangPos(item, coll);
+
+	if (flag)
+	{
+		if (lara.climb_status)
+		{
+			if (!(GetClimbTrigger(x, item->pos.y_pos, z, item->room_number) & LeftClimbTab[angle]))
+				flag = 0;
+		}
+		else if (abs(front - coll->front_floor) > 60)
+			flag = 0;
+	}
+
+	if (!flag)
+	{
+		item->pos.x_pos = oldx;
+		item->pos.y_rot = oldy;
+		item->pos.z_pos = oldz;
+		lara.move_angle = oldy;
+
+		if (LaraFloorFront(item, item->pos.y_rot + 0x4000, 116) < 0)
+			return 0;
+
+		switch (angle)
+		{
+		case NORTH:
+			x = ((item->pos.x_pos + 1024) & ~1023) - (item->pos.z_pos & 1023) + 1024;
+			z = ((item->pos.z_pos + 1024) & ~1023) - (item->pos.x_pos & 1023) + 1024;
+			break;
+
+		case SOUTH:
+			x = ((item->pos.x_pos - 1024) & ~1023) - (item->pos.z_pos & 1023) + 1024;
+			z = ((item->pos.z_pos - 1024) & ~1023) - (item->pos.x_pos & 1023) + 1024;
+			break;
+
+		case WEST:
+			x = (item->pos.x_pos ^ ((unsigned short)item->pos.x_pos ^ (unsigned short)item->pos.z_pos) & 1023) - 1024;
+			z = ((unsigned short)item->pos.x_pos ^ item->pos.z_pos) & 1023 ^ (item->pos.z_pos + 1024);
+			break;
+
+		default:
+			x = (((unsigned short)item->pos.x_pos ^ (unsigned short)item->pos.z_pos) & 1023) ^ (item->pos.x_pos + 1024);
+			z = (item->pos.z_pos ^ (((unsigned short)item->pos.x_pos ^ (unsigned short)item->pos.z_pos) & 1023)) - 1024;
+			break;
+		}
+
+		item->pos.x_pos = x;
+		item->pos.z_pos = z;
+		item->pos.y_rot -= 0x4000;
+		lara.CornerX = x;
+		lara.CornerZ = z;
+		flag = IsValidHangPos(item, coll);
+
+		if (flag)
+		{
+			item->pos.x_pos = oldx;
+			item->pos.y_rot = oldy;
+			item->pos.z_pos = oldz;
+			lara.move_angle = oldy;
+
+			if (lara.climb_status)
+			{
+				if (!(GetClimbTrigger(x, item->pos.y_pos, z, item->room_number) & RightClimbTab[angle]))
+				{
+					front = LaraFloorFront(item, item->pos.y_rot, 116);
+
+					if (abs(coll->front_floor - front) > 60 || front < -768)
+						flag = 0;
+				}
+			}
+			else
+			{
+				if (abs(front - coll->front_floor) <= 60)
+				{
+					switch (angle)
+					{
+					case NORTH:
+						if ((oldx & 1023) < 512)
+							flag = 0;
+						break;
+
+					case EAST:
+						if ((oldz & 1023) > 512)
+							flag = 0;
+						break;
+
+					case SOUTH:
+						if ((oldx & 1023) > 512)
+							flag = 0;
+						break;
+
+					case WEST:
+						if ((oldz & 1023) < 512)
+							flag = 0;
+						break;
+					}
+				}
+				else
+					flag = 0;
+			}
+
+			return flag;
+		}
+	}
+
+	item->pos.x_pos = oldx;
+	item->pos.y_rot = oldy;
+	item->pos.z_pos = oldz;
+	lara.move_angle = oldy;
+	return flag;
 }
 
 int IsValidHangPos(struct ITEM_INFO* item, struct COLL_INFO* coll)//135BC, 1366C (F)
