@@ -2100,3 +2100,36 @@ tomber / reculer avec **Action** pour accrocher le seuil à `2048`.
 Ensuite : shimmy à gauche, passage du coin, remontée dans le couloir
 (crawlspace), puis salle du bouton et ouverture de l’issue. Aucun
 `DONE` global.
+
+### Accroche : ce que le port de `TestLaraVault` ne débloque pas (15 novembre 2026)
+
+Le port de `TestLaraVault` est utile mais **ne débloque pas la corniche** :
+au bord nord (`43685,768,52325`, face nord), `Action+Up` laisse Lara en
+`state=2` sans déplacement. La raison est dans la fonction elle-même :
+`slope = abs(coll->left_floor2 - coll->right_floor2) >= 60`. Autour de
+la corniche (cellule 1×1), les sols gauche/droite sont des puits à des
+profondeurs différentes (`room 26`/`14`), donc `slope` est vrai et
+`TestLaraVault` renvoie 0 **avant** le vault 2 clics. La marche de 512
+au-dessus (`front_floor=-512`) n’est donc pas grimpable ici.
+
+### Sondes par sauvegarde : limites du port
+
+Le patch de `TOMB5.SAV` fonctionne (voir plus haut), mais deux
+positions de test se comportent mal :
+- apparition sur le couloir de `room 8` (`42496,256,51712` ou
+  `40835,256,51304`, room 8) : le jeu **boucle à 100 % CPU** avant le
+  premier `DrawRooms` (aucune ligne `CF W`), écran figé ;
+- apparition dans le passage nord de `room 12` (`42000,2048,50600` ou
+  `42000,2048,51000`, room 12) : `UpdateLaraRoom` **remonte Lara en
+  `room 92` à `y=-1024`**. Ce n’est donc pas un couloir horizontal à
+  2048 : c’est un puits vertical qui débouche dans `room 92`.
+
+`room 92` a été observée : petit sol de pierre à `-1024` derrière une
+**grille métallique** donnant sur l’arène (le « balcon » de la grande
+salle). `room 25` est au même niveau (`-1024`), ouverte sur `room 8`.
+
+Conclusion : le « doorsill » n’est pas le passage nord à 2048 ; il
+implique `room 92`/`25` au-dessus. La seule sauvegarde de reprise
+fiable reste celle de la corniche (`43364,768`). La route exacte
+corniche → doorsill → crawlspace reste à établir ; aucune correction
+de gameplay n’a été tentée sans preuve.
