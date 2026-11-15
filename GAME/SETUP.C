@@ -1203,6 +1203,40 @@ static void PortSetupGameplayObjects(void)
 			bones[objects[i].bone_index] |= 8;
 			bones[objects[i].bone_index + 4] |= 4;
 		}
+		else if (i >= PUZZLE_HOLE1 && i <= PUZZLE_HOLE8)
+		{
+			objects[i].control = &ControlAnimatingSlots;
+			objects[i].collision = &PuzzleHoleCollision;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+		}
+		else if (i >= PUZZLE_DONE1 && i <= PUZZLE_DONE8)
+		{
+			objects[i].control = &ControlAnimatingSlots;
+			objects[i].collision = &PuzzleDoneCollision;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+		}
+		else if (gfCurrentLevel != LVL5_TITLE && i >= ANIMATING1 && i <= ANIMATING12_MIP)
+		{
+			objects[i].initialise = &InitialiseAnimatingSlots;
+			objects[i].control = &ControlAnimatingSlots;
+			objects[i].collision = &ObjectCollision;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+			objects[i].save_mesh = TRUE;
+			bones[objects[i].bone_index] |= 8;
+			bones[objects[i].bone_index + 4] |= 4;
+		}
+		else if (gfCurrentLevel != LVL5_TITLE && i >= ANIMATING13 && i <= ANIMATING16_MIP)
+		{
+			objects[i].initialise = &InitialiseAnimatingSlots;
+			objects[i].control = &ControlAnimatingSlots;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+			objects[i].save_mesh = TRUE;
+			objects[i].HitEffect = 0;
+		}
 	}
 }
 

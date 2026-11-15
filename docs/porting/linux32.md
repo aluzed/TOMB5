@@ -2711,3 +2711,31 @@ pressé. Le raccourci ne remplace donc pas la séquence
 hang → traverse → crawlspace → bouton.
 
 Sauvegarde d’état : `/tmp/opencode/TOMB5.room8.sav`.
+
+### Assignations génériques ANIMATING / PUZZLE_HOLE (16 novembre 2026)
+
+`PortSetupGameplayObjects` n’assignait les contrôles `ANIMATING` que
+pour deux objets spéciaux de Trajan’s Markets. Il manquait les boucles
+génériques de `setup.cpp` :
+
+- `PUZZLE_HOLE1..8` : `ControlAnimatingSlots` + `PuzzleHoleCollision` ;
+- `PUZZLE_DONE1..8` : `ControlAnimatingSlots` + `PuzzleDoneCollision` ;
+- `ANIMATING1..12_MIP` : `InitialiseAnimatingSlots`,
+  `ControlAnimatingSlots`, `ObjectCollision`, flags de sauvegarde,
+  `bones[0] |= 8`, `bones[4] |= 4` ;
+- `ANIMATING13..16_MIP` : `InitialiseAnimatingSlots`,
+  `ControlAnimatingSlots`, flags, `HitEffect = 0`.
+
+Le cas spécial Trajan’s (ANIMATING3_MIP/ANIMATING4) reste prioritaire,
+et les boucles `ANIMATING` sont désactivées pour `LVL5_TITLE` afin de
+préserver les animations du plan du titre (raison du contournement
+précédent).
+
+Validation : dans la room 8, `objects[445].control` et
+`objects[444].control` pointent bien vers `ControlAnimatingSlots`
+(ANIMATING15 / ANIMATING15_MIP, le mécanisme de sortie). La porte ne
+s’anime toujours pas sans son trigger : le bouton du crawlspace reste
+à identifier. Sanity corniche 200 frames OK, 4177 tests PASS.
+
+Build `build-gameplay59` : SHA256
+`a1ea77fa9809d94b26f09dd7b02c3d11eb2a9597a798680c9c793518999420fb`.
