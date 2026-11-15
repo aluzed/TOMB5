@@ -1828,6 +1828,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum hang: port de LaraHangLeftCornerTest et LaraHangRightCornerTest depuis TOMB5pc game/lara.cpp (5492/5339). ANIM_GRABLEDGE PC96 -> ANIMATION_LARA_HANG_IDLE 96; calculs de coin ^1023, LeftClimbTab/RightClimbTab, IsValidHangPos, LaraFloorFront, lara.CornerX/Z; branches climb_status et hang simple conservees. Build-gameplay59 SHA256 d17c247b1a31b6d7847503c1967015b4adc1148176caf37e46cd55a4828fc303, 4177 tests PASS. Validation runtime de la transition STATE_LARA_CLIMB_CORNER_LEFT_INNER/OUTER encore a faire: le harnais force l'etat HANG mais le trigger CAMERA:0 de la corniche relance une cutscene qui court-circuite DrawRooms/LaraControl, donc l'entree n'est pas traitee; verifier en jeu normal sur une corniche avec un vrai coin. Aucun Done global."
+    },
+    {
+      "date": "2026-11-15",
+      "authorization_until": "2026-11-15T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum inventaire: port de use_current_item (GAME/NEWINV2.C) depuis TOMB5pc game/newinv2.cpp:2249 (armes request_gun_type, flare IN_FLARE+LaraGun, jumelles BinocularRange/BinocularOldCamera, medipacks, et GLOBAL_inventoryitemchosen=gmeobject utilise par KeyHoleCollision/PuzzleHoleCollision pour cles/puzzles/crowbar; etats AS_* mappes sur STATE_LARA_* 71/80/81/84-86/88/105-106). Port de FindPlinth (GAME/PICKUP.C) depuis pickup.cpp:671 (socle statique puis item plinth, sentinelle PC NO_ITEM remplacee par -1). Build-gameplay59 SHA256 19e95b6420170bbde89734f357498da44819d64ee6122f90bad98a9e95d770e7, 4177 tests PASS, validation runtime insertion cle/medipack a faire. Sous-systeme corde non traite: ROPE.C ne fait que 58 lignes (SaveRope/LoadRope/Straighten vide/StraightenRope), il manque _Straighten, RopeControl/ControlRope, RopeList/Ropes, LaraClimbRope, UpdateRopeSwing, DelAlignLaraToRope (~700 lignes depuis rope.cpp) - chantier dedie. Aucun Done global."
     }
   ]
 }

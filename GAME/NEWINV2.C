@@ -984,10 +984,178 @@ void DEL_picked_up_object(short objnum)//3FEB0, 40304 (F)
 	}
 }
 
+/* Porté depuis TOMB5pc/game/newinv2.cpp (use_current_item, 2249).
+ * Les états AS_* sont les STATE_LARA_* du port (mêmes valeurs). */
 void use_current_item()//3F9A0, 3FDF4
 {
-	SayNo();
-	UNIMPLEMENTED();
+	long OldBinocular;
+	short invobject, gmeobject, state;
+
+	OldBinocular = BinocularRange;
+	oldLaraBusy = 0;
+	BinocularRange = 0;
+	lara_item->mesh_bits = -1;
+	invobject = rings[RING_INVENTORY]->current_object_list[rings[RING_INVENTORY]->curobjinlist].invitem;
+	gmeobject = inventry_objects_list[invobject].object_number;
+
+	if (gfCurrentLevel == LVL5_DEEPSEA_DIVE && gmeobject == PUZZLE_ITEM1)
+	{
+		FireChaff();
+		return;
+	}
+
+	if (lara.water_status == LW_ABOVE_WATER || lara.water_status == LW_WADE)
+	{
+		if (gmeobject == PISTOLS_ITEM)
+		{
+			lara.request_gun_type = WEAPON_PISTOLS;
+
+			if (lara.gun_status == LG_NO_ARMS && lara.gun_type == WEAPON_PISTOLS)
+				lara.gun_status = LG_DRAW_GUNS;
+
+			return;
+		}
+
+		if (gmeobject == UZI_ITEM)
+		{
+			lara.request_gun_type = WEAPON_UZI;
+
+			if (lara.gun_status == LG_NO_ARMS && lara.gun_type == WEAPON_UZI)
+				lara.gun_status = LG_DRAW_GUNS;
+
+			return;
+		}
+
+		if (gmeobject == SHOTGUN_ITEM || gmeobject == REVOLVER_ITEM || gmeobject == HK_ITEM || gmeobject == CROSSBOW_ITEM)
+		{
+			state = lara_item->current_anim_state;
+
+			if (lara.gun_status == LG_HANDS_BUSY || state == STATE_LARA_CRAWL_IDLE || state == STATE_LARA_CRAWL_FORWARD ||
+				state == STATE_LARA_CRAWL_TURN_LEFT || state == STATE_LARA_CRAWL_TURN_RIGHT ||
+				state == STATE_LARA_CRAWL_BACK || state == STATE_LARA_CRAWL_TO_CLIMB ||
+				state == STATE_LARA_CROUCH_IDLE || state == STATE_LARA_CROUCH_TURN_LEFT ||
+				state == STATE_LARA_CROUCH_TURN_RIGHT)
+			{
+				SayNo();
+				return;
+			}
+
+			if (gmeobject == SHOTGUN_ITEM)
+			{
+				lara.request_gun_type = WEAPON_SHOTGUN;
+
+				if (lara.gun_status == LG_NO_ARMS && lara.gun_type == SHOTGUN_ITEM)
+					lara.gun_status = LG_DRAW_GUNS;
+			}
+			else if (gmeobject == REVOLVER_ITEM)
+			{
+				lara.request_gun_type = WEAPON_REVOLVER;
+
+				if (lara.gun_status == LG_NO_ARMS && lara.gun_type == WEAPON_REVOLVER)
+					lara.gun_status = LG_DRAW_GUNS;
+			}
+			else if (gmeobject == HK_ITEM)
+			{
+				lara.request_gun_type = WEAPON_HK;
+
+				if (lara.gun_status == LG_NO_ARMS && lara.gun_type == HK_ITEM)
+					lara.gun_status = LG_DRAW_GUNS;
+			}
+			else
+			{
+				lara.request_gun_type = WEAPON_CROSSBOW;
+
+				if (lara.gun_status == LG_NO_ARMS && lara.gun_type == WEAPON_CROSSBOW)
+					lara.gun_status = LG_DRAW_GUNS;
+			}
+
+			return;
+		}
+	}
+
+	if (gmeobject == FLARE_INV_ITEM)
+	{
+		state = lara_item->current_anim_state;
+
+		if (lara.gun_status != LG_NO_ARMS || state == STATE_LARA_CRAWL_IDLE || state == STATE_LARA_CRAWL_FORWARD ||
+			state == STATE_LARA_CRAWL_TURN_LEFT || state == STATE_LARA_CRAWL_TURN_RIGHT ||
+			state == STATE_LARA_CRAWL_BACK || state == STATE_LARA_CRAWL_TO_CLIMB)
+			SayNo();
+		else if (lara.gun_type != WEAPON_FLARE)
+		{
+			input = IN_FLARE;
+			LaraGun();
+			input = 0;
+		}
+
+		return;
+	}
+
+	if (invobject == INV_BINOCULARS_ITEM)
+	{
+		if ((lara_item->current_anim_state == STATE_LARA_STOP && lara_item->anim_number == ANIMATION_LARA_STAY_IDLE ||
+			lara.IsDucked && !(input & IN_DUCK)) && !SniperCamActive && !bUseSpotCam && !bTrackCamInit)
+		{
+			oldLaraBusy = 1;
+			BinocularRange = 128;
+
+			if (lara.gun_status != LG_NO_ARMS)
+				lara.gun_status = LG_UNDRAW_GUNS;
+		}
+
+		if (OldBinocular)
+			BinocularRange = OldBinocular;
+		else
+			BinocularOldCamera = camera.old_type;
+
+		return;
+	}
+
+	if (invobject == INV_SMALLMEDI_ITEM)
+	{
+		if ((lara_item->hit_points <= 0 || lara_item->hit_points >= 1000) && !lara.poisoned)
+		{
+			SayNo();
+			return;
+		}
+
+		if (lara.num_small_medipack != -1)
+			lara.num_small_medipack--;
+
+		lara.dpoisoned = 0;
+		lara_item->hit_points += 500;
+
+		if (lara_item->hit_points > 1000)
+			lara_item->hit_points = 1000;
+
+		SoundEffect(SFX_MENU_MEDI, 0, SFX_ALWAYS);
+		savegame.Game.HealthUsed++;
+		return;
+	}
+
+	if (invobject == INV_BIGMEDI_ITEM)
+	{
+		if ((lara_item->hit_points <= 0 || lara_item->hit_points >= 1000) && !lara.poisoned)
+		{
+			SayNo();
+			return;
+		}
+
+		if (lara.num_large_medipack != -1)
+			lara.num_large_medipack--;
+
+		lara.dpoisoned = 0;
+		lara_item->hit_points += 1000;
+
+		if (lara_item->hit_points > 1000)
+			lara_item->hit_points = 1000;
+
+		SoundEffect(SFX_MENU_MEDI, 0, SFX_ALWAYS);
+		savegame.Game.HealthUsed++;
+		return;
+	}
+
+	GLOBAL_inventoryitemchosen = gmeobject;
 }
 
 void setup_objectlist_startposition2(short newobj)//3F938, 3FD8C (F)

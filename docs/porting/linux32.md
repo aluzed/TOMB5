@@ -2152,3 +2152,36 @@ faire : le harnais de test force l’état `HANG`, mais le trigger
 `CAMERA:0` de la corniche relance une cutscene qui court-circuite
 `DrawRooms`/`LaraControl`, donc l’entrée n’est pas traitée. À vérifier
 en jeu normal, sur une corniche avec un vrai coin.
+
+### Inventaire : utilisation d’objets et socle de pickup (15 novembre 2026)
+
+`use_current_item` (`GAME/NEWINV2.C`, ex-`SayNo(); UNIMPLEMENTED();`) est
+porté depuis `TOMB5pc/game/newinv2.cpp:2249` :
+- armes (`PISTOLS/UZI/SHOTGUN/REVOLVER/HK/CROSSBOW`) et `request_gun_type` ;
+- flare (`IN_FLARE` + `LaraGun`) ;
+- jumelles (`BinocularRange`, `BinocularOldCamera`) ;
+- petits/grands medipacks ;
+- et surtout `GLOBAL_inventoryitemchosen = gmeobject`, qui est le signal
+  utilisé par `KeyHoleCollision` / `PuzzleHoleCollision` pour insérer
+  clés, puzzles et crowbar. Les états `AS_*` sont mappés sur les
+  `STATE_LARA_*` du port (mêmes valeurs : 71, 80, 81, 84-86, 88,
+  105-106).
+
+`FindPlinth` (`GAME/PICKUP.C`) est porté depuis
+`TOMB5pc/game/pickup.cpp:671` (socle statique puis item plinth ; le
+sentinelle PC `NO_ITEM` est `-1` dans le port).
+
+Build `build-gameplay59` : SHA256
+`19e95b6420170bbde89734f357498da44819d64ee6122f90bad98a9e95d770e7`,
+**4177 tests PASS**. Validation runtime à faire (insertion d’une clé et
+utilisation d’un medipack en jeu).
+
+#### Reste du lot « corde »
+
+Le sous-système corde n’est pas qu’une fonction : `GAME/ROPE.C` ne fait
+que 58 lignes (`SaveRope`, `LoadRope`, `Straighten` vide,
+`StraightenRope`). Il manque le cœur physique (`_Straighten`,
+`RopeControl`/`ControlRope`, `RopeList`/`Ropes`), plus
+`LaraClimbRope`, `UpdateRopeSwing` (`GAME/LARA.C`) et
+`DelAlignLaraToRope` (`GAME/LARAMISC.C`). C’est un chantier dédié
+(~700 lignes depuis `rope.cpp`), à traiter séparément.

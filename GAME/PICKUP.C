@@ -394,10 +394,59 @@ void AnimatingPickUp(short item_number)//51450(<), 518B4 (F)
 	}
 }
 
+/* Porté depuis TOMB5pc/game/pickup.cpp (FindPlinth, 671). */
 short* FindPlinth(struct ITEM_INFO* item)//51200, 51664
 {
-	UNIMPLEMENTED();
-	return 0;
+	struct ITEM_INFO* plinth;
+	struct room_info* r;
+	struct MESH_INFO* mesh;
+	short* p;
+	short* o;
+	long lp;
+	short item_num;
+
+	o = 0;
+	r = &room[item->room_number];
+	mesh = r->mesh;
+
+	for (lp = r->num_meshes; lp > 0; lp--)
+	{
+		if ((mesh->Flags & 1) && item->pos.x_pos == mesh->x && item->pos.z_pos == mesh->z)
+		{
+			p = GetBestFrame(item);
+			o = &static_objects[mesh->static_number].x_minc;
+
+			if (p[0] <= o[1] && p[1] >= o[0] && p[4] <= o[5] && p[5] >= o[4] && (o[0] || o[1]))
+				break;
+		}
+
+		mesh++;
+	}
+
+	if (lp)
+		return o;
+
+	item_num = r->item_number;
+
+	while (item_num != -1)
+	{
+		plinth = &items[item_num];
+
+		if (item != plinth)
+		{
+			if (objects[plinth->object_number].collision != PickUpCollision && item->pos.x_pos == plinth->pos.x_pos &&
+				item->pos.y_pos <= plinth->pos.y_pos && item->pos.z_pos == plinth->pos.z_pos &&
+				(plinth->object_number != HIGH_OBJECT1 || plinth->item_flags[0] == 5))
+				break;
+		}
+
+		item_num = plinth->next_item;
+	}
+
+	if (item_num == -1)
+		return 0;
+
+	return GetBestFrame(&items[item_num]);
 }
 
 void PuzzleDone(struct ITEM_INFO* item, short item_num)//51004, 51468 (F)
