@@ -2511,3 +2511,36 @@ donc probablement via une transition d’animation (`GetChange`) qui
 sélectionne une animation dont les données de rotation ne correspondent
 pas au squelette de 17 os. La séquence de déclenchement réelle du niveau
 doit être reproduite avant de conclure.
+
+### Correction complète de l’animation interpolée (15 novembre 2026)
+
+Le crash `iRotSuperPackedYXZ_AI` n’était pas dû aux données de la
+statue mais à deux erreurs de décompilation :
+
+1. **`iPushMatrix_AI`** (`SPEC_PSXPC_N/ANIMITEM.C`) n’empilait que la
+   matrice de lumière (`fp[21]`). Or `iPopMatrix_AI` détaille **les deux**
+   piles (`fp[20]` objet et `fp[21]` lumière), comme `iPushMatrix`
+   (non-AI) qui pousse `iMatrix` **et** `Matrix`. À chaque os, la pile
+   objet descendait donc de 8 ints ; après ~15 os elle écrasait
+   `fp[31..33]`, d’où un pointeur de rotations sauvage et le SIGSEGV.
+   `iPushMatrix_AI` empile maintenant les deux matrices.
+2. **`erk_interpolated`** se terminait par
+   `//j loc_81714; assert(FALSE)` : le saut vers la finalisation
+   (compteur de matrices + `mmPopMatrix_AI`) n’était pas implémenté.
+   Le chemin interpolé revient maintenant à l’appelant, qui exécute
+   `loc_81714` et le pop. Les deux `assert(FALSE)` de `erk_interpolated`
+   sont remplacés par des `return`.
+
+#### Validation
+- **ROMAN_GOD éveillé** (activation forcée, `state=1`) : plus de crash.
+  La statue joue ses états `13 → 10 → 2 → 7`, crée des éclairs
+  (`Lightning[].Life=24`), se déplace et s’anime pendant **250
+  itérations** de `DrawRooms`.
+- **Spawn room 6 du Colosseum** (`60928,6400,49664`), qui provoquait
+  auparavant un SIGSEGV dans `InterpolateMatrix_AI` : **201 frames sans
+  crash** (`SANITY OK`, room 6, hp 1000).
+- Sauvegarde de la corniche : 200 frames sans crash.
+
+Build `build-gameplay59` : SHA256
+`a4d80b28fac639bbf6c35fa0d86b14f56b77ce96e1f3fcc78ce6dca6dbbf0ad4`,
+**4177 tests PASS**.

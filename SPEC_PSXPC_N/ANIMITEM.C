@@ -1677,7 +1677,23 @@ void InterpolateMatrix_AI(int v1, int* fp)
 
 void iPushMatrix_AI(int* fp)//81E60
 {
-	int* a0 = (int*)fp[21];
+	/* iPushMatrix pousse la matrice d'objet (Matrix) et la matrice de
+	   lumiere (iMatrix). La version decompilee n'empaquetait que la
+	   lumiere, ce qui desequilibrait fp[20] et finissait par ecraser
+	   fp[31..33] (crash iRotSuperPackedYXZ_AI). */
+	int* a0 = (int*)fp[20];
+	a0 += 8;
+	a0[0] = (R11 & 0xFFFF) | ((R12 & 0xFFFF) << 16);
+	a0[1] = (R13 & 0xFFFF) | ((R21 & 0xFFFF) << 16);
+	a0[2] = (R22 & 0xFFFF) | ((R23 & 0xFFFF) << 16);
+	a0[3] = (R31 & 0xFFFF) | ((R32 & 0xFFFF) << 16);
+	a0[4] = R33;
+	a0[5] = TRX;
+	a0[6] = TRY;
+	a0[7] = TRZ;
+	fp[20] = (int)a0;
+
+	a0 = (int*)fp[21];
 	a0 += 8;
 	a0[0] = L11 & 0xFFFF | ((L12 & 0xFFFF) << 16);
 	a0[1] = L13 & 0xFFFF | ((L21 & 0xFFFF) << 16);
@@ -1775,7 +1791,7 @@ void erk_interpolated(struct ITEM_INFO* item /*s3*/, struct object_info* object 
 	if (object->nmeshes - 1 <= 0)
 	{
 		//81714
-		assert(FALSE);//Unimplemented
+		return;
 	}
 
 	//loc_81CF0
@@ -1840,8 +1856,7 @@ void erk_interpolated(struct ITEM_INFO* item /*s3*/, struct object_info* object 
 		s7 += 4;
 	} while (s4 != 0);
 	//j       loc_81714
-	///@TODO
-	assert(FALSE);//Unimplemented jump
+	return;
 }
 
 void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* object /*s6*/, int* fp)//81504(<), 83548
@@ -1898,8 +1913,20 @@ void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* ob
 
 		if (frames != 0)
 		{
-			erk_interpolated(item, object, frames, s2, s5, s7, fp);//loc_81C60
-			assert(FALSE);///@todo check return?
+			/* loc_81C60 : le chemin interpole gere tout l'objet puis
+			   saute a loc_81714 (finalisation + pop), au lieu de
+			   poursuivre le chemin non interpole. */
+			erk_interpolated(item, object, frames, s2, s5, s7, fp);
+
+			if (fp[19] > 0)
+			{
+				fp[18]++;
+				((short*)fp[16])[1] = fp[19];
+				fp[16] += 12;
+			}
+
+			mmPopMatrix_AI(fp);
+			return;
 		}
 
 		v00 = (short*)fp[30];

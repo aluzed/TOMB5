@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum correction complete de l'animation interpolee: (1) iPushMatrix_AI (ANIMITEM.C) n'empilait que la matrice lumiere fp[21] alors que iPopMatrix_AI depile fp[20] (objet) et fp[21] (lumiere), comme iPushMatrix non-AI qui pousse iMatrix et Matrix; chaque os faisait descendre la pile objet de 8 ints et apres ~15 os fp[31..33] etait ecrase (pointeur de rotations sauvage -> SIGSEGV iRotSuperPackedYXZ_AI). iPushMatrix_AI empile maintenant les deux matrices. (2) erk_interpolated se terminait par //j loc_81714 assert(FALSE): le saut vers la finalisation (compteur matrices + mmPopMatrix_AI) n'etait pas implemente; le chemin interpole revient a l'appelant qui execute loc_81714 et le pop; les deux assert(FALSE) remplaces par return. Validation: ROMAN_GOD eveille (activation forcee state=1) plus de crash, etats 13->10->2->7, eclairs Life=24, 250 iterations DrawRooms; spawn room 6 Colosseum 60928,6400,49664 qui provoquait SIGSEGV InterpolateMatrix_AI: 201 frames sans crash (SANITY OK room 6 hp 1000); corniche 200 frames OK. Build-gameplay59 SHA256 a4d80b28fac639bbf6c35fa0d86b14f56b77ce96e1f3fcc78ce6dca6dbbf0ad4, 4177 tests PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum ROMAN_GOD + corrections animation: port complet GAME/ROMANGOD.C/.H depuis romangod.cpp (TriggerRomanGodSparks, TriggerRomanGodMissile, TriggerRomanGodLightningGlow, TriggerRomanGodPowerupFlames, TriggerRomangodGravel, InitialiseRomangod, RomangodControl); TriggerRomanGodMissileFlame deja dans EFFECT2.C (pas de doublon); struct RG_TARGET dans TYPES.H; assignation dans PortSetupGameplayObjects (CreatureCollision, hit_points 300, radius 256, pivot_length 50, object_mip 5120, intelligent, HitEffect 2, save flags, bones 24/52 |=8|4, 17 meshes MESHSWAP1); ROMANGOD.C.o ajoute au link.txt. Corrections: CreatureActive (BOX.C) etait inverse (ne renvoyait 1 que si IFLAG_KILLED) -> reecrit selon box.cpp (IFLAG_KILLED 0; status ITEM_INVISIBLE -> EnableBaddieAI + status ITEM_ACTIVE; sinon 1). InterpolateMatrix_AI (ANIMITEM.C): 4 ecritures utilisaient a3/t1/t3 comme pointeurs au lieu de a0 et les translations etaient ecrites en short au lieu d'int -> corrige (plus de SIGSEGV InterpolateMatrix_AI). Validation: sauvegarde corniche niveau 3 tourne 200 frames sans crash (SANITY OK); statue obj61 room90 48640,512,69120 initialisee au chargement (anim=anim_index+16, state=13, position decalee de 486); activation forcee EnableBaddieAI(79,1)+status=1+AddActiveItem(79) et Lara en 48640,512,70144 -> data alloue, controle demarre. Blocage restant: SIGSEGV iRotSuperPackedYXZ_AI (ANIMITEM.C:1422) pendant animation interpolee de la statue 17 os; fp[33] sort de la zone de frames (meme classe que le crash room 6). Build-gameplay59 SHA256 fff7b798ff64b25b9d497d011f815d66992b75a9785bae3cb60abf721be6dfb3, 4177 tests PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
