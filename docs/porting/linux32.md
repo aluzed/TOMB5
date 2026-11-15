@@ -2328,3 +2328,22 @@ pas encore branchés sur ce handler. Restent à porter :
 Build `build-gameplay59` : SHA256
 `8f3e47cf19238424110112c10224c8e0f77afa835899261baffaecb58f196139`,
 **4177 tests PASS**.
+
+### Rayon/boîte et `DoRayBox` (15 novembre 2026)
+
+Portés dans `SPEC_PSXPC_N/GETSTUFF.C` :
+- `RayBoxIntersect` (intersection rayon/boîte 16.16) ;
+- `DoRayBox` (adapté à la signature PSXPC à 10 arguments ; construit un
+  `PHD_3DPOS` local). Utilise `mPushUnitMatrix`/`mRotY`/`Matrix->m*`
+  (échelle 4096 + `W2V_SHIFT` 12), `Normalise`, `GetSpheres`,
+  `Slist`/`ShatterItem`, `ClosestItem/ClosestCoord/ClosestDist`.
+
+Rappel de build : les objets `SPHERES.C.o` et `GETSTUFF.C.o` doivent
+être écrits dans
+`CMakeFiles/TombRaiderChronicles_PSXPC_N.dir/<nom>.C.o` (et **non**
+dans le sous-dossier `__/SPEC_PSXPC_N/`), sinon le lien n’inclut pas les
+nouveaux symboles.
+
+Build `build-gameplay59` : SHA256
+`b49584390388cd94cfd917cf243d1485b8253ca581870eceb9a07f82f1dac500`,
+**4177 tests PASS**.

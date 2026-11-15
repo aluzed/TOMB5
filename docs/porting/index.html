@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum combat rayon: port de RayBoxIntersect et DoRayBox dans SPEC_PSXPC_N/GETSTUFF.C (signature PSXPC 10 args adaptee avec PHD_3DPOS local; mPushUnitMatrix/mRotY/Matrix-&gt;m* echelle 4096 + W2V_SHIFT 12, Normalise, GetSpheres, Slist/ShatterItem, ClosestItem/ClosestCoord/ClosestDist). Important build: les objets SPHERES.C.o et GETSTUFF.C.o doivent etre ecrits dans CMakeFiles/TombRaiderChronicles_PSXPC_N.dir/&lt;nom&gt;.C.o et non dans __/SPEC_PSXPC_N/, sinon le lien n&#x27;inclut pas les nouveaux symboles (corrige). Build-gameplay59 SHA256 b49584390388cd94cfd917cf243d1485b8253ca581870eceb9a07f82f1dac500, 4177 tests PASS. Restent GetTargetOnLOS, DoProperDetection, ObjectOnLOS2/DoRayBox branchement, AnimatePistols/RifleHandler, gladiatr.cpp/guardian.cpp. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum combat: port de xLOS/zLOS/ClipTarget (GAME/CONTROL.C) rendant LOS fonctionnel; port de GetSpheres (SPEC_PSXPC_N/SPHERES.C, matrices m*, Matrix-&gt;tx/ty/tz, TRX/TRY/TRZ); port de LaraTargetInfo, LaraGetNewTarget, FireWeapon (GAME/LARAFIRE.C, LJ_RHAND, baddie_slots, Slist, phd_GenerateW2V/phd_mxptr M20-M22). Etat: le port possede deja un PistolHandler simplifie (ciblage direct + HitTarget/CreatureDie, sans LOS) qui permet de tirer; FireWeapon/LaraTargetInfo dispo mais pas encore branches. Restent GetTargetOnLOS, DoProperDetection, ObjectOnLOS2/DoRayBox (DoRayBox stub), AnimatePistols/RifleHandler, puis gladiatr.cpp et guardian.cpp. Build-gameplay59 SHA256 8f3e47cf19238424110112c10224c8e0f77afa835899261baffaecb58f196139, 4177 tests PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
