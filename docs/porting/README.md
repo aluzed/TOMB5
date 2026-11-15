@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum validation runtime lion: save patchee pres du lion de room17 (item29, spawn 46568,1024,54784) et activation forcee (status=1, EnableBaddieAI(29,1)); le lion se deplace et s'anime sans crash: (45562,1024,54875)->(42462,1024,58589), state=1, hp=40, puis s'arrete. Le coeur IA (CreatureAIInfo, CalculateTarget, CreatureAnimation, CreatureTurn, CreateZone) s'execute reellement. Poursuite/attaque de Lara non validee (le lion suit pour l'instant son trajet/patrouille); a tester avec ai_bits et combat. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum IA creatures: port du coeur depuis TOMB5pc game/box.cpp et lot.cpp - CreatureAIInfo, CalculateTarget, CreatureAnimation, CreatureTurn, CreatureMood, GetCreatureMood, CreatureKill, GetAITarget (BOX.C) et CreateZone (LOT.C). Adaptations phd_sin/cos->SIN/COS, phd_atan->phd_atan_asm, SQUARE->multiplications, AS_*->STATE_LARA_* (AS_MONKEY180->STATE_LARA_MONKEYSWING_TURNAROUND, AS_HANG2DUCK->STATE_LARA_CLIMB_TO_CRAWL), IFL_*->IFLAG_*, TOSSPAD dispo, ROOM_UNDERWATER->0x1. Assignation lion dans PortSetupGameplayObjects: InitialiseLion, LionControl, CreatureCollision, hit_points 40, radius 341, pivot_length 50, object_mip 5120, intelligent, HitEffect 1, save flags, bones 24/76 |=8. Build-gameplay59 SHA256 91ed84c3aa96a446406f2cced8644257e877ba1b7447378159222338ff7234d7, 4177 tests PASS. Validation runtime lion a faire; gladiateur (gladiatr.cpp) et statue (guardian.cpp) restent a porter, ainsi que le combat LARAFIRE. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

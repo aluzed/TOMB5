@@ -2293,3 +2293,15 @@ Build `build-gameplay59` : SHA256
 **4177 tests PASS**. Validation runtime du lion à faire (activation +
 poursuite/attaque) ; le gladiateur (`gladiatr.cpp`) et la statue
 (`guardian.cpp`) restent à porter, ainsi que le combat (LARAFIRE).
+
+#### Validation runtime du lion (15 novembre 2026)
+
+Sauvegarde patchée près du lion de `room 17` (`item 29`, spawn
+`46568,1024,54784`) et activation forcée (`status=1`,
+`EnableBaddieAI(29,1)`) : le lion **se déplace et s’anime** sans crash.
+Relevé : `(45562,1024,54875)` → `(42462,1024,58589)`, `state=1`,
+`hp=40`, puis il s’arrête. Le cœur IA (`CreatureAIInfo`,
+`CalculateTarget`, `CreatureAnimation`, `CreatureTurn`, `CreateZone`)
+s’exécute donc réellement. La **poursuite/attaque** de Lara n’a pas été
+validée (le lion suit pour l’instant son trajet/patrouille) ; à tester
+avec l’assignation `ai_bits` et le combat.
