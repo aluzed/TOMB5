@@ -1981,6 +1981,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum rendu des shockwaves: DrawShockwaves PSXPC (DRAWSPKS.C) trace 48 points sur le rayon moyen (InnerRad+OuterRad)/2 relu en non signe pour retrouver 40960 depuis 0xA000, projection ecran, sprite DEFAULT_SPRITES+14, fondu sur les 8 dernieres frames; appele dans DrawPhase apres DrawLightning. Validation visuelle: shockwave injectee autour de Lara -> anneau jaune visible (swvis.png); rendu approximatif (anneau de sprites au lieu du quad texture PC). Remarque: le level select (PlayAnyLevel) affiche la selection mais choisir Trajan's Markets demarre encore le niveau 1 (save F5 level 1); chemin de debug non utilise pour la campagne, validation GUARDIAN reste synthetique. Build-gameplay59 SHA256 847b137c2ea5dd3ac23d811249ee94729344ef2a3cf197b915143badf7ccaf28, 4177 tests PASS. Aucun Done global."
+    },
+    {
+      "date": "2026-11-15",
+      "authorization_until": "2026-11-15T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum corniche: apres les corrections GetBestFrame/animation/AnimateItem, test runtime sur la sauvegarde corniche 43364,768,52325 room12. Si l'on remet GLOBAL_playing_cutseq=0, cutseq_trig=0, globoncuttrig=0 et bDisableLaraControl=0 a chaque frame (comme probe_free.gdb), Lara repond aux entrees; depuis 43364,768,51900, Up+Action (vault) franchit la marche de 512 et place Lara a 43364,256,51900 room 8 (etage superieur des grilles/dalles). C'est le pas de 512 qui bloquait TestLaraVault; la correction de GetBestFrame (branches inversees) semble avoir debloque la detection de rebord/vault. Etat sauvegarde /tmp/opencode/TOMB5.room8.sav (level 3, room 8, 43364,256,51900). L'exploration de l'etage 8 n'a pas encore trouve le crawlspace/le bouton; camera montre un couloir et des alcoves a y=256. Attention: sans reset des variables de cutscene, Lara reste figee apres le chargement de la corniche. Aucun Done global."
     }
   ]
 }

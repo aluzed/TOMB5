@@ -2666,3 +2666,28 @@ utilisé pour la campagne ; la validation de GUARDIAN reste synthétique.
 Build `build-gameplay59` : SHA256
 `847b137c2ea5dd3ac23d811249ee94729344ef2a3cf197b915143badf7ccaf28`,
 **4177 tests PASS**.
+
+### Corniche : le saut de 512 est franchi (15 novembre 2026)
+
+Après les corrections `GetBestFrame` / animation / `AnimateItem`, un test
+runtime sur la sauvegarde de la corniche (`43364,768,52325`, room 12)
+montre un changement important :
+
+- si l’on remet `GLOBAL_playing_cutseq = 0`, `cutseq_trig = 0`,
+  `globoncuttrig = 0` et `bDisableLaraControl = 0` à chaque frame
+  (comme `probe_free.gdb`), Lara répond aux entrées ;
+- depuis `43364,768,51900`, **Up + Action** (vault) franchit la marche
+  de 512 et place Lara à `43364,256,51900`, **room 8** (étage
+  supérieur, celui des grilles/dalles).
+
+C’est précisément le pas de 512 qui bloquait `TestLaraVault` dans
+l’état précédent. La correction de `GetBestFrame` (branches inversées)
+semble avoir débloqué la détection de rebord/vault.
+
+État sauvegardé : `/tmp/opencode/TOMB5.room8.sav`
+(`level 3`, `room 8`, `43364,256,51900`). L’exploration de l’étage 8
+n’a pas encore trouvé le crawlspace/le bouton ; la caméra montre un
+couloir et des alcôves au niveau 256.
+
+Point d’attention : sans le reset des variables de cutscene, Lara reste
+figée après le chargement de la sauvegarde de la corniche.
