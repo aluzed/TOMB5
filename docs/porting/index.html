@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum corde cote Lara: port de Straighten (GAME/ROPE.C, equivalent _Straighten+Normalise PC, 24 segments, SegmentLength&lt;&lt;16, phd_sqrt_asm), UpdateRopeSwing (GAME/LARA.C, source lara.cpp:4952: arcs avant/arriere, RopeDFrame, RopeFrameRate, LegsSwinging, SFX_LARA_ROPE_CREAK), LaraClimbRope (LARA.C, source rope.cpp:587: RopeCount/RopeOffset/RopeDownVel/RopeFlag, ANIMATION_LARA_ROPE_DOWN, retour STATE_LARA_ROPE_IDLE; RopeList-&gt;Ropes). Build-gameplay59 SHA256 ef794f243aba5d9933333c608a515b97e595eae1142e30ae3d82ca0ddc1e611d, 4177 tests PASS. Reste cote objet dans rope.cpp non porte: InitialiseRope, CreateRope, RopeControl, RopeCollision, CalculateRope, SetPendulumPoint, RopeNodeCollision, AlignLaraToRope + assignation objects[ROPE].initialise/control dans PortSetupGameplayObjects; sans cela le puzzle de corde du Colosseum reste inactif. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum inventaire: port de use_current_item (GAME/NEWINV2.C) depuis TOMB5pc game/newinv2.cpp:2249 (armes request_gun_type, flare IN_FLARE+LaraGun, jumelles BinocularRange/BinocularOldCamera, medipacks, et GLOBAL_inventoryitemchosen=gmeobject utilise par KeyHoleCollision/PuzzleHoleCollision pour cles/puzzles/crowbar; etats AS_* mappes sur STATE_LARA_* 71/80/81/84-86/88/105-106). Port de FindPlinth (GAME/PICKUP.C) depuis pickup.cpp:671 (socle statique puis item plinth, sentinelle PC NO_ITEM remplacee par -1). Build-gameplay59 SHA256 19e95b6420170bbde89734f357498da44819d64ee6122f90bad98a9e95d770e7, 4177 tests PASS, validation runtime insertion cle/medipack a faire. Sous-systeme corde non traite: ROPE.C ne fait que 58 lignes (SaveRope/LoadRope/Straighten vide/StraightenRope), il manque _Straighten, RopeControl/ControlRope, RopeList/Ropes, LaraClimbRope, UpdateRopeSwing, DelAlignLaraToRope (~700 lignes depuis rope.cpp) - chantier dedie. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

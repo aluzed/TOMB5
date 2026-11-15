@@ -2185,3 +2185,28 @@ que 58 lignes (`SaveRope`, `LoadRope`, `Straighten` vide,
 `LaraClimbRope`, `UpdateRopeSwing` (`GAME/LARA.C`) et
 `DelAlignLaraToRope` (`GAME/LARAMISC.C`). C’est un chantier dédié
 (~700 lignes depuis `rope.cpp`), à traiter séparément.
+
+### Corde : côté Lara porté, côté objet encore à faire (15 novembre 2026)
+
+Portés depuis `TOMB5pc/game/rope.cpp` et `lara.cpp` :
+- `Straighten` (`GAME/ROPE.C`) : équivalent de `_Straighten` +
+  `Normalise` (24 segments, `SegmentLength = slength << 16`,
+  normalisation `phd_sqrt_asm`) ;
+- `UpdateRopeSwing` (`GAME/LARA.C`, source `lara.cpp:4952`) : arcs
+  avant/arrière, `RopeDFrame`, `RopeFrameRate`, `LegsSwinging`,
+  `SFX_LARA_ROPE_CREAK` ;
+- `LaraClimbRope` (`GAME/LARA.C`, source `rope.cpp:587`) :
+  `RopeCount`/`RopeOffset`/`RopeDownVel`/`RopeFlag`, descente anim
+  `ANIMATION_LARA_ROPE_DOWN`, retour à `STATE_LARA_ROPE_IDLE`.
+  `RopeList` (PC) → `Ropes[]` du port.
+
+Build `build-gameplay59` : SHA256
+`ef794f243aba5d9933333c608a515b97e595eae1142e30ae3d82ca0ddc1e611d`,
+**4177 tests PASS**.
+
+Il manque encore le **côté objet** de la corde, qui vit dans
+`rope.cpp` et n’a pas été porté : `InitialiseRope`, `CreateRope`,
+`RopeControl`, `RopeCollision`, `CalculateRope`, `SetPendulumPoint`,
+`RopeNodeCollision`, `AlignLaraToRope`, et l’assignation
+`objects[ROPE].initialise/control` dans `PortSetupGameplayObjects`.
+Sans cela, le puzzle de corde du Colosseum reste inactif.

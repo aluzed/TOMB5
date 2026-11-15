@@ -3558,9 +3558,81 @@ void ApplyVelocityToRope(int node, unsigned short angle, unsigned short n)//178E
 		n * COS(angle));
 }
 
+/* Porté depuis TOMB5pc/game/lara.cpp (UpdateRopeSwing, 4952). */
 void UpdateRopeSwing(struct ITEM_INFO* item)//17508, 1763C
 {
-	UNIMPLEMENTED();
+	static unsigned char LegsSwinging;
+	long temp;
+
+	if (lara.RopeMaxXForward > 9000)
+		lara.RopeMaxXForward = 9000;
+
+	if (lara.RopeMaxXBackward > 9000)
+		lara.RopeMaxXBackward = 9000;
+
+	if (lara.RopeDirection)
+	{
+		if (item->pos.x_rot > 0 && item->pos.x_rot - lara.RopeLastX < -100)
+		{
+			lara.RopeArcFront = lara.RopeLastX;
+			lara.RopeDirection = 0;
+			lara.RopeMaxXBackward = 0;
+			temp = 256 * (15 * lara.RopeMaxXForward / 18000 + anims[ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD].frame_base + 47);
+
+			if (temp > lara.RopeDFrame)
+			{
+				lara.RopeDFrame = temp;
+				LegsSwinging = 1;
+			}
+			else
+				LegsSwinging = 0;
+
+			SoundEffect(SFX_LARA_ROPE_CREAK, &item->pos, 0);
+		}
+		else if (lara.RopeLastX < 0 && lara.RopeFrame == lara.RopeDFrame)
+		{
+			LegsSwinging = 0;
+			lara.RopeDFrame = 256 * (15 * lara.RopeMaxXBackward / 18000 + anims[ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD].frame_base + 47);
+			lara.RopeFrameRate = 15 * lara.RopeMaxXBackward / 9000 + 1;
+		}
+		else if (lara.RopeFrameRate < 512)
+			lara.RopeFrameRate += (LegsSwinging ? 31 : 7) * lara.RopeMaxXBackward / 9000 + 1;
+	}
+	else if (item->pos.x_rot < 0 && item->pos.x_rot - lara.RopeLastX > 100)
+	{
+		lara.RopeArcBack = lara.RopeLastX;
+		lara.RopeDirection = 1;
+		lara.RopeMaxXForward = 0;
+		temp = 256 * (anims[ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD].frame_base - 15 * lara.RopeMaxXBackward / 18000 + 17);
+
+		if (temp < lara.RopeDFrame)
+		{
+			lara.RopeDFrame = temp;
+			LegsSwinging = 1;
+		}
+		else
+			LegsSwinging = 0;
+
+		SoundEffect(SFX_LARA_ROPE_CREAK, &item->pos, 0);
+	}
+	else if (lara.RopeLastX > 0 && lara.RopeFrame == lara.RopeDFrame)
+	{
+		LegsSwinging = 0;
+		lara.RopeDFrame = 256 * (anims[ANIMATION_LARA_ROPE_SWING_FORWARD_SEMIHARD].frame_base - 15 * lara.RopeMaxXForward / 18000 + 17);
+		lara.RopeFrameRate = 15 * lara.RopeMaxXForward / 9000 + 1;
+	}
+	else if (lara.RopeFrameRate < 512)
+		lara.RopeFrameRate += (LegsSwinging ? 31 : 7) * lara.RopeMaxXForward / 9000 + 1;
+
+	lara.RopeLastX = item->pos.x_rot;
+
+	if (lara.RopeDirection)
+	{
+		if (item->pos.x_rot > lara.RopeMaxXForward)
+			lara.RopeMaxXForward = item->pos.x_rot;
+	}
+	else if (item->pos.x_rot < -lara.RopeMaxXBackward)
+		lara.RopeMaxXBackward = abs(item->pos.x_rot);
 }
 
 void JumpOffRope(struct ITEM_INFO* item)//17424, 17558 (F)
@@ -7172,9 +7244,52 @@ void SetPendulumVelocity(int x, int y, int z)// (F)
 	CurrentPendulum.Velocity.z += z;
 }
 
+/* Porté depuis TOMB5pc/game/rope.cpp (LaraClimbRope, 587) ;
+ * RopeList (PC) correspond à Ropes[] dans le port. */
 void LaraClimbRope(struct ITEM_INFO* item, struct COLL_INFO* coll)
 {
-	UNIMPLEMENTED();
+	if (!(input & IN_ACTION))
+	{
+		FallFromRope(item);
+		return;
+	}
+
+	camera.target_angle = 5460;
+
+	if (lara.RopeCount)
+	{
+		if (!lara.RopeFlag)
+		{
+			lara.RopeCount--;
+			lara.RopeOffset += lara.RopeDownVel;
+
+			if (!lara.RopeCount)
+				lara.RopeFlag = 1;
+
+			return;
+		}
+	}
+	else if (!lara.RopeFlag)
+	{
+		lara.RopeOffset = 0;
+		lara.RopeDownVel = (unsigned long)(Ropes[lara.RopePtr].MeshSegment[lara.RopeSegment + 1].y - Ropes[lara.RopePtr].MeshSegment[lara.RopeSegment].y) >> 17;
+		lara.RopeCount = 0;
+		lara.RopeOffset += lara.RopeDownVel;
+		lara.RopeFlag = 1;
+		return;
+	}
+
+	if (item->anim_number == ANIMATION_LARA_ROPE_DOWN && item->frame_number == anims[item->anim_number].frame_end)
+	{
+		SoundEffect(SFX_LARA_ROPEDOWN_LOOP, &lara_item->pos, 0);
+		item->frame_number = anims[item->anim_number].frame_base;
+		lara.RopeFlag = 0;
+		lara.RopeSegment++;
+		lara.RopeOffset = 0;
+	}
+
+	if (!(input & IN_BACK) || lara.RopeSegment >= 21)
+		item->goal_anim_state = STATE_LARA_ROPE_IDLE;
 }
 
 void FireChaff()
