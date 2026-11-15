@@ -2544,3 +2544,37 @@ statue mais à deux erreurs de décompilation :
 Build `build-gameplay59` : SHA256
 `a4d80b28fac639bbf6c35fa0d86b14f56b77ce96e1f3fcc78ce6dca6dbbf0ad4`,
 **4177 tests PASS**.
+
+### Déplacement des créatures : bloc vitesse de `AnimateItem` (15 novembre 2026)
+
+`AnimateItem` (`GAME/CONTROL.C`) s’arrêtait à la gravité et **omettait
+tout le bloc de vitesse** de `control.cpp` :
+
+```c
+speed  = anim->velocity;  if (anim->acceleration)  speed  += anim->acceleration  * (frame - frame_base);
+item->speed = speed >> 16;
+speed2 = anim->Xvelocity; if (anim->Xacceleration) speed2 += anim->Xacceleration * (frame - frame_base);
+...
+item->pos.x_pos += (item->speed * SIN(y_rot)) >> W2V_SHIFT;
+item->pos.z_pos += (item->speed * COS(y_rot)) >> W2V_SHIFT;
+item->pos.x_pos += (speed2 * SIN(y_rot + 0x4000)) >> W2V_SHIFT;
+item->pos.z_pos += (speed2 * COS(y_rot + 0x4000)) >> W2V_SHIFT;
+```
+
+Sans ce bloc, **aucune créature ne se déplaçait** (elles animaient sur
+place) ; c’est aussi ce qui empêchait ROMAN_GOD de se rapprocher de
+Lara. Le `else` est maintenant implémenté, la branche gravité restant
+inchangée.
+
+Validation : la statue ROMAN_GOD se déplace désormais réellement
+(`51968,66043 → 51924,65985 → 51429,66041 → 51708,65595`) pendant son
+état 7, et la corniche tourne 200 frames sans crash. Le diagnostic AI
+montre `info.distance = 27 563 485` (distance au carré) et
+`tbox = rbox = 245` : la statue est encore trop loin (> 2560) pour
+passer en état d’attaque dans ce montage synthétique ; le
+rapprochement/cheminement reste à vérifier avec la séquence réelle du
+niveau.
+
+Build `build-gameplay59` : SHA256
+`0925ce7e402e0928a375d6d0d1037bfead225b7bc4432e8fd0da0f3e5091247c`,
+**4177 tests PASS**.

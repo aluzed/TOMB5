@@ -5728,6 +5728,28 @@ void AnimateItem(struct ITEM_INFO* item)
 			}
 		}
 	}
+	else
+	{
+		/* Vitesse d'avance issue de ANIM_STRUCT (TOMB5pc/game/control.cpp,
+		   AnimateItem). Sans ce bloc, aucune creature ne se deplace. */
+		long speed = anim->velocity;
+		long speed2;
+
+		if (anim->acceleration)
+			speed += anim->acceleration * (item->frame_number - anim->frame_base);
+
+		item->speed = (short)(speed >> 16);
+		speed2 = anim->Xvelocity;
+
+		if (anim->Xacceleration)
+			speed2 += anim->Xacceleration * (item->frame_number - anim->frame_base);
+
+		speed2 >>= 16;
+		item->pos.x_pos += (item->speed * SIN(item->pos.y_rot)) >> W2V_SHIFT;
+		item->pos.z_pos += (item->speed * COS(item->pos.y_rot)) >> W2V_SHIFT;
+		item->pos.x_pos += (speed2 * SIN(item->pos.y_rot + 0x4000)) >> W2V_SHIFT;
+		item->pos.z_pos += (speed2 * COS(item->pos.y_rot + 0x4000)) >> W2V_SHIFT;
+	}
 }
 
 void UpdateSpiders()

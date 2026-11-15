@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum deplacement des creatures: AnimateItem (GAME/CONTROL.C) omettait tout le bloc vitesse de control.cpp (velocity/acceleration/Xvelocity/Xacceleration -> item->speed puis translation pos.x/z via SIN/COS y_rot et y_rot+0x4000). Sans ce bloc aucune creature ne se deplacait (animation sur place), ce qui empechait aussi ROMAN_GOD de se rapprocher de Lara. Le else est implemente, la branche gravite reste inchangee. Validation: ROMAN_GOD se deplace reellement en etat 7 (51968,66043 -> 51924,65985 -> 51429,66041 -> 51708,65595); corniche 200 frames sans crash; tests 4177 PASS. Diagnostic AI: info.distance=27563485 (distance au carre), tbox=rbox=245; la statue reste trop loin (>2560) pour passer en attaque dans le montage synthetique, rapprochement/cheminement a verifier avec la sequence reelle du niveau. Build-gameplay59 SHA256 0925ce7e402e0928a375d6d0d1037bfead225b7bc4432e8fd0da0f3e5091247c. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum correction complete de l'animation interpolee: (1) iPushMatrix_AI (ANIMITEM.C) n'empilait que la matrice lumiere fp[21] alors que iPopMatrix_AI depile fp[20] (objet) et fp[21] (lumiere), comme iPushMatrix non-AI qui pousse iMatrix et Matrix; chaque os faisait descendre la pile objet de 8 ints et apres ~15 os fp[31..33] etait ecrase (pointeur de rotations sauvage -> SIGSEGV iRotSuperPackedYXZ_AI). iPushMatrix_AI empile maintenant les deux matrices. (2) erk_interpolated se terminait par //j loc_81714 assert(FALSE): le saut vers la finalisation (compteur matrices + mmPopMatrix_AI) n'etait pas implemente; le chemin interpole revient a l'appelant qui execute loc_81714 et le pop; les deux assert(FALSE) remplaces par return. Validation: ROMAN_GOD eveille (activation forcee state=1) plus de crash, etats 13->10->2->7, eclairs Life=24, 250 iterations DrawRooms; spawn room 6 Colosseum 60928,6400,49664 qui provoquait SIGSEGV InterpolateMatrix_AI: 201 frames sans crash (SANITY OK room 6 hp 1000); corniche 200 frames OK. Build-gameplay59 SHA256 a4d80b28fac639bbf6c35fa0d86b14f56b77ce96e1f3fcc78ce6dca6dbbf0ad4, 4177 tests PASS. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
