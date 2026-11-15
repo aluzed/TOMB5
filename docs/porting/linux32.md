@@ -2243,3 +2243,28 @@ corde reste invisible tant qu’un rendu PSX dédié n’est pas ajouté.
 Découverte annexe : `HIGH_OBJECT1` (socle qui monte, gemme du Colosseum)
 n’a **ni** `initialise` **ni** `control` dans `PortSetupGameplayObjects` ;
 `InitialiseRaisingPlinth`/`ControlRaisingPlinth` ne sont pas portés.
+
+### Socle montant et poulie portés + validés en jeu (15 novembre 2026)
+
+Portés :
+- `InitialiseRaisingPlinth` et `ControlRaisingPlinth` (`GAME/TRAPS.C`,
+  source `TOMB5pc/game/init.cpp:1149` et `andrea.cpp:480`) avec les
+  correspondances `IFL_TRIGGERED`→`IFLAG_TRIGGERED`,
+  `IFL_CODEBITS`→`IFLAG_ACTIVATION_MASK`, `IFL_CLEARBODY` (0x8000)
+  →`IFLAG_KILLED` ;
+- `InitialisePulley` (`init.cpp:444`) ;
+- `objects[HIGH_OBJECT1]` : `initialise`/`control`/`collision =
+  ObjectCollision`, `save_position`, `save_flags` ;
+- `objects[PULLEY]` : `InitialisePulley`, `SwitchControl`,
+  `PulleyCollision`, `save_flags`, `save_anim`.
+
+**Validation runtime** (sauvegarde patchée à la poulie, room 49,
+`41472,2816,29500`) : après 3 pressions d’Action, la poulie passe
+`status=1→0`, le socle `HIGH_OBJECT1` monte de `y=2304` à **`y=1536`**
+(3 × 256) et la gemme `PUZZLE_ITEM4_COMBO2` suit de `y=1792` à
+**`y=976`** (`socle - 560`). L’ensemble poulie → trigger → socle
+fonctionne donc de bout en bout.
+
+Build `build-gameplay59` : SHA256
+`a8a0915e1921d45d7a0247801243e3834fe5bdcd7e37936ce029eaef6f2a9769`,
+**4177 tests PASS**.

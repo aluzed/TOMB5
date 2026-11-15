@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum socle montant + poulie: port de InitialiseRaisingPlinth et ControlRaisingPlinth (GAME/TRAPS.C, sources init.cpp:1149 et andrea.cpp:480) avec correspondances IFL_TRIGGERED-&gt;IFLAG_TRIGGERED, IFL_CODEBITS-&gt;IFLAG_ACTIVATION_MASK, IFL_CLEARBODY 0x8000-&gt;IFLAG_KILLED; port de InitialisePulley (init.cpp:444); objects[HIGH_OBJECT1] initialise/control/collision=ObjectCollision/save_position/save_flags; objects[PULLEY] InitialisePulley/SwitchControl/PulleyCollision/save_flags/save_anim. Validation runtime (save patchee a la poulie room49 41472,2816,29500): apres 3 pressions Action, poulie status 1-&gt;0, socle HIGH_OBJECT1 monte de y=2304 a y=1536 (3x256) et gemme PUZZLE_ITEM4_COMBO2 suit de y=1792 a y=976 (socle-560). Chaine poulie-&gt;trigger-&gt;socle validee de bout en bout. Build-gameplay59 SHA256 a8a0915e1921d45d7a0247801243e3834fe5bdcd7e37936ce029eaef6f2a9769, 4177 tests PASS. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-15
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-15T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum corde cote objet: port dans GAME/ROPE.C de CreateRope, InitialiseRope, GetRopePos, mDotProduct, vMul, mCrossProduct, phd_GetMatrixAngles, ModelRigidRope, ModelRigid, SetPendulumPoint, CalculateRope, RopeNodeCollision, AlignLaraToRope, RopeCollision, RopeControl, init_all_ropes (source TOMB5pc game/rope.cpp). RopeList-&gt;Ropes, phd_PushUnitMatrix/RotYXZ/PopMatrix-&gt;mPushUnitMatrix/mRotYXZ/mPopMatrix, phd_sin/cos-&gt;SIN/COS (echelle 4096 + W2V_SHIFT 12), phd_sqrt-&gt;phd_sqrt_asm, phd_atan-&gt;phd_atan_asm. Integration: objects[ROPE] initialise/control/collision, using_drawanimating_item=FALSE, save_flags=TRUE; init_all_ropes() au debut de PortSetupGameplayObjects; DelAlignLaraToRope (LARAMISC.C) appelle AlignLaraToRope. Build-gameplay59 SHA256 047825bd33bf22615b2b6059c0755773ce03b21b7fcbee37842707861f6d6e3d, 4177 tests PASS. Non porte: rendu DrawRopeList/ProjectRopePoints car ROPE_STRUCT PSX n&#x27;a pas Coords[24][3]; physique/controle en place mais corde invisible. Decouverte annexe: HIGH_OBJECT1 (socle montant, gemme Colosseum) n&#x27;a ni initialise ni control dans PortSetupGameplayObjects; InitialiseRaisingPlinth/ControlRaisingPlinth non portes. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

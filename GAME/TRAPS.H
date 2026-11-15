@@ -10,6 +10,9 @@ extern short SPxzoffs[8];
 
 extern void ControlExplosion(short item_number);
 extern void ControlRaisingBlock(short item_number);
+extern void InitialiseRaisingPlinth(short item_number);
+extern void InitialisePulley(short item_number);
+extern void ControlRaisingPlinth(short item_number);
 extern void InitialiseRaisingCog(short item_number);
 extern void ControlRaisingCog(short item_number);
 extern void ControlScaledSpike(short item_number);

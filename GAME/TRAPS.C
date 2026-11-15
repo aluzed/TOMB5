@@ -989,3 +989,186 @@ void ControlExplosion(short item_number)//5C8BC, 5CD38
 	UNIMPLEMENTED();
 	return;
 }
+
+/* Portés depuis TOMB5pc/game/andrea.cpp:480 (ControlRaisingPlinth)
+ * et init.cpp:1149 (InitialiseRaisingPlinth). Les IFL_* PC sont les
+ * IFLAG_* du port ; IFL_CLEARBODY (0x8000) = IFLAG_KILLED. */
+void ControlRaisingPlinth(short item_number)
+{
+	struct ITEM_INFO* item;
+	struct ITEM_INFO* item2;
+	short item_number2, vol;
+
+	item = &items[item_number];
+
+	if (!TriggerActive(item))
+	{
+		if (item->item_flags[0] == 4)
+		{
+			item->item_flags[1]--;
+
+			if (!item->item_flags[1])
+			{
+				item2 = &items[item->item_flags[3] & 0xFF];
+				item2->flags = (item2->flags & ~IFLAG_ACTIVATION_MASK) | IFLAG_TRIGGERED;
+				item->item_flags[0] = 6;
+				item->item_flags[1] = 768;
+				TestTriggersAtXYZ(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, item->room_number, 1, 0);
+			}
+		}
+		else if (item->item_flags[0] == 6)
+		{
+			item->item_flags[1] -= 8;
+			vol = item->item_flags[1];
+
+			if (item->item_flags[1] >= 0)
+			{
+				if (item->item_flags[1] < 256)
+					vol = vol >> 3;
+				else
+				{
+					if (item->item_flags[1] < 513)
+						vol = 31;
+					else
+						vol = (768 - vol) >> 3;
+				}
+
+				SoundEffect(SFX_BLK_PLAT_RAISE_LOW, &item->pos, (vol << 8) | SFX_SETVOL);
+				item->pos.y_pos += 8;
+				item2 = &items[item->item_flags[3] >> 8];
+				item2->flags |= IFLAG_TRIGGERED;
+				item2->pos.y_pos = item->pos.y_pos - 560;
+			}
+			else if (item->item_flags[1] < -60)
+			{
+				item2 = &items[item->item_flags[2] & 0xFF];
+				item2->item_flags[1] = 0;
+				item2->flags |= IFLAG_TRIGGERED;
+				item->item_flags[0] = 0;
+				item->item_flags[1] = 0;
+				RemoveActiveItem(item_number);
+				item->flags &= ~IFLAG_ACTIVATION_MASK;
+				item->status = 0;
+			}
+		}
+	}
+	else if (item->item_flags[0] < 3)
+	{
+		vol = item->item_flags[1];
+
+		if (vol < 256)
+		{
+			if (vol > 30)
+			{
+				if (vol < 225)
+					vol = 31;
+				else
+					vol = 255 - vol;
+			}
+
+			SoundEffect(SFX_BLK_PLAT_RAISE_LOW, &item->pos, (vol << 8) | SFX_SETVOL);
+			item->item_flags[1] += 16;
+			item->pos.y_pos -= 16;
+			item2 = &items[item->item_flags[3] >> 8];
+			item2->flags |= IFLAG_TRIGGERED;
+			item2->pos.y_pos = item->pos.y_pos - 560;
+		}
+		else
+		{
+			item->item_flags[1] = 0;
+			item->item_flags[0]++;
+
+			if (item->item_flags[0] == 3)
+			{
+				item->item_flags[1] = item->trigger_flags * 0x1E;
+				item->item_flags[0] = 4;
+				item_number2 = item->item_flags[3] & 0xFF;
+				item2 = &items[item_number2];
+				AddActiveItem(item_number2);
+				item2->flags |= (IFLAG_ACTIVATION_MASK | IFLAG_TRIGGERED);
+				item2->status = 1;
+				item2 = &items[item->item_flags[2] & 0xFF];
+				item2->item_flags[1] = 1;
+				item2->flags |= IFLAG_TRIGGERED;
+				item->flags &= ~IFLAG_ACTIVATION_MASK;
+			}
+			else
+			{
+				RemoveActiveItem(item_number);
+				item->flags &= ~IFLAG_ACTIVATION_MASK;
+				item->status = 0;
+			}
+		}
+	}
+	else if (item->item_flags[0] == 4)
+	{
+		item->item_flags[0] = 5;
+		item->item_flags[1] = 0;
+	}
+	else if (item->item_flags[0] == 5 && !item->item_flags[1] && (items[item->item_flags[3] >> 8].flags & IFLAG_KILLED) != 0)
+	{
+		FlipMap(3);
+		flipmap[3] ^= IFLAG_ACTIVATION_MASK;
+		item->item_flags[1] = 1;
+	}
+}
+
+void InitialiseRaisingPlinth(short item_number)
+{
+	struct ITEM_INFO* item;
+	struct ITEM_INFO* item2;
+	long x, y, z;
+	int i;
+
+	x = 0;
+	y = 0;
+	z = 0;
+
+	item = &items[item_number];
+
+	for (i = 0; i < level_items; i++)
+	{
+		item2 = &items[i];
+
+		if (item2->object_number == TRIGGER_TRIGGERER)
+		{
+			if (item2->trigger_flags == 111)
+				item->item_flags[3] |= i & 0xFF;
+			else if (item2->trigger_flags == 112)
+			{
+				x = item2->pos.x_pos;
+				y = item2->pos.y_pos;
+				z = item2->pos.z_pos;
+			}
+		}
+		else if (item2->object_number == PUZZLE_ITEM4_COMBO2)
+		{
+			item->item_flags[3] |= (i & 0xFF) << 8;
+			item2->pos.y_pos = item->pos.y_pos - 512;
+		}
+	}
+
+	for (i = 0; i < level_items; i++)
+	{
+		item2 = &items[i];
+
+		if (item2->object_number == PULLEY && item2->pos.x_pos == x && item2->pos.y_pos == y && item2->pos.z_pos == z)
+		{
+			item->item_flags[2] |= i & 0xFF;
+			return;
+		}
+	}
+}
+
+/* Porté depuis TOMB5pc/game/init.cpp:444 (InitialisePulley). */
+void InitialisePulley(short item_number)
+{
+	struct ITEM_INFO* item;
+
+	item = &items[item_number];
+	item->item_flags[3] = item->trigger_flags;
+	item->trigger_flags = abs(item->trigger_flags);
+
+	if (item_number == GlobalPulleyFrigItem)
+		item->item_flags[1] = 1;
+}

@@ -1056,7 +1056,11 @@ static void PortSetupGameplayObjects(void)
 		}
 		else if (i == PULLEY)
 		{
+			objects[i].initialise = &InitialisePulley;
+			objects[i].control = &SwitchControl;
 			objects[i].collision = &PulleyCollision;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
 		}
 		else if (i == ROPE)
 		{
@@ -1077,6 +1081,15 @@ static void PortSetupGameplayObjects(void)
 			objects[i].save_position = TRUE;
 			objects[i].save_flags = TRUE;
 			objects[i].save_anim = TRUE;
+		}
+		else if (i == HIGH_OBJECT1)
+		{
+			/* Socle qui monte (gemme du Colosseum). */
+			objects[i].initialise = &InitialiseRaisingPlinth;
+			objects[i].control = &ControlRaisingPlinth;
+			objects[i].collision = &ObjectCollision;
+			objects[i].save_position = TRUE;
+			objects[i].save_flags = TRUE;
 		}
 		else if (i == TRIGGER_TRIGGERER)
 		{
