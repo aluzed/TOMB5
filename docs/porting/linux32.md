@@ -2799,3 +2799,37 @@ Validation : **4177 tests PASS**, corniche 200 frames sans crash.
 
 Build `build-gameplay59` : SHA256
 `2babbc6898792b180ffedff44a88267078175e3348c07d638f8e15627b32a95c`.
+
+### Pistolets réels + correction `ObjectOnLOS2` (16 novembre 2026)
+
+#### `PistolHandler`
+`GAME/LARA2GUN.C` : le `PistolHandler` simplifié (recherche d’item +
+`HitTarget`) est remplacé par celui de `lara2gun.cpp` :
+- `LaraGetNewTarget`, `LaraTargetInfo`, `AimWeapon` des deux bras ;
+- gestion torse/tête selon les locks ;
+- **`AnimatePistols(weapon_type)`** (donc `FireWeapon` réel) ;
+- flash de lumière dynamique aux mains (`GetLaraJointPos`,
+  `TriggerDynamic`).
+
+Le pipeline complet `LaraGun → PistolHandler → AnimatePistols →
+FireWeapon → GetTargetOnLOS → dégâts` est désormais actif.
+
+#### `ObjectOnLOS2` : boucle infinie
+`SPEC_PSXPC_N/GETSTUFF.C` : la boucle sur les items d’une room faisait
+`item = &items[r->item_number]; item_num = item->next_item;` à chaque
+itération, ce qui la figeait sur le deuxième item
+(`while (item->next_item != -1)`). Depuis que `GetTargetOnLOS` l’appelle
+réellement, cela bloquait le jeu au premier tir.
+Corrigé en `item_num = item->next_item; while (item_num != -1);`.
+
+#### Validation runtime
+Statue ROMAN_GOD (`obj 61`, item 79) en room 90, Lara équipée des
+pistolets, cible verrouillée (`lara.target = 79`) :
+- `AnimatePistols`/`FireWeapon` tirent réellement ;
+- **PV de la statue : 300 → 276 → 192 → 90** en quelques rafales ;
+- aucun crash/hang.
+
+**4177 tests PASS**, corniche 200 frames OK.
+
+Build `build-gameplay59` : SHA256
+`3f4aafa8109a786725285338666ff0b220f1460f45b73dc3a1daf12cebfb35b6`.

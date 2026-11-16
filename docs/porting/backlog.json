@@ -2044,6 +2044,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum combat: port de GetTargetOnLOS (GAME/CONTROL.C) depuis control.cpp - LOS + ObjectOnLOS2, collision, shatter des meshes destructibles, ricochets, degats HitTarget, objets smashables, switchs explosifs SWITCH_TYPE7/8 (GetSwitchTrigger, ProcessExplodingSwitchType8), crossbow/laser, meshes statiques (ShatterObject, SmashedMesh). Adaptations: ITEM_INFO/MESH_INFO/GAME_VECTOR/PHD_VECTOR qualifies struct, phd_atan->phd_atan_asm, IFL_SWITCH_ONESHOT->IFLAG_UNK40, IFL_CODEBITS->IFLAG_ACTIVATION_MASK, GF_OFFICE->GF_LVOP_TRAIN, include LARAFIRE.H pour weapons/HitTarget. Validation: 4177 tests PASS, corniche 200 frames sans crash. Build-gameplay59 SHA256 2babbc6898792b180ffedff44a88267078175e3348c07d638f8e15627b32a95c. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum combat complet: PistolHandler (GAME/LARA2GUN.C) remplace la version simplifiee par celle de lara2gun.cpp (LaraGetNewTarget, LaraTargetInfo, AimWeapon des deux bras, torse/tete selon locks, AnimatePistols(weapon_type) donc FireWeapon reel, flash dynamique aux mains via GetLaraJointPos/TriggerDynamic). Pipeline complet LaraGun->PistolHandler->AnimatePistols->FireWeapon->GetTargetOnLOS->degats actif. Correction critique ObjectOnLOS2 (SPEC_PSXPC_N/GETSTUFF.C): la boucle items faisait item=&items[r->item_number]; item_num=item->next_item a chaque iteration, la figeant sur le 2e item (while item->next_item != -1); depuis que GetTargetOnLOS l'appelle, cela bloquait le jeu au premier tir; corrige en item_num=item->next_item; while(item_num != -1). Validation runtime: statue ROMAN_GOD obj61 item79 room90, Lara pistolets, cible 79; AnimatePistols/FireWeapon tirent, PV statue 300->276->192->90, aucun crash/hang. 4177 tests PASS, corniche 200 frames OK. Build-gameplay59 SHA256 3f4aafa8109a786725285338666ff0b220f1460f45b73dc3a1daf12cebfb35b6. Aucun Done global."
     }
   ]
 }

@@ -21,6 +21,8 @@
 #include "SAVEGAME.H"
 #include "FXTRIG.H"
 #include "CALCLARA.H"
+#include "MISC.H"
+#include "CAMERA.H"
 #include "EFFECT2.H"
 
 static struct PISTOL_DEF PistolTable[4] =
@@ -293,149 +295,75 @@ static void PortHitSwitch78(struct ITEM_INFO* target)
 	SoundEffect(SFX_BELL, &target->pos, SFX_DEFAULT);
 }
 
+/* Porté depuis TOMB5pc/game/lara2gun.cpp (PistolHandler). */
 void PistolHandler(int weapon_type)
 {
-	static int cooldown = 0;
-	struct ITEM_INFO* target = NULL;
-	long long best_distance = 0x7FFFFFFFLL;
-	int i;
+	struct WEAPON_INFO* winfo;
+	struct PHD_VECTOR pos;
+	long r, g, b;
 
-	if (cooldown > 0)
+	winfo = &weapons[weapon_type];
+	LaraGetNewTarget(winfo);
+
+	if (input & IN_ACTION)
+		LaraTargetInfo(winfo);
+
+	AimWeapon(winfo, &lara.left_arm);
+	AimWeapon(winfo, &lara.right_arm);
+
+	if (lara.left_arm.lock && lara.right_arm.lock)
 	{
-		cooldown--;
-		return;
+		lara.torso_y_rot = (lara.left_arm.y_rot + lara.right_arm.y_rot) >> 2;
+		lara.torso_x_rot = (lara.left_arm.x_rot + lara.right_arm.x_rot) >> 2;
+
+		if (camera.old_type != LOOK_CAMERA)
+		{
+			lara.head_y_rot = lara.torso_y_rot;
+			lara.head_x_rot = lara.torso_x_rot;
+		}
 	}
-
-	if (!(input & IN_ACTION))
+	else if (lara.left_arm.lock && !lara.right_arm.lock)
 	{
-		return;
+		lara.torso_y_rot = lara.left_arm.y_rot >> 1;
+		lara.torso_x_rot = lara.left_arm.x_rot >> 1;
+
+		if (camera.old_type != LOOK_CAMERA)
+		{
+			lara.head_y_rot = lara.torso_y_rot;
+			lara.head_x_rot = lara.torso_x_rot;
+		}
 	}
-
-	if (weapon_type != WEAPON_PISTOLS)
+	else if (!lara.left_arm.lock && lara.right_arm.lock)
 	{
-		short* ammo = get_current_ammo_pointer(weapon_type);
+		lara.torso_y_rot = lara.right_arm.y_rot >> 1;
+		lara.torso_x_rot = lara.right_arm.x_rot >> 1;
 
-		if (ammo == NULL || *ammo <= 0)
+		if (camera.old_type != LOOK_CAMERA)
 		{
-			lara.request_gun_type = WEAPON_PISTOLS;
-			return;
-		}
-
-		(*ammo)--;
-	}
-
-	for (i = 0; i < level_items; i++)
-	{
-		struct ITEM_INFO* item = &items[i];
-		long dx;
-		long dz;
-		long long distance;
-		long angle;
-		long diff;
-
-		if (item == lara_item || item->hit_points <= 0 ||
-			item->status == ITEM_INVISIBLE ||
-			!objects[item->object_number].intelligent)
-		{
-			continue;
-		}
-
-		dx = item->pos.x_pos - lara_item->pos.x_pos;
-		dz = item->pos.z_pos - lara_item->pos.z_pos;
-		distance = dx * dx + dz * dz;
-
-		if (distance > (long long)weapons[weapon_type].target_dist * weapons[weapon_type].target_dist)
-		{
-			continue;
-		}
-
-		angle = phd_atan_asm(dx, dz);
-		diff = angle - lara_item->pos.y_rot;
-
-		while (diff > 32768) diff -= 65536;
-		while (diff < -32768) diff += 65536;
-
-		if (ABS(diff) > 10920 || distance >= best_distance)
-		{
-			continue;
-		}
-
-		best_distance = distance;
-		target = item;
-	}
-
-	if (target == NULL)
-	{
-		for (i = 0; i < level_items; i++)
-		{
-			struct ITEM_INFO* item = &items[i];
-			long dx;
-			long dz;
-			long long distance;
-			long angle;
-			long diff;
-
-			if (item == lara_item ||
-				(item->object_number != SWITCH_TYPE7 && item->object_number != SWITCH_TYPE8) ||
-				item->status == ITEM_INVISIBLE)
-			{
-				continue;
-			}
-
-			dx = item->pos.x_pos - lara_item->pos.x_pos;
-			dz = item->pos.z_pos - lara_item->pos.z_pos;
-			distance = dx * dx + dz * dz;
-
-			if (distance > (long long)weapons[weapon_type].target_dist * weapons[weapon_type].target_dist)
-			{
-				continue;
-			}
-
-			angle = phd_atan_asm(dx, dz);
-			diff = angle - lara_item->pos.y_rot;
-
-			while (diff > 32768) diff -= 65536;
-			while (diff < -32768) diff += 65536;
-
-			if (ABS(diff) > 10920 || distance >= best_distance)
-			{
-				continue;
-			}
-
-			best_distance = distance;
-			target = item;
-		}
-
-		if (target != NULL && ABS(target->pos.y_pos - lara_item->pos.y_pos) > 6144)
-		{
-			target = NULL;
+			lara.head_y_rot = lara.torso_y_rot;
+			lara.head_x_rot = lara.torso_x_rot;
 		}
 	}
 
-	lara.has_fired = 1;
-	lara.Fired = 1;
-	lara.right_arm.flash_gun = weapons[weapon_type].flash_time;
-	lara.left_arm.flash_gun = weapons[weapon_type].flash_time;
-	SoundEffect(SFX_LARA_FIRE, &lara_item->pos, SFX_DEFAULT);
+	AnimatePistols(weapon_type);
 
-	if (target != NULL)
+	if (lara.left_arm.flash_gun || lara.right_arm.flash_gun)
 	{
-		if (target->object_number == SWITCH_TYPE7 || target->object_number == SWITCH_TYPE8)
-		{
-			PortHitSwitch78(target);
-		}
+		pos.x = (GetRandomControl() & 0xFF) - 128;
+		pos.y = (GetRandomControl() & 0x7F) - 63;
+		pos.z = (GetRandomControl() & 0xFF) - 128;
+
+		if (lara.left_arm.flash_gun)
+			GetLaraJointPos(&pos, LJ_RHAND);
 		else
-		{
-			HitTarget(target, NULL, weapons[weapon_type].damage, 0);
+			GetLaraJointPos(&pos, LJ_LHAND);
 
-			if (target->hit_points <= 0)
-			{
-				CreatureDie((short)(target - items), 0);
-			}
-		}
+		r = (GetRandomControl() & 0x3F) + 192;
+		g = (GetRandomControl() & 0x1F) + 128;
+		b = GetRandomControl() & 0x3F;
+
+		TriggerDynamic(pos.x, pos.y, pos.z, 10, r, g, b);
 	}
-
-	cooldown = weapons[weapon_type].recoil_frame != 0 ? weapons[weapon_type].recoil_frame : 6;
 }
 
 void undraw_pistol_mesh_right(int weapon_type)//44968(<), 44DCC(<) (F)

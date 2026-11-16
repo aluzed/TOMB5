@@ -1083,10 +1083,8 @@ int ObjectOnLOS2(struct GAME_VECTOR* start, struct GAME_VECTOR* target, struct P
 						//loc_79EA8
 					}
 					//loc_79EA8
-					//v1 = items
-					item = &items[r->item_number];//$v0
 					item_num = item->next_item;
-				} while (item->next_item != -1);
+				} while (item_num != -1);
 			}
 			//loc_79ECC
 			j = r->num_meshes;
