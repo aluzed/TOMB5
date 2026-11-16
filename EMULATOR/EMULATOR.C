@@ -2985,7 +2985,12 @@ void Emulator_UpdateInput()
 
 				padData[i][0] = 0;
 				padData[i][1] = 0x41;//?
-				((unsigned short*)padData[i])[1] = kbInputs & controllerInputs;
+				/* Les deux masques sont actifs au niveau bas (0xFFFF = rien).
+				 * Un ET exigeait le meme bouton sur le clavier ET la
+				 * manette : avec une manette branchee, ni l'un ni l'autre
+				 * ne produisait d'entree. Un OU rend les deux sources
+				 * utilisables simultanement. */
+				((unsigned short*)padData[i])[1] = (unsigned short)(kbInputs | controllerInputs);
 			}
 		}
 	}
@@ -3026,7 +3031,12 @@ void Emulator_UpdateInputDebug()
 
 				padData[i][0] = 0;
 				padData[i][1] = 0x41;//?
-				((unsigned short*)padData[i])[1] = kbInputs & controllerInputs;
+				/* Les deux masques sont actifs au niveau bas (0xFFFF = rien).
+				 * Un ET exigeait le meme bouton sur le clavier ET la
+				 * manette : avec une manette branchee, ni l'un ni l'autre
+				 * ne produisait d'entree. Un OU rend les deux sources
+				 * utilisables simultanement. */
+				((unsigned short*)padData[i])[1] = (unsigned short)(kbInputs | controllerInputs);
 			}
 		}
 	}

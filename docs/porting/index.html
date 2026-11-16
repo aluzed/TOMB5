@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
 
+Correctif racine des entrees: Emulator_UpdateInput (et Emulator_UpdateInputDebug) fusionnait clavier et manette avec un ET: &#x27;((unsigned short*)padData[i])[1] = kbInputs &amp; controllerInputs&#x27;. Les deux masques etant actifs au niveau bas (0xFFFF = rien), un ET exige le meme bouton sur le clavier ET sur la manette; des qu&#x27;une manette est presente (SDL_NumJoysticks()&gt;0, cas de vpad) aucune des deux sources ne produit d&#x27;entree: symptome inputBusy=0 avec PadConnected=1 et Lara figee malgre les touches. Corrige en OU sur les deux chemins. Validation runtime (sauvegarde corniche, clavier xdotool): inputBusy passe de 0x0 a 0x1 (avant) puis 0x4 (gauche, state=20 TURN_FAST) et Lara se deplace (43364 -&gt; 43109). Le pad virtuel vpad reste sans effet (RawPad=0), chemin separe non resolu, mais le clavier suffit au debug manuel. Regression verrouillee par tests/porting/test_input_merge.py. Note build: les objets emulateur sont dans l&#x27;archive statique build/.../EMULATOR/libPSX.a; apres modification de EMULATOR/EMULATOR.C il faut make -C build/porting/build-gameplay59/build/EMULATOR puis relancer sh CMakeFiles/TombRaiderChronicles_PSXPC_N.dir/link.txt avec LIBRARY_PATH 32 bits. Build-gameplay59 SHA256 9d152a50622831050b5db6a0fb339ff4762db53832f9fdfa300efba435d92a8a. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-16
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum, salle 8 traversee mesuree: avec input force (IN_FORWARD/IN_JUMP) depuis une sauvegarde patchee en 43520,768,51712 room 12 (Lara apparait dans la salle 8 a y=256 sur les CRUMBLING_FLOOR), la plateforme de dalles est traversable d&#x27;est en ouest de x=43520 a x=40037 a y=256 constant sans chute ni blocage (donc les CRUMBLING_FLOOR et le pont ANIMATING15_MIP de la cellule (4,2) portent bien Lara). A l&#x27;ouest la marche s&#x27;arrete a x=40037 (bord de la derniere dalle); un saut vertical a cet endroit ne progresse pas en x (speed=2) et fait tomber dans le puits: room 26 (y=3141, fall=147) puis room 14 (y=6144, state=8), chute d&#x27;environ 6000 unites donc mortelle. Le saut simple n&#x27;est donc pas la sortie. Piste restante: saut avec elan (garder IN_FORWARD pendant l&#x27;appui) depuis x~40500 pour couvrir les ~100 unites manquantes et retomber sur la cellule (0,2) (x 38912..39936, sol 0), ou acces par la salle 92 cote est. Note: la sauvegarde corniche contient room=0 (et non 12) avec 43364,768,52325 et y_rot=-16384; GetFloor retablit room 12 au chargement. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

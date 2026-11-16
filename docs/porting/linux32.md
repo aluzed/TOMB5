@@ -3158,3 +3158,44 @@ Piste restante pour la sortie ouest : un **saut avec élan** (garder
 `IN_FORWARD` pendant l'appui, pas un saut sur place) depuis `x≈40500` pour
 couvrir les ~100 unités qui manquent et retomber sur la cellule `(0,2)`
 (`x=38912..39936`, sol 0), ou l'accès par la salle 92 côté est.
+
+### Correctif racine : entrées clavier + manette (`EMULATOR/EMULATOR.C`)
+
+`Emulator_UpdateInput` (et sa variante debug) fusionnait les deux sources
+avec un **ET** :
+
+```c
+((unsigned short*)padData[i])[1] = kbInputs & controllerInputs;
+```
+
+Or `kbInputs` et `controllerInputs` sont des masques **actifs au niveau
+bas** (`0xFFFF` = rien appuyé). Un ET exige donc le *même* bouton enfoncé
+sur le clavier **et** sur la manette. Dès qu'une manette est présente
+(`SDL_NumJoysticks() > 0`, ce qui est le cas avec `vpad`), **aucune** des
+deux sources ne produit d'entrée : c'est exactement le symptôme observé
+(`inputBusy = 0` alors que `PadConnected = 1`, Lara figée malgré les
+touches).
+
+Corrigé en OU, sur les deux chemins :
+
+```c
+((unsigned short*)padData[i])[1] = (unsigned short)(kbInputs | controllerInputs);
+```
+
+Validation runtime (sauvegarde corniche, clavier via `xdotool`) :
+`inputBusy` passe de `0x0` à `0x1` (avant) puis `0x4` (gauche, `state=20`
+TURN_FAST) et Lara se déplace (`43364 → 43109`). Le pad virtuel `vpad`
+reste, lui, sans effet (`RawPad = 0`) : ce chemin séparé n'est pas résolu,
+mais le clavier suffit désormais au debug manuel.
+
+Régression verrouillée par `tests/porting/test_input_merge.py` (le bug ne
+se voit ni à la compilation ni dans les tests fonctionnels).
+
+Note de build : les objets de l'émulateur sont dans l'archive statique
+`build/.../EMULATOR/libPSX.a` ; après modification de
+`EMULATOR/EMULATOR.C` il faut `make -C build/porting/build-gameplay59/build/EMULATOR`
+puis relancer `sh CMakeFiles/TombRaiderChronicles_PSXPC_N.dir/link.txt`
+(avec `LIBRARY_PATH` 32 bits, sinon `libstdc++.so` 64 bits casse le lien).
+
+Build `build-gameplay59` : SHA256
+`9d152a50622831050b5db6a0fb339ff4762db53832f9fdfa300efba435d92a8a`.
