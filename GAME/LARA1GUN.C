@@ -1,4 +1,8 @@
 #include "LARA1GUN.H"
+#include "GAMEFLOW.H"
+#include "LARA2GUN.H"
+#include "PSXINPUT.H"
+#include "CAMERA.H"
 
 #include "BOX.H"
 #include "CONTROL.H"
@@ -124,9 +128,206 @@ void DoGrenadeDamageOnBaddie(struct ITEM_INFO* baddie, struct ITEM_INFO* item)//
 	}//loc_44128
 }
 
+/* Porté depuis TOMB5pc/game/lara1gun.cpp (AnimateShotgun). */
 void AnimateShotgun(int weapon_type)
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item;
+	struct PHD_VECTOR pos;
+	static long m16_firing;
+	long running;
+
+	if (HKTimer)
+	{
+		m16_firing = 0;
+		HKTimer--;
+	}
+
+	if (SmokeCountL)
+	{
+		if (SmokeWeapon == WEAPON_HK)
+		{
+			pos.x = 0;
+			pos.y = 228;
+			pos.z = 96;
+		}
+		else if (SmokeWeapon == WEAPON_SHOTGUN)
+		{
+			pos.x = -16;
+			pos.y = 228;
+			pos.z = 32;
+		}
+
+		GetLaraJointPos(&pos, LJ_RHAND);
+
+		if (lara_item->mesh_bits)
+			TriggerGunSmoke(pos.x, pos.y, pos.z, 0, 0, 0, 0, SmokeWeapon, SmokeCountL);
+	}
+
+	item = &items[lara.weapon_item];
+
+	if (weapon_type == WEAPON_HK && lara_item->speed)
+		running = 1;
+	else
+		running = 0;
+
+	switch (item->current_anim_state)
+	{
+	case 0:
+		m16_firing = 0;
+		HKTimer = 0;
+		HKShotsFired = 0;
+
+		if (lara.water_status == LW_UNDERWATER || running)
+			item->goal_anim_state = 6;
+		else if (input & IN_ACTION && !lara.target || lara.left_arm.lock)
+			item->goal_anim_state = 2;
+		else
+			item->goal_anim_state = 4;
+
+		break;
+
+	case 2:
+
+		if (item->frame_number == anims[item->anim_number].frame_base)
+		{
+			item->goal_anim_state = 4;
+
+			if (lara.water_status != LW_UNDERWATER && !running)
+			{
+				if (input & IN_ACTION && (!lara.target || lara.left_arm.lock))
+				{
+					if (weapon_type == WEAPON_CROSSBOW)
+					{
+						FireCrossbow(0);
+						item->goal_anim_state = 2;
+					}
+					else if (weapon_type == WEAPON_HK)
+					{
+						if ((lara.hk_type_carried & (WTYPE_AMMO_1 | WTYPE_AMMO_2)) && HKTimer)
+							item->goal_anim_state = 0;
+						else
+						{
+							FireHK(0);
+							m16_firing = 1;
+							item->goal_anim_state = 2;
+
+							if (lara.hk_type_carried & WTYPE_SILENCER)
+								SoundEffect(SFX_HK_SILENCED, 0, SFX_DEFAULT);
+							else
+							{
+								SoundEffect(SFX_EXPLOSION1, &lara_item->pos, 0x5000800 | SFX_SETPITCH | SFX_SETVOL);
+								SoundEffect(SFX_HK_FIRE, &lara_item->pos, SFX_DEFAULT);
+							}
+						}
+					}
+					else
+					{
+						FireShotgun();
+						item->goal_anim_state = 2;
+					}
+				}
+				else if (lara.left_arm.lock)
+					item->goal_anim_state = 0;
+			}
+
+			if (item->goal_anim_state != 2 && m16_firing && !(lara.hk_type_carried & WTYPE_SILENCER))
+			{
+				StopSoundEffect(SFX_HK_FIRE);
+				SoundEffect(SFX_HK_STOP, &lara_item->pos, SFX_DEFAULT);
+				m16_firing = 0;
+			}
+		}
+		else if (m16_firing)
+		{
+			if (lara.hk_type_carried & WTYPE_SILENCER)
+				SoundEffect(SFX_HK_SILENCED, 0, SFX_DEFAULT);
+			else
+			{
+				SoundEffect(SFX_EXPLOSION1, &lara_item->pos, 0x5000800 | SFX_SETPITCH | SFX_SETVOL);
+				SoundEffect(SFX_HK_FIRE, &lara_item->pos, SFX_DEFAULT);
+			}
+		}
+		else if (weapon_type == WEAPON_SHOTGUN && !(input & IN_ACTION) && !lara.left_arm.lock)
+			item->goal_anim_state = 4;
+
+		if (item->frame_number - anims[item->anim_number].frame_base == 12 && weapon_type == WEAPON_SHOTGUN)
+			TriggerGunShell(1, SHOTGUNSHELL, WEAPON_SHOTGUN);
+
+		break;
+
+	case 6:
+		m16_firing = 0;
+		HKTimer = 0;
+		HKShotsFired = 0;
+
+		if (lara.water_status != LW_UNDERWATER && !running)
+			item->goal_anim_state = 0;
+		else if (input & IN_ACTION && !lara.target || lara.left_arm.lock)
+			item->goal_anim_state = 8;
+		else
+			item->goal_anim_state = 7;
+
+		break;
+
+	case 8:
+
+		if (item->frame_number == anims[item->anim_number].frame_base)
+		{
+			item->goal_anim_state = 7;
+
+			if (running)
+			{
+				if (input & IN_ACTION && (!lara.target || lara.left_arm.lock))
+				{
+					if ((lara.hk_type_carried & (WTYPE_AMMO_1 | WTYPE_AMMO_2)) && HKTimer)
+						item->goal_anim_state = 6;
+					else
+					{
+						FireHK(1);
+						m16_firing = 1;
+						item->goal_anim_state = 8;
+
+						if (lara.hk_type_carried & WTYPE_SILENCER)
+							SoundEffect(SFX_HK_SILENCED, 0, SFX_DEFAULT);
+						else
+						{
+							SoundEffect(SFX_EXPLOSION1, &lara_item->pos, 0x5000800 | SFX_SETPITCH | SFX_SETVOL);
+							SoundEffect(SFX_HK_FIRE, &lara_item->pos, SFX_DEFAULT);
+						}
+					}
+				}
+				else if (lara.left_arm.lock)
+					item->goal_anim_state = 6;
+			}
+
+			if (item->goal_anim_state != 8 && m16_firing && !(lara.hk_type_carried & WTYPE_SILENCER))
+			{
+				StopSoundEffect(SFX_HK_FIRE);
+				SoundEffect(SFX_HK_STOP, &lara_item->pos, SFX_DEFAULT);
+				m16_firing = 0;
+			}
+		}
+		else if (m16_firing)
+		{
+			if (lara.hk_type_carried & WTYPE_SILENCER)
+				SoundEffect(SFX_HK_SILENCED, 0, SFX_DEFAULT);
+			else
+			{
+				SoundEffect(SFX_EXPLOSION1, &lara_item->pos, 0x5000800 | SFX_SETPITCH | SFX_SETVOL);
+				SoundEffect(SFX_HK_FIRE, &lara_item->pos, SFX_DEFAULT);
+			}
+		}
+
+		break;
+	}
+
+	AnimateItem(item);
+	lara.right_arm.frame_base = anims[item->anim_number].frame_ptr;
+	lara.right_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
+	lara.right_arm.anim_number = item->anim_number;
+	lara.left_arm.frame_base = lara.right_arm.frame_base;
+	lara.left_arm.frame_number = lara.right_arm.frame_number;
+	lara.left_arm.anim_number = lara.right_arm.anim_number;
 }
 
 void undraw_shotgun(int weapon_type)//436B0(<), 43B14(<) (F)
@@ -432,9 +633,72 @@ void FireShotgun()//429F0(<), 42E44(<) (F)
 	}//loc_42C78
 }
 
+/* Porté depuis TOMB5pc/game/lara1gun.cpp (RifleHandler). */
 void RifleHandler(int weapon_type)
 {
-	UNIMPLEMENTED();
+	struct WEAPON_INFO* winfo;
+	struct PHD_VECTOR pos;
+	long r, g, b;
+
+	winfo = &weapons[weapon_type];
+
+	if (lara.gun_type != WEAPON_CROSSBOW || LaserSight)
+		LaraGetNewTarget(winfo);
+	else
+		lara.target = 0;
+
+	if (input & IN_ACTION)
+		LaraTargetInfo(winfo);
+
+	AimWeapon(winfo, &lara.left_arm);
+
+	if (lara.left_arm.lock)
+	{
+		lara.torso_x_rot = lara.left_arm.x_rot;
+		lara.torso_y_rot = lara.left_arm.y_rot;
+
+		if (camera.old_type != LOOK_CAMERA && !BinocularRange)
+		{
+			lara.head_y_rot = 0;
+			lara.head_x_rot = 0;
+		}
+	}
+
+	if (weapon_type == WEAPON_REVOLVER)
+		AnimatePistols(WEAPON_REVOLVER);
+	else
+		AnimateShotgun(weapon_type);
+
+	if (lara.right_arm.flash_gun)
+	{
+		r = (GetRandomControl() & 0x3F) + 192;
+		g = (GetRandomControl() & 0x1F) + 128;
+		b = GetRandomControl() & 0x3F;
+
+		if (weapon_type == WEAPON_SHOTGUN || weapon_type == WEAPON_HK)
+		{
+			pos.x = lara_item->pos.x_pos + (1024 * SIN(lara_item->pos.y_rot) >> W2V_SHIFT) + (GetRandomControl() & 0xFF);
+			pos.y = lara_item->pos.y_pos + ((GetRandomControl() & 0x7F) - 575);
+			pos.z = lara_item->pos.z_pos + (1024 * COS(lara_item->pos.y_rot) >> W2V_SHIFT) + (GetRandomControl() & 0xFF);
+
+			if (gfLevelFlags & GF_LVOP_MIRROR_USED && lara_item->room_number == gfMirrorRoom)
+				TriggerDynamic(pos.x, pos.y, pos.z, 12, r, g, b);
+			else
+				TriggerDynamic(pos.x, pos.y, pos.z, 12, r, g, b);
+		}
+		else if (weapon_type == WEAPON_REVOLVER)
+		{
+			pos.x = (GetRandomControl() & 0xFF) - 128;
+			pos.y = (GetRandomControl() & 0x7F) - 63;
+			pos.z = (GetRandomControl() & 0xFF) - 128;
+			GetLaraJointPos(&pos, LJ_RHAND);
+
+			if (gfLevelFlags & GF_LVOP_MIRROR_USED && lara_item->room_number == gfMirrorRoom)
+				TriggerDynamic(pos.x, pos.y, pos.z, 12, r, g, b);
+			else
+				TriggerDynamic(pos.x, pos.y, pos.z, 12, r, g, b);
+		}
+	}
 }
 
 void ready_shotgun(int weapon_type)//424E0(<), 42934(<) (F)

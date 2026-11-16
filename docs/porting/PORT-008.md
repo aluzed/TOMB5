@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum armes longues: port de RifleHandler et AnimateShotgun (GAME/LARA1GUN.C) depuis lara1gun.cpp. RifleHandler: LaraGetNewTarget (sauf crossbow sans laser), LaraTargetInfo, AimWeapon, torse/tete, AnimatePistols(WEAPON_REVOLVER) ou AnimateShotgun, flash dynamique (mains revolver, canon shotgun/HK). AnimateShotgun: fumee, etats 0/2/6/8, FireShotgun/FireHK/FireCrossbow, douilles shotgun, sons HK/silencieux, synchro frames de bras. Adaptations: W_SILENCER/W_AMMO1/W_AMMO2 -> WTYPE_SILENCER/WTYPE_AMMO_1/WTYPE_AMMO_2 (OBJECTS.H), LMX_HAND_R->LJ_RHAND, phd_sin/cos->SIN/COS, GF_MIRROR->GF_LVOP_MIRROR_USED, TriggerDynamic_MIRROR->TriggerDynamic, includes CAMERA.H/PSXINPUT.H/LARA2GUN.H/GAMEFLOW.H. Validation: 4177 tests PASS, corniche 200 frames OK. Test synthetique revolver sans draw normal declenche l'assertion DEL_CalcLaraMatrices_Interpolated_ASM (CALCLARA.C:1766) car frames bras/weapon_item non initialisees; a valider par la sequence reelle de sortie de l'arme. Build-gameplay59 SHA256 11db0025e7813856e032182d57a44a0c3bacd8b06ab9e7a0c7fc2ec1badb6f9b. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-16
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum combat complet: PistolHandler (GAME/LARA2GUN.C) remplace la version simplifiee par celle de lara2gun.cpp (LaraGetNewTarget, LaraTargetInfo, AimWeapon des deux bras, torse/tete selon locks, AnimatePistols(weapon_type) donc FireWeapon reel, flash dynamique aux mains via GetLaraJointPos/TriggerDynamic). Pipeline complet LaraGun->PistolHandler->AnimatePistols->FireWeapon->GetTargetOnLOS->degats actif. Correction critique ObjectOnLOS2 (SPEC_PSXPC_N/GETSTUFF.C): la boucle items faisait item=&items[r->item_number]; item_num=item->next_item a chaque iteration, la figeant sur le 2e item (while item->next_item != -1); depuis que GetTargetOnLOS l'appelle, cela bloquait le jeu au premier tir; corrige en item_num=item->next_item; while(item_num != -1). Validation runtime: statue ROMAN_GOD obj61 item79 room90, Lara pistolets, cible 79; AnimatePistols/FireWeapon tirent, PV statue 300->276->192->90, aucun crash/hang. 4177 tests PASS, corniche 200 frames OK. Build-gameplay59 SHA256 3f4aafa8109a786725285338666ff0b220f1460f45b73dc3a1daf12cebfb35b6. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

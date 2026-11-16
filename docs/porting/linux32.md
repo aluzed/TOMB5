@@ -2833,3 +2833,29 @@ pistolets, cible verrouillée (`lara.target = 79`) :
 
 Build `build-gameplay59` : SHA256
 `3f4aafa8109a786725285338666ff0b220f1460f45b73dc3a1daf12cebfb35b6`.
+
+### Armes longues : `RifleHandler` et `AnimateShotgun` (16 novembre 2026)
+
+`GAME/LARA1GUN.C` : les deux fonctions étaient des stubs.
+- `RifleHandler` est porté depuis `lara1gun.cpp` : `LaraGetNewTarget`
+  (sauf crossbow sans laser), `LaraTargetInfo`, `AimWeapon`, torse/tête,
+  puis `AnimatePistols(WEAPON_REVOLVER)` ou `AnimateShotgun`, et flash
+  dynamique (mains pour revolver, canon pour shotgun/HK).
+- `AnimateShotgun` est porté : fumée, états 0/2/6/8, `FireShotgun`,
+  `FireHK`, `FireCrossbow`, douilles shotgun, sons HK/silencieux,
+  synchronisation des frames de bras.
+
+Adaptations : `W_SILENCER/W_AMMO1/W_AMMO2` → `WTYPE_SILENCER/
+WTYPE_AMMO_1/WTYPE_AMMO_2` (énumération existante d’`OBJECTS.H`),
+`LMX_HAND_R` → `LJ_RHAND`, `phd_sin/cos` → `SIN/COS`, `GF_MIRROR` →
+`GF_LVOP_MIRROR_USED`, `TriggerDynamic_MIRROR` → `TriggerDynamic`,
+includes `CAMERA.H`, `PSXINPUT.H`, `LARA2GUN.H`, `GAMEFLOW.H`.
+
+Validation : **4177 tests PASS**, corniche 200 frames OK.
+Un test synthétique « revolver » (sans passer par le draw normal) déclenche
+l’assertion `DEL_CalcLaraMatrices_Interpolated_ASM` (`CALCLARA.C:1766`)
+car les frames de bras/weapon_item ne sont pas initialisées ; à valider
+par la séquence réelle de sortie de l’arme.
+
+Build `build-gameplay59` : SHA256
+`11db0025e7813856e032182d57a44a0c3bacd8b06ab9e7a0c7fc2ec1badb6f9b`.
