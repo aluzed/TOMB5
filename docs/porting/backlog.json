@@ -2017,6 +2017,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum precision porte room 8: verification runtime, ANIMATING15 (obj444 anim697) et ANIMATING15_MIP (obj445 anim698) ont des animations vides (frame_base=frame_end=0); meme actives (flags|REVERSE, status=ACTIVE, AddActiveItem) leur frame reste 0. Ce sont des decorations/grilles statiques, pas le mecanisme de sortie. Le bouton/trigger du crawlspace reste a identifier; piste: scan des donnees de trigger des cellules rooms 8/12/25/26/92 pour un TO_OBJECT visant la porte ou un flipmap. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum test flipmaps room 8: FlipMap(0..9) sur la sauvegarde room8 ne change rien, flip_status reste 0. La sortie n'est probablement pas un flipmap mais une porte/objet ou un TO_FLIPEFFECT declenche par le bouton du crawlspace. Le scan des triggers par cellule (trigger_index apres GetHeight) renvoie des mots qui ressemblent encore a des donnees de sol; il faudra un decodeur de triggers dedie ou reperer le bouton en jeu. Aucun Done global."
     }
   ]
 }

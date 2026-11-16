@@ -2750,3 +2750,13 @@ des décorations/grilles statiques, pas le mécanisme de sortie de la
 room 8. Le bouton/trigger du crawlspace reste à identifier (piste :
 scan des données de trigger des cellules des rooms 8/12/25/26/92 pour
 un `TO_OBJECT` visant la porte ou un flipmap).
+
+#### Test des flipmaps autour de la room 8
+
+`FlipMap(0..9)` sur la sauvegarde room 8 ne change rien :
+`flip_status` reste à 0. La sortie de la room 8 n’est donc probablement
+pas un flipmap mais une porte/objet ou un `TO_FLIPEFFECT` déclenché par
+le bouton du crawlspace. Le scan des triggers par cellule
+(`trigger_index` après `GetHeight`) renvoie des mots qui ressemblent
+encore à des données de sol ; il faudra un décodeur de triggers dédié
+ou repérer le bouton en jeu.
