@@ -3238,3 +3238,42 @@ Sous gdb **et** avec `stdbuf`, `[EMU] Initialising Emulator` peut sortir
 après 60 à 200 s (init GL/audio), et la sortie standard est bufferisée :
 un log muet n'est pas une preuve de blocage. Pour un diagnostic fiable,
 lancer sans gdb et capturer la fenêtre avec `import -window`.
+
+### Salle 8 : mécanique des dalles et issue ouest (16 novembre 2026)
+
+#### Les dalles s'effondrent avec un délai par dalle
+
+Les `CRUMBLING_FLOOR` de la salle 8 portent chacune un OCB qui est une
+**temporisation** : `1, 5, 10, 20, 30, 40, 50, 70, 80, 100, 120`. Stationner
+sur une dalle la fait céder : c'est la cause de **toutes** les chutes
+observées jusqu'ici (`room 26` puis `room 14`, `y=6144`, `hp=-1`), et non
+un défaut de collision. Exemple mesuré, en restant 100 frames sur la dalle
+OCB 120 de la cellule `(1,2)` :
+
+```
+PR2 n=150 room=8 pos=40130,256,52659 floor=256   (debout, cz=2)
+PR2 n=175 room=8 pos=40107,261,52492 floor=261   (dalle en train de céder)
+PR2 n=180 room=12 pos=40083,465,52492 floor=6144 (chute)
+PR2 n=190 room=14 pos=40730,6144,52492           (mort, hp=-1)
+```
+
+#### Issue ouest : portail bloqué, la salle 8 est un cul-de-sac
+
+En restant mobile (saut d'entrée, marche continue), Lara traverse bien la
+plateforme : `43520,256,53731` → `40037,256,53754` (colonne `cx=4` puis
+`cx=1`, ligne `cz=3`), puis remonte vers `z=52492` (ligne `cz=2`). Mais à
+`x≈40107` **la marche vers l'ouest ne progresse plus** (`state=2`, puis
+`state=1 speed=38` sans déplacement) : la cellule `(0,2)` est un **portail**
+(`DOOR_TYPE`) vers la salle 25 dont le sol est à `-1024`, soit un mur de
+1280 depuis la salle 8 — infranchissable.
+
+Autrement dit : la salle 8 ne mène nulle part à l'ouest. Les dalles qui
+s'effondrent ne servent qu'à piéger le joueur, et la sortie de la zone
+(corniche + salle 8) est ailleurs — probablement la chute maîtrisée depuis
+la corniche vers la salle 26 (`pit_room=26`, 2048 plus bas, survivable)
+plutôt que la salle 8.
+
+Test complémentaire : depuis la corniche, `saut+avant` vers l'ouest ne
+déclenche aucun saut (`state=14` GRAB_TO_FALL puis `state=2`, position
+inchangée à `43109,768,52325`) — Lara est déjà au bord et le moteur refuse
+de la faire sortir dans le vide.
