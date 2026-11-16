@@ -330,88 +330,74 @@ void AnimateShotgun(int weapon_type)
 	lara.left_arm.anim_number = lara.right_arm.anim_number;
 }
 
-void undraw_shotgun(int weapon_type)//436B0(<), 43B14(<) (F)
+/* Porté depuis TOMB5pc/game/lara1gun.cpp (undraw_shotgun). */
+void undraw_shotgun(int weapon_type)
 {
-	struct ITEM_INFO* item = &items[lara.weapon_item];
+	struct ITEM_INFO* item; 
+
+	item = &items[lara.weapon_item];
+	item->goal_anim_state = 3;
 	AnimateItem(item);
 
 	if (item->status == ITEM_DEACTIVATED)
 	{
 		lara.gun_status = LG_NO_ARMS;
-		lara.target = NULL;
+		lara.target = 0;
 		lara.right_arm.lock = 0;
 		lara.left_arm.lock = 0;
 		KillItem(lara.weapon_item);
 		lara.weapon_item = -1;
 		lara.right_arm.frame_number = 0;
 		lara.left_arm.frame_number = 0;
-	}//loc_43750
-	else
-	{
-		if (item->current_anim_state == STATE_LARA_JUMP_FORWARD)
-		{
-			if (anims[item->anim_number].frame_base == item->frame_number - 21)
-			{
-				undraw_shotgun_meshes(weapon_type);
-			}
-		}//loc_43798
 	}
+	else if (item->current_anim_state == 3 && anims[item->anim_number].frame_base == item->frame_number - 21)
+		undraw_shotgun_meshes(weapon_type);
 
-	lara.right_arm.frame_base = anims[item->frame_number].frame_ptr;
-	lara.left_arm.frame_base = anims[item->frame_number].frame_ptr;
-
+	lara.right_arm.frame_base = anims[item->anim_number].frame_ptr;
+	lara.left_arm.frame_base = anims[item->anim_number].frame_ptr;
 	lara.right_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
 	lara.left_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
-
 	lara.right_arm.anim_number = item->anim_number;
 	lara.left_arm.anim_number = item->anim_number;
 }
 
-void draw_shotgun(int weapon_type)// (F)
+/* Porté depuis TOMB5pc/game/lara1gun.cpp (draw_shotgun). */
+void draw_shotgun(int weapon_type)
 {
 	struct ITEM_INFO* item;
 
 	if (lara.weapon_item == -1)
-	{		
+	{
 		lara.weapon_item = CreateItem();
 		item = &items[lara.weapon_item];
-		item->object_number = WeaponObject(weapon_type);
-		item->anim_number = objects[item->object_number].anim_index;
+		item->object_number = (short)WeaponObject(weapon_type);
+		item->anim_number = objects[item->object_number].anim_index + 1;
 		item->frame_number = anims[item->anim_number].frame_base;
 		item->status = ITEM_ACTIVE;
-		item->goal_anim_state = STATE_LARA_RUN_FORWARD;
-		item->current_anim_state = STATE_LARA_RUN_FORWARD;
+		item->current_anim_state = 1;
+		item->goal_anim_state = 1;
 		item->room_number = NO_ROOM;
-
-		lara.left_arm.frame_base = lara.right_arm.frame_base = objects[item->object_number].frame_base;
+		lara.left_arm.frame_base = objects[item->object_number].frame_base; 
+		lara.right_arm.frame_base = objects[item->object_number].frame_base;
 	}
 	else
-	{
 		item = &items[lara.weapon_item];
-	}
 
 	AnimateItem(item);
 
-	if (item->current_anim_state != STATE_LARA_WALK_FORWARD &&
-		item->current_anim_state != STATE_LARA_TURN_RIGHT_SLOW)
-	{
-		if (item->frame_number - anims[item->anim_number].frame_base == weapons[weapon_type].draw_frame)
-		{
-			draw_shotgun_meshes(weapon_type);
-		}
-		else if (lara.water_status == LW_UNDERWATER)
-		{
-			item->goal_anim_state = STATE_LARA_TURN_RIGHT_SLOW;
-		}
-	}
-	else
-	{
+	if (!item->current_anim_state || item->current_anim_state == 6)
 		ready_shotgun(weapon_type);
-	}
+	else if (item->frame_number - anims[item->anim_number].frame_base == weapons[weapon_type].draw_frame)
+		draw_shotgun_meshes(weapon_type);
+	else if (lara.water_status == LW_UNDERWATER)
+		item->goal_anim_state = 6;
 
-	lara.left_arm.frame_base = lara.right_arm.frame_base = anims[item->anim_number].frame_ptr;
-	lara.left_arm.frame_number = lara.right_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
-	lara.left_arm.anim_number = lara.right_arm.anim_number = item->anim_number;
+	lara.left_arm.frame_base = anims[item->anim_number].frame_ptr; 
+	lara.right_arm.frame_base = anims[item->anim_number].frame_ptr;
+	lara.left_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base; 
+	lara.right_arm.frame_number = item->frame_number - anims[item->anim_number].frame_base;
+	lara.left_arm.anim_number = item->anim_number; 
+	lara.right_arm.anim_number = item->anim_number;
 }
 
 void ControlCrossbow(short item_number)

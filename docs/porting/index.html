@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum shotgun/armes longues: deux bugs corriges. (1) draw_shotgun/undraw_shotgun (GAME/LARA1GUN.C) etaient des decompilations erronees (anim_index sans +1, etats STATE_LARA_RUN_FORWARD au lieu de 1/3, conditions inversees, frame_base=anims[item-&gt;frame_number].frame_ptr au lieu de anims[item-&gt;anim_number].frame_ptr); remplaces par les versions de lara1gun.cpp. (2) DEL_CalcLaraMatrices_Interpolated_ASM (CALCLARA.C:1792) passait la valeur s1[74] comme pointeur au lieu de &amp;s1[74], causant a22=1 et SIGSEGV a la premiere frame de bras dessinee; corrige. Validation runtime: shotgun force par la sequence de draw reelle (request_gun_type=WEAPON_SHOTGUN, gun_status=LG_NO_ARMS) room90 face a ROMAN_GOD; draw_shotgun cree l&#x27;item 110 et passe LG_READY; tirs reels, munitions 100-&gt;70, cible 79, PV statue 300-&gt;210; aucun crash. 4177 tests PASS, corniche 200 frames OK. Build-gameplay59 SHA256 fa82913848f1cff77d4c0b1c1e29d2f19acc490306586c66e0870ed1967a9315. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-16
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum armes longues: port de RifleHandler et AnimateShotgun (GAME/LARA1GUN.C) depuis lara1gun.cpp. RifleHandler: LaraGetNewTarget (sauf crossbow sans laser), LaraTargetInfo, AimWeapon, torse/tete, AnimatePistols(WEAPON_REVOLVER) ou AnimateShotgun, flash dynamique (mains revolver, canon shotgun/HK). AnimateShotgun: fumee, etats 0/2/6/8, FireShotgun/FireHK/FireCrossbow, douilles shotgun, sons HK/silencieux, synchro frames de bras. Adaptations: W_SILENCER/W_AMMO1/W_AMMO2 -&gt; WTYPE_SILENCER/WTYPE_AMMO_1/WTYPE_AMMO_2 (OBJECTS.H), LMX_HAND_R-&gt;LJ_RHAND, phd_sin/cos-&gt;SIN/COS, GF_MIRROR-&gt;GF_LVOP_MIRROR_USED, TriggerDynamic_MIRROR-&gt;TriggerDynamic, includes CAMERA.H/PSXINPUT.H/LARA2GUN.H/GAMEFLOW.H. Validation: 4177 tests PASS, corniche 200 frames OK. Test synthetique revolver sans draw normal declenche l&#x27;assertion DEL_CalcLaraMatrices_Interpolated_ASM (CALCLARA.C:1766) car frames bras/weapon_item non initialisees; a valider par la sequence reelle de sortie de l&#x27;arme. Build-gameplay59 SHA256 11db0025e7813856e032182d57a44a0c3bacd8b06ab9e7a0c7fc2ec1badb6f9b. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

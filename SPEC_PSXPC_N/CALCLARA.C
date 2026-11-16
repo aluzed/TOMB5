@@ -1789,7 +1789,7 @@ void DEL_CalcLaraMatrices_Interpolated_ASM(short* frame1, short* frame2, int fra
 			mRotSuperPackedYXZ_CL(t8, 0);
 			iRotSuperPackedYXZ_CL(t8, 0);
 			InterpolateMatrix_CL(t8, (int*)&s0[160]);
-			Hardcore_iTranslateXYZ_CL((long*)s1[74], t8);
+			Hardcore_iTranslateXYZ_CL((long*)&s1[74], t8);
 			mRotSuperPackedYXZ_CL(t8, 0);
 			iRotSuperPackedYXZ_CL(t8, 0);
 			InterpolateMatrix_CL(t8, (int*)&s0[176]);

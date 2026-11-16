@@ -2859,3 +2859,33 @@ par la séquence réelle de sortie de l’arme.
 
 Build `build-gameplay59` : SHA256
 `11db0025e7813856e032182d57a44a0c3bacd8b06ab9e7a0c7fc2ec1badb6f9b`.
+
+### Shotgun : draw/undraw et matrice de bras (16 novembre 2026)
+
+Deux bugs empêchaient la sortie/le tir du shotgun (et des armes
+longues) :
+
+1. `draw_shotgun` / `undraw_shotgun` (`GAME/LARA1GUN.C`) étaient des
+   décompilations erronées : `anim_index` sans `+1`, états
+   `STATE_LARA_RUN_FORWARD` au lieu de 1/3, conditions inversées, et
+   `frame_base = anims[item->frame_number].frame_ptr` au lieu de
+   `anims[item->anim_number].frame_ptr`. Remplacés par les versions de
+   `lara1gun.cpp`.
+2. `DEL_CalcLaraMatrices_Interpolated_ASM` (`CALCLARA.C:1792`) :
+   `Hardcore_iTranslateXYZ_CL((long*)s1[74], t8)` passait la **valeur**
+   `s1[74]` comme pointeur au lieu de son adresse. Corrigé en
+   `&s1[74]` (les autres appels utilisaient déjà `&`), ce qui causait
+   `a22 = 1` et le SIGSEGV à la première frame de bras dessinée.
+
+Validation runtime : shotgun forcé par la séquence de draw réelle
+(`request_gun_type = WEAPON_SHOTGUN`, `gun_status = LG_NO_ARMS`) en
+room 90 face à ROMAN_GOD :
+- `draw_shotgun` crée l’item 110 et passe en `LG_READY` ;
+- tirs réels, munitions 100 → 70, cible = 79 ;
+- **PV de la statue : 300 → 210** ;
+- aucun crash.
+
+**4177 tests PASS**, corniche 200 frames OK.
+
+Build `build-gameplay59` : SHA256
+`fa82913848f1cff77d4c0b1c1e29d2f19acc490306586c66e0870ed1967a9315`.
