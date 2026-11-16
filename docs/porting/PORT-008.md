@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum, comportement mesure au bord de la corniche (sauvegarde 43364,768,52325, y_rot=-16384): (1) saut sur place (IN_JUMP seul) donne state=28 JUMP_UP avec y 768 -> 14 -> 768, retour exact au point de depart, speed=2 (aucune avance horizontale); (2) saut+avant (IN_FORWARD|IN_JUMP) donne state=14 GRAB_TO_FALL puis retour state=2 au meme endroit: le rebord est agrippable et Lara s'y raccroche; (3) marche seule: arret net a x=43109, bord de la grille de la room 12 (x_size=5, fin a 43008), au-dela aucun sol. Pour descendre vers la salle 26 il faut donc une manoeuvre volontaire (agripper le rebord puis se lacher, ou saut avec elan depuis plus loin); c'est le premier point a faire a la main. Documentation ajoutee dans docs/porting/colosseum-walkthrough.md section 5. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum, point de bascule 12 -> 26 mesure: GetFloor le long de la corniche a y=1024, z=53760, en partant de la room 12, donne: x=43520..39936 room=26 (positions hors grille de la room 12, bascule immediate); x=39424 room=26 height=1151 idx=1089; x=38912 room=26 height=1151 idx=1089; x=38400 room=12 height=-32512 (plus de sol). La bascule vers la salle 26 se fait donc a l'extremite ouest de la corniche (x~39424) avec une marche de quelques centaines d'unites et non une chute de 2048: c'est un pas vers l'ouest, ce qui corrige l'hypothese 'chute maitrisee'. Documentation mise a jour dans docs/porting/colosseum-walkthrough.md et docs/porting/linux32.md. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

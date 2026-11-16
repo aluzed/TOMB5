@@ -119,3 +119,20 @@ On peut aussi forcer `lara_item->pos.y_rot` (`0`=+z, `0x4000`=+x,
 | `FixedCamera` | absent | caméras fixes |
 | Sélection de niveau | cassée | Trajan's Markets démarre le niveau 1 |
 | Audio | non validé | écoute humaine requise |
+
+## 5. Comportement mesuré au bord de la corniche
+
+Depuis la sauvegarde corniche (`43364,768,52325`, `y_rot=-16384`) :
+
+- **saut sur place** (`IN_JUMP` seul) : `state=28` (JUMP_UP), `y` 768 → 14 →
+  768, retour exact au point de départ, `speed=2` — le saut vertical ne fait
+  pas avancer ;
+- **saut + avant** (`IN_FORWARD|IN_JUMP`) : `state=14`
+  (GRAB_TO_FALL) puis retour `state=2` **au même endroit** : le rebord est
+  agrippable, Lara s'y raccroche ;
+- **marche seule** : arrêt net à `x=43109`, qui est le bord de la grille de
+  la room 12 (`x_size=5` → fin à `43008`) ; au-delà il n'y a aucun sol.
+
+Pour descendre vers la salle 26 il faut donc une manœuvre volontaire
+(agripper le rebord puis se lâcher, ou saut avec élan depuis plus loin) —
+c'est le premier point à faire à la main.
