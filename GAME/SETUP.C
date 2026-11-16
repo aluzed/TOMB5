@@ -27,6 +27,7 @@
 #include "LION.H"
 #include "GUARDIAN.H"
 #include "ROMANGOD.H"
+#include "LARA1GUN.H"
 #include "LARAFIRE.H"
 #include "LARAMISC.H"
 
@@ -972,7 +973,17 @@ static void PortSetupGameplayObjects(void)
 			continue;
 		}
 
-		if ((i >= PUZZLE_ITEM1 && i <= CROWBAR_ITEM) ||
+		if (i == CROSSBOW_BOLT)
+		{
+			objects[i].initialise = NULL;
+			objects[i].control = &ControlCrossbow;
+			objects[i].collision = NULL;
+			objects[i].draw_routine = &DrawWeaponMissile;
+			objects[i].using_drawanimating_item = FALSE;
+			objects[i].save_position = TRUE;
+			objects[i].save_flags = TRUE;
+		}
+		else if ((i >= PUZZLE_ITEM1 && i <= CROWBAR_ITEM) ||
 			(i >= PISTOLS_ITEM && i <= COMPASS_ITEM))
 		{
 			if (i == CROSSBOW_BOLT || i == FLARE_ITEM)

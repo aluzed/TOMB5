@@ -1,4 +1,10 @@
 #include "LARA1GUN.H"
+#include "SPHERE.H"
+#include "COLLIDE_S.H"
+#include "GETSTUFF.H"
+#include "SWITCH.H"
+#include "SPHERES.H"
+#include "COLLIDE.H"
 #include "GAMEFLOW.H"
 #include "LARA2GUN.H"
 #include "PSXINPUT.H"
@@ -400,14 +406,125 @@ void draw_shotgun(int weapon_type)
 	lara.right_arm.anim_number = item->anim_number;
 }
 
+/* Porté depuis TOMB5pc/game/lara1gun.cpp (ControlCrossbow). */
 void ControlCrossbow(short item_number)
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO** itemlist;
+	struct MESH_INFO** meshlist;
+	struct ITEM_INFO* item;
+	struct ITEM_INFO* target;
+	long speed;
+	short room_number;
+
+	item = &items[item_number];
+	speed = item->speed;
+	item->pos.x_pos += (speed * COS(item->pos.x_rot) >> W2V_SHIFT) * SIN(item->pos.y_rot) >> W2V_SHIFT;
+	item->pos.y_pos += speed * SIN(-item->pos.x_rot) >> W2V_SHIFT;
+	item->pos.z_pos += (speed * COS(item->pos.x_rot) >> W2V_SHIFT) * COS(item->pos.y_rot) >> W2V_SHIFT;
+	room_number = item->room_number;
+	GetFloor(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, &room_number);
+
+	if (item->room_number != room_number)
+		ItemNewRoom(item_number, room_number);
+
+	{
+		static struct ITEM_INFO* itemlist[64];
+		static struct MESH_INFO* meshlist[64];
+
+		itemlist[0] = 0;
+		meshlist[0] = 0;
+		GetCollidedObjects(item, 128, 1, itemlist, meshlist, 1);
+	}
+
+	if (*itemlist)
+	{
+		target = *itemlist;
+
+		while (target)
+		{
+			if (gfLevelFlags & GF_LVOP_TRAIN && target->object_number == GRAPPLING_TARGET)
+			{
+				TriggerGrapplingEffect(target->pos.x_pos, target->pos.y_pos + 32, target->pos.z_pos);
+				TestTriggersAtXYZ(target->pos.x_pos, target->pos.y_pos, target->pos.z_pos, target->room_number, 1, 0);
+				ExplodeItemNode(item, 0, 0, 256);
+				SoundEffect(SFX_SMASH_METAL, &item->pos, SFX_DEFAULT);
+				KillItem(item_number);
+				target->mesh_bits <<= 1;
+				return;
+			}
+
+			target = *itemlist++;
+		}
+	}
 }
 
+/* Porté depuis TOMB5pc/game/lara1gun.cpp (CrossbowHitSwitchType78). */
 void CrossbowHitSwitchType78(struct ITEM_INFO* item, struct ITEM_INFO* target, int MustHitLastNode)
 {
-	UNIMPLEMENTED();
+	struct SPHERE* ptr1;
+	long dx, dy, dz, num1, cs, cd;
+	short TriggerItems[8];
+	short NumTrigs, room_number;
+
+	if (target->flags & IFLAG_UNK40)
+		return;
+
+	if (!MustHitLastNode)
+	{
+		num1 = objects[target->object_number].nmeshes;
+		cs = num1 - 1;
+	}
+	else
+	{
+		num1 = GetSpheres(target, Slist, 1);
+		cs = -1;
+		cd = 0x7FFFFFFF;
+		ptr1 = Slist;
+
+		for (int i = 0; i < num1; i++)
+		{
+			dx = ptr1->x - item->pos.x_pos;
+			dy = ptr1->y - item->pos.y_pos;
+			dz = ptr1->z - item->pos.z_pos;
+			dy = ((dx)*(dx)) + ((dy)*(dy)) + ((dz)*(dz)) - ((ptr1->r)*(ptr1->r));
+
+			if (dy < cd)
+			{
+				cd = dy;
+				cs = i;
+			}
+
+			ptr1++;
+		}
+	}
+
+	if (cs == num1 - 1)
+	{
+		if (target->flags & IFLAG_ACTIVATION_MASK && (target->flags & IFLAG_ACTIVATION_MASK) != IFLAG_ACTIVATION_MASK)
+		{
+			room_number = target->room_number;
+			GetHeight(GetFloor(target->pos.x_pos, target->pos.y_pos - 256, target->pos.z_pos, &room_number), target->pos.x_pos, target->pos.y_pos - 256, target->pos.z_pos);
+			TestTriggers(trigger_index, 1, target->flags & IFLAG_ACTIVATION_MASK);
+		}
+		else
+		{
+			NumTrigs = (short)GetSwitchTrigger(target, TriggerItems, 1);
+
+			for (int i = 0; i < NumTrigs; i++)
+			{
+				AddActiveItem(TriggerItems[i]);
+				items[TriggerItems[i]].status = ITEM_ACTIVE;
+				items[TriggerItems[i]].flags |= IFLAG_ACTIVATION_MASK;
+			}
+		}
+
+		if (target->object_number == SWITCH_TYPE7)
+			ExplodeItemNode(target, objects[SWITCH_TYPE7].nmeshes - 1, 0, 64);
+
+		AddActiveItem((short)(target - items));
+		target->flags |= IFLAG_ACTIVATION_MASK | IFLAG_UNK40;
+		target->status = ITEM_ACTIVE;
+	}
 }
 
 void FireCrossbow(struct PHD_3DPOS* Start)//42E18(<), 4326C(<) (F)

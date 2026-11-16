@@ -2889,3 +2889,33 @@ room 90 face à ROMAN_GOD :
 
 Build `build-gameplay59` : SHA256
 `fa82913848f1cff77d4c0b1c1e29d2f19acc490306586c66e0870ed1967a9315`.
+
+### HK / crossbow : condition de draw et bolt (16 novembre 2026)
+
+1. **Précédence de condition dans `LaraGun`** (`GAME/LARAFIRE.C`) :
+   ```c
+   if (state == 0x47 || state == 0x69 || state == 0x6A &&
+       request == 4 || request == 6 || request == 5)
+   ```
+   À cause de la précédence, toute demande de HK/crossbow
+   (`request == 5/6`) prenait la branche « accroupi » et **l’arme
+   n’était jamais dessinée**. Corrigé en regroupant les états
+   accroupis et les trois armes :
+   `(state ∈ {crouch idle/roll/turn}) && request ∈ {shotgun, HK, crossbow}`.
+
+2. **`ControlCrossbow` et `CrossbowHitSwitchType78`** (`GAME/LARA1GUN.C`)
+   portés depuis `lara1gun.cpp` : déplacement du bolt, changement de
+   salle, `GetCollidedObjects`, cible grappling, et activation des
+   switchs 7/8 (`GetSwitchTrigger`, `ExplodeItemNode`).
+3. **`CROSSBOW_BOLT`** : assignation dans `PortSetupGameplayObjects`
+   (`control = ControlCrossbow`, `draw_routine = DrawWeaponMissile`,
+   `using_drawanimating_item = FALSE`, flags de sauvegarde).
+
+Validation : le shotgun reste fonctionnel après le correctif
+(statue 300 → 228, munitions 100 → 76). Le test HK/crossbow forcé dans
+le Colosseum plante dans `mRotSuperPackedYXZ_CL` car ces objets
+**(HK/crossbow) ne sont pas chargés dans ce niveau** ; à valider dans un
+niveau qui les contient. **4177 tests PASS**.
+
+Build `build-gameplay59` : SHA256
+`7ea4b985123b9bf44c28b56a726fa6ed28e71d6bc5dbac7a6094742b99a735ec`.

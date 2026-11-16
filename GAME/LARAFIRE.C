@@ -1087,8 +1087,13 @@ void LaraGun()//46F28, 4738C
 					//v0 = lara_item
 					//a0 = lara_item->current_anim_state
 					//a1 = &lara
-					if (lara_item->current_anim_state == 0x47 || lara_item->current_anim_state == 0x69 || lara_item->current_anim_state == 0x6A &&
-						lara.request_gun_type == 4 || lara.request_gun_type == 6 || lara.request_gun_type == 5)
+					if ((lara_item->current_anim_state == STATE_LARA_CROUCH_IDLE ||
+						 lara_item->current_anim_state == STATE_LARA_CROUCH_ROLL ||
+						 lara_item->current_anim_state == 0x69 ||
+						 lara_item->current_anim_state == 0x6A) &&
+						(lara.request_gun_type == WEAPON_SHOTGUN ||
+						 lara.request_gun_type == WEAPON_HK ||
+						 lara.request_gun_type == WEAPON_CROSSBOW))
 					{
 						//loc_470C8
 						//v0 = &lara

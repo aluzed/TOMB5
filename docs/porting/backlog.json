@@ -2071,6 +2071,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum shotgun/armes longues: deux bugs corriges. (1) draw_shotgun/undraw_shotgun (GAME/LARA1GUN.C) etaient des decompilations erronees (anim_index sans +1, etats STATE_LARA_RUN_FORWARD au lieu de 1/3, conditions inversees, frame_base=anims[item->frame_number].frame_ptr au lieu de anims[item->anim_number].frame_ptr); remplaces par les versions de lara1gun.cpp. (2) DEL_CalcLaraMatrices_Interpolated_ASM (CALCLARA.C:1792) passait la valeur s1[74] comme pointeur au lieu de &s1[74], causant a22=1 et SIGSEGV a la premiere frame de bras dessinee; corrige. Validation runtime: shotgun force par la sequence de draw reelle (request_gun_type=WEAPON_SHOTGUN, gun_status=LG_NO_ARMS) room90 face a ROMAN_GOD; draw_shotgun cree l'item 110 et passe LG_READY; tirs reels, munitions 100->70, cible 79, PV statue 300->210; aucun crash. 4177 tests PASS, corniche 200 frames OK. Build-gameplay59 SHA256 fa82913848f1cff77d4c0b1c1e29d2f19acc490306586c66e0870ed1967a9315. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum HK/crossbow: (1) precedence de condition dans LaraGun (GAME/LARAFIRE.C): 'state==0x47 || state==0x69 || state==0x6A && request==4 || request==6 || request==5' faisait que toute demande HK/crossbow (request 5/6) prenait la branche accroupi et l'arme n'etait jamais dessinee; corrige en regroupant les etats accroupis et les trois armes. (2) ControlCrossbow et CrossbowHitSwitchType78 (GAME/LARA1GUN.C) portes depuis lara1gun.cpp: deplacement du bolt, changement de salle, GetCollidedObjects, cible grappling, activation switchs 7/8 (GetSwitchTrigger, ExplodeItemNode). (3) CROSSBOW_BOLT assigne dans PortSetupGameplayObjects (control=ControlCrossbow, draw_routine=DrawWeaponMissile, using_drawanimating_item=FALSE, save flags). Validation: shotgun toujours fonctionnel apres correctif (statue 300->228, munitions 100->76); test HK/crossbow force dans le Colosseum plante dans mRotSuperPackedYXZ_CL car les objets HK/crossbow ne sont pas charges dans ce niveau; a valider dans un niveau qui les contient. 4177 tests PASS. Build-gameplay59 SHA256 7ea4b985123b9bf44c28b56a726fa6ed28e71d6bc5dbac7a6094742b99a735ec. Aucun Done global."
     }
   ]
 }
