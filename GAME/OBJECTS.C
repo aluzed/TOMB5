@@ -6,6 +6,7 @@
 #include "DRAW.H"
 #include "EFFECTS.H"
 #include "ITEMS.H"
+#include "CAMERA.H"
 #include "LARA.H"
 #include "MALLOC.H"
 
@@ -26,6 +27,7 @@
 
 #if PSX_VERSION || PSXPC_VERSION || SAT_VERSION
 #include "GETSTUFF.H"
+#include "MISC.H"
 #endif
 
 #include <stddef.h>
@@ -63,9 +65,91 @@ static short ParallelBarsBounds[12] = // offset 0xA1290
 	-640, 640, 704, 832, -96, 96, -1820, 1820, -5460, 5460, -1820, 1820
 };
 
+/* Porte depuis TOMB5pc/game/objects.cpp (EarthQuake). */
 void EarthQuake(short item_number)
 {
-	UNIMPLEMENTED();
+	struct ITEM_INFO* item = &items[item_number];
+	long lp;
+
+	if (!TriggerActive(item))
+		return;
+
+	if (item->trigger_flags == 888)
+	{
+		camera.bounce = -64 - (GetRandomControl() & 0x1F);
+		SoundEffect(SFX_EARTHQUAKE_LOOP, 0, SFX_DEFAULT);
+		item->item_flags[3]++;
+
+		if (item->item_flags[3] > 150)
+		{
+			SoundEffect(SFX_J_GRAB_IMPACT, 0, SFX_DEFAULT);
+			KillItem(item_number);
+		}
+
+		return;
+	}
+
+	if (item->trigger_flags == 333)
+	{
+		if (item->item_flags[0] < 495)
+		{
+			SoundEffect(SFX_EARTHQUAKE_LOOP, 0, SFX_DEFAULT);
+			item->item_flags[0]++;
+		}
+		else
+		{
+			KillItem(item_number);
+		}
+
+		return;
+	}
+
+	if (!item->item_flags[1])
+		item->item_flags[1] = 100;
+
+	if (!item->item_flags[2] && abs(item->item_flags[0] - item->item_flags[1]) < 16)
+	{
+		if (item->item_flags[1] == 20)
+		{
+			item->item_flags[1] = 100;
+			item->item_flags[2] = (GetRandomControl() & 0x7F) + 90;
+		}
+		else
+		{
+			item->item_flags[1] = 20;
+			item->item_flags[2] = (GetRandomControl() & 0x7F) + 30;
+		}
+	}
+
+	if (item->item_flags[2])
+		item->item_flags[2]--;
+
+	if (item->item_flags[0] <= item->item_flags[1])
+		item->item_flags[0] += (GetRandomControl() & 7) + 2;
+	else
+		item->item_flags[0] -= (GetRandomControl() & 7) + 2;
+
+	SoundEffect(SFX_EARTHQUAKE_LOOP, 0, (0x1000000 + (item->item_flags[0] << 16)) | SFX_SETPITCH);
+	camera.bounce = -item->item_flags[0];
+
+	if (GetRandomControl() < 1024)
+	{
+		for (lp = room[item->room_number].item_number; lp != -1; lp = items[lp].next_item)
+		{
+			struct ITEM_INFO* flame = &items[lp];
+
+			if (flame->object_number == FLAME_EMITTER &&
+				flame->status != ITEM_ACTIVE &&
+				flame->status != ITEM_DEACTIVATED)
+			{
+				AddActiveItem((short)lp);
+				flame->status = ITEM_ACTIVE;
+				flame->timer = 0;
+				flame->flags |= IFLAG_ACTIVATION_MASK;
+				break;
+			}
+		}
+	}
 }
 
 void SmashObject(short item_number)//4EDB0, 4F214 (F)

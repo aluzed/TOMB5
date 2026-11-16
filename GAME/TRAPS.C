@@ -472,8 +472,101 @@ void DartsControl(short item_num)//59AD4, 59F50
 
 void FlameEmitterControl(short item_number)//59D18, 5A194
 {
-	UNIMPLEMENTED();
-	return;
+	struct ITEM_INFO* item = &items[item_number];
+	unsigned long distance;
+	long x, z;
+
+	if (!TriggerActive(item))
+		return;
+
+	if (item->trigger_flags < 0)
+	{
+		if ((-item->trigger_flags & 7) != 2 && (-item->trigger_flags & 7) != 7)
+		{
+			if (item->item_flags[0])
+			{
+				if (item->item_flags[1])
+					item->item_flags[1] = item->item_flags[1] - (item->item_flags[1] >> 2);
+
+				if (item->item_flags[2] < 256)
+					item->item_flags[2] += 8;
+
+				item->item_flags[0]--;
+
+				if (!item->item_flags[0])
+					item->item_flags[3] = (GetRandomControl() & 0x3F) + 150;
+			}
+			else
+			{
+				item->item_flags[3]--;
+
+				if (!item->item_flags[3])
+				{
+					if (-item->trigger_flags >> 3)
+						item->item_flags[0] = (GetRandomControl() & 0x1F) + 30 * (-item->trigger_flags >> 3);
+					else
+						item->item_flags[0] = (GetRandomControl() & 0x3F) + 60;
+				}
+
+				if (item->item_flags[2])
+					item->item_flags[2] -= 8;
+
+				if (item->item_flags[1] > -8192)
+					item->item_flags[1] -= 512;
+			}
+
+			if (item->item_flags[2])
+				AddFire(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, 0, item->room_number, item->item_flags[2] & 0xFF);
+
+			if (item->item_flags[1])
+			{
+				SoundEffect(SFX_D_METAL_CAGE_OPEN, &item->pos, 0);
+
+				if (item->item_flags[1] > -8192)
+					TriggerSuperJetFlame(item, item->item_flags[1], GlobalCounter & 1);
+				else
+					TriggerSuperJetFlame(item, -256 - (3072 * GlobalCounter & 0x1C00), GlobalCounter & 1);
+
+				TriggerDynamic(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos,
+					(-item->item_flags[1] >> 10) - (GetRandomControl() & 1) + 16,
+					(GetRandomControl() & 0x3F) + 192, (GetRandomControl() & 0x1F) + 96, 0);
+			}
+			else
+			{
+				TriggerDynamic(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos,
+					10 - (GetRandomControl() & 1),
+					(GetRandomControl() & 0x3F) + 192, (GetRandomControl() & 0x1F) + 96, 0);
+			}
+		}
+		else
+		{
+			SoundEffect(SFX_D_METAL_CAGE_OPEN, &item->pos, 0);
+			TriggerSuperJetFlame(item, -256 - (3072 * GlobalCounter & 0x1C00), GlobalCounter & 1);
+			TriggerDynamic(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos,
+				(GetRandomControl() & 3) + 20,
+				(GetRandomControl() & 0x3F) + 192, (GetRandomControl() & 0x1F) + 96, 0);
+		}
+
+		SoundEffect(SFX_LOOP_FOR_SMALL_FIRES, &item->pos, 0);
+	}
+	else
+	{
+		AddFire(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos, 2, item->room_number, 0);
+		TriggerDynamic(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos,
+			16 - (GetRandomControl() & 1),
+			192 + (GetRandomControl() & 0x3F), 96 + (GetRandomControl() & 0x1F), 0);
+		SoundEffect(SFX_LOOP_FOR_SMALL_FIRES, &item->pos, 0);
+
+		if (!lara.burn && item->trigger_flags != 33 && ItemNearLara(&item->pos, 600))
+		{
+			x = lara_item->pos.x_pos - item->pos.x_pos;
+			z = lara_item->pos.z_pos - item->pos.z_pos;
+			distance = x * x + z * z;
+
+			if (distance < 262144)
+				LaraBurn();
+		}
+	}
 }
 
 void FlameEmitter2Control(short item_number)//5A1BC, 5A638 (F)
@@ -793,6 +886,116 @@ void FallingBlockCeiling(struct ITEM_INFO* item, long x, long y, long z, long* h
 			*height = item->pos.y_pos + 256;
 		}
 	}
+}
+
+/* Porte depuis TOMB5pc/game/init.cpp (InitialiseFlameEmitter). */
+void InitialiseFlameEmitter(short item_number)
+{
+	struct ITEM_INFO* item = &items[item_number];
+
+	if (item->trigger_flags == 33)
+	{
+		if (!item->pos.y_rot)
+			item->pos.z_pos += 144;
+		else if (item->pos.y_rot == 0x4000)
+			item->pos.x_pos += 144;
+		else if (item->pos.y_rot == -0x8000)
+			item->pos.z_pos -= 144;
+		else if (item->pos.y_rot == -0x4000)
+			item->pos.x_pos -= 144;
+
+		item->pos.y_pos += 32;
+	}
+	else if (item->trigger_flags < 0)
+	{
+		item->item_flags[0] = (GetRandomControl() & 0x3F) + 90;
+		item->item_flags[2] = 256;
+
+		if ((-item->trigger_flags & 7) == 7)
+		{
+			if (item->pos.y_rot == 0)
+				item->pos.z_pos += 512;
+			else if (item->pos.y_rot == 0x4000)
+				item->pos.x_pos += 512;
+			else if (item->pos.y_rot == -0x8000)
+				item->pos.z_pos -= 512;
+			else if (item->pos.y_rot == -0x4000)
+				item->pos.x_pos -= 512;
+		}
+	}
+}
+
+/* Porte depuis TOMB5pc/game/init.cpp (InitialiseFlameEmitter2). */
+void InitialiseFlameEmitter2(short item_number)
+{
+	struct ITEM_INFO* item = &items[item_number];
+
+	item->pos.y_pos -= 64;
+
+	if (item->trigger_flags == 123)
+		return;
+
+	if (!item->pos.y_rot)
+	{
+		if (item->trigger_flags == 2)
+			item->pos.z_pos += 80;
+		else
+			item->pos.z_pos += 256;
+	}
+	else if (item->pos.y_rot == 0x4000)
+	{
+		if (item->trigger_flags == 2)
+			item->pos.x_pos += 80;
+		else
+			item->pos.x_pos += 256;
+	}
+	else if (item->pos.y_rot == -0x8000)
+	{
+		if (item->trigger_flags == 2)
+			item->pos.z_pos -= 80;
+		else
+			item->pos.z_pos -= 256;
+	}
+	else if (item->pos.y_rot == -0x4000)
+	{
+		if (item->trigger_flags == 2)
+			item->pos.x_pos -= 80;
+		else
+			item->pos.x_pos -= 256;
+	}
+}
+
+/* Porte depuis TOMB5pc/game/init.cpp (InitialiseScaledSpike). */
+void InitialiseScaledSpike(short item_number)
+{
+	struct ITEM_INFO* item = &items[item_number];
+	short xzrots[8];
+
+	xzrots[0] = -0x8000;
+	xzrots[1] = -0x6000;
+	xzrots[2] = -0x4000;
+	xzrots[3] = -0x2000;
+	xzrots[4] = 0;
+	xzrots[5] = 0x2000;
+	xzrots[6] = 0x4000;
+	xzrots[7] = 0x6000;
+
+	item->status = ITEM_INVISIBLE;
+
+	if (item->trigger_flags & 8)
+	{
+		item->pos.x_rot = xzrots[item->trigger_flags & 7];
+		item->pos.y_rot = 0x4000;
+		item->pos.z_pos -= SPxzoffs[item->trigger_flags & 7];
+	}
+	else
+	{
+		item->pos.z_rot = xzrots[item->trigger_flags & 7];
+		item->pos.x_pos += SPxzoffs[item->trigger_flags & 7];
+	}
+
+	item->item_flags[0] = 1024;
+	item->item_flags[2] = 0;
 }
 
 void ControlScaledSpike(short item_number)//5C000, 5C47C

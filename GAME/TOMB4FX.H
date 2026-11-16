@@ -72,6 +72,7 @@ extern short DoBloodSplat(long x, long y, long z, short random, short y_rot, sho
 extern void TriggerRicochetSpark(struct GAME_VECTOR* pos, int angle, int num, int a4);
 #endif
 extern void Richochet(struct GAME_VECTOR* pos);
+extern long ItemNearLara(struct PHD_3DPOS* pos, long rad);
 extern struct LIGHTNING_STRUCT* TriggerLightning(struct PHD_VECTOR* a1, struct PHD_VECTOR* a2, char a3, int a4, char a5, char a6, char a7);
 extern void TriggerShockwave(struct PHD_3DPOS* pos, short inner_rad, short outer_rad, int speed, char r, char g, char b, char life, short angle, short flags);
 extern void TriggerShockwaveHitEffect(long x, long y, long z, long rgb, short dir, long speed);

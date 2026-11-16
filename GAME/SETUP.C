@@ -1048,6 +1048,56 @@ static void PortSetupGameplayObjects(void)
 			objects[i].save_flags = TRUE;
 			objects[i].save_mesh = TRUE;
 		}
+		else if (i >= TRAPDOOR1 && i <= FLOOR_TRAPDOOR2)
+		{
+			/* Trappes (The Colosseum, rooms 65 et 81) : handlers presents
+			 * dans TRAPS.C mais jamais assignes. */
+			objects[i].initialise = &InitialiseTrapDoor;
+			objects[i].control = &TrapDoorControl;
+			objects[i].save_flags = TRUE;
+			objects[i].save_anim = TRUE;
+
+			if (i <= TRAPDOOR3)
+				objects[i].collision = &TrapDoorCollision;
+			else if (i >= FLOOR_TRAPDOOR1 && i <= FLOOR_TRAPDOOR2)
+				objects[i].collision = &FloorTrapDoorCollision;
+			else
+				objects[i].collision = &CeilingTrapDoorCollision;
+		}
+		else if (i >= FLAME_EMITTER && i <= FLAME_EMITTER3)
+		{
+			/* Emetteurs de flammes (rooms 20, 59 et 81). */
+			if (i == FLAME_EMITTER)
+				objects[i].initialise = &InitialiseFlameEmitter;
+			else if (i == FLAME_EMITTER2)
+				objects[i].initialise = &InitialiseFlameEmitter2;
+
+			if (i == FLAME_EMITTER)
+				objects[i].control = &FlameEmitterControl;
+			else if (i == FLAME_EMITTER2)
+				objects[i].control = &FlameEmitter2Control;
+			else
+				objects[i].control = &FlameEmitter3Control;
+
+			objects[i].collision = &FireCollision;
+			objects[i].draw_routine = NULL;
+			objects[i].using_drawanimating_item = FALSE;
+			objects[i].save_flags = TRUE;
+		}
+		else if (i == WATERFALLMIST)
+		{
+			objects[i].control = &WaterFall;
+			objects[i].draw_routine = NULL;
+			objects[i].using_drawanimating_item = FALSE;
+			objects[i].save_flags = TRUE;
+		}
+		else if (i == EARTHQUAKE)
+		{
+			objects[i].control = &EarthQuake;
+			objects[i].draw_routine = NULL;
+			objects[i].using_drawanimating_item = FALSE;
+			objects[i].save_flags = TRUE;
+		}
 		else if (i == DOUBLE_DOORS)
 		{
 			objects[i].collision = &DoubleDoorCollision;

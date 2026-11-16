@@ -1202,9 +1202,32 @@ void TriggerRicochetSpark(struct GAME_VECTOR* pos, int angle, int num, int a4)
 }
 #endif
 
+/* Porte depuis TOMB5pc/game/effects.cpp (ItemNearLara). */
+long ItemNearLara(struct PHD_3DPOS* pos, long rad)
+{
+	short* bounds;
+	long dx, dy, dz;
+
+	dx = pos->x_pos - lara_item->pos.x_pos;
+	dy = pos->y_pos - lara_item->pos.y_pos;
+	dz = pos->z_pos - lara_item->pos.z_pos;
+
+	if (dx >= -rad && dx <= rad && dz >= -rad && dz <= rad &&
+		dy >= -3072 && dy <= 3072 &&
+		dx * dx + dz * dz <= rad * rad)
+	{
+		bounds = GetBoundsAccurate(lara_item);
+
+		if (dy >= bounds[2] && dy <= bounds[3] + 100)
+			return 1;
+	}
+
+	return 0;
+}
+
 void Richochet(struct GAME_VECTOR* pos)// (F)
 {
-	TriggerRicochetSpark(pos, mGetAngle(pos->z, pos->x, lara_item->pos.z_pos, lara_item->pos.x_pos) >> 4, 3, 0);
+	TriggerRicochetSpark(pos, (short)(mGetAngle(pos->z, pos->x, lara_item->pos.z_pos, lara_item->pos.x_pos) >> 4), 3, 0);
 	SoundEffect(SFX_LARA_RICOCHET, (struct PHD_3DPOS*)pos, SFX_DEFAULT);
 }
 

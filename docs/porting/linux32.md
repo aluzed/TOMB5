@@ -2945,3 +2945,96 @@ pas.
 
 Build `build-gameplay59` : SHA256
 `1f70101d8941435cc732067fbbb5c747b32d43d5a1621cf9cdc4d28190b1f7b8`.
+
+### Décodeur de niveau hors-ligne + pièges réactivés (16 novembre 2026)
+
+#### 1. `scripts/porting/decode_level_floordata.py`
+
+Le niveau est relogé dans une arène unique au chargement
+(`LoadLevel`/`relocate` dans `GAME/SETUP.C`) : tableau `room`, puis pour
+chaque salle `data`/`door`/`floor`/`light`/`mesh`, puis `floor_data`. Un dump
+gdb de cette arène suffit donc à reconstruire toute la base du niveau hors du
+jeu :
+
+```gdb
+dump binary memory /tmp/opencode/lv3_arena.bin room (char*)floor_data+65536
+dump binary memory /tmp/opencode/lv3_items.bin items items+level_items
+```
+
+```sh
+python3 scripts/porting/decode_level_floordata.py dump \
+  --arena lv3_arena.bin --items lv3_items.bin \
+  --room-ptr 0x567a3964 --floor-ptr 0x567c06f8 --rooms 125
+```
+
+L'outil décode les items (objet, salle, OCB, position), les `FLOOR_INFO` par
+cellule, les chaînes `floor_data` (TILT/SPLIT/TRIGGER + cibles
+`TO_OBJECT`/`TO_FLIPMAP`/…), et les portails (`door`) de chaque salle.
+`--selftest` construit un niveau synthétique en mémoire et vérifie tout le
+décodage sans le jeu ; le test `tests/porting/test_level_floordata.py` le
+lance dans la suite.
+
+#### 2. Ce que le décodage a établi pour The Colosseum (niveau 3)
+
+- **125 salles, 110 items.** Les numéros d'objet doivent être lus dans le
+  binaire (`p (int)BRIDGE_FLAT`) : les blocs `#if` de `OBJECTS.H` décalent
+  les indices après ~366 (`STEAM_LASERS` = 391, `BRIDGE_FLAT` = 448 et non
+  387/444).
+- **Les salles 8, 12, 14 et 25 sont empilées** sur le même `x/z`
+  (`38912,50176`), aux altitudes 0 / 768 / 6144 / -1024 : la corniche
+  (room 12, `FlipNumber=2`) surplombe la salle 8, elle-même au-dessus du
+  puits 25, relié à la salle 92.
+- **Les salles 8 et 25 n'ont aucun trigger de sol** : leur contenu est
+  purement mécanique (CRUMBLING_FLOOR en damier avec OCB 1 à 120 =
+  temporisation, `EARTHQUAKE`, `PUZZLE_HOLE4`, `TELEPORTER`, `ANIMATING15_MIP`).
+  Le « bouton du crawlspace » supposé n'existe pas dans les données : la
+  sortie de la salle 8 est le portail ouest vers la salle 25, plus une
+  remontée par la salle 92. Les triggers des cellules voisines de la salle 14
+  (salle miroir, `FlipNumber=1`) ne ciblent que les dalles qui s'effondrent.
+- Les 114 triggers du niveau sont décodés sans ambiguïté (les scans de mots
+  bruts précédents confondaient les données de sol et les déclencheurs).
+
+#### 3. Handlers d'objets du niveau 3
+
+Matrice obtenue en lisant `objects[n].control/collision/initialise/floor`
+à l'exécution, puis complétée :
+
+| objet | numéro | état |
+| --- | --- | --- |
+| TRAPDOOR1..3, FLOOR/CEILING_TRAPDOOR1..2 | 106-112 | **assignés** (`InitialiseTrapDoor`, `TrapDoorControl`, `TrapDoor/FloorTrapDoor/CeilingTrapDoorCollision`) |
+| FLAME_EMITTER, FLAME_EMITTER2, FLAME_EMITTER3 | 121-123 | **assignés** (`InitialiseFlameEmitter[2]`, `FlameEmitterControl`, `FlameEmitter2Control`, `FlameEmitter3Control`, `FireCollision`) |
+| WATERFALLMIST | 368 | **assigné** (`WaterFall`) |
+| EARTHQUAKE | 366 | **porté** depuis `objects.cpp` et assigné |
+| CRUMBLING_FLOOR / FALLING_BLOCK | 103-105 | déjà assignés |
+| PULLEY, SWITCH, DOOR, CLOSED_DOOR, PUZZLE/KEY_HOLE, PICKUP, PUSHABLE, RAISING_BLOCK1 | — | déjà assignés |
+| TEETH_SPIKES | 117 | **non assigné** : `ControlScaledSpike` et `DrawScaledSpike` sont encore des stubs `UNIMPLEMENTED` |
+| ROLLINGBALL | 114 | **non assigné** : `ControlRollingBall` est un stub |
+| STEAM_LASERS | 391 | **non assigné** : `Initialise/Control/DrawSteamLasers` absents du port |
+| FISHTANK | 413 | **non assigné** : `Initialise/ControlFishtank` absents |
+| TELEPORTER | 387 | **non assigné** : `Initialise/ControlTeleporter` absents (nécessite `TriggerSuperJetFlame`, flashs et `LaraBurn`) |
+
+#### 4. Ports de ce lot
+
+- `GAME/TRAPS.C` : `FlameEmitterControl` complet (jet de flammes OCB
+  négatif, `AddFire`, `TriggerSuperJetFlame`, `TriggerDynamic`,
+  `LaraBurn`), `InitialiseFlameEmitter`, `InitialiseFlameEmitter2`,
+  `InitialiseScaledSpike`.
+- `GAME/TOMB4FX.C` : `ItemNearLara` (utilisé par les émetteurs de flammes).
+- `GAME/OBJECTS.C` : `EarthQuake` réel (bounce caméra, `SFX_EARTHQUAKE_LOOP`,
+  réveil des `FLAME_EMITTER` de la salle à 1 chance sur 64 par frame).
+- `GAME/SETUP.C` : assignations ci-dessus dans `PortSetupGameplayObjects`.
+
+Validation runtime (sauvegarde corniche, forçage des items 13/31/67) :
+
+```
+T3 handlers: trapdoor init/crtl/coll non nuls
+T3 handlers: flame init/crtl/coll non nuls, draw nil
+T3 quake f0 oscille 20<->106, camera.bounce -14..-101
+T3 flame active=1 ; T3 trapdoor state=1 anim=582
+T3 OK (160 frames, aucun SIGSEGV)
+```
+
+**4177 tests PASS** (+2 tests du décodeur).
+
+Build `build-gameplay59` : SHA256
+`7051f2aca364a21177baabb06068cc07e1a55dac3616591915229dc783259585`.
