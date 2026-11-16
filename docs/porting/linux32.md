@@ -3277,3 +3277,48 @@ Test complémentaire : depuis la corniche, `saut+avant` vers l'ouest ne
 déclenche aucun saut (`state=14` GRAB_TO_FALL puis `state=2`, position
 inchangée à `43109,768,52325`) — Lara est déjà au bord et le moteur refuse
 de la faire sortir dans le vide.
+
+### Carte du niveau et graphe de progression (16 novembre 2026)
+
+Deux outils s'ajoutent au décodeur, tous deux utilisables sans le jeu :
+
+```sh
+python3 scripts/porting/decode_level_floordata.py --emit-selftest /tmp/synth
+python3 scripts/porting/render_level_map.py \
+  --arena lv3_arena.bin --items lv3_items.bin \
+  --room-ptr 0x... --floor-ptr 0x... --rooms 125 \
+  --out map.png [--xmin … --xmax … --zmin … --zmax … --scale 48]
+```
+
+`render_level_map.py` peint chaque cellule par altitude (clair = bas,
+sombre = haut, gris foncé = pas de sol), étiquette les salles et place les
+items. Les deux outils sont couverts par
+`tests/porting/test_level_floordata.py` (niveau synthétique).
+
+En construisant le graphe des **portails** (`door`) et des liens verticaux
+(`pit_room`/`sky_room`), on obtient le chemin voulu par le niveau depuis la
+corniche :
+
+| salle | sol | contenu |
+| --- | --- | --- |
+| 12 | 1024 | LARA (départ, corniche) |
+| 26 | 3072 | puits sous la corniche |
+| 27 | 3072 | — |
+| 108 | 1024 | 4 triggers (CD 57, objets 29/26) |
+| 15 | 1024 | `CLOSED_DOOR1`/`2`, **GLADIATOR**, `KEY_HOLE1` |
+| 18 | 1024 | — |
+| 100 | 512 | 2 triggers (obj 25) |
+| 102 | 512 | `KEY_HOLE2`, `CLOSED_DOOR2`, `ANIMATING1_MIP` |
+| 110 | 2816 | — |
+| 83 | 4352 | — |
+| 111 | 4352 | — |
+| 85 | 5888 | 1 trigger (CD 55) |
+| 70 | 7936 | **`PICKUP_ITEM1`** → `TO_FINISH` |
+
+Le combat du **ROMAN_GOD** (salle 90) est sur une antenne de la salle 100
+(`100 → 90`).
+
+Autrement dit : **la corniche mène vers le bas (salle 26), pas vers la
+salle 8**. Les salles 8/14/25/92 (dalles qui s'effondrent, pont
+`ANIMATING15_MIP`) sont une branche latérale sans issue nouvelle — ce qui
+clôt le blocage « bouton du crawlspace » : il n'y avait rien à trouver.

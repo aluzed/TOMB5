@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum, carte et graphe de progression: ajout de scripts/porting/render_level_map.py (rendu top-down des cellules par altitude avec salles et items) et de l'option --emit-selftest du decodeur; les deux sont couverts par tests/porting/test_level_floordata.py sur un niveau synthetique. En construisant le graphe des portails (door) et des liens verticaux (pit_room/sky_room), le chemin voulu par le niveau depuis la corniche est 12 -> 26 -> 27 -> 108 -> 15 -> 18 -> 100 -> 102 -> 110 -> 83 -> 111 -> 85 -> 70. Annotations: room 12 = LARA/depart corniche (sol 1024); 26 = puits sous la corniche (3072); 27 = 3072; 108 = 1024 avec 4 triggers (CD 57, objets 29/26); 15 = 1024 avec CLOSED_DOOR1/2, GLADIATOR et KEY_HOLE1; 18 = 1024; 100 = 512 (2 triggers obj 25); 102 = 512 avec KEY_HOLE2, CLOSED_DOOR2, ANIMATING1_MIP; 110 = 2816; 83 = 4352; 111 = 4352; 85 = 5888 (CD 55); 70 = 7936 avec PICKUP_ITEM1 -> TO_FINISH. Le combat du ROMAN_GOD (salle 90) est sur une antenne de la salle 100 (100 -> 90). Conclusion: la corniche mene vers le bas (salle 26) et non vers la salle 8; les salles 8/14/25/92 (dalles qui s'effondrent, pont ANIMATING15_MIP) sont une branche laterale sans issue nouvelle, ce qui clot le blocage du 'bouton du crawlspace': il n'y avait rien a trouver. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-16
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum, salle 8 mecanique des dalles et issue ouest: (1) les CRUMBLING_FLOOR de la salle 8 portent chacune un OCB qui est une temporisation (1, 5, 10, 20, 30, 40, 50, 70, 80, 100, 120); stationner sur une dalle la fait ceder. C'est la cause de TOUTES les chutes observees jusqu'ici (room 26 puis room 14, y=6144, hp=-1) et non un defaut de collision; exemple mesure en restant 100 frames sur la dalle OCB 120 de (1,2): n=150 debout 40130,256,52659; n=175 floor passe a 261; n=180 chute (room 12); n=190 room 14 hp=-1. (2) En restant mobile (saut d'entree + marche continue) Lara traverse la plateforme 43520,256,53731 -> 40037,256,53754 (colonne cx=4 puis cx=1, ligne cz=3) puis remonte vers z=52492 (ligne cz=2); mais a x~40107 la marche vers l'ouest ne progresse plus (state=2 puis state=1 speed=38 sans deplacement): la cellule (0,2) est un portail DOOR_TYPE vers la salle 25 dont le sol est a -1024, soit un mur de 1280 depuis la salle 8, infranchissable. La salle 8 est donc un cul-de-sac a l'ouest; la sortie de la zone (corniche + salle 8) est ailleurs, probablement la chute maitrisee depuis la corniche vers la salle 26 (pit_room=26, 2048 plus bas, survivable). (3) Test complementaire: depuis la corniche, saut+avant vers l'ouest ne declenche aucun saut (state=14 GRAB_TO_FALL puis state=2, position inchangee a 43109,768,52325). Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

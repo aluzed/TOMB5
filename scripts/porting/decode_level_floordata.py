@@ -230,8 +230,12 @@ def dump(args):
             print('room %d -> %s' % (index, [p['room'] for p in dec.portals(index)]))
 
 
-def selftest():
-    """Build a 2-room synthetic level and check the decoded values."""
+def build_synthetic_level():
+    """Return (arena_bytes, items_bytes, room_ptr, floor_ptr, number_rooms).
+
+    A 2-room level with one trigger chain and one door block, used by the
+    selftest and by tools/tests that need a tiny valid dump.
+    """
     number_rooms = 2
     floor0 = number_rooms * ROOM_INFO_SIZE
     floor1 = floor0 + FLOOR_INFO_SIZE
@@ -290,7 +294,13 @@ def selftest():
     struct.pack_into('<i', items, 68, -200)
     struct.pack_into('<i', items, 72, 300)
 
-    dec = LevelDecoder(bytes(arena), bytes(items), room_ptr, room_ptr + floor_data, number_rooms)
+    return bytes(arena), bytes(items), room_ptr, room_ptr + floor_data, number_rooms
+
+
+def selftest():
+    """Build the synthetic level and check the decoded values."""
+    arena_b, items_b, room_ptr, floor_ptr, number_rooms = build_synthetic_level()
+    dec = LevelDecoder(arena_b, items_b, room_ptr, floor_ptr, number_rooms)
 
     fail = []
 
@@ -337,6 +347,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--selftest', action='store_true')
+    parser.add_argument('--emit-selftest', metavar='DIR',
+                        help='write the synthetic level dumps into DIR and exit')
     sub = parser.add_subparsers(dest='command')
 
     d = sub.add_parser('dump', help='decode a gdb arena dump')
@@ -348,6 +360,18 @@ def main(argv=None):
     d.add_argument('--portals', type=int, nargs='*', default=[])
 
     args = parser.parse_args(argv)
+
+    if args.emit_selftest:
+        import os
+        arena_b, items_b, room_ptr, floor_ptr, number_rooms = build_synthetic_level()
+        os.makedirs(args.emit_selftest, exist_ok=True)
+        with open(os.path.join(args.emit_selftest, 'arena.bin'), 'wb') as f:
+            f.write(arena_b)
+        with open(os.path.join(args.emit_selftest, 'items.bin'), 'wb') as f:
+            f.write(items_b)
+        print('%s arena.bin items.bin 0x%x 0x%x %d' %
+              (args.emit_selftest, room_ptr, floor_ptr, number_rooms))
+        return 0
 
     if args.selftest:
         return selftest()
