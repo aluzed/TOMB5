@@ -3038,3 +3038,21 @@ T3 OK (160 frames, aucun SIGSEGV)
 
 Build `build-gameplay59` : SHA256
 `7051f2aca364a21177baabb06068cc07e1a55dac3616591915229dc783259585`.
+
+#### 5. Précision : géométrie exacte de la sortie de la salle 8
+
+Les champs `pit_room`/`sky_room` des `FLOOR_INFO` donnent le lien vertical
+réel des cellules de la salle 8 :
+
+```
+room 8 (x=38912 z=50176, floor=0)   room 12 (corniche, floor=1024)
+  cellules centrales : pit_room=12, sky_room=25
+  cellules (0,2) et (0,3) x=39424 : floor 0 / -1024, pit_room=255, sky_room=255
+```
+
+Autrement dit la corniche est **sous** la salle 8 et la salle 25 est
+**au-dessus** (y croît vers le bas) ; les deux cellules ouest `(0,2)`/`(0,3)`
+sont les seules sans lien vertical et portent le portail `door[0] → room 25`
+(floor 0 puis -1024). La sortie de la salle 8 est donc un simple **pas vers
+l'ouest** avec une chute de 1024 dans la salle 25, puis la salle 92 ; aucun
+bouton ni interrupteur n'intervient.

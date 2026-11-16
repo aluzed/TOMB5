@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum, precision geometrique: les FLOOR_INFO de la salle 8 donnent pit_room=12 (la corniche est SOUS la salle 8) et sky_room=25 (la salle 25 est AU-DESSUS, y croit vers le bas) pour les cellules centrales; les deux cellules ouest (0,2) et (0,3) x=39424 n'ont pas de lien vertical et portent le portail door[0] vers la salle 25 (floor 0 puis -1024). La sortie de la salle 8 est donc un simple pas vers l'ouest avec une chute de 1024 dans la salle 25 puis la salle 92; aucun bouton ni interrupteur n'intervient, ce qui invalide l'hypothese du 'bouton du crawlspace'. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-16
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum: (1) nouvel outil scripts/porting/decode_level_floordata.py qui decode hors-ligne items/FLOOR_INFO/chaines floor_data/portails depuis un dump gdb de l'arene de niveau (room..floor_data+65536), avec --selftest synthetique et tests/porting/test_level_floordata.py. (2) Ce decodage etablit que les salles 8/12/14/25 sont empilees sur le meme x/z (altitudes 0/768/6144/-1024) et que les salles 8 et 25 n'ont AUCUN trigger de sol: le 'bouton du crawlspace' n'existe pas, la sortie de la salle 8 est le portail ouest vers la salle 25 puis remontee par la salle 92; les 114 triggers du niveau sont decodes sans ambiguite. (3) Matrice des handlers du niveau 3 lue a l'execution; ports/assignations de ce lot: FlameEmitterControl complet, InitialiseFlameEmitter, InitialiseFlameEmitter2, InitialiseScaledSpike (TRAPS.C), ItemNearLara (TOMB4FX.C), EarthQuake reel (OBJECTS.C), et assignations TRAPDOOR1..FLOOR_TRAPDOOR2, FLAME_EMITTER..FLAME_EMITTER3, WATERFALLMIST, EARTHQUAKE dans PortSetupGameplayObjects. Validation runtime: handlers non nuls, quake oscille f0 20<->106 avec camera.bounce -14..-101, flame actif, trapdoor state=1 anim=582, 160 frames sans SIGSEGV. Restent non assignes: TEETH_SPIKES (ControlScaledSpike/DrawScaledSpike stubs), ROLLINGBALL (ControlRollingBall stub), STEAM_LASERS, FISHTANK, TELEPORTER. 4177 tests PASS (+2). Build-gameplay59 SHA256 7051f2aca364a21177baabb06068cc07e1a55dac3616591915229dc783259585. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
