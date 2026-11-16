@@ -2008,6 +2008,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum assignations generiques ANIMATING/PUZZLE_HOLE: PortSetupGameplayObjects n'assignait les controles ANIMATING que pour ANIMATING3_MIP/ANIMATING4 de Trajan's Markets; ajout des boucles de setup.cpp: PUZZLE_HOLE1..8 (ControlAnimatingSlots + PuzzleHoleCollision), PUZZLE_DONE1..8 (ControlAnimatingSlots + PuzzleDoneCollision), ANIMATING1..12_MIP (InitialiseAnimatingSlots, ControlAnimatingSlots, ObjectCollision, save flags, bones[0]|=8, bones[4]|=4), ANIMATING13..16_MIP (InitialiseAnimatingSlots, ControlAnimatingSlots, save flags, HitEffect=0). Cas special Trajan's garde prioritaire; boucles ANIMATING desactivees pour LVL5_TITLE pour preserver le plan du titre. Validation: room 8, objects[445].control et objects[444].control = ControlAnimatingSlots (ANIMATING15/ANIMATING15_MIP, mecanisme de sortie); la porte ne s'anime pas sans son trigger, bouton du crawlspace toujours a identifier. Sanity corniche 200 frames OK, 4177 tests PASS. Build-gameplay59 SHA256 a1ea77fa9809d94b26f09dd7b02c3d11eb2a9597a798680c9c793518999420fb. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum precision porte room 8: verification runtime, ANIMATING15 (obj444 anim697) et ANIMATING15_MIP (obj445 anim698) ont des animations vides (frame_base=frame_end=0); meme actives (flags|REVERSE, status=ACTIVE, AddActiveItem) leur frame reste 0. Ce sont des decorations/grilles statiques, pas le mecanisme de sortie. Le bouton/trigger du crawlspace reste a identifier; piste: scan des donnees de trigger des cellules rooms 8/12/25/26/92 pour un TO_OBJECT visant la porte ou un flipmap. Aucun Done global."
     }
   ]
 }

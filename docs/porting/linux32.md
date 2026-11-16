@@ -2739,3 +2739,14 @@ s’anime toujours pas sans son trigger : le bouton du crawlspace reste
 
 Build `build-gameplay59` : SHA256
 `a1ea77fa9809d94b26f09dd7b02c3d11eb2a9597a798680c9c793518999420fb`.
+
+#### Précision : ANIMATING15 n’est pas la porte de sortie
+
+Vérification runtime : `ANIMATING15` (obj 444, anim 697) et
+`ANIMATING15_MIP` (obj 445, anim 698) ont des animations **vides**
+(`frame_base = frame_end = 0`). Même activés (`flags |= REVERSE`,
+`status = ACTIVE`, `AddActiveItem`), leur frame reste 0. Ce sont donc
+des décorations/grilles statiques, pas le mécanisme de sortie de la
+room 8. Le bouton/trigger du crawlspace reste à identifier (piste :
+scan des données de trigger des cellules des rooms 8/12/25/26/92 pour
+un `TO_OBJECT` visant la porte ou un flipmap).
