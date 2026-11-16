@@ -2080,6 +2080,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum HK/crossbow: (1) precedence de condition dans LaraGun (GAME/LARAFIRE.C): 'state==0x47 || state==0x69 || state==0x6A && request==4 || request==6 || request==5' faisait que toute demande HK/crossbow (request 5/6) prenait la branche accroupi et l'arme n'etait jamais dessinee; corrige en regroupant les etats accroupis et les trois armes. (2) ControlCrossbow et CrossbowHitSwitchType78 (GAME/LARA1GUN.C) portes depuis lara1gun.cpp: deplacement du bolt, changement de salle, GetCollidedObjects, cible grappling, activation switchs 7/8 (GetSwitchTrigger, ExplodeItemNode). (3) CROSSBOW_BOLT assigne dans PortSetupGameplayObjects (control=ControlCrossbow, draw_routine=DrawWeaponMissile, using_drawanimating_item=FALSE, save flags). Validation: shotgun toujours fonctionnel apres correctif (statue 300->228, munitions 100->76); test HK/crossbow force dans le Colosseum plante dans mRotSuperPackedYXZ_CL car les objets HK/crossbow ne sont pas charges dans ce niveau; a valider dans un niveau qui les contient. 4177 tests PASS. Build-gameplay59 SHA256 7ea4b985123b9bf44c28b56a726fa6ed28e71d6bc5dbac7a6094742b99a735ec. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum FlipMap: flip_status etait inverse et affecte a chaque appel (flip_stats[n] = flip_stats[n]==0; flip_status = flip_stats[n]==0) au lieu de flip_stats[n]=!flip_stats[n]; flip_status=flip_stats[n] comme sur PC. Corrige. Validation runtime: FlipMap(3) fait passer flip_status 0->1 (flip_stats[3] 0->1); les zones ground_zone[..][flip_status] et les salles echangees (32<->76, 65<->82, 68<->33) sont coherentes. La corniche n'a pas de salle appariee pour FlipNumber 2, apparence inchangee. 4177 tests PASS, corniche 200 frames OK. Build-gameplay59 SHA256 1f70101d8941435cc732067fbbb5c747b32d43d5a1621cf9cdc4d28190b1f7b8. Aucun Done global."
     }
   ]
 }

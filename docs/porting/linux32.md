@@ -2919,3 +2919,29 @@ niveau qui les contient. **4177 tests PASS**.
 
 Build `build-gameplay59` : SHA256
 `7ea4b985123b9bf44c28b56a726fa6ed28e71d6bc5dbac7a6094742b99a735ec`.
+
+### `FlipMap` : `flip_status` inversé (16 novembre 2026)
+
+`FlipMap` (`GAME/CONTROL.C`) faisait :
+
+```c
+flip_stats[FlipNumber] = flip_stats[FlipNumber] == 0;
+flip_status = flip_stats[FlipNumber] == 0;
+```
+
+Deux défauts :
+- `flip_status` était inversé (`== 0`) ;
+- il était affecté à chaque fois, alors qu’il doit refléter l’état du flip
+  courant (0/1) — le PC fait `flip_stats[n] = !flip_stats[n]; flip_status = flip_stats[n];`.
+
+Corrigé. Validation runtime : `FlipMap(3)` fait passer
+`flip_status` **0 → 1** (`flip_stats[3]` 0 → 1), donc les zones
+`ground_zone[..][flip_status]` et les salles échangées (32 ↔ 76,
+65 ↔ 82, 68 ↔ 33) sont désormais cohérentes. La corniche n’a pas de
+salle appariée pour son `FlipNumber` (2), donc son apparence ne change
+pas.
+
+**4177 tests PASS**, corniche 200 frames OK.
+
+Build `build-gameplay59` : SHA256
+`1f70101d8941435cc732067fbbb5c747b32d43d5a1621cf9cdc4d28190b1f7b8`.

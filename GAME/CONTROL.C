@@ -3462,8 +3462,8 @@ void FlipMap(int FlipNumber)// (F)
 			AddRoomFlipItems(r);
 		}
 	}
-	flip_stats[FlipNumber] = flip_stats[FlipNumber] == 0;
-	flip_status = flip_stats[FlipNumber] == 0;
+	flip_stats[FlipNumber] = !flip_stats[FlipNumber];
+	flip_status = flip_stats[FlipNumber];
 	{
 		struct creature_info* cinfo = baddie_slots;
 		int slot;
