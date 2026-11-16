@@ -3199,3 +3199,42 @@ puis relancer `sh CMakeFiles/TombRaiderChronicles_PSXPC_N.dir/link.txt`
 
 Build `build-gameplay59` : SHA256
 `9d152a50622831050b5db6a0fb339ff4762db53832f9fdfa300efba435d92a8a`.
+
+### Salle 8 : géométrie vue à l'écran et sauvegardes « room 8 » (16 novembre 2026)
+
+Capture de la fenêtre de jeu (`import -window`) à `40037,256,52736` (room 8) :
+Lara se tient sur une dalle carrelée ; devant elle, **une marche montante**
+vers un sol plus haut et une niche sombre sur la droite. Aucun gouffre
+visible dans l'axe — le vide est **latéral**.
+
+Cela recoupe exactement les cellules décodées :
+
+- `(0,2)` (x `38912..39936`, z `52224..53248`) : sol **0**, soit 256 au-dessus
+  de la dalle (marche franchissable) ;
+- `(0,3)` (même x, z `53248..54272`) : sol **-1024**, soit 1280 au-dessus
+  (mur) ;
+- `(0,1)` (z `51200..52224`) : **aucun sol** (-32512).
+
+D'où l'échec des essais précédents : à `z=51712` (ligne `cz=1`) il n'y a
+**rien** à l'ouest, la chute mène aux salles 26/14 ; il faut d'abord se
+décaler dans la ligne `cz=2` (`z` entre 52224 et 53248) puis monter la
+marche de 256 dans `(0,2)`.
+
+#### Sauvegardes dont le champ `room` vaut 8
+
+Une sauvegarde patchée en `40037,256,52736` **room 8** ne démarre pas en
+jeu : l'écran se fige sur une **cinématique** (Lara derrière des barreaux),
+l'image n'avance plus et aucune ligne de log ne sort (le message
+`[SAVE] loaded … level 3 room 8` est bien imprimé juste avant). Ce n'est
+pas une boucle de `GetFloor` : un `interrupt` + `bt` montre la pile
+normale de rendu (`DrawOTag` → `Emulator_EndScene` → `WaitForTimestep`).
+Les sauvegardes en **room 12** démarrent normalement. Conclusion pratique :
+garder les points de reprise en room 12 et entrer dans la salle 8 par le
+saut sur les dalles.
+
+#### Délais de démarrage
+
+Sous gdb **et** avec `stdbuf`, `[EMU] Initialising Emulator` peut sortir
+après 60 à 200 s (init GL/audio), et la sortie standard est bufferisée :
+un log muet n'est pas une preuve de blocage. Pour un diagnostic fiable,
+lancer sans gdb et capturer la fenêtre avec `import -window`.

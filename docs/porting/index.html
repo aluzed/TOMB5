@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum, salle 8 geographie vue a l&#x27;ecran: capture de la fenetre de jeu (import -window) a 40037,256,52736 room 8: Lara est sur une dalle carrelee, devant elle une marche montante vers un sol plus haut et une niche sombre a droite; le vide est lateral, pas dans l&#x27;axe. Recoupement avec les cellules decodees: (0,2) sol 0 (256 au-dessus de la dalle, franchissable), (0,3) sol -1024 (1280 au-dessus, mur), (0,1) aucun sol (-32512). Les essais precedents echouaient parce qu&#x27;a z=51712 (ligne cz=1) il n&#x27;y a rien a l&#x27;ouest (chute vers salles 26/14); il faut d&#x27;abord se decaler dans la ligne cz=2 (z entre 52224 et 53248) puis monter la marche de 256 dans (0,2). Observation importante: une sauvegarde patchee en 40037,256,52736 room 8 ne demarre pas en jeu, l&#x27;ecran se fige sur une cinematique (Lara derriere des barreaux) et l&#x27;image n&#x27;avance plus; ce n&#x27;est pas une boucle de GetFloor (un interrupt + bt montre la pile normale DrawOTag -&gt; Emulator_EndScene -&gt; WaitForTimestep). Les sauvegardes en room 12 demarrent normalement: garder les points de reprise en room 12 et entrer dans la salle 8 par le saut sur les dalles. Note: sous gdb et avec stdbuf, [EMU] Initialising Emulator peut sortir apres 60 a 200 s et la sortie standard est bufferisee, un log muet n&#x27;est pas une preuve de blocage. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-16
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
+
 Correctif racine des entrees: Emulator_UpdateInput (et Emulator_UpdateInputDebug) fusionnait clavier et manette avec un ET: &#x27;((unsigned short*)padData[i])[1] = kbInputs &amp; controllerInputs&#x27;. Les deux masques etant actifs au niveau bas (0xFFFF = rien), un ET exige le meme bouton sur le clavier ET sur la manette; des qu&#x27;une manette est presente (SDL_NumJoysticks()&gt;0, cas de vpad) aucune des deux sources ne produit d&#x27;entree: symptome inputBusy=0 avec PadConnected=1 et Lara figee malgre les touches. Corrige en OU sur les deux chemins. Validation runtime (sauvegarde corniche, clavier xdotool): inputBusy passe de 0x0 a 0x1 (avant) puis 0x4 (gauche, state=20 TURN_FAST) et Lara se deplace (43364 -&gt; 43109). Le pad virtuel vpad reste sans effet (RawPad=0), chemin separe non resolu, mais le clavier suffit au debug manuel. Regression verrouillee par tests/porting/test_input_merge.py. Note build: les objets emulateur sont dans l&#x27;archive statique build/.../EMULATOR/libPSX.a; apres modification de EMULATOR/EMULATOR.C il faut make -C build/porting/build-gameplay59/build/EMULATOR puis relancer sh CMakeFiles/TombRaiderChronicles_PSXPC_N.dir/link.txt avec LIBRARY_PATH 32 bits. Build-gameplay59 SHA256 9d152a50622831050b5db6a0fb339ff4762db53832f9fdfa300efba435d92a8a. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
