@@ -3056,3 +3056,71 @@ sont les seules sans lien vertical et portent le portail `door[0] → room 25`
 (floor 0 puis -1024). La sortie de la salle 8 est donc un simple **pas vers
 l'ouest** avec une chute de 1024 dans la salle 25, puis la salle 92 ; aucun
 bouton ni interrupteur n'intervient.
+
+### Entrée déterministe dans la salle 8 et traversée (16 novembre 2026)
+
+#### 1. Piloter Lara sans X : forcer `input` à `LaraControl`
+
+Le pad virtuel (`/tmp/opencode/vpad` + `input_daemon.py`) et les touches
+xdotool ne produisaient plus aucune entrée (`inputBusy = 0` alors que
+`PadConnected = 1`). Pour tester le gameplay de façon reproductible, on
+force `input` juste avant que `LaraControl` ne le lise :
+
+```gdb
+break LaraControl
+commands
+silent
+set GLOBAL_playing_cutseq = 0
+set cutseq_trig = 0
+set globoncuttrig = 0
+set bDisableLaraControl = 0
+set var input = 1          # IN_FORWARD
+continue
+end
+```
+
+⚠️ `set input = 1` échoue (« syntax error near `= 1` ») : gdb préfixe
+`set input…` par la sous-commande `set input-radix`. Il faut `set var input`.
+Bits utiles : `IN_FORWARD=0x1`, `IN_BACK=0x2`, `IN_LEFT=0x4`,
+`IN_RIGHT=0x8`, `IN_JUMP=0x10`, `IN_ACTION=0x40`, `IN_WALK=0x80`.
+
+#### 2. La sauvegarde « corniche » est posée sur le bord de la grille
+
+La sauvegarde de reprise (`43364,768,52325`, room 12) est **hors de la
+grille de cellules de la room 12** (elle s'arrête à `x=43008`) ; la seule
+surface possible sous cette position serait le pont `ANIMATING15_MIP`
+(item 21, `43520,0,52736`), or `ANIMATING15` n'a **pas** de callback de sol
+(ni sur PC ni dans le port). Lara s'y arrête donc au bord du vide : ce
+n'était pas un gel de contrôle.
+
+En revanche une sauvegarde patchée en `43520,768,51712` (room 12) fait
+apparaître Lara **dans la salle 8 à `y=256`**, debout sur les dalles qui
+s'effondrent (`CRUMBLING_FLOOR` item 15, OCB 80), et elle répond
+normalement aux entrées forcées :
+
+```
+PJ2 n=5   room=8 pos=43520,256,51712   floor=256 state=2   (debout)
+PJ2 n=10  room=8 pos=43520,-84,52209   state=3 anim=77 speed=50 fall=-76  (saut)
+PJ2 n=20  room=8 pos=43520,256,53659   floor=256 state=2   (atterrissage)
+PJ2 n=30  room=8 pos=43520,256,54065   state=1 speed=35    (course)
+PJ2 n=35  room=8 pos=43520,256,54171   state=2             (bord de dalle)
+```
+
+Conclusion : **la salle 8 est jouable** (déplacements, saut, atterrissage
+sur les dalles, arrêt aux bords) ; aucun handler ne manque pour s'y
+déplacer. Le chemin d'entrée réel est le saut sur les dalles de la
+colonne `cx=4` (`y=256`), pas la position de la sauvegarde actuelle.
+
+#### 3. Démarrage lent à ne pas confondre avec un blocage
+
+Avec beaucoup de périphériques `uinput` résiduels (`/dev/input/event*`),
+`[EMU] Initialising Emulator` peut n'apparaître qu'au bout de **110 à
+200 s**. Un log qui s'arrête sur `[New Thread …]` n'est pas forcément un
+échec : attendre, puis relancer si rien après ~4 min.
+
+#### 4. Suite du parcours
+
+Depuis `43520,256,54171` (room 8), l'étape suivante est le déplacement vers
+l'ouest jusqu'aux cellules `(0,2)`/`(0,3)` (`x=39424`, sol 0 puis -1024,
+sans `pit_room`/`sky_room`) qui portent le portail vers la salle 25, puis la
+salle 92.

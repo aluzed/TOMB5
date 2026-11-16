@@ -2107,6 +2107,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum, precision geometrique: les FLOOR_INFO de la salle 8 donnent pit_room=12 (la corniche est SOUS la salle 8) et sky_room=25 (la salle 25 est AU-DESSUS, y croit vers le bas) pour les cellules centrales; les deux cellules ouest (0,2) et (0,3) x=39424 n'ont pas de lien vertical et portent le portail door[0] vers la salle 25 (floor 0 puis -1024). La sortie de la salle 8 est donc un simple pas vers l'ouest avec une chute de 1024 dans la salle 25 puis la salle 92; aucun bouton ni interrupteur n'intervient, ce qui invalide l'hypothese du 'bouton du crawlspace'. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum, entree deterministe dans la salle 8: (1) le pad virtuel et xdotool ne produisaient plus aucune entree (inputBusy=0 alors que PadConnected=1); mise au point d'un pilotage reproductible en forcant input juste avant LaraControl (break LaraControl; set var input=...). Attention: 'set input = 1' echoue car gdb l'interprete comme la sous-commande set input-radix; il faut 'set var input'. Bits: IN_FORWARD=0x1, IN_BACK=0x2, IN_LEFT=0x4, IN_RIGHT=0x8, IN_JUMP=0x10, IN_ACTION=0x40, IN_WALK=0x80. (2) La sauvegarde corniche (43364,768,52325, room 12) est hors de la grille de cellules de la room 12 (fin a x=43008); la seule surface possible serait le pont ANIMATING15_MIP (item 21, 43520,0,52736) qui n'a pas de callback de sol (ni PC ni port), donc Lara s'arrete au bord du vide: ce n'etait pas un gel de controle. (3) Sauvegarde patchee en 43520,768,51712 room 12: Lara apparait dans la salle 8 a y=256 sur les CRUMBLING_FLOOR (item 15, OCB 80) et repond aux entrees forcees; saut + course mesurees (43520,256,51712 -> saut -> 43520,256,53659 -> course -> 43520,256,54171, arret au bord). La salle 8 est donc jouable, aucun handler ne manque pour s'y deplacer; l'entree reelle est le saut sur les dalles cx=4 a y=256. (4) Demarrage lent a ne pas confondre avec un blocage: avec des peripheriques uinput residuels, [EMU] Initialising Emulator peut prendre 110 a 200 s. Aucun Done global."
     }
   ]
 }
