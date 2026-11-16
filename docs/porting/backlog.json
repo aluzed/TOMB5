@@ -2035,6 +2035,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum combat: port de DoProperDetection (GAME/LARAFIRE.C) depuis larafire.cpp - impacts de projectiles sur sols/pentes (BIG_SLOPE, DIAGONAL)/plafonds/murs, rebonds (fallspeed, speed, y_rot), changement de salle via ItemNewRoom (implementation PSXPC dans COLLIDE_S.C). Portage: ITEM_INFO/FLOOR_INFO qualifies struct, ushort->unsigned short, casts short(...)->(short)(...), includes COLLIDE.H/COLLIDE_S.H/ITEMS.H. Validation: 4177 tests PASS, corniche 200 frames sans crash. Build-gameplay59 SHA256 e4b074ccea108c072786c93aee96fae3cd251a537042be425e109883aefef98a. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum combat: port de GetTargetOnLOS (GAME/CONTROL.C) depuis control.cpp - LOS + ObjectOnLOS2, collision, shatter des meshes destructibles, ricochets, degats HitTarget, objets smashables, switchs explosifs SWITCH_TYPE7/8 (GetSwitchTrigger, ProcessExplodingSwitchType8), crossbow/laser, meshes statiques (ShatterObject, SmashedMesh). Adaptations: ITEM_INFO/MESH_INFO/GAME_VECTOR/PHD_VECTOR qualifies struct, phd_atan->phd_atan_asm, IFL_SWITCH_ONESHOT->IFLAG_UNK40, IFL_CODEBITS->IFLAG_ACTIVATION_MASK, GF_OFFICE->GF_LVOP_TRAIN, include LARAFIRE.H pour weapons/HitTarget. Validation: 4177 tests PASS, corniche 200 frames sans crash. Build-gameplay59 SHA256 2babbc6898792b180ffedff44a88267078175e3348c07d638f8e15627b32a95c. Aucun Done global."
     }
   ]
 }

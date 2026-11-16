@@ -2778,3 +2778,24 @@ Validation : **4177 tests PASS**, corniche 200 frames sans crash.
 
 Build `build-gameplay59` : SHA256
 `e4b074ccea108c072786c93aee96fae3cd251a537042be425e109883aefef98a`.
+
+### `GetTargetOnLOS` porté (16 novembre 2026)
+
+`GAME/CONTROL.C` : `GetTargetOnLOS` était un stub (`return 0`), alors
+que `FireWeapon` l’appelle pour le ciblage. Porté depuis
+`control.cpp` : LOS + `ObjectOnLOS2`, test de collision, shatter des
+meshes destructibles, ricochets, dégâts (`HitTarget`), objets smashables,
+switchs explosifs (`SWITCH_TYPE7/8`, `GetSwitchTrigger`,
+`ProcessExplodingSwitchType8`), crossbow/laser, et gestion des meshes
+statiques (`ShatterObject`, `SmashedMesh*`).
+
+Adaptations : `ITEM_INFO`/`MESH_INFO`/`GAME_VECTOR`/`PHD_VECTOR`
+qualifiés `struct`, `phd_atan` → `phd_atan_asm`,
+`IFL_SWITCH_ONESHOT` → `IFLAG_UNK40`, `IFL_CODEBITS` →
+`IFLAG_ACTIVATION_MASK`, `GF_OFFICE` → `GF_LVOP_TRAIN`, include
+`LARAFIRE.H` pour `weapons`/`HitTarget`.
+
+Validation : **4177 tests PASS**, corniche 200 frames sans crash.
+
+Build `build-gameplay59` : SHA256
+`2babbc6898792b180ffedff44a88267078175e3348c07d638f8e15627b32a95c`.
