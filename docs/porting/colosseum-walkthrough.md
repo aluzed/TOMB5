@@ -27,6 +27,20 @@ obtenu avec `scripts/porting/decode_level_floordata.py` /
 Ordre attendu : lions → gladiateur + clé 1 (15) → portes → réceptacle
 (102) → combat du ROMAN_GOD (90) → clé 2 → pierre (70) → fin de niveau.
 
+**Entrée dans la salle 26 mesurée** (`GetFloor` à `y=1024`, `z=53760`,
+en partant de la room 12) :
+
+```
+x=43520 … x=39936  room=26  (hors grille de la room 12, bascule immédiate)
+x=39424            room=26  height=1151  idx=1089
+x=38912            room=26  height=1151  idx=1089
+x=38400            room=12  height=-32512 (plus de sol)
+```
+
+Autrement dit la bascule 12 → 26 se fait à l'**extrémité ouest** de la
+corniche (`x≈39424`), sur une marche de l'ordre de 100 à 400 unités — pas
+une chute de 2048. C'est un simple pas vers l'ouest en bout de corniche.
+
 **Branche latérale sans issue** : salles 8 / 14 / 25 / 92 (dalles à
 temporisation + pont `ANIMATING15_MIP`). Le fameux « bouton du crawlspace »
 n'existe pas dans les données.

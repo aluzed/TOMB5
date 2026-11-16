@@ -3329,3 +3329,20 @@ Le chemin de progression, les mécaniques salle par salle et la recette de
 test (sauvegardes de reprise valides, latence de démarrage, pilotage
 `set var input`) sont regroupés dans
 [`colosseum-walkthrough.md`](colosseum-walkthrough.md).
+
+### Salle 12 → 26 : mesure du point de bascule (17 novembre 2026)
+
+`GetFloor` le long de la corniche à `y=1024`, `z=53760`, en partant de la
+room 12 :
+
+```
+x=43520..39936  room=26   (positions hors grille de la room 12)
+x=39424         room=26   height=1151  idx=1089
+x=38912         room=26   height=1151  idx=1089
+x=38400         room=12   height=-32512 (plus de sol)
+```
+
+La bascule vers la salle 26 se fait donc à l'**extrémité ouest** de la
+corniche (`x≈39424`), avec une marche de quelques centaines d'unités et
+non une chute de 2048 : c'est un pas vers l'ouest, ce qui corrige
+l'hypothèse « chute maîtrisée ».
