@@ -3124,3 +3124,37 @@ Depuis `43520,256,54171` (room 8), l'étape suivante est le déplacement vers
 l'ouest jusqu'aux cellules `(0,2)`/`(0,3)` (`x=39424`, sol 0 puis -1024,
 sans `pit_room`/`sky_room`) qui portent le portail vers la salle 25, puis la
 salle 92.
+
+### Salle 8 : traversée mesurée et limite ouest (16 novembre 2026)
+
+Parcours rejoué avec `input` forcé (voir section précédente), en partant
+d'une sauvegarde patchée en `43520,768,51712` (room 12, `y_rot=0`) qui fait
+apparaître Lara dans la salle 8 à `y=256` sur les dalles qui s'effondrent :
+
+| frames | entrée | résultat |
+| --- | --- | --- |
+| 5–14 | `IN_FORWARD\|IN_JUMP` | saut, `state=3`, `speed=50` |
+| 15–100 | `IN_FORWARD` | course vers `+z`, arrêt au bord `43520,256,54171` |
+| 101 | `y_rot` forcé à `-16384` | demi-tour vers `-x` |
+| 101–145 | `IN_FORWARD` | traversée de la plateforme jusqu'à `40037,256,53811` |
+| 146–165 | `IN_FORWARD\|IN_JUMP` | saut vertical sur place (`speed=2`) |
+
+Mesures importantes :
+
+- La plateforme de dalles est **traversable d'est en ouest** : de
+  `x=43520` à `x=40037`, `y=256` constant, sans chute ni blocage — donc les
+  `CRUMBLING_FLOOR` et le pont `ANIMATING15_MIP` (cellule `(4,2)`) portent
+  bien Lara.
+- À l'ouest, la marche s'arrête à `x=40037` (bord de la dernière dalle).
+  Un **saut vertical** à cet endroit ne progresse pas en `x` (`speed=2`) et
+  la fait tomber dans le puits : `room 26` (`y=3141`, `fall=147`) puis
+  `room 14` (`y=6144`, `state=8`) — chute d'environ 6000 unités, donc
+  mortelle. Le saut simple n'est donc **pas** la sortie.
+- La sauvegarde « corniche » contient `room=0` (et non 12) avec
+  `43364,768,52325`, `y_rot=-16384` ; c'est `GetFloor` qui rétablit
+  `room 12` au chargement.
+
+Piste restante pour la sortie ouest : un **saut avec élan** (garder
+`IN_FORWARD` pendant l'appui, pas un saut sur place) depuis `x≈40500` pour
+couvrir les ~100 unités qui manquent et retomber sur la cellule `(0,2)`
+(`x=38912..39936`, sol 0), ou l'accès par la salle 92 côté est.

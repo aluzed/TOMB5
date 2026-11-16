@@ -2116,6 +2116,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum, entree deterministe dans la salle 8: (1) le pad virtuel et xdotool ne produisaient plus aucune entree (inputBusy=0 alors que PadConnected=1); mise au point d'un pilotage reproductible en forcant input juste avant LaraControl (break LaraControl; set var input=...). Attention: 'set input = 1' echoue car gdb l'interprete comme la sous-commande set input-radix; il faut 'set var input'. Bits: IN_FORWARD=0x1, IN_BACK=0x2, IN_LEFT=0x4, IN_RIGHT=0x8, IN_JUMP=0x10, IN_ACTION=0x40, IN_WALK=0x80. (2) La sauvegarde corniche (43364,768,52325, room 12) est hors de la grille de cellules de la room 12 (fin a x=43008); la seule surface possible serait le pont ANIMATING15_MIP (item 21, 43520,0,52736) qui n'a pas de callback de sol (ni PC ni port), donc Lara s'arrete au bord du vide: ce n'etait pas un gel de controle. (3) Sauvegarde patchee en 43520,768,51712 room 12: Lara apparait dans la salle 8 a y=256 sur les CRUMBLING_FLOOR (item 15, OCB 80) et repond aux entrees forcees; saut + course mesurees (43520,256,51712 -> saut -> 43520,256,53659 -> course -> 43520,256,54171, arret au bord). La salle 8 est donc jouable, aucun handler ne manque pour s'y deplacer; l'entree reelle est le saut sur les dalles cx=4 a y=256. (4) Demarrage lent a ne pas confondre avec un blocage: avec des peripheriques uinput residuels, [EMU] Initialising Emulator peut prendre 110 a 200 s. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum, salle 8 traversee mesuree: avec input force (IN_FORWARD/IN_JUMP) depuis une sauvegarde patchee en 43520,768,51712 room 12 (Lara apparait dans la salle 8 a y=256 sur les CRUMBLING_FLOOR), la plateforme de dalles est traversable d'est en ouest de x=43520 a x=40037 a y=256 constant sans chute ni blocage (donc les CRUMBLING_FLOOR et le pont ANIMATING15_MIP de la cellule (4,2) portent bien Lara). A l'ouest la marche s'arrete a x=40037 (bord de la derniere dalle); un saut vertical a cet endroit ne progresse pas en x (speed=2) et fait tomber dans le puits: room 26 (y=3141, fall=147) puis room 14 (y=6144, state=8), chute d'environ 6000 unites donc mortelle. Le saut simple n'est donc pas la sortie. Piste restante: saut avec elan (garder IN_FORWARD pendant l'appui) depuis x~40500 pour couvrir les ~100 unites manquantes et retomber sur la cellule (0,2) (x 38912..39936, sol 0), ou acces par la salle 92 cote est. Note: la sauvegarde corniche contient room=0 (et non 12) avec 43364,768,52325 et y_rot=-16384; GetFloor retablit room 12 au chargement. Aucun Done global."
     }
   ]
 }
