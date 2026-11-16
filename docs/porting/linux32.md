@@ -3322,3 +3322,10 @@ Autrement dit : **la corniche mène vers le bas (salle 26), pas vers la
 salle 8**. Les salles 8/14/25/92 (dalles qui s'effondrent, pont
 `ANIMATING15_MIP`) sont une branche latérale sans issue nouvelle — ce qui
 clôt le blocage « bouton du crawlspace » : il n'y avait rien à trouver.
+
+### Parcours du Colosseum : document de travail dédié
+
+Le chemin de progression, les mécaniques salle par salle et la recette de
+test (sauvegardes de reprise valides, latence de démarrage, pilotage
+`set var input`) sont regroupés dans
+[`colosseum-walkthrough.md`](colosseum-walkthrough.md).

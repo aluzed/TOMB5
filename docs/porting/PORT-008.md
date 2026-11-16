@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
+The Colosseum, document de travail dedie: creation de docs/porting/colosseum-walkthrough.md qui regroupe (1) le chemin de progression calcule depuis les donnees du niveau (12 -> 26 -> 27 -> 108 -> 15 [CLOSED_DOOR1/2, GLADIATOR, KEY_HOLE1] -> 18 -> 100 -> 102 [KEY_HOLE2, CLOSED_DOOR2] -> 110 -> 83 -> 111 -> 85 -> 70 [PICKUP_ITEM1 -> TO_FINISH], avec le ROMAN_GOD en antenne de la salle 100 via 90), (2) les mecaniques a connaitre (temporisation des CRUMBLING_FLOOR, trappes, emetteurs de flammes, seisme, boss), (3) la recette de test Linux32 (sauvegardes de reprise valides en room 12 aux positions 43364,768,52325 ou 43520,768,51712, latence de demarrage 60-200 s et buffering stdout, captures via import -window, pilotage deterministe par break LaraControl + set var input avec les bits IN_*, forcage de pos.y_rot), et (4) le tableau des elements encore stubs avec leur impact reel sur ce parcours (ControlScaledSpike/DrawScaledSpike, ControlRollingBall, SteamLasers, Fishtank, ControlTeleporter, DrawWeaponMissile, rendu de corde, UpdateFireSparks/GunShells/Rats/Bats, FixedCamera, selection de niveau, audio). Constat: le parcours ne depend d'aucun handler manquant, les blocages restants sont de la verification en jeu. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-11-16
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
