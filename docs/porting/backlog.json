@@ -2026,6 +2026,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum test flipmaps room 8: FlipMap(0..9) sur la sauvegarde room8 ne change rien, flip_status reste 0. La sortie n'est probablement pas un flipmap mais une porte/objet ou un TO_FLIPEFFECT declenche par le bouton du crawlspace. Le scan des triggers par cellule (trigger_index apres GetHeight) renvoie des mots qui ressemblent encore a des donnees de sol; il faudra un decodeur de triggers dedie ou reperer le bouton en jeu. Aucun Done global."
+    },
+    {
+      "date": "2026-11-16",
+      "authorization_until": "2026-11-16T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum combat: port de DoProperDetection (GAME/LARAFIRE.C) depuis larafire.cpp - impacts de projectiles sur sols/pentes (BIG_SLOPE, DIAGONAL)/plafonds/murs, rebonds (fallspeed, speed, y_rot), changement de salle via ItemNewRoom (implementation PSXPC dans COLLIDE_S.C). Portage: ITEM_INFO/FLOOR_INFO qualifies struct, ushort->unsigned short, casts short(...)->(short)(...), includes COLLIDE.H/COLLIDE_S.H/ITEMS.H. Validation: 4177 tests PASS, corniche 200 frames sans crash. Build-gameplay59 SHA256 e4b074ccea108c072786c93aee96fae3cd251a537042be425e109883aefef98a. Aucun Done global."
     }
   ]
 }

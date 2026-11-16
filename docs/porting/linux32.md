@@ -2760,3 +2760,21 @@ le bouton du crawlspace. Le scan des triggers par cellule
 (`trigger_index` après `GetHeight`) renvoie des mots qui ressemblent
 encore à des données de sol ; il faudra un décodeur de triggers dédié
 ou repérer le bouton en jeu.
+
+### `DoProperDetection` porté (16 novembre 2026)
+
+`GAME/LARAFIRE.C` : `DoProperDetection` était un stub. Porté depuis
+`TOMB5pc/game/larafire.cpp` — gestion des impacts de projectiles sur
+sols, pentes (`BIG_SLOPE`, `DIAGONAL`), plafonds et murs, avec rebonds
+(`fallspeed`, `speed`, `y_rot`) et changement de salle via
+`ItemNewRoom` (implémentation PSXPC de `COLLIDE_S.C`).
+
+Notes de portage : `ITEM_INFO`/`FLOOR_INFO` qualifiés `struct`,
+`ushort` → `unsigned short`, casts `short(...)` → `(short)(...)`,
+includes `COLLIDE.H`, `COLLIDE_S.H`, `ITEMS.H`. Aucun changement de
+comportement hors PSXPC.
+
+Validation : **4177 tests PASS**, corniche 200 frames sans crash.
+
+Build `build-gameplay59` : SHA256
+`e4b074ccea108c072786c93aee96fae3cd251a537042be425e109883aefef98a`.

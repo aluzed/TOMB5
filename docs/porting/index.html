@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum combat: port de DoProperDetection (GAME/LARAFIRE.C) depuis larafire.cpp - impacts de projectiles sur sols/pentes (BIG_SLOPE, DIAGONAL)/plafonds/murs, rebonds (fallspeed, speed, y_rot), changement de salle via ItemNewRoom (implementation PSXPC dans COLLIDE_S.C). Portage: ITEM_INFO/FLOOR_INFO qualifies struct, ushort-&gt;unsigned short, casts short(...)-&gt;(short)(...), includes COLLIDE.H/COLLIDE_S.H/ITEMS.H. Validation: 4177 tests PASS, corniche 200 frames sans crash. Build-gameplay59 SHA256 e4b074ccea108c072786c93aee96fae3cd251a537042be425e109883aefef98a. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-16
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-16T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum test flipmaps room 8: FlipMap(0..9) sur la sauvegarde room8 ne change rien, flip_status reste 0. La sortie n&#x27;est probablement pas un flipmap mais une porte/objet ou un TO_FLIPEFFECT declenche par le bouton du crawlspace. Le scan des triggers par cellule (trigger_index apres GetHeight) renvoie des mots qui ressemblent encore a des donnees de sol; il faudra un decodeur de triggers dedie ou reperer le bouton en jeu. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
