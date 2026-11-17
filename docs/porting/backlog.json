@@ -2197,6 +2197,15 @@
       ],
       "status": "In progress",
       "summary": "Selection de niveau, chemin de code verifie: dans TitleOptions (SPEC_PSXPC_N/TITSEQ.C) branche MENU_LEVEL_SELECT_MENU, byte_46 est l'entree courante bornee a [0, Gameflow->nLevels-2] et sur IN_CROSS le code fait gfLevelComplete = byte_46 + 1; byte_46 = 0; ret = 3. Dans DoGameflow (GAME/GAMEFLOW.C) branche GF_TITLE_LEVEL, avec gfStatus == 3 il fait gfCurrentLevel = gfLevelComplete ET repositionne le pointeur de script gf = &gfScriptWad[gfScriptOffset[gfCurrentLevel]], donc la mecanique de saut de niveau est complete. Le defaut restant est donc en amont dans l'entree de menu: soit byte_46 n'est pas initialise a l'ouverture de MENU_LEVEL_SELECT_MENU (il est reutilise par le menu de chargement et remis a 0 a plusieurs endroits), soit la navigation IN_DPAD_UP/DOWN n'incremente pas pendant la fenetre de RawEdge. Verification en jeu tentee: la navigation clavier fonctionne dans le menu principal (New Game -> Special Features se deplace), mais sous gdb la cadence tombe a ~0,5 fps et un x sur Special Features declenche le DEMO MODE avant que le sous-menu ne s'affiche; watch gfCurrentLevel n'a enregistre aucune bascule. Le point demande une passe manuelle (menu -> Special Features -> Level Select). Aucun correctif speculatif applique. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum, ControlScaledSpike porte: GAME/TRAPS.C remplace le stub par la version de traps.cpp (extension/retraction pilotees par item_flags[0]/[1], TestBoundsCollideTeethSpikes, degats 8 PV glissants, mort si chute ou dents sorties selon trigger_flags & 7, gerbes de sang TriggerBlood, animation de mort dediee ANIMATION_LARA_SPIKED + STATE_LARA_DEATH). GAME/SETUP.C: TEETH_SPIKES recoit InitialiseScaledSpike (deja porte) et ControlScaledSpike avec save_flags; le rendu reste le chemin standard (pas de DrawScaledSpike) car assigner le stub actuel imprimerait un UNIMPLEMENTED par frame sans rien dessiner, alors que le rendu standard affiche au moins le maillage. Validation runtime (sauvegarde corniche, item 104 force actif): handlers non nuls, item identifie obj=117 room=124 ocb=36, 200 frames sans SIGSEGV, lara_hp inchange (Lara a l'autre bout du niveau). Avec l'OCB 36 (bit 32) les dents restent rentrees (f2=1), comportement attendu de cette variante. 4181 tests PASS. Build-gameplay59 SHA256 fc1576c71a62171a8c168654e0c802d0624530e293fd969453b75974c2e4ade1. Aucun Done global."
     }
   ]
 }

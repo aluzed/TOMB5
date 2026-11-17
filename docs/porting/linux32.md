@@ -3377,3 +3377,27 @@ déplace), mais sous gdb la cadence tombe à ~0,5 fps et un `x` sur
 s'affiche ; `watch gfCurrentLevel` n'a enregistré aucune bascule. Le point
 demande donc une passe manuelle (menu → Special Features → Level Select)
 pour trancher. Aucun correctif spéculatif appliqué.
+
+### `ControlScaledSpike` porté (dents de scie) (17 novembre 2026)
+
+`GAME/TRAPS.C` : `ControlScaledSpike` remplace le stub par la version de
+`traps.cpp` — extension/rétraction pilotées par `item_flags[0]/[1]`,
+`TestBoundsCollideTeethSpikes`, dégâts (8 PV glissants, mort si chute ou
+dents sorties selon `trigger_flags & 7`), gerbes de sang (`TriggerBlood`)
+et animation de mort dédiée (`ANIMATION_LARA_SPIKED` +
+`STATE_LARA_DEATH`).
+
+`GAME/SETUP.C` : `TEETH_SPIKES` reçoit `InitialiseScaledSpike` (déjà porté)
+et `ControlScaledSpike`, avec `save_flags`. Le **rendu** reste le chemin
+standard (pas de `DrawScaledSpike`) : assigner le stub actuel imprimerait
+un `UNIMPLEMENTED` par frame sans rien dessiner, alors que le rendu
+standard affiche au moins le maillage.
+
+Validation runtime (sauvegarde corniche, item 104 forcé actif) :
+handlers non nuls (`init`/`ctrl`), item identifié `obj=117 room=124
+ocb=36`, 200 frames sans `SIGSEGV`, `lara_hp` inchangé (Lara est à l'autre
+bout du niveau). Avec l'OCB 36 (bit 32), les dents restent en position
+rentrée (`f2=1`), ce qui est le comportement attendu de cette variante.
+
+Build `build-gameplay59` : SHA256
+`fc1576c71a62171a8c168654e0c802d0624530e293fd969453b75974c2e4ade1`.

@@ -1084,6 +1084,15 @@ static void PortSetupGameplayObjects(void)
 			objects[i].using_drawanimating_item = FALSE;
 			objects[i].save_flags = TRUE;
 		}
+		else if (i == TEETH_SPIKES)
+		{
+			/* Dents de scie (salle 124) : logique portee depuis traps.cpp.
+			 * Le rendu scale (DrawScaledSpike) reste un stub : on laisse le
+			 * rendu standard pour eviter un UNIMPLEMENTED par frame. */
+			objects[i].initialise = &InitialiseScaledSpike;
+			objects[i].control = &ControlScaledSpike;
+			objects[i].save_flags = TRUE;
+		}
 		else if (i == WATERFALLMIST)
 		{
 			objects[i].control = &WaterFall;
