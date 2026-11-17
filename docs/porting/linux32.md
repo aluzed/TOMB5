@@ -3521,3 +3521,20 @@ rendu — limite de géométrie indépendante de ce port, documentée au § 6 de
 
 Build `build-gameplay59` : SHA256
 `b9d8e710fcbc4ba3d9bb09310e809ae92384829cfa0ffb02324dd27688d5771e`.
+
+### Cap : 64 bits + Vulkan + ImGui + RT (17 novembre 2026)
+
+Décision : migrer la cible en **64 bits** (le raytracing matériel n'existe
+plus dans l'ICD NVIDIA 32 bits — mesuré : 233 extensions sans aucune
+extension RT en `-m32`, 248 avec `VK_KHR_ray_query`/
+`ray_tracing_pipeline` en `-m64` sur la RTX 2080 Ti), puis remplacer
+OpenGL par **Vulkan**, avec un overlay **ImGui** (F12) et des presets de
+reflets (SSR puis RT).
+
+Inventaire de la compilation 64 bits : 200 fichiers `GAME/` vérifiés,
+**4 seulement** en erreur (`COLLIDE.C`, `SWITCH.C`, `NEWINV2.C`,
+`OBJLIGHT.C`), mais ~995 `long` dans les sources et surtout des `long`
+dans les structures de données PSX (le vrai risque).
+
+Plan complet, risques et ordre des travaux :
+[`vulkan-64bit-plan.md`](vulkan-64bit-plan.md).
