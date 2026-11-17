@@ -171,3 +171,34 @@ dans cette zone (position hors grille ⇒ caméra dans une autre salle ⇒ Lara
 invisible). Il faut **jouer** depuis un point valide et faire un `F5` en
 jeu : la sauvegarde produite par le moteur contient alors une position
 cohérente avec sa salle.
+
+## 7. Point ouvert : un chargement de sauvegarde ressort au titre
+
+Reproduit avec une sauvegarde appliquée en `room 12` (`40448,1023,51712`) :
+le niveau 3 **est bien lancé** puis, en quelques frames, on revient au
+titre. Traces instrumentées :
+
+```
+FL DoTitle Name=0 status=0 complete=0 currentLevel=0 gameMode=1
+FL DoLevel Name=3 gfCurrentLevel=3 gameMode=4 fromTitle=1
+FL DoTitle Name=0 status=1 complete=0 currentLevel=0 gameMode=0
+```
+
+`DoLevel(3)` est donc appelé correctement (`gfGameMode=4` = chargement),
+puis `ControlPhase` renvoie **1** : `DoGameflow` réinitialise
+(`gfInitialiseGame=1`, `gfCurrentLevel=0`) et rappelle `DoTitle`.
+
+Éliminé par mesure :
+
+- `reset_flag` : jamais écrit (`watch reset_flag` ne déclenche pas) ;
+- `gfLevelComplete` : jamais écrit (`watch` ne déclenche pas) ;
+- `Gameflow->DemoDisc = 0`, `InputTimeout = 18000` → ce n'est **pas** le
+  timeout de démo de `ControlPhase`.
+
+Restent les autres `return 1` de `ControlPhase` (menu pause, `S_Death()`,
+ou une branche de `demo_mode`). À trancher avec un point d'arrêt posé sur
+les sites `return 1` **dans la boucle in-level** (attention : la table de
+lignes de `CONTROL.C` est décalée dans gdb, un `break CONTROL.C:1291`
+retombe sur la ligne 1642 — utiliser les numéros de fonction/compteur
+plutôt que les lignes). Piste prioritaire : `lara.death_count > 90 →
+S_Death()` si la sauvegarde restaure un `death_count` incohérent.
