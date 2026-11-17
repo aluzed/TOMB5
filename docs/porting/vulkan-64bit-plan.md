@@ -118,3 +118,35 @@ inspection VRAM/GTE.
 
 Aucune modification de code n'a encore été faite pour cette migration :
 ce document est le point de départ, avec l'inventaire mesuré ci-dessus.
+
+## 7. Suivi par tickets
+
+Le plan est découpé en tickets vivants dans
+[`render-backlog.json`](render-backlog.json), rendus dans
+[`render/index.html`](render/index.html) (tableau de statut) et une fiche
+par ticket (`render/RMIG-xxx.md`). Mise à jour :
+
+```sh
+python3 scripts/porting/render_tickets.py          # régénère les fiches
+python3 scripts/porting/render_tickets.py --check  # échoue si dérive
+```
+
+Règles du backlog : statuts `Todo` / `In progress` / `Blocked` / `Done`,
+dépendances explicites et sans cycle, et **un ticket ne passe `Done`
+qu'avec une preuve** (entrée `evidence` datée). Les tests
+`tests/porting/test_render_backlog.py` verrouillent ces règles et la
+non-dérive des fichiers générés.
+
+Chaîne de dépendances principale :
+
+```
+RMIG-001 (fait)
+RMIG-002 -> RMIG-003 -> RMIG-004 -> RMIG-005
+        \-> RMIG-006 -> RMIG-007
+        \-> RMIG-008 -> RMIG-009 -> RMIG-010 -> RMIG-011
+                                                \-> RMIG-012 (retrait GL)
+                                                \-> RMIG-013 (ImGui F12)
+                                                      \-> RMIG-014 (SSR)
+                                                            \-> RMIG-015 (RT)
+                                                      \-> RMIG-016 (debug avancé)
+```

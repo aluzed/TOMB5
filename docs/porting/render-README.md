@@ -1,0 +1,24 @@
+# Render migration (64 bits / Vulkan) — suivi
+
+Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'OpenGL par Vulkan, overlay ImGui (F12), puis reflets SSR et raytracing matériel. Distinct du lot initial figé du 13 septembre (`backlog.json`) : ici les statuts évoluent et chaque ticket doit porter une preuve avant d'être déclaré Done.
+
+| id | ticket | statut | prio |
+| --- | --- | --- | --- |
+| [RMIG-001](render/RMIG-001.md) | Étude 32 vs 64 bits du raytracing Vulkan | Done | P0 |
+| [RMIG-002](render/RMIG-002.md) | Cible de build 64 bits sans dépendance 32 bits | Todo | P0 |
+| [RMIG-003](render/RMIG-003.md) | Typedefs PSX à largeur fixe et garde de tailles (STYPES.H) | Blocked | P0 |
+| [RMIG-004](render/RMIG-004.md) | Conversion des structures de GAME/TYPES.H | Blocked | P0 |
+| [RMIG-005](render/RMIG-005.md) | Code manipulant les champs convertis | Blocked | P1 |
+| [RMIG-006](render/RMIG-006.md) | Pointeur↔entier et fichiers en erreur en -m64 | Blocked | P0 |
+| [RMIG-007](render/RMIG-007.md) | Harnais de comparaison 32 bits / 64 bits | Blocked | P1 |
+| [RMIG-008](render/RMIG-008.md) | Abstraction renderer (interface + sélection) | Blocked | P1 |
+| [RMIG-009](render/RMIG-009.md) | Backend Vulkan : instance, device, swapchain, présentation | Blocked | P1 |
+| [RMIG-010](render/RMIG-010.md) | Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables) | Blocked | P1 |
+| [RMIG-011](render/RMIG-011.md) | Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT) | Blocked | P1 |
+| [RMIG-012](render/RMIG-012.md) | Parité visuelle et retrait du chemin OpenGL | Blocked | P1 |
+| [RMIG-013](render/RMIG-013.md) | ImGui F12 : overlay, stats et interrupteurs | Blocked | P1 |
+| [RMIG-014](render/RMIG-014.md) | Reflets screen-space à presets | Blocked | P2 |
+| [RMIG-015](render/RMIG-015.md) | Raytracing matériel (ray_query) avec repli SSR | Blocked | P2 |
+| [RMIG-016](render/RMIG-016.md) | Menu debug avancé et budget de performance | Blocked | P2 |
+
+1/16 terminés.

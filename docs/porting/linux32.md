@@ -3538,3 +3538,15 @@ dans les structures de données PSX (le vrai risque).
 
 Plan complet, risques et ordre des travaux :
 [`vulkan-64bit-plan.md`](vulkan-64bit-plan.md).
+
+### Suivi de la migration rendu (17 novembre 2026)
+
+Le plan 64 bits + Vulkan + ImGui + RT est désormais découpé en **16
+tickets vivants** : [`render-backlog.json`](render-backlog.json) →
+[`render/index.html`](render/index.html) (tableau de statut) et une fiche
+par ticket. `RMIG-001` (étude 32/64 bits du RT) est **Done** avec preuve ;
+le reste est `Todo`/`Blocked` selon la chaîne de dépendances.
+
+```sh
+python3 scripts/porting/render_tickets.py --check
+```

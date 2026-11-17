@@ -1,0 +1,658 @@
+{
+  "kind": "render-migration",
+  "updated": "2026-11-17",
+  "intro": "Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'OpenGL par Vulkan, overlay ImGui (F12), puis reflets SSR et raytracing matériel. Distinct du lot initial figé du 13 septembre (`backlog.json`) : ici les statuts évoluent et chaque ticket doit porter une preuve avant d'être déclaré Done.",
+  "tickets": [
+    {
+      "id": "RMIG-001",
+      "title": "Étude 32 vs 64 bits du raytracing Vulkan",
+      "status": "Done",
+      "priority": "P0",
+      "goal": "Décider si le raytracing matériel est atteignable sur la cible actuelle, avec des mesures et non des suppositions.",
+      "facts": "Sonde Vulkan identique compilée -m32 et -m64 sur la machine (RTX 2080 Ti, driver 580.178, Vulkan 1.4.312). En 32 bits le GPU expose 233 extensions sans aucune extension RT ; en 64 bits il en expose 248 avec VK_KHR_acceleration_structure, VK_KHR_ray_query, VK_KHR_ray_tracing_pipeline et VK_NV_ray_tracing. llvmpipe expose le RT dans les deux cas (logiciel).",
+      "scope": "Énumération des périphériques et extensions par largeur de binaire ; conclusion sur la cible à retenir.",
+      "exclusions": "Écriture du backend, migration du code, réglages de performance.",
+      "tasks": [
+        "Écrire une sonde C qui crée une instance Vulkan et liste les périphériques et extensions RT.",
+        "Compiler la même sonde en -m32 et -m64 et comparer les jeux d'extensions du GPU et de llvmpipe.",
+        "Consigner la conclusion et ses conséquences sur l'ordre des travaux."
+      ],
+      "acceptance": [
+        "Les deux exécutions produisent une liste d'extensions exploitable et reproductible.",
+        "La conclusion (RT matériel impossible en 32 bits sur cette machine) est étayée par les sorties, pas par la documentation constructeur."
+      ],
+      "validation": "Sorties des deux binaires de la sonde, conservées dans /tmp/opencode/vkprobe (probe2.c) ; plan écrit dans docs/porting/vulkan-64bit-plan.md.",
+      "unknowns": "Comportement sur une autre machine ou un autre pilote ; support RT 32 bits chez d'autres fabricants.",
+      "estimate": "0,5 jour-personne (fait).",
+      "confidence": "Medium",
+      "dependencies": [],
+      "references": [
+        {
+          "path": "docs/porting/vulkan-64bit-plan.md",
+          "line": 1,
+          "note": "plan et mesures"
+        },
+        {
+          "path": "EMULATOR/EMULATOR_PLATFORM_SETUP.H",
+          "line": 18,
+          "note": "sélection du backend OGL"
+        }
+      ],
+      "progress": "Terminé : mesures 32/64 bits, conclusion et plan enregistrés.",
+      "evidence": [
+        {
+          "date": "2026-11-17",
+          "note": "Sonde Vulkan -m32 : 233 extensions, aucune RT sur la RTX 2080 Ti ; -m64 : 248 extensions avec toutes les extensions RT. Commit 666bf08d (plan).",
+          "commit": "666bf08d"
+        }
+      ]
+    },
+    {
+      "id": "RMIG-002",
+      "title": "Cible de build 64 bits sans dépendance 32 bits",
+      "status": "Todo",
+      "priority": "P0",
+      "goal": "Configurer et produire un binaire ELF64 à partir du même arbre, sans -m32 ni GLEW i386.",
+      "facts": "Les builds actuels sont configurés avec CMAKE_C_FLAGS=-m32 et CMAKE_EXE_LINKER_FLAGS=-m32 ; GLEW et SDL2 pointent vers /usr/lib/i386-linux-gnu. En 64 bits le système fournit SDL2 2.30 et le loader Vulkan ; GLEW 64 bits n'est pas installé et ne sera pas nécessaire puisque Vulkan remplace OpenGL.",
+      "scope": "Option CMake (ex. -DTOMB5_64=ON), sélection des dépendances, cible de sortie et script de configuration reproductible.",
+      "exclusions": "Correction sémantique du code (tickets suivants), backend Vulkan lui-même.",
+      "tasks": [
+        "Ajouter une option CMake qui n'impose plus -m32 et choisit les dépendances 64 bits (SDL2 système, loader Vulkan, pas de GLEW).",
+        "Documenter et scripter la configuration neuve (build tree dédié) avec les options du build de référence.",
+        "Produire un binaire ELF64 même s'il ne va pas encore jusqu'au jeu, et archiver flags + ldd."
+      ],
+      "acceptance": [
+        "Une configuration neuve aboutit et le binaire produit est ELF64 avec ses dépendances résolues en 64 bits.",
+        "Aucun chemin de build existant (32 bits) n'est cassé : les deux configurations coexistent."
+      ],
+      "validation": "CMakeCache + flags + file/ldd archivés ; build 32 bits rejoué et tests documentaires verts.",
+      "unknowns": "Disponibilité d'un GLEW 64 bits si le chemin OpenGL devait survivre temporairement.",
+      "estimate": "1 jour-personne.",
+      "confidence": "Medium",
+      "dependencies": [],
+      "references": [
+        {
+          "path": "EMULATOR/PLATFORM/Linux.cmake",
+          "line": 5,
+          "note": "SDL2/OpenGL/GLEW"
+        },
+        {
+          "path": "docs/porting/vulkan-64bit-plan.md",
+          "line": 30,
+          "note": "étape D"
+        }
+      ],
+      "progress": "À démarrer.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-003",
+      "title": "Typedefs PSX à largeur fixe et garde de tailles (STYPES.H)",
+      "status": "Blocked",
+      "priority": "P0",
+      "goal": "Rendre les structures de données PSX indépendantes de la largeur de long, en commençant par SPEC_PSXPC_N/STYPES.H.",
+      "facts": "SPEC_PSXPC_N/STYPES.H contient 52 long et 39 unsigned long. Ces structures (room_info, FLOOR_INFO, ITEM_INFO) sont relogées depuis le fichier de niveau et comparées par sizeof ; sur LP64 leurs tailles changent silencieusement.",
+      "scope": "STYPES.H uniquement : introduction de typedefs explicites et conversion des champs de données PSX, avec static_assert sur les tailles attendues.",
+      "exclusions": "GAME/TYPES.H (ticket suivant), long locaux, code applicatif.",
+      "tasks": [
+        "Introduire des typedefs explicites (psx_i32/psx_u32) et convertir les champs des structures de STYPES.H.",
+        "Ajouter des static_assert sur les tailles des structures critiques, en s'appuyant sur les offsets déjà présents en commentaire.",
+        "Compiler en 32 bits et vérifier qu'aucune taille ne change (aucune régression)."
+      ],
+      "acceptance": [
+        "En 32 bits, les sizeof des structures de STYPES.H sont identiques à l'existant (vérifié par static_assert).",
+        "Les sources qui utilisent ces champs compilent sans modification de sémantique en 32 bits."
+      ],
+      "validation": "Build 32 bits complet + tests documentaires (4183) + relevé des tailles avant/après.",
+      "unknowns": "Champs dont la largeur est volontairement celle de l'hôte (pointeurs déguisés).",
+      "estimate": "1 à 2 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-002"
+      ],
+      "references": [
+        {
+          "path": "SPEC_PSXPC_N/STYPES.H",
+          "line": 39,
+          "note": "struct room_info"
+        },
+        {
+          "path": "GAME/SETUP.C",
+          "line": 1636,
+          "note": "relocation et floor_data"
+        }
+      ],
+      "progress": "Bloqué par la cible 64 bits.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-004",
+      "title": "Conversion des structures de GAME/TYPES.H",
+      "status": "Blocked",
+      "priority": "P0",
+      "goal": "Appliquer la même conversion aux structures de GAME/TYPES.H (le cœur des données de jeu).",
+      "facts": "GAME/TYPES.H contient 148 long et 14 unsigned long : lara_info, FLOOR_INFO, ITEM_INFO (pour partie), SAVEGAME_INFO, lumières, caméra. Ce sont les structures qui traversent sauvegardes et relocations.",
+      "scope": "GAME/TYPES.H et les structures qu'il définit, avec asserts de taille.",
+      "exclusions": "Les long locaux des fichiers .C.",
+      "tasks": [
+        "Convertir les champs des structures de TYPES.H vers les types à largeur fixe.",
+        "Ajouter les static_assert de taille et vérifier la cohérence avec les offsets documentés.",
+        "Vérifier que le format de sauvegarde v4 (8658 octets, offsets fixes) reste lisible."
+      ],
+      "acceptance": [
+        "Tailles identiques en 32 bits avant/après, et offsets de sauvegarde inchangés.",
+        "Un chargement de sauvegarde existante (TOMB5.valid_level1.sav) aboutit sans erreur."
+      ],
+      "validation": "Build 32 bits + chargement d'une sauvegarde réelle + tests documentaires.",
+      "unknowns": "Structures partagées entre niveaux et blocs de sauvegarde.",
+      "estimate": "2 à 3 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-003"
+      ],
+      "references": [
+        {
+          "path": "GAME/TYPES.H",
+          "line": 358,
+          "note": "struct FLOOR_INFO"
+        },
+        {
+          "path": "GAME/PORTSAVE.C",
+          "line": 289,
+          "note": "lecture de sauvegarde"
+        }
+      ],
+      "progress": "Bloqué par RMIG-003.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-005",
+      "title": "Code manipulant les champs convertis",
+      "status": "Blocked",
+      "priority": "P1",
+      "goal": "Adapter le code qui lit/écrit les champs convertis, en particulier la relocation du niveau et la restauration de sauvegarde.",
+      "facts": "LoadLevel relocalise les pointeurs stockés dans les structures ; sgRestoreGame et PortSave_ApplyPending réinjectent des états. Toute conversion de type doit être répercutée là où des long servent de conteneurs.",
+      "scope": "GAME/SETUP.C (relocation), GAME/SAVEGAME.C, GAME/PORTSAVE.C, GAME/ITEMS.C et accès directs aux champs convertis.",
+      "exclusions": "Rendue, backend Vulkan.",
+      "tasks": [
+        "Recenser les écritures de champs convertis via des long et les adapter.",
+        "Vérifier la relocation des pointeurs (uintptr_t) et l'absence de troncature.",
+        "Rejouer un chargement de niveau 3 et une sauvegarde/reprise."
+      ],
+      "acceptance": [
+        "Un chargement de niveau complet ne produit aucun décalage (positions d'items comparées à la référence 32 bits).",
+        "Sauvegarde puis rechargement donnent la même position et la même salle."
+      ],
+      "validation": "Sonde runtime (positions d'items + lara) comparée entre build 32 et 64 bits.",
+      "unknowns": "Effets de bord sur les zones/boxes des créatures.",
+      "estimate": "2 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-003",
+        "RMIG-004"
+      ],
+      "references": [
+        {
+          "path": "GAME/SETUP.C",
+          "line": 1636,
+          "note": "relocation"
+        },
+        {
+          "path": "GAME/PORTSAVE.C",
+          "line": 386,
+          "note": "application de la position"
+        }
+      ],
+      "progress": "Bloqué par RMIG-003/004.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-006",
+      "title": "Pointeur↔entier et fichiers en erreur en -m64",
+      "status": "Blocked",
+      "priority": "P0",
+      "goal": "Éliminer les conversions pointeur/entier non portables et faire compiler tout GAME/ en 64 bits.",
+      "facts": "Inspection -m64 -fsyntax-only : sur 200 fichiers GAME/, 4 sont en erreur — COLLIDE.C (7, dont EMULATOR/GTEREG.H:33 et anims non déclaré), SWITCH.C (5), NEWINV2.C (3), OBJLIGHT.C (1).",
+      "scope": "Conversions (long)ptr/(int)ptr vers uintptr_t/intptr_t, déclarations manquantes, GTEREG.H.",
+      "exclusions": "Sémantique de jeu.",
+      "tasks": [
+        "Corriger GTEREG.H et les quatre fichiers en erreur en -m64.",
+        "Remplacer les conversions pointeur/entier non portables par uintptr_t/intptr_t.",
+        "Vérifier que la compilation -m64 passe sur l'ensemble de GAME/ et SPEC_PSXPC_N/."
+      ],
+      "acceptance": [
+        "Aucune erreur -m64 -fsyntax-only sur GAME/ et SPEC_PSXPC_N/.",
+        "Le build 32 bits reste vert et identique fonctionnellement."
+      ],
+      "validation": "Rapport de compilation des deux largeurs + tests documentaires.",
+      "unknowns": "Assembleur GTE et macros de registres selon l'architecture.",
+      "estimate": "1 à 2 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-002"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/GTEREG.H",
+          "line": 33,
+          "note": "macro en erreur -m64"
+        },
+        {
+          "path": "GAME/SWITCH.C",
+          "line": 248,
+          "note": "TestCollision non déclaré"
+        },
+        {
+          "path": "GAME/COLLIDE.C",
+          "line": 648,
+          "note": "anims non déclaré"
+        }
+      ],
+      "progress": "Bloqué par la cible 64 bits.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-007",
+      "title": "Harnais de comparaison 32 bits / 64 bits",
+      "status": "Blocked",
+      "priority": "P1",
+      "goal": "Pouvoir prouver que la migration ne change ni la géométrie, ni l'image, avant de supprimer l'ancien chemin.",
+      "facts": "Les sondes gdb existantes (probe_sanity, positions d'items) et les captures de fenêtre donnent déjà des points de comparaison. Il manque un mode déterministe (frame figée) et un hash d'image.",
+      "scope": "Mode « frame déterministe » (entrée scriptée, position forcée), capture PNG et hash, comparaison entre les deux binaires.",
+      "exclusions": "Analyse perceptuelle fine.",
+      "tasks": [
+        "Définir une scène de référence déterministe (sauvegarde valide + séquence d'entrées fixe).",
+        "Produire capture + hash pour le build 32 bits puis pour le build 64 bits et comparer.",
+        "Documenter le seuil d'écart acceptable (géométrie identique, différences de filtrage tolérées)."
+      ],
+      "acceptance": [
+        "Deux exécutions de la même scène sur le même binaire donnent des captures identiques (déterminisme prouvé).",
+        "Le rapport 32/64 quantifie les écarts et sert de référence pour la parité Vulkan."
+      ],
+      "validation": "Captures et hashes archivés, script réutilisable.",
+      "unknowns": "Déterminisme des effets aléatoires (GetRandomControl) et du timing.",
+      "estimate": "1 jour-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-002",
+        "RMIG-006"
+      ],
+      "references": [
+        {
+          "path": "docs/porting/colosseum-walkthrough.md",
+          "line": 60,
+          "note": "recette de test"
+        },
+        {
+          "path": "GAME/CONTROL.C",
+          "line": 1116,
+          "note": "GetRandomControl"
+        }
+      ],
+      "progress": "Bloqué par la cible 64 bits.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-008",
+      "title": "Abstraction renderer (interface + sélection)",
+      "status": "Blocked",
+      "priority": "P1",
+      "goal": "Isoler les neuf points d'entrée du rendu derrière une interface, pour brancher Vulkan sans toucher au jeu.",
+      "facts": "Le rendu est déjà regroupé dans EMULATOR/EMULATOR.C (init, upload VRAM, vertex buffer, draw triangles, blending, swap) avec des #if OGL/D3D. Aucune abstraction commune n'existe.",
+      "scope": "Interface renderer_* (init, frame begin/end, upload texture, update vertices, draw, blend, present) et implémentation OpenGL existante branchée dessus.",
+      "exclusions": "Vulkan lui-même.",
+      "tasks": [
+        "Définir l'interface et ses invariants (un draw par ordering table, pas de depth, blending PSX).",
+        "Brancher l'implémentation OpenGL actuelle derrière l'interface sans changer le rendu.",
+        "Vérifier la parité visuelle avec la référence RMIG-007."
+      ],
+      "acceptance": [
+        "Le jeu se comporte à l'identique via l'interface (capture identique à la référence).",
+        "Aucun appel GL ne subsiste hors de l'implémentation du backend."
+      ],
+      "validation": "Capture comparée + grep des appels GL hors backend.",
+      "unknowns": "Fuites d'état GL (blend, scissor) entre passes.",
+      "estimate": "1 à 2 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-002"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 3534,
+          "note": "Emulator_DrawTriangles"
+        },
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 2240,
+          "note": "texture VRAM"
+        }
+      ],
+      "progress": "Bloqué par la cible 64 bits.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-009",
+      "title": "Backend Vulkan : instance, device, swapchain, présentation",
+      "status": "Blocked",
+      "priority": "P1",
+      "goal": "Afficher une frame Vulkan vide via SDL2, avec le bon périphérique et sans dépendance à OpenGL.",
+      "facts": "SDL2 2.30 (64 bits) et le loader Vulkan sont disponibles ; la machine expose une RTX 2080 Ti et llvmpipe. Le contexte GL actuel est créé avec SDL_WINDOW_OPENGL ; Vulkan exigera SDL_WINDOW_VULKAN et une swapchain explicite.",
+      "scope": "Instance, sélection de périphérique, device + queues, swapchain, sémaphores, présent.",
+      "exclusions": "Pipeline PSX et shaders.",
+      "tasks": [
+        "Créer l'instance et choisir le périphérique (préférence GPU discret, fallback llvmpipe).",
+        "Créer device/queues et une swapchain redimensionnable, puis présenter un clear.",
+        "Gérer proprement resize, vsync et fermeture."
+      ],
+      "acceptance": [
+        "Une fenêtre s'ouvre, présente une couleur unie stable, et se ferme sans erreur de validation.",
+        "Le périphérique choisi est journalisé et le fallback fonctionne."
+      ],
+      "validation": "Journal Vulkan (couche de validation) sans erreur + capture.",
+      "unknowns": "Disponibilité de la validation layer en 64 bits, comportement multi-GPU.",
+      "estimate": "2 à 3 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-008"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 648,
+          "note": "création fenêtre GL"
+        },
+        {
+          "path": "docs/porting/vulkan-64bit-plan.md",
+          "line": 60,
+          "note": "étape E"
+        }
+      ],
+      "progress": "Bloqué par l'abstraction.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-010",
+      "title": "Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables)",
+      "status": "Blocked",
+      "priority": "P1",
+      "goal": "Rendre la scène PSX complète en Vulkan : une texture VRAM, un vertex buffer dynamique, un draw par passe.",
+      "facts": "L'implémentation actuelle garde la VRAM 1024×512 en une texture RG8, pousse les Vertex (position, uv+couleur+dither, couleur, z, w) dans un VBO dynamique et émet un glDrawArrays par ordering table, sans depth test, avec glBlendFunc variable.",
+      "scope": "Texture VRAM, transfert des vertices par frame, pipelines par mode de blend, absence de depth, préservation de l'ordre des OT.",
+      "exclusions": "Compilation des shaders (ticket suivant), SSR/RT.",
+      "tasks": [
+        "Uploader la VRAM comme texture persistante et gérer les mises à jour partielles.",
+        "Créer le buffer dynamique de vertices et les pipelines de blending PSX.",
+        "Émettre un draw par ordering table et vérifier l'ordre d'affichage."
+      ],
+      "acceptance": [
+        "La scène s'affiche sans artefacts de transparence ni d'ordre.",
+        "Le nombre de draw calls par frame reste égal au nombre d'ordering tables utilisées (pas d'explosion)."
+      ],
+      "validation": "Comparaison d'image avec la référence RMIG-007 + compteur de draw calls.",
+      "unknowns": "Gestion du dithering et des coordonnées 16 bits dans le format de vertex.",
+      "estimate": "3 à 5 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-009"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 2244,
+          "note": "buffer dynamique"
+        },
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 3220,
+          "note": "modes de blending"
+        }
+      ],
+      "progress": "Bloqué par le backend Vulkan de base.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-011",
+      "title": "Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT)",
+      "status": "Blocked",
+      "priority": "P1",
+      "goal": "Porter les shaders générés à l'exécution vers des shaders SPIR-V équivalents.",
+      "facts": "Les shaders sont des chaînes C (gte_shader_4/8/16, blit_shader) avec en-têtes GLSL 330/300 es, correction de perspective maison (a_z/a_w), dithering PSX et décodage page/CLUT VRAM dans le fragment shader.",
+      "scope": "Conversion des sources, compilation hors ligne en SPIR-V, variantes par profondeur de texture, uniformes de projection.",
+      "exclusions": "Nouveaux effets (SSR/RT).",
+      "tasks": [
+        "Extraire les sources GLSL actuelles et les convertir en GLSL Vulkan (set/binding, layouts).",
+        "Compiler en SPIR-V et charger les modules dans les pipelines.",
+        "Valider le rendu des trois profondeurs de texture et du blit final."
+      ],
+      "acceptance": [
+        "Les trois variantes (4/8/16 bits) et le blit produisent la même image que la référence OpenGL.",
+        "Aucun shader n'est compilé à l'exécution depuis une chaîne GLSL (ou la compilation runtime est documentée)."
+      ],
+      "validation": "Comparaison d'image par variante de niveau + validation layer.",
+      "unknowns": "Précision de l'interpolation de perspective et du dithering en SPIR-V.",
+      "estimate": "3 à 4 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-010"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 1709,
+          "note": "gte_shader_4"
+        },
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 1849,
+          "note": "blit_shader"
+        }
+      ],
+      "progress": "Bloqué par le pipeline PSX.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-012",
+      "title": "Parité visuelle et retrait du chemin OpenGL",
+      "status": "Blocked",
+      "priority": "P1",
+      "goal": "Valider Vulkan sur des scènes réelles puis supprimer OpenGL du build 64 bits.",
+      "facts": "Le remplacement est décidé : aucun backend GL ne doit rester dans la cible 64 bits. La référence de comparaison est produite par RMIG-007.",
+      "scope": "Comparaison sur plusieurs niveaux (Rome, Colosseum), correction des écarts, retrait des fichiers/dépendances GL.",
+      "exclusions": "Refonte du gameplay.",
+      "tasks": [
+        "Comparer au moins trois scènes (titre, niveau 1, Colosseum) entre référence et Vulkan.",
+        "Corriger les écarts visuels et mesurer le coût par frame.",
+        "Retirer GLEW/OpenGL du build 64 bits et du CMake."
+      ],
+      "acceptance": [
+        "Écarts visuels documentés et acceptés (aucune régression fonctionnelle).",
+        "Le build 64 bits ne référence plus ni GLEW ni OpenGL (vérifié par ldd et grep)."
+      ],
+      "validation": "Rapport de comparaison d'images + ldd + revue des dépendances CMake.",
+      "unknowns": "Écarts de filtrage/arrondi entre pilotes.",
+      "estimate": "2 à 3 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-007",
+        "RMIG-011"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/PLATFORM/Linux.cmake",
+          "line": 5,
+          "note": "dépendances à retirer"
+        },
+        {
+          "path": "EMULATOR/EMULATOR_PLATFORM_SETUP.H",
+          "line": 18,
+          "note": "sélection OGL"
+        }
+      ],
+      "progress": "Bloqué par les shaders.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-013",
+      "title": "ImGui F12 : overlay, stats et interrupteurs",
+      "status": "Blocked",
+      "priority": "P1",
+      "goal": "Disposer d'un menu debug Vulkan/ImGui toujours compilé, ouvert par F12, pour piloter la suite (reflets, RT, qualité).",
+      "facts": "L'UI existante (InputUI) est dessinée dans le framebuffer PSX via les primitives GPU émulées : elle ne peut pas héberger un panneau moderne. ImGui + backend SDL2/Vulkan s'ajoute comme passe hôte après le blit.",
+      "scope": "Vendoring d'ImGui, backend SDL2+Vulkan, overlay F12, stats de frame, interrupteurs de fonctionnalités, capture du clavier quand l'overlay est ouvert.",
+      "exclusions": "Contenu avancé (inspection VRAM/GTE, heatmap) qui fera l'objet de RMIG-016.",
+      "tasks": [
+        "Vendorer ImGui et brancher son backend SDL2/Vulkan dans le renderer.",
+        "Ajouter la bascule F12 et le routage des entrées vers l'overlay uniquement quand il est ouvert.",
+        "Exposer les premiers interrupteurs (wireframe, FX, presets de reflets) et des stats (FPS, draw calls, temps CPU)."
+      ],
+      "acceptance": [
+        "F12 ouvre/ferme l'overlay sans perturber le jeu ; les entrées reprennent normalement à la fermeture.",
+        "Les interrupteurs agissent immédiatement et les stats sont lisibles."
+      ],
+      "validation": "Captures de l'overlay + vérification que le jeu ne reçoit plus les entrées quand l'overlay est ouvert.",
+      "unknowns": "Conflits de touches avec les raccourcis existants (F5/F6/F12).",
+      "estimate": "2 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-011"
+      ],
+      "references": [
+        {
+          "path": "SPEC_PSXPC_N/INPUTUIDRAW.C",
+          "line": 185,
+          "note": "UI existante dessinée dans le framebuffer PSX"
+        },
+        {
+          "path": "EMULATOR/INPUTUI.C",
+          "line": 397,
+          "note": "cycle de vie de l'UI"
+        }
+      ],
+      "progress": "Bloqué par les shaders.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-014",
+      "title": "Reflets screen-space à presets",
+      "status": "Blocked",
+      "priority": "P2",
+      "goal": "Ajouter des reflets réglables (off / bas / moyen / haut) avant de dépendre du RT matériel.",
+      "facts": "Le rendu n'a pas de depth buffer hôte (ordre PSX) ; une SSR a besoin d'une profondeur et d'une normale, qu'il faudra produire (passes additionnelles ou reconstruction depuis le z PSX).",
+      "scope": "Passe de profondeur, SSR par presets, composite, coût par preset.",
+      "exclusions": "RT matériel (ticket suivant).",
+      "tasks": [
+        "Produire une profondeur/normale exploitable pour la scène.",
+        "Implémenter la SSR avec quatre presets et un coefficient d'intensité.",
+        "Mesurer le coût de chaque preset et l'exposer dans l'overlay."
+      ],
+      "acceptance": [
+        "Les quatre presets changent visiblement le reflet sans casser la scène PSX d'origine.",
+        "Le preset off redonne exactement l'image de référence."
+      ],
+      "validation": "Captures par preset + coût mesuré (ms) dans l'overlay.",
+      "unknowns": "Reconstruction de normale sur un rendu sans depth natif.",
+      "estimate": "3 jours-personne.",
+      "confidence": "Low",
+      "dependencies": [
+        "RMIG-011",
+        "RMIG-013"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 2229,
+          "note": "absence de depth test"
+        },
+        {
+          "path": "docs/porting/vulkan-64bit-plan.md",
+          "line": 72,
+          "note": "étape G"
+        }
+      ],
+      "progress": "Bloqué par Vulkan et l'overlay.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-015",
+      "title": "Raytracing matériel (ray_query) avec repli SSR",
+      "status": "Blocked",
+      "priority": "P2",
+      "goal": "Activer des reflets/ombres raytracés sur matériel RT, avec détection d'extension et repli automatique.",
+      "facts": "La RTX 2080 Ti expose toutes les extensions RT en 64 bits (mesuré en RMIG-001) ; llvmpipe expose les mêmes mais en logiciel. Le chemin doit donc être optionnel et ne jamais être requis.",
+      "scope": "Détection d'extensions, BLAS/TLAS pour la scène, passe ray_query, presets, repli SSR.",
+      "exclusions": "Pipeline RT complet (ray_tracing_pipeline) dans un premier temps.",
+      "tasks": [
+        "Détecter les extensions et construire les accélération structures à partir de la géométrie PSX.",
+        "Implémenter les reflets en ray_query avec niveaux de qualité et de rebonds.",
+        "Vérifier le repli exact vers SSR quand l'extension ou le matériel manque."
+      ],
+      "acceptance": [
+        "Sur la RTX, les reflets sont visuellement différents et réglables ; sur un GPU sans RT, le jeu reste identique au preset SSR choisi.",
+        "L'absence d'extension ne provoque ni erreur ni écran noir."
+      ],
+      "validation": "Journal des extensions au démarrage + captures RT vs SSR + test de repli forcé.",
+      "unknowns": "Coût de reconstruction des accélération structures pour une scène PSX très morcelée.",
+      "estimate": "5 à 8 jours-personne.",
+      "confidence": "Low",
+      "dependencies": [
+        "RMIG-014"
+      ],
+      "references": [
+        {
+          "path": "docs/porting/vulkan-64bit-plan.md",
+          "line": 8,
+          "note": "mesures d'extensions RT"
+        },
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 3534,
+          "note": "flux de triangles à alimenter"
+        }
+      ],
+      "progress": "Bloqué par la SSR.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-016",
+      "title": "Menu debug avancé et budget de performance",
+      "status": "Blocked",
+      "priority": "P2",
+      "goal": "Outiller l'analyse : inspection VRAM/GTE, compteurs de passes, heatmap de coût, budget de frame.",
+      "facts": "L'émulateur connaît déjà la VRAM, les ordering tables et les états de blending ; il manque une visualisation et des compteurs agrégés.",
+      "scope": "Panneau d'inspection (VRAM, textures, OT), compteurs (draw calls, triangles, overdraw), budget par frame.",
+      "exclusions": "Outils hors jeu (profiler externe).",
+      "tasks": [
+        "Exposer la VRAM et l'état des ordering tables dans l'overlay.",
+        "Ajouter des compteurs par passe et un budget de frame paramétrable.",
+        "Documenter l'usage pour les futures optimisations."
+      ],
+      "acceptance": [
+        "Un développeur peut identifier la passe la plus coûteuse sans profiler externe.",
+        "L'overlay se désactive complètement (coût nul mesuré) quand il est fermé."
+      ],
+      "validation": "Captures du panneau + mesure du coût overlay fermé/ouvert.",
+      "unknowns": "Impact mémoire des visualisations sur une cible 64 bits.",
+      "estimate": "2 à 3 jours-personne.",
+      "confidence": "Low",
+      "dependencies": [
+        "RMIG-013"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 2164,
+          "note": "tableau vram"
+        },
+        {
+          "path": "SPEC_PSXPC_N/INPUTUIDRAW.C",
+          "line": 185,
+          "note": "point d'entrée d'une UI hôte"
+        }
+      ],
+      "progress": "Bloqué par l'overlay.",
+      "evidence": []
+    }
+  ]
+}
