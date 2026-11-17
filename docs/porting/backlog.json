@@ -2368,6 +2368,15 @@
       ],
       "status": "In progress",
       "summary": "Sonde CD sur le chargement 64 bits (instrumentation temporaire de DEL_CDFS_Read, CdControlB(CdlSetloc) et CdReadSync, retiree ensuite, arbre revenu a HEAD). En 64 bits, chargement du niveau titre (Name=0): Setloc sector=2492 off=5861184 fseek=0 ftell=5861184, CdReadSync fread=1 pos=5863536, DEL_CDFS_Read addr=0x555555755d60 size=1920, puis 'copied 1920 bytes dst=00000000 src=00000000'. Le seek et le fread reussissent mais les donnees du secteur sont nulles: src (buffer de pile) est deja a zero, donc ce n'est ni un probleme de pointeur ni de layout. En 32 bits, sur la meme session, aucun 'copied' n'apparait: aucune lecture non multiple de 2048 octets n'a lieu, donc le bloc if (level->numAiModules != 0) n'est pas execute, autrement dit le niveau titre se charge avec numAiModules == 0 en 32 bits et == 5 en 64 bits. Conclusion: la lecture CD n'est pas cassee, c'est le chemin de chargement du niveau titre qui diverge avant ce point (les deux binaires ne lisent pas la meme chose) et en 64 bits la table demandee tombe sur une zone nulle de l'image. Prochaine investigation: comparer pas a pas la sequence de DEL_CDFS_Read/Setloc des deux binaires pendant S_LoadLevelFile(Name=0) pour trouver la premiere divergence de position. Etat: 32 bits vert avec hash b9d8e710 restaure, 64 bits vert. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Diagnostic 64 bits: le header de niveau est deja corrompu avant LoadLevel. Instrumentation temporaire (retiree, arbre revenu a HEAD, hash 32 bits b9d8e710 restaure): en 64 bits, S_LoadLevelFile Name=0 puis '[LVL] header ver=-225 numRooms=116 numAiModules=5 numLevelItems=38 anims=576'; objectVersion=-225 (0xFFFFFF1F) n'est pas une version valide, donc le header du niveau est lu au mauvais endroit. La divergence est dans S_LoadLevelFile avant LoadLevel: (1) DEL_CDFS_OpenFile(Name+TITLE) positionne cdCurrentSector a partir de gwLba + (gwHeader.entries[filenum].fileOffset >> 11); (2) DEL_CDFS_Read(mod, gwHeader.entries[NONE].fileSize) lit le SETUP.MOD; (3) LoadLevel lit sizeof(struct Level) = 228 octets, identique dans les deux ABIs. struct GAMEWAD_entry/GAMEWAD_header sont en pragma pack(1) et ne contiennent que des int, donc leur layout ne change pas; les suspects restants sont en amont dans la sequence CD du demarrage (lecture du gameflow, InitNewCDSystem, position du GAMEWAD) qui diverge entre 32 et 64 bits. Prochain test cible: imprimer gwLba, gwHeader.entries[5].fileOffset, gwHeader.entries[NONE].fileSize et cdCurrentSector juste avant la lecture du header dans les deux binaires; si l'entree GAMEWAD differe la lecture du GAMEWAD est en cause, sinon c'est la position CD heritee du gameflow. Etat: 32 bits vert et hash inchange, 64 bits vert mais echec au chargement (702 'Unhandled primitive type' avant le SIGSEGV). Aucun Done global."
     }
   ]
 }

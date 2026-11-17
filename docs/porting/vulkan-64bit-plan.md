@@ -334,3 +334,39 @@ pour trouver la première divergence de position.
 
 Le reste est inchangé : 32 bits vert et **hash `b9d8e710…`** restauré, 64 bits
 vert.
+
+## 14. Le header de niveau lu en 64 bits est déjà corrompu (17 novembre 2026)
+
+Instrumentation temporaire de `S_LoadLevelFile` et du début de `LoadLevel`
+(retirée ensuite ; arbre revenu à `HEAD`, hash 32 bits `b9d8e710…` restauré).
+
+**64 bits**, chargement du niveau titre :
+```
+[LVL] S_LoadLevelFile Name=0
+[LVL] header ver=-225 numRooms=116 numAiModules=5 numLevelItems=38 anims=576
+```
+
+`objectVersion = -225` (0xFFFFFF1F) n'est pas une version valide : **le
+header du niveau est déjà lu au mauvais endroit**. La divergence est donc
+*dans `S_LoadLevelFile`*, avant `LoadLevel` :
+
+1. `DEL_CDFS_OpenFile(Name + TITLE)` positionne `cdCurrentSector` à partir de
+   `gwLba + (gwHeader.entries[filenum].fileOffset >> 11)` ;
+2. `DEL_CDFS_Read(mod, gwHeader.entries[NONE].fileSize)` lit le SETUP.MOD ;
+3. `LoadLevel()` lit ensuite `sizeof(struct Level)` (228 o, identique dans les
+   deux ABIs).
+
+`struct GAMEWAD_entry`/`GAMEWAD_header` sont `#pragma pack(1)` et ne
+contiennent que des `int` : leur layout ne change pas. Les suspects
+restants sont donc en amont, dans la séquence CD du démarrage (lecture du
+gameflow, `InitNewCDSystem`, position du GAMEWAD), qui diverge entre 32 et
+64 bits.
+
+**Prochain test ciblé** : imprimer `gwLba`, `gwHeader.entries[5].fileOffset`,
+`gwHeader.entries[NONE].fileSize` et `cdCurrentSector` juste avant la
+lecture du header, dans les deux binaires. Si l'entrée GAMEWAD diffère, la
+lecture du GAMEWAD est en cause ; si elle est identique, c'est la position CD
+héritée du gameflow.
+
+État : 32 bits vert et hash inchangé, 64 bits vert mais toujours en échec au
+chargement (702 `Unhandled primitive type` avant le SIGSEGV).
