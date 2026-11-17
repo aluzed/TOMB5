@@ -601,6 +601,33 @@ void DrawOTag(unsigned long* p)
 
 	AggregatePTAGsToSplits(p, FALSE);
 
+	{
+		static int port_otdbg = 0;
+
+		if (getenv("TOMB5_DRAWDBG") != NULL && (port_otdbg++ % 60) == 0)
+		{
+			extern int port_room_prim_count;
+			{
+				int minx = 32767, maxx = -32768, miny = 32767, maxy = -32768;
+				int vi;
+
+				for (vi = 0; vi < g_vertexIndex; vi++)
+				{
+					if (g_vertexBuffer[vi].x < minx) minx = g_vertexBuffer[vi].x;
+					if (g_vertexBuffer[vi].x > maxx) maxx = g_vertexBuffer[vi].x;
+					if (g_vertexBuffer[vi].y < miny) miny = g_vertexBuffer[vi].y;
+					if (g_vertexBuffer[vi].y > maxy) maxy = g_vertexBuffer[vi].y;
+				}
+
+				fprintf(stderr, "[OT] verts=%d splits=%d roomprims=%d bbox=(%d,%d)-(%d,%d) v100=(%d,%d,%d,%d,%d,%d,%d)\n",
+				        g_vertexIndex, g_splitIndex, port_room_prim_count, minx, miny, maxx, maxy,
+				        g_vertexBuffer[100].x, g_vertexBuffer[100].y, g_vertexBuffer[100].page,
+				        g_vertexBuffer[100].clut, g_vertexBuffer[100].r, g_vertexBuffer[100].g, g_vertexBuffer[100].b);
+			}
+			port_room_prim_count = 0;
+		}
+	}
+
 	DrawAggregatedSplits();
 	Emulator_EndScene();
 

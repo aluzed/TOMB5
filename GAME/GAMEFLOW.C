@@ -1,4 +1,5 @@
 #include "GAMEFLOW.H"
+#include <stdlib.h>
 
 #if PSXPC_TEST
 #include "INPUTUI.H"
@@ -270,7 +271,20 @@ void DoGameflow()//10F5C(<), 10FD8(<)
 		case GF_TITLE_LEVEL:
 
 			gfLevelFlags = gf[0] | (gf[1] << 8);
-			DoTitle(gf[2], gf[3]);
+			if (getenv("TOMB5_START_LEVEL") != NULL)
+			{
+				/* Raccourci de diagnostic : sauter le menu et charger
+				 * directement un niveau (sans toucher au chemin 32 bits). */
+				gfStatus = 3;
+				gfLevelComplete = (unsigned char)atoi(getenv("TOMB5_START_LEVEL"));
+				gfCurrentLevel = gfLevelComplete;
+				gfGameMode = 0;
+				gfInitialiseGame = 1;
+			}
+			else
+			{
+				DoTitle(gf[2], gf[3]);
+			}
 
 			gfMirrorRoom = 255;
 			gfResidentCut[0] = 0;///@CHECK in asm it's *(int*)&gfResidentCut[0] = 0, check if optimised to this

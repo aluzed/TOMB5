@@ -241,10 +241,18 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 
 		if (getenv("TOMB5_DRAWDBG") != NULL && (port_drawdbg++ % 120) == 0)
 		{
-			fprintf(stderr, "[DRAW] lvl=%d room=%d nrooms=%d pos=(%d,%d,%d) size=(%d,%d) ndraw=%d fade=%d/%d fading=%d height=%d/%d\n",
-			        gfCurrentLevel, current_room, number_rooms, camera.pos.x, camera.pos.y, camera.pos.z,
+			fprintf(stderr, "[DRAW] persp=%ld clip=(%ld,%ld,%ld,%ld) rdt=%d lvl=%d room=%d nrooms=%d rpos=(%d,%d,%d) floor=%d/%d pos=(%d,%d,%d) size=(%d,%d) ndraw=%d fade=%d/%d fading=%d height=%d/%d data=%08x %08x %08x %08x draw0=%d\n",
+			        phd_persp, phd_left, phd_right, phd_top, phd_bottom,
+			        RoomDrawType, gfCurrentLevel, current_room, number_rooms,
+			        r->x, r->y, r->z, r->minfloor, r->maxceiling,
+			        camera.pos.x, camera.pos.y, camera.pos.z,
 			        r->x_size, r->y_size, number_draw_rooms,
-			        ScreenFade, dScreenFade, ScreenFading, FadeScreenHeight, DestFadeScreenHeight);
+			        ScreenFade, dScreenFade, ScreenFading, FadeScreenHeight, DestFadeScreenHeight,
+			        r->data ? ((unsigned*)r->data)[0] : 0,
+			        r->data ? ((unsigned*)r->data)[1] : 0,
+			        r->data ? ((unsigned*)r->data)[2] : 0,
+			        r->data ? ((unsigned*)r->data)[3] : 0,
+			        number_draw_rooms > 0 ? draw_rooms[0] : -1);
 		}
 	}
 

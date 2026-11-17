@@ -1,4 +1,6 @@
 ﻿#include "ROOMLET1.H"
+#include <stdlib.h>
+#include <stdio.h>
 #include "DRAW.H"
 #include "CAMERA.H"
 #include "EFFECT2.H"
@@ -7,6 +9,7 @@
 #include "3D_OBJ.H"
 #include "ROOMLOAD.H"
 #include "MISC.H"
+#include "MALLOC.H"
 #include "GPU.H"
 #include "ROOMLETB.H"
 
@@ -219,7 +222,7 @@ int* SubdivTri64RL1(int t3, int t4, int t5, int* a3, int fp, int* t9, int* s0)//
 
 int* SubPolyGTLoopRL1(int gp, int* t0, int* t1, int s1)
 {
-    int* t00 = (int*)t0[0];
+    int* t00 = t0;
     int t2 = 0xF8F8F8;
 	int t3 = 0;
 	int t4 = 0;
@@ -292,6 +295,7 @@ int* SubPolyGTLoopRL1(int gp, int* t0, int* t1, int s1)
 
 int* SubPolyGT4RL1(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//(F)
 {
+
     int s7;
     int gp;
     int t2;
@@ -383,7 +387,7 @@ int* SubPolyGT4RL1(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//
                 s5 = ra;
                 s6 = (int)t0;
 
-                a3 = SubPolyGT4RL1((int*)&QuadVertTables[gp], &s1[231], s1, a3, s0, s3, fp);
+                a3 = SubPolyGT4RL1((int*)QuadVertTables[gp], &s1[231], s1, a3, s0, s3, fp);
                 t1 = (int*)RGB2;
                 t2 = RGB1;
                 s3 = 0;
@@ -538,7 +542,7 @@ char* SubPolyGT3RL1(int* t0, int* t1, int* s1, int* a3, int s3, int fp, int s0)
                 s4 = gp;
                 s6 = (int)t0;
 
-                a3 = (int*)SubPolyGT3RL1((int*)&TriVertTables[gp], &s1[216], s1, a3, s3, fp, s0);
+                a3 = (int*)SubPolyGT3RL1((int*)TriVertTables[gp], &s1[216], s1, a3, s3, fp, s0);
 
                 t1 = (int*)RGB2;
                 t2 = RGB1;
@@ -862,8 +866,10 @@ char* DrawMeshRL1(int* sp, int* sp2, int mesh, struct DB_STRUCT* cdb)
     LR1 = mesh & 0xFFFF;
     LR2 = (mesh >> 16) & 0xFFFF;
     DQA = v0;
+#if !defined(__LP64__)
     LG2 = (unsigned int)cdb & 0xFFFF;
     LG3 = ((unsigned int)cdb >> 16) & 0xFFFF;
+#endif
     v0 &= 0xFF;
 
     //loc_1320
@@ -1081,12 +1087,21 @@ char* DrawMeshRL1(int* sp, int* sp2, int mesh, struct DB_STRUCT* cdb)
         a2 += 2;
     } while (--v0 != 0);
 
+#if defined(__LP64__)
+    a1 = (int)(uintptr_t)cdb;
+    v0 = DQA;
+
+    a22 = &RoomTextInfo[0];
+    a3 = (int)(uintptr_t)cdb->polyptr;
+    s0 = (short*)cdb->ot;
+#else
     a1 = (LG2 & 0xFFFF) | ((LG3 & 0xFFFF) << 16);
     v0 = DQA;
 
     a22 = &RoomTextInfo[0];
     a3 = ((int*)a1)[2];
     s0 = (short*)((int*)a1)[1];
+#endif
     s1 = (char*)&sp[0];
     v0 >>= 8;
 
@@ -1200,7 +1215,7 @@ loc_15A8:
                     InitSubdivisionRL1((int*)s1, t1, s44, &fpp, t5, t2, s55, gp, t6, &t3, s66, s3, &t7, &s77);
 
                     s3 = 0;
-                    a3 = (int)SubPolyGT3RL1((int*)&TriVertTableRL1, (int*)&s1[804], (int*)s1, (int*)a3, s3, fpp, (int)s0);
+                    a3 = (int)SubPolyGT3RL1((int*)TriVertTableRL1, (int*)&s1[804], (int*)s1, (int*)a3, s3, fpp, (int)s0);
 
                     at = BFC;
                     t0 = (LB1 & 0xFFFF) | ((LB2 & 0xFFFF) << 16);
@@ -1412,7 +1427,7 @@ loc_172C:
                     ((short*)s1)[407] = t4;
                     ((short*)s1)[408] = t5;
 
-                    a3 = (int)SubPolyGT4RL1((int*)&QuadVertTableRL1, (int*)&s1[824], (int*)s1, (int*)a3, (int)s0, s3, fpp);
+                    a3 = (int)SubPolyGT4RL1((int*)QuadVertTableRL1, (int*)&s1[824], (int*)s1, (int*)a3, (int)s0, s3, fpp);
                     t0 = (LB1 & 0xFFFF) | ((LB2 & 0xFFFF) << 16);
                     at = BFC;
                     t9 = DQA;
@@ -1580,8 +1595,13 @@ void sub_158RL1(long underwater, struct room_info* r)
     int v0;
     int v1;
     int ra;
+#if defined(__LP64__)
+    int* scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
+    int* scratchPad2 = (int*)PORT_LowAlloc(512 * sizeof(int));
+#else
     int scratchPad[256];
     int scratchPad2[512];
+#endif
     int* sp = &scratchPad[0];
     int* sp2 = &scratchPad2[0];
 	int s0 = 0;
@@ -1601,7 +1621,11 @@ void sub_158RL1(long underwater, struct room_info* r)
     s3 = (int*)RoomBBoxes;
     s4 = &draw_rooms[0];
     //t2 = wibble & 0xFC
+    #if defined(__LP64__)
+    s2 = (int*)tsv_buffer;
+#else
     s2 = (int*)&tsv_buffer[0];
+#endif
     LB3 = wibble & 0xFC;
 
     //loc_1B0
@@ -1962,16 +1986,16 @@ loc_64C:
         TRY = t1;
         TRZ = t2;
 
-        t0 = ((int*)a1)[5];
-        t1 = ((int*)a1)[6];
-        t2 = ((int*)a1)[7];
+        t0 = ((struct room_info*)a1)->x;
+        t1 = ((struct room_info*)a1)->y;
+        t2 = ((struct room_info*)a1)->z;
 
         sp2[11] = t0;
         sp2[12] = t1;
         sp2[13] = t2;
 
-        t0 = ((int*)a1)[14];
-        t2 = ((int*)a1)[15];
+        t0 = (((unsigned short)((struct room_info*)a1)->left) | (((unsigned int)(unsigned short)((struct room_info*)a1)->right) << 16));
+        t2 = (((unsigned short)((struct room_info*)a1)->top) | (((unsigned int)(unsigned short)((struct room_info*)a1)->bottom) << 16));
 
         at = 0xFFFF0000;
         t1 = t0 & at;

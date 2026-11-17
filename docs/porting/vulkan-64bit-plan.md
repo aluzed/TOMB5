@@ -516,3 +516,35 @@ position caméra, taille de salle, `number_draw_rooms`, fade) et
 Prochain test : forcer le niveau 1 côté 32 bits via le level select, puis
 comparer caméra/`number_draw_rooms`/fade et, si l'écart persiste, vérifier
 la projection LP64 (matrices GTE, `SetGeomScreen`/`SetGeomOffset`).
+
+### 17.2 Projection 3D corrigée, crash restant dans SubPolyGT4RL1
+
+Le rendu noir venait de la **matrice monde→vue** : `matrix_stack`,
+`w2v_matrix` et `phd_mxptr` étaient des `long` (8 octets en LP64). Les
+écritures (`matrix_stack[9] = ...`) et les lectures (`phd_mxptr[3]`)
+n'utilisaient donc plus le même pas, et toute la projection 3D était
+fausse. Ils sont maintenant en mots 32 bits (`int`) en LP64.
+
+Autres corrections LP64 de la chaîne de rendu des salles :
+
+- Les roomlets lisaient `x/y/z` et `left/right/top/bottom` via
+  `((int*)a1)[5/6/7/14/15]`, offsets valides seulement pour le layout
+  32 bits. Ils utilisent désormais les champs nommés (RMIG-020).
+- `SubPolyGTLoopRLx` reçoit directement le pointeur de table au lieu de
+  déréférencer `t0[0]` (l'adresse d'une variable pointeur globale était
+  tronquée) ; les appels ne prennent plus `&QuadVertTableRLx`.
+- Les tables de subdivision restent des globales, mais leur valeur est
+  passée en pointeur complet.
+
+Résultat : `DrawMeshRL1` est atteint et produit des appels
+`SubPolyGT4RL1`. Le crash restant est dans `SubPolyGT4RL1` sur un pointeur
+de table tronqué (`0x5572f1fc` au lieu de `0x55555572f1fc` sous gdb).
+Prochain pas : tracer la valeur exacte de `QuadVertTableRL1` /
+`QuadVertTables[gp]` à l'appel et supprimer le dernier cast `int` de la
+chaîne.
+
+#### Outil de test déterministe
+
+`TOMB5_START_LEVEL=<n>` saute le menu et démarre directement le niveau
+`n` (chemin de diagnostic, disponible dans les deux builds). Cela réduit
+une reproduction de ~90 s à ~40 s.

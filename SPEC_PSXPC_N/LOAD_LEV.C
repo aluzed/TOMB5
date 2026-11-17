@@ -34,7 +34,12 @@ struct STASHEDOBJ stashed_objects_list[128];
 struct STASHEDDAT stashed_matrix_list[240];
 unsigned char char_anim;
 unsigned char OurSqrt[1024];
+#if defined(__LP64__)
+/* Adresse tronquee en int dans les roomlets : garder sous 4 Gio. */
+struct WATERTAB (*WaterTable)[64] = (struct WATERTAB (*)[64])PORT_LowAlloc(22 * 64 * sizeof(struct WATERTAB));
+#else
 struct WATERTAB WaterTable[22][64];
+#endif
 struct MATRIX3D* Matrix = &MatrixStack[0];
 
 unsigned short SqrtTable[] =

@@ -10,9 +10,19 @@ long phd_right;
 long phd_top;
 long phd_bottom;
 long phd_persp;
+#if defined(__LP64__)
+/* La matrice monde->vue est un tableau de 12 mots 32 bits (format GTE).
+ * En LP64, `long` fait 8 octets : les ecritures (matrix_stack[9]) et les
+ * lectures (phd_mxptr[3]) n'utilisaient plus le meme pas et la projection
+ * 3D etait completement fausse. */
+int w2v_matrix[12];
+int* phd_mxptr;
+int matrix_stack[24];
+#else
 long w2v_matrix[12];
 long* phd_mxptr;
 long matrix_stack[24];
+#endif
 struct PHD_3DPOS viewer;
 struct VECTOR3D CamPos;
 struct VECTOR3D CamTgt;

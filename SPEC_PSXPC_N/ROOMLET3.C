@@ -12,6 +12,7 @@
 #include "EMULATOR_PRIVATE.H"
 #include "MALLOC.H"
 
+int port_room_prim_count = 0;
 unsigned short* QuadVertTableRL3 = &QuadVertTable[0];
 unsigned short* TriVertTableRL3 = &TriVertTable[0];
 
@@ -52,6 +53,7 @@ int ClipToScreenRL3(int t2)
 
 void MyAddPrimRL3(int t7/*len*/, int* t9, int* s0, int* a3)
 {
+    port_room_prim_count++;
 #if !defined(USE_32_BIT_ADDR)
     unsigned int t5;
 
@@ -118,7 +120,7 @@ int* SubPolyGTLoopRL3(int gp, int* t0, int* t1, int s1)
 	int t8 = 0;
 	int t4 = 0;
 
-    int* t00 = (int*)t0[0];
+    int* t00 = t0;
     int t2 = 0xF8F8F8;
 
     //loc_C94
@@ -275,7 +277,7 @@ int* SubPolyGT4RL3(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//
                 s4 = gp;
                 s5 = ra;
                 s6 = (int)t0;
-                a3 = SubPolyGT4RL3((int*)&QuadVertTables[gp], &s1[231], s1, a3, s0, s3, fp);
+                a3 = SubPolyGT4RL3((int*)QuadVertTables[gp], &s1[231], s1, a3, s0, s3, fp);
                 t1 = (int*)RGB2;
                 t2 = RGB1;
                 s3 = 0;
@@ -405,7 +407,7 @@ char* SubPolyGT3RL3(int* t0, int* t1, int* s1, int* a3, int s3, int fp, int s0)
                 s3 = 1;
                 s4 = gp;
                 s6 = (int)t0;
-                a3 = (int*)SubPolyGT3RL3((int*)&TriVertTables[gp], &s1[216], s1, a3, s3, fp, s0);
+                a3 = (int*)SubPolyGT3RL3((int*)TriVertTables[gp], &s1[216], s1, a3, s3, fp, s0);
                 t1 = (int*)RGB2;
                 t2 = RGB1;
                 s3 = 0;
@@ -1063,7 +1065,7 @@ loc_15A8:
                     InitSubdivisionRL3((int*)s1, t1, s44, &fpp, t5, t2, s55, gp, t6, &t3, s66, s3, &t7, &s77);
 
                     s3 = 0;
-                    a3 = (int)SubPolyGT3RL3((int*)&TriVertTableRL3, (int*)&s1[804], (int*)s1, (int*)a3, s3, fpp, (int)s0);
+                    a3 = (int)SubPolyGT3RL3((int*)TriVertTableRL3, (int*)&s1[804], (int*)s1, (int*)a3, s3, fpp, (int)s0);
                     at = BFC;
                     t0 = (LB1 & 0xFFFF) | ((LB2 & 0xFFFF) << 16);
                     t9 = DQA;
@@ -1266,7 +1268,7 @@ loc_172C:
                     ((short*)s1)[407] = t4;
                     ((short*)s1)[408] = t5;
 
-                    a3 = (int)SubPolyGT4RL3((int*)&QuadVertTableRL3, (int*)&s1[824], (int*)s1, (int*)a3, (int)s0, s3, fpp);
+                    a3 = (int)SubPolyGT4RL3((int*)QuadVertTableRL3, (int*)&s1[824], (int*)s1, (int*)a3, (int)s0, s3, fpp);
                     t0 = (LB1 & 0xFFFF) | ((LB2 & 0xFFFF) << 16);
                     at = BFC;
                     t9 = DQA;
@@ -1461,7 +1463,11 @@ void sub_158RL3(long underwater, struct room_info* r)
     s3 = (int*)RoomBBoxes;
     s4 = &draw_rooms[0];
     //t2 = wibble & 0xFC
+    #if defined(__LP64__)
+    s2 = (int*)tsv_buffer;
+#else
     s2 = (int*)&tsv_buffer[0];
+#endif
     LB3 = wibble & 0xFC;
 
     //loc_1B0
@@ -1821,16 +1827,16 @@ loc_64C:
         TRY = t1;
         TRZ = t2;
 
-        t0 = ((int*)a1)[5];
-        t1 = ((int*)a1)[6];
-        t2 = ((int*)a1)[7];
+        t0 = ((struct room_info*)a1)->x;
+        t1 = ((struct room_info*)a1)->y;
+        t2 = ((struct room_info*)a1)->z;
 
         sp2[11] = t0;
         sp2[12] = t1;
         sp2[13] = t2;
 
-        t0 = ((int*)a1)[14];
-        t2 = ((int*)a1)[15];
+        t0 = (((unsigned short)((struct room_info*)a1)->left) | (((unsigned int)(unsigned short)((struct room_info*)a1)->right) << 16));
+        t2 = (((unsigned short)((struct room_info*)a1)->top) | (((unsigned int)(unsigned short)((struct room_info*)a1)->bottom) << 16));
 
         at = 0xFFFF0000;
         t1 = t0 & at;

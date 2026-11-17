@@ -17,7 +17,11 @@ extern struct STASHEDOBJ stashed_objects_list[128];
 extern struct STASHEDDAT stashed_matrix_list[240];
 extern unsigned char char_anim;
 extern unsigned char OurSqrt[1024];
+#if defined(__LP64__)
+extern struct WATERTAB (*WaterTable)[64];
+#else
 extern struct WATERTAB WaterTable[22][64];
+#endif
 extern struct MATRIX3D* Matrix;
 extern unsigned short SqrtTable[210];
 extern unsigned short ScalarTable[198];
