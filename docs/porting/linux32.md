@@ -3401,3 +3401,30 @@ rentrée (`f2=1`), ce qui est le comportement attendu de cette variante.
 
 Build `build-gameplay59` : SHA256
 `fc1576c71a62171a8c168654e0c802d0624530e293fd969453b75974c2e4ade1`.
+
+### `ControlRollingBall` porté (bille de la salle 13) (17 novembre 2026)
+
+`GAME/TRAPS.C` : `ControlRollingBall` remplace le stub par la version de
+`traps.cpp` — gravité et `fallspeed`, rebonds amortis, sondage de sol à
+±128 et ±512 autour de la bille (`GetFloor`/`GetHeight`), correction de
+vitesse (`item_flags[0]`/`[1]`), `camera.bounce` selon la distance,
+réorientation progressive (`phd_atan_asm`) et `_TestTriggers` pour les
+déclencheurs sous la bille. `GAME/SETUP.C` assigne `ROLLINGBALL`
+(`control`, `RollingBallCollision`, `save_position`, `save_flags`).
+Includes ajoutés à `TRAPS.C` : `MATHS.H` (`phd_sqrt_asm`/`phd_atan_asm`) et
+`COLLIDE_S.H` (`ItemNewRoom`, déclaré sous `PC_VERSION` seulement dans
+`ITEMS.H`).
+
+Validation runtime (item 23 forcé actif, OCB 0) :
+
+```
+RB item23 obj=114 room=13 ocb=0 pos=7680,-1280,75264
+RB n=20  pos=7680,5676,91152  f1=3072  fall=53
+RB n=40  pos=7680,6912,92672  f1=21    fall=0
+RB n=200 inchangé (bille arrêtée)
+```
+
+La bille **tombe, roule et s'arrête** ; 200 frames sans `SIGSEGV`.
+
+Build `build-gameplay59` : SHA256
+`513472275916c1390736ebddb6953147d729c3b8d275c51adfe6f8e3c3935a47`.

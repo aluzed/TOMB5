@@ -1084,6 +1084,14 @@ static void PortSetupGameplayObjects(void)
 			objects[i].using_drawanimating_item = FALSE;
 			objects[i].save_flags = TRUE;
 		}
+		else if (i == ROLLINGBALL)
+		{
+			/* Bille de la salle 13 : logique portee depuis traps.cpp. */
+			objects[i].control = &ControlRollingBall;
+			objects[i].collision = &RollingBallCollision;
+			objects[i].save_position = TRUE;
+			objects[i].save_flags = TRUE;
+		}
 		else if (i == TEETH_SPIKES)
 		{
 			/* Dents de scie (salle 124) : logique portee depuis traps.cpp.

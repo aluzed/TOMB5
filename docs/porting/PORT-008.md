@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+The Colosseum, ControlRollingBall porte: GAME/TRAPS.C remplace le stub par la version de traps.cpp (gravite et fallspeed, rebonds amortis, sondage de sol a +/-128 et +/-512 autour de la bille via GetFloor/GetHeight, correction de vitesse item_flags[0]/[1], camera.bounce selon la distance, reorientation progressive phd_atan_asm, _TestTriggers pour les declencheurs sous la bille). GAME/SETUP.C assigne ROLLINGBALL (control, RollingBallCollision, save_position, save_flags). Includes ajoutes a TRAPS.C: MATHS.H (phd_sqrt_asm/phd_atan_asm) et COLLIDE_S.H (ItemNewRoom, declare sous PC_VERSION seulement dans ITEMS.H). Validation runtime (item 23 force actif, OCB 0): pos initiale 7680,-1280,75264; n=20 pos=7680,5676,91152 f1=3072 fall=53; n=40 pos=7680,6912,92672 f1=21 fall=0; puis inchange (bille arretee). La bille tombe, roule et s'arrete; 200 frames sans SIGSEGV. 4181 tests PASS. Build-gameplay59 SHA256 513472275916c1390736ebddb6953147d729c3b8d275c51adfe6f8e3c3935a47. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum, ControlScaledSpike porte: GAME/TRAPS.C remplace le stub par la version de traps.cpp (extension/retraction pilotees par item_flags[0]/[1], TestBoundsCollideTeethSpikes, degats 8 PV glissants, mort si chute ou dents sorties selon trigger_flags & 7, gerbes de sang TriggerBlood, animation de mort dediee ANIMATION_LARA_SPIKED + STATE_LARA_DEATH). GAME/SETUP.C: TEETH_SPIKES recoit InitialiseScaledSpike (deja porte) et ControlScaledSpike avec save_flags; le rendu reste le chemin standard (pas de DrawScaledSpike) car assigner le stub actuel imprimerait un UNIMPLEMENTED par frame sans rien dessiner, alors que le rendu standard affiche au moins le maillage. Validation runtime (sauvegarde corniche, item 104 force actif): handlers non nuls, item identifie obj=117 room=124 ocb=36, 200 frames sans SIGSEGV, lara_hp inchange (Lara a l'autre bout du niveau). Avec l'OCB 36 (bit 32) les dents restent rentrees (f2=1), comportement attendu de cette variante. 4181 tests PASS. Build-gameplay59 SHA256 fc1576c71a62171a8c168654e0c802d0624530e293fd969453b75974c2e4ade1. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
