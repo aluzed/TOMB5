@@ -1,8 +1,8 @@
 # RMIG-002 — Cible de build 64 bits sans dépendance 32 bits
 
-Status: **Todo** — priorité P0 — confiance Medium
+Status: **Done** — priorité P0 — confiance Medium
 
-Avancement : À démarrer.
+Avancement : Terminé : configuration 64 bits reproductible (script), build complet vert, binaire ELF64 produit.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Disponibilité d'un GLEW 64 bits si le chemin OpenGL devait survivre temporairem
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-17 : scripts/porting/configure64.sh configure sans -m32 (SDL2 64 bits système, GLEW 64 bits construit depuis les sources vendored, -DGLEW_NO_GLU car libglu1-mesa-dev absent). Build complet vert (0 erreur) et binaire ELF 64-bit LSB pie executable ; ldd ne montre que des bibliothèques x86-64. Exécution : le binaire démarre (init émulateur, audio, vidéo) puis s'arrête sur l'assertion ParsePrimitive (LIBGPU.C:1141) — attendu tant que les layouts PSX ne sont pas convertis (RMIG-003/004/005).
 
 ## Références
 

@@ -8,6 +8,7 @@
 #if PSX_VERSION || PSXPC_VERSION || SAT_VERSION
 #include "SPHERES.H"
 #include "BUBBLES.H"
+#include "GETSTUFF.H"
 #endif
 
 struct FOOTPRINT FootPrint[32];

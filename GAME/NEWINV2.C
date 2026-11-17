@@ -18,6 +18,8 @@
 #include "EFFECTS.H"
 #include "CAMERA.H"
 #include "SOUND.H"
+#include "LARAFIRE.H"
+#include "SPOTCAM.H"
 #if PC_VERSION
 #include "GLOBAL.H"
 #include "DRAWPRIMITIVE.H"

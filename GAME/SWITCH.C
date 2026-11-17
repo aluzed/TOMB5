@@ -12,6 +12,8 @@
 #include "CAMERA.H"
 #include "ITEMS.H"
 #include "PICKUP.H"
+#include "NEWINV2.H"
+#include "SPHERE.H"
 
 #ifdef PC_VERSION
 #include "GAME.H"

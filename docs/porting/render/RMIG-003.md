@@ -1,6 +1,6 @@
 # RMIG-003 — Typedefs PSX à largeur fixe et garde de tailles (STYPES.H)
 
-Status: **Blocked** — priorité P0 — confiance Medium
+Status: **Todo** — priorité P0 — confiance Medium
 
 Avancement : Bloqué par la cible 64 bits.
 

@@ -50,7 +50,7 @@
     {
       "id": "RMIG-002",
       "title": "Cible de build 64 bits sans dépendance 32 bits",
-      "status": "Todo",
+      "status": "Done",
       "priority": "P0",
       "goal": "Configurer et produire un binaire ELF64 à partir du même arbre, sans -m32 ni GLEW i386.",
       "facts": "Les builds actuels sont configurés avec CMAKE_C_FLAGS=-m32 et CMAKE_EXE_LINKER_FLAGS=-m32 ; GLEW et SDL2 pointent vers /usr/lib/i386-linux-gnu. En 64 bits le système fournit SDL2 2.30 et le loader Vulkan ; GLEW 64 bits n'est pas installé et ne sera pas nécessaire puisque Vulkan remplace OpenGL.",
@@ -82,13 +82,18 @@
           "note": "étape D"
         }
       ],
-      "progress": "À démarrer.",
-      "evidence": []
+      "progress": "Terminé : configuration 64 bits reproductible (script), build complet vert, binaire ELF64 produit.",
+      "evidence": [
+        {
+          "date": "2026-11-17",
+          "note": "scripts/porting/configure64.sh configure sans -m32 (SDL2 64 bits système, GLEW 64 bits construit depuis les sources vendored, -DGLEW_NO_GLU car libglu1-mesa-dev absent). Build complet vert (0 erreur) et binaire ELF 64-bit LSB pie executable ; ldd ne montre que des bibliothèques x86-64. Exécution : le binaire démarre (init émulateur, audio, vidéo) puis s'arrête sur l'assertion ParsePrimitive (LIBGPU.C:1141) — attendu tant que les layouts PSX ne sont pas convertis (RMIG-003/004/005)."
+        }
+      ]
     },
     {
       "id": "RMIG-003",
       "title": "Typedefs PSX à largeur fixe et garde de tailles (STYPES.H)",
-      "status": "Blocked",
+      "status": "Todo",
       "priority": "P0",
       "goal": "Rendre les structures de données PSX indépendantes de la largeur de long, en commençant par SPEC_PSXPC_N/STYPES.H.",
       "facts": "SPEC_PSXPC_N/STYPES.H contient 52 long et 39 unsigned long. Ces structures (room_info, FLOOR_INFO, ITEM_INFO) sont relogées depuis le fichier de niveau et comparées par sizeof ; sur LP64 leurs tailles changent silencieusement.",
@@ -171,7 +176,7 @@
       "status": "Blocked",
       "priority": "P1",
       "goal": "Adapter le code qui lit/écrit les champs convertis, en particulier la relocation du niveau et la restauration de sauvegarde.",
-      "facts": "LoadLevel relocalise les pointeurs stockés dans les structures ; sgRestoreGame et PortSave_ApplyPending réinjectent des états. Toute conversion de type doit être répercutée là où des long servent de conteneurs.",
+      "facts": "LoadLevel relocalise les pointeurs stockés dans les structures ; sgRestoreGame et PortSave_ApplyPending réinjectent des états. Le binaire 64 bits démarre mais s'arrête sur l'assertion ParsePrimitive (EMULATOR/LIBGPU.C:1141) : le flux de paquets GPU est mal interprété, signature d'un décalage de layout déjà présent.",
       "scope": "GAME/SETUP.C (relocation), GAME/SAVEGAME.C, GAME/PORTSAVE.C, GAME/ITEMS.C et accès directs aux champs convertis.",
       "exclusions": "Rendue, backend Vulkan.",
       "tasks": [
@@ -209,7 +214,7 @@
     {
       "id": "RMIG-006",
       "title": "Pointeur↔entier et fichiers en erreur en -m64",
-      "status": "Blocked",
+      "status": "Done",
       "priority": "P0",
       "goal": "Éliminer les conversions pointeur/entier non portables et faire compiler tout GAME/ en 64 bits.",
       "facts": "Inspection -m64 -fsyntax-only : sur 200 fichiers GAME/, 4 sont en erreur — COLLIDE.C (7, dont EMULATOR/GTEREG.H:33 et anims non déclaré), SWITCH.C (5), NEWINV2.C (3), OBJLIGHT.C (1).",
@@ -248,8 +253,13 @@
           "note": "anims non déclaré"
         }
       ],
-      "progress": "Bloqué par la cible 64 bits.",
-      "evidence": []
+      "progress": "Terminé : les 16 erreurs -m64 sont corrigées, la compilation 64 bits de GAME/ passe.",
+      "evidence": [
+        {
+          "date": "2026-11-17",
+          "note": "Corrections : collision de macro B (GTEREG.H) avec les paramètres de DIVFP/MULFP renommés en X/Y dans SPEC_PSXPC_N/GETSTUFF.H ; includes manquants ajoutés (SWITCH.C: SPHERE.H+NEWINV2.H ; NEWINV2.C: SPOTCAM.H+LARAFIRE.H ; OBJLIGHT.C: GETSTUFF.H ; COLLIDE.C: DRAW.H pour anims). Build 64 bits complet sans erreur ; build 32 bits recompilé vert avec un binaire de hash inchangé (b9d8e710…), donc aucune régression de code généré."
+        }
+      ]
     },
     {
       "id": "RMIG-007",

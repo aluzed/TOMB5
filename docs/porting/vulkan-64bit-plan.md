@@ -150,3 +150,35 @@ RMIG-002 -> RMIG-003 -> RMIG-004 -> RMIG-005
                                                             \-> RMIG-015 (RT)
                                                       \-> RMIG-016 (debug avancé)
 ```
+
+## 8. Avancement (17 novembre 2026)
+
+`RMIG-002` et `RMIG-006` sont terminés.
+
+**Configuration 64 bits reproductible** : `scripts/porting/configure64.sh`
+construit une cible 64 bits sans `-m32`, avec SDL2 x86-64 du système et un
+GLEW 64 bits compilé depuis les sources vendored (`-DGLEW_NO_GLU`, car
+`libglu1-mesa-dev` n'est pas installé). Sortie : **ELF 64-bit LSB pie
+executable**, `ldd` entièrement x86-64, build complet vert.
+
+**Corrections de portabilité** (16 erreurs `-m64` → 0) :
+
+| fichier | cause | correctif |
+| --- | --- | --- |
+| `SPEC_PSXPC_N/GETSTUFF.H` | macro `B` de `GTEREG.H` qui dévore les paramètres `DIVFP/MULFP(long A, long B)` | paramètres renommés `X, Y` |
+| `GAME/SWITCH.C` | `TestCollision`, `GLOBAL_enterinventory`, `GLOBAL_inventoryitemchosen` non déclarés | ajout `SPHERE.H`, `NEWINV2.H` |
+| `GAME/NEWINV2.C` | `LaraGun`, `bUseSpotCam`, `bTrackCamInit` non déclarés | ajout `SPOTCAM.H`, `LARAFIRE.H` |
+| `GAME/OBJLIGHT.C` | `GetFloor` non déclaré | ajout `GETSTUFF.H` |
+| `GAME/COLLIDE.C` | `anims` non déclaré | ajout `DRAW.H` |
+
+**Première exécution du binaire 64 bits** : il démarre (init émulateur,
+audio, vidéo) puis s'arrête sur
+`EMULATOR/LIBGPU.C:1141: int ParsePrimitive(uintptr_t): Assertion FALSE`
+avec des `Unhandled primitive type: 10/08/07/06/05`. C'est exactement la
+signature d'un **décalage de layout** dans le flux de paquets GPU : la
+suite logique est `RMIG-003`→`RMIG-005` (conversion des structures PSX),
+pas un ajustement du parseur.
+
+**Aucune régression 32 bits** : arbre recompilé vert (0 erreur) et binaire
+de hash inchangé (`b9d8e710…`), les correctifs n'ajoutant que des
+déclarations.

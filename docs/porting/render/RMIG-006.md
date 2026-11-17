@@ -1,8 +1,8 @@
 # RMIG-006 — Pointeur↔entier et fichiers en erreur en -m64
 
-Status: **Blocked** — priorité P0 — confiance Medium
+Status: **Done** — priorité P0 — confiance Medium
 
-Avancement : Bloqué par la cible 64 bits.
+Avancement : Terminé : les 16 erreurs -m64 sont corrigées, la compilation 64 bits de GAME/ passe.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Assembleur GTE et macros de registres selon l'architecture.
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-17 : Corrections : collision de macro B (GTEREG.H) avec les paramètres de DIVFP/MULFP renommés en X/Y dans SPEC_PSXPC_N/GETSTUFF.H ; includes manquants ajoutés (SWITCH.C: SPHERE.H+NEWINV2.H ; NEWINV2.C: SPOTCAM.H+LARAFIRE.H ; OBJLIGHT.C: GETSTUFF.H ; COLLIDE.C: DRAW.H pour anims). Build 64 bits complet sans erreur ; build 32 bits recompilé vert avec un binaire de hash inchangé (b9d8e710…), donc aucune régression de code généré.
 
 ## Références
 

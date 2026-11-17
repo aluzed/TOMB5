@@ -26,6 +26,7 @@ extern void ItemNewRoom(short item_num, short room_number);
 
 #if PSX_VERSION || PSXPC_VERSION || SAT_VERSION
 #include "MISC.H"
+#include "DRAW.H"
 #include "FXTRIG.H"
 #include "GETSTUFF.H"
 #include "CALCLARA.H"

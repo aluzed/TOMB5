@@ -10,7 +10,7 @@ Adapter le code qui lit/écrit les champs convertis, en particulier la relocatio
 
 ## Faits établis
 
-LoadLevel relocalise les pointeurs stockés dans les structures ; sgRestoreGame et PortSave_ApplyPending réinjectent des états. Toute conversion de type doit être répercutée là où des long servent de conteneurs.
+LoadLevel relocalise les pointeurs stockés dans les structures ; sgRestoreGame et PortSave_ApplyPending réinjectent des états. Le binaire 64 bits démarre mais s'arrête sur l'assertion ParsePrimitive (EMULATOR/LIBGPU.C:1141) : le flux de paquets GPU est mal interprété, signature d'un décalage de layout déjà présent.
 
 ## Périmètre
 
