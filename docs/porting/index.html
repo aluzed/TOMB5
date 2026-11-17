@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+Le niveau 1 s affiche correctement en 64 bits. Cause principale des polygones deformes : 23 occurrences de sizeof(unsigned long) utilisees comme pas de primitive (POLY_GT3/GT4, boucle de copie MISC) valent 8 octets en LP64 au lieu de 4, donc les primitives se chevauchaient et le parseur lisait des UV/couleurs comme coordonnees ecran ([VBAD] quad code=3c v=(8224,32)). Remplacement global par sizeof(PSX_ULONG). Resultat : bbox (-174,-154)-(628,354) au lieu de ±32000, plus aucun [VBAD], capture du niveau 1 montrant correctement le couloir de Streets of Rome avec textures et eclairage (3717 sommets, 111 splits). Reste a valider l avancee de la cutscene et l affichage/controle de Lara en 64 bits. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 La 3D du niveau 1 s affiche partiellement en 64 bits. Corrections supplementaires : matrix_stack/w2v_matrix/phd_mxptr en mots 32 bits ; roomlets lisant x/y/z et left/right/top/bottom par champs nommes ; SubPolyGTLoopRLx recevant directement le pointeur de table ; s6 passe en intptr_t (sauvegarde du curseur de table sans troncature) ; calc_animating_item_clip_window utilise les champs hotes de room_info pour la porte et x/z/minfloor/maxceiling. Mesure : [OT] verts=3717 splits=111, capture avec surfaces bleues visibles. Anomalie restante : bbox des sommets (-32632,-130)-(30848,15472) au lieu de rester dans 0..512 x 0..240, donc une partie des polygones a des coordonnees ecran invalides et la scene reste surtout noire. Prochain pas : comparer SXY/SZ des premiers polygones avec le 32 bits au meme endroit. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

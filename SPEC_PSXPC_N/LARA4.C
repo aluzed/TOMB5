@@ -988,7 +988,7 @@ int* sub_1554L4(int v0, short* meshp, int* s5, int s6, unsigned int* a1)//(F)
                             ((int*)t1)[0] = (int)s5;
                             s5[0] = t2;
 #endif
-                            s5 += sizeof(POLY_GT3) / sizeof(unsigned long);
+                            s5 += sizeof(POLY_GT3) / sizeof(PSX_ULONG);
                         }//loc_9D0
                     }//loc_9D0
                 }//loc_9D0
@@ -1133,7 +1133,7 @@ int* sub_1554L4(int v0, short* meshp, int* s5, int s6, unsigned int* a1)//(F)
                             ((int*)t1)[0] = (int)s5;
                             ((int*)s5)[0] = t2;
 #endif
-                            s5 += sizeof(POLY_GT4) / sizeof(unsigned long);
+                            s5 += sizeof(POLY_GT4) / sizeof(PSX_ULONG);
                         }//loc_B8C
                     }
                 }//loc_B8C
@@ -1420,7 +1420,7 @@ int* sub_658L4(short* meshp, int* s5/*db.polyptr*/, int s6/*ot*/)//(F)
                                 addPrim(t1, s5);
                         }
 #endif
-                            s5 += sizeof(POLY_GT3) / sizeof(unsigned long);
+                            s5 += sizeof(POLY_GT3) / sizeof(PSX_ULONG);
                         }//loc_9D0
                     }//loc_9D0
                 }//loc_9D0
@@ -1605,7 +1605,7 @@ int* sub_658L4(short* meshp, int* s5/*db.polyptr*/, int s6/*ot*/)//(F)
                             ((int*)t1)[0] = (int)s5;
                             ((int*)s5)[0] = t2;
 #endif
-                           s5 += sizeof(POLY_GT4) / sizeof(unsigned long);
+                           s5 += sizeof(POLY_GT4) / sizeof(PSX_ULONG);
                         }//loc_B8C
                     }
                 }//loc_B8C

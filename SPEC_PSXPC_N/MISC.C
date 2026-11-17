@@ -70,7 +70,7 @@ void S_LongMemCpy(unsigned long* pDest, unsigned long* pSrc, unsigned long size)
 
 	if (size > 0)
 	{
-		for (i = size / sizeof(unsigned long); i > 0; i--, pDest += 4, pSrc += 4)
+		for (i = size / sizeof(PSX_ULONG); i > 0; i--, pDest += 4, pSrc += 4)
 		{
 			//loc_5E974
 			pDest[0] = pSrc[0];

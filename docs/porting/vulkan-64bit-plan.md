@@ -574,3 +574,26 @@ invalides, ce qui laisse la scène majoritairement noire. Prochain pas :
 comparer `SXY`/`SZ` des premiers polygones au même endroit que le 32 bits
 (même salle/caméra), puis corriger la dernière erreur de projection ou de
 base de vertices.
+
+## 19. Le niveau 1 s'affiche correctement en 64 bits
+
+Cause principale des polygones déformés restants : **23 occurrences de
+`sizeof(unsigned long)`** utilisées comme pas de primitive
+(`a3 += sizeof(POLY_GT4) / sizeof(unsigned long)`, boucle de copie
+`MISC.C`, etc.). En LP64 `unsigned long` vaut 8 octets : les primitives
+avançaient de 28 octets au lieu de 56, se chevauchaient, et le parseur
+lisait des coordonnées UV/couleurs comme des coordonnées écran
+(`[VBAD] quad code=3c ... (8224,32)`).
+
+Remplacement global par `sizeof(PSX_ULONG)` (4 octets dans les deux
+ABIs).
+
+Résultat :
+
+- `[OT] bbox = (-174,-154)-(628,354)` au lieu de `±32000` ;
+- plus aucun `[VBAD]` ;
+- capture du niveau 1 : **couloir de Streets of Rome correctement rendu**
+  (textures, éclairage, géométrie), 3717 sommets / 111 splits.
+
+Reste à valider : avancée de la cutscene et affichage/contrôle de Lara en
+64 bits.

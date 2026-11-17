@@ -41,6 +41,8 @@ static int polygon_count = 0;
 struct Vertex g_vertexBuffer[MAX_NUM_POLY_BUFFER_VERTICES];
 struct VertexBufferSplit g_splits[MAX_NUM_INDEX_BUFFERS];
 int g_vertexIndex;
+int port_cur_prim_code = -1;
+uintptr_t port_cur_prim_ptr = 0;
 int g_splitIndex;
 
 void ClearVBO()
@@ -804,6 +806,8 @@ void ParseLineG4(LINE_G4* line, bool semiTransparent)
 int ParsePrimitive(uintptr_t primPtr)
 {
 	P_TAG* pTag = (P_TAG*)primPtr;
+	port_cur_prim_code = pTag->code;
+	port_cur_prim_ptr = primPtr;
 
 	int textured = (pTag->code & 0x4) != 0;
 

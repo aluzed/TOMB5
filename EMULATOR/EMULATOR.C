@@ -27,6 +27,28 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+extern int port_cur_prim_code;
+extern uintptr_t port_cur_prim_ptr;
+
+static void port_check_vtx(const char* fn, short** pts, int n)
+{
+	static int reported = 0;
+	if (getenv("TOMB5_DRAWDBG") == NULL || reported >= 20)
+		return;
+	for (int i = 0; i < n; i++)
+	{
+		int x = pts[i][0], y = pts[i][1];
+		if (x < -2000 || x > 2000 || y < -2000 || y > 2000)
+		{
+			fprintf(stderr, "[VBAD] %s code=%02x ptr=%p v=%d (%d,%d)\n", fn, port_cur_prim_code, (void*)port_cur_prim_ptr, i, x, y);
+			reported++;
+			return;
+		}
+	}
+}
 #include <string.h>
 
 #if defined(SDL2) || (defined(OGLES) && defined(_WINDOWS))
@@ -980,6 +1002,11 @@ void Emulator_GenerateVertexArrayTriangle(struct Vertex* vertex, short* p0, shor
 	assert(p1);
 	assert(p2);
 
+	{
+		short* pts[3] = { p0, p1, p2 };
+		port_check_vtx("tri", pts, 3);
+	}
+
 #if defined(PGXP)
 	PGXPVertex* pgxp_vertex_0 = NULL;
 	PGXPVertex* pgxp_vertex_1 = NULL;
@@ -1077,6 +1104,11 @@ void Emulator_GenerateVertexArrayQuad(struct Vertex* vertex, short* p0, short* p
 	assert(p1);
 	assert(p2);
 	assert(p3);
+
+	{
+		short* pts[4] = { p0, p1, p2, p3 };
+		port_check_vtx("quad", pts, 4);
+	}
 
 #if defined(PGXP)
 	PGXPVertex* pgxp_vertex_0 = NULL;

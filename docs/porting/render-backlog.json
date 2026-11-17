@@ -859,7 +859,7 @@
           "note": "DrawCutSeqActors"
         }
       ],
-      "progress": "En cours : la 3D du niveau 1 s affiche partiellement en 64 bits (3717 sommets, 111 splits, capture avec surfaces bleues) mais de nombreux sommets sont hors ecran (±32000) et la scene reste majoritairement noire. La cutscene n avance toujours pas.",
+      "progress": "Quasi termine : le niveau 1 s affiche correctement en 64 bits (couloir de Streets of Rome, geometrie et textures). Reste a verifier l avancee de la cutscene et l affichage/controle de Lara.",
       "evidence": [
         {
           "date": "2026-11-17",
@@ -876,6 +876,10 @@
         {
           "date": "2026-11-17",
           "note": "Apres correction de matrix_stack/w2v (mots 32 bits), des champs de salle lus par nom, des tables SubPolyGT passees en pointeur complet, de s6 en intptr_t et du pointeur door dans calc_animating_item_clip_window, le niveau 1 dessine de la geometrie : [OT] verts=3717 splits=111, capture montrant des surfaces bleues. Anomalie restante : bbox des sommets (-32632,-130)-(30848,15472) au lieu de rester dans 0..512x0..240, donc une partie des polygones a des coordonnees ecran invalides et la scene reste surtout noire. Prochain pas : comparer les SXY/SZ des premiers polygones avec le 32 bits au meme endroit (meme salle/camera) pour isoler la derniere erreur de projection ou de base de vertices."
+        },
+        {
+          "date": "2026-11-17",
+          "note": "Cause principale des polygones deformes : 23 occurrences de sizeof(unsigned long) (pas des primitives POLY_GT3/GT4, boucle de copie MISC) valent 8 en LP64 au lieu de 4. Remplacees par sizeof(PSX_ULONG). Apres correction : [OT] bbox (-174,-154)-(628,354) au lieu de ±32000, capture du niveau 1 montrant correctement le couloir de Streets of Rome avec textures et eclairage. Aucun [VBAD] restant. Reste a valider cutscene/Lara/gameplay."
         }
       ]
     }

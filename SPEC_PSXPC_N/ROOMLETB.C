@@ -512,7 +512,7 @@ int* SubPolyGT4(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//(F)
 						((POLY_GT4*)a3)->v3 = (t8 & 0xFF00) >> 8;
 						((POLY_GT4*)a3)->pad3 = (t8 & 0xFFFF0000) >> 16;
 						MyAddPrim(0xC000000, &t9, &s0, a3);
-						a3 += sizeof(POLY_GT4) / sizeof(unsigned long);
+						a3 += sizeof(POLY_GT4) / sizeof(PSX_ULONG);
 					}
 				}
 loc_75B20:
@@ -637,7 +637,7 @@ int* SubPolyGT3(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//(F)
 							t2 = RGB1;
 							SubdivSetup3(a3, fp, (int*)t3, (int*)t4, (int*)t5, (int)t1, t2);
 							MyAddPrim(0x9000000, &t9, &s0, a3);
-							a3 += sizeof(POLY_GT4) / sizeof(unsigned long);
+							a3 += sizeof(POLY_GT4) / sizeof(PSX_ULONG);
 						}
 					}
 					//loc_759A8
