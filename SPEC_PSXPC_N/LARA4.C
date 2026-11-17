@@ -1990,9 +1990,9 @@ void sub_2CL4(struct ITEM_INFO* item)//(F)
             //a00 = ((int*)meshes + objects[LARA_EXTRA_MESH1].mesh_index + lara_mesh_sweetness_table[i] + 1)[0];
 
 #if defined(USE_32_BIT_ADDR)
-            db.polyptr = (char*)sub_658L4((short*)((int*)meshes + objects[LARA_EXTRA_MESH1].mesh_index + (lara_mesh_sweetness_table[i] << 1))[0], (int*)db.polyptr, (int)(db.ot + 1 * 2));
+            db.polyptr = (char*)sub_658L4((short*)((int*)meshes + objects[LARA_EXTRA_MESH1].mesh_index + (lara_mesh_sweetness_table[i] << 1))[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #else
-            db.polyptr = (char*)sub_658L4((short*)((int*)meshes + objects[LARA_EXTRA_MESH1].mesh_index + (lara_mesh_sweetness_table[i] << 1))[0], (int*)db.polyptr, (int)(db.ot + 1));
+            db.polyptr = (char*)sub_658L4((short*)((int*)meshes + objects[LARA_EXTRA_MESH1].mesh_index + (lara_mesh_sweetness_table[i] << 1))[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #endif
             //loc_1FC
 
@@ -2055,9 +2055,9 @@ void sub_2CL4(struct ITEM_INFO* item)//(F)
         //a0 = lara.mesh_ptrs[lara_mesh_sweetness_table[i]];
 
 #if defined(USE_32_BIT_ADDR)
-        db.polyptr = (char*)sub_658L4(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(db.ot + 1 * 2));
+        db.polyptr = (char*)sub_658L4(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #else
-        db.polyptr = (char*)sub_658L4(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(db.ot + 1));
+        db.polyptr = (char*)sub_658L4(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #endif
         //loc_1FC
 
@@ -2173,9 +2173,9 @@ void sub_2CL4(struct ITEM_INFO* item)//(F)
         }//loc_408
 
 #if defined(USE_32_BIT_ADDR)
-        db.polyptr = (char*)sub_658L4((short*)((int*)s1)[0], (int*)db.polyptr, (int)(db.ot + 1 * 2));
+        db.polyptr = (char*)sub_658L4((short*)((int*)s1)[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #else
-        db.polyptr = (char*)sub_658L4((short*)((int*)s1)[0], (int*)db.polyptr, (int)(db.ot + 1));
+        db.polyptr = (char*)sub_658L4((short*)((int*)s1)[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #endif
 
         //loc_410

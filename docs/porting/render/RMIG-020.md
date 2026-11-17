@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : En cours : le niveau 1 se rend correctement et la chaine DrawLaraL1 est atteinte sans crash (mesh_ptrs valides, mesh_bits=FFFFFFFF), mais Lara n est pas encore visible dans l image et la bbox conserve quelques sommets aberrants (-32768, 1023).
+Avancement : En cours : niveau 1 rendu, DrawLaraL1 et DrawAllAnimatingItems executes sans crash ; Lara genere ~15 Ko de primitives mais n apparait pas encore a l ecran. Ses matrices et positions sont correctes (pos 46592,0,31232, mesh_ptrs valides, mesh_bits=FFFFFFFF).
 
 ## Objectif
 
@@ -54,6 +54,7 @@ La boucle peut venir du timing audio XA (dummy) ou d un pointeur cutseq converti
 - 2026-11-17 : Apres correction de matrix_stack/w2v (mots 32 bits), des champs de salle lus par nom, des tables SubPolyGT passees en pointeur complet, de s6 en intptr_t et du pointeur door dans calc_animating_item_clip_window, le niveau 1 dessine de la geometrie : [OT] verts=3717 splits=111, capture montrant des surfaces bleues. Anomalie restante : bbox des sommets (-32632,-130)-(30848,15472) au lieu de rester dans 0..512x0..240, donc une partie des polygones a des coordonnees ecran invalides et la scene reste surtout noire. Prochain pas : comparer les SXY/SZ des premiers polygones avec le 32 bits au meme endroit (meme salle/camera) pour isoler la derniere erreur de projection ou de base de vertices.
 - 2026-11-17 : Cause principale des polygones deformes : 23 occurrences de sizeof(unsigned long) (pas des primitives POLY_GT3/GT4, boucle de copie MISC) valent 8 en LP64 au lieu de 4. Remplacees par sizeof(PSX_ULONG). Apres correction : [OT] bbox (-174,-154)-(628,354) au lieu de ±32000, capture du niveau 1 montrant correctement le couloir de Streets of Rome avec textures et eclairage. Aucun [VBAD] restant. Reste a valider cutscene/Lara/gameplay.
 - 2026-11-17 : Corrections : conversion des drapeaux object_info_file -> bitfields hotes (loaded/intelligent/...), sinon objects[LARA].loaded restait a 0 et Lara n etait jamais dessinee ; tous les scratchpads locaux passes en tableaux bas via une reference (semantique de tableau preservee, plus de &scratchPad tronque) ; DrawSkyMesh lit l entree OT avec PSX_ULONG ; S_CalculateLight utilise &scratchPad[21]. Resultat : DrawLaraL1 est appele, lara_item mesh_ptrs[0]=0x... et mesh_bits=FFFFFFFF, 4911 sommets generes, aucune primitive non geree, processus stable 40 s. Reste : Lara n apparait pas encore (probable transformation/lighting de ses meshes) et bbox (-32768,-154)-(1023,565) contient des sommets aberrants.
+- 2026-11-17 : Diagnostic : DrawLaraL1 est appele, delta db.polyptr ~15 Ko par frame, lara_matrices coherentes (m00=4095, tx/ty/tz petits), mesh0 header identique au 32 bits. Les polygones GT3 echantillonnes ont des SXY compresses (ex. 008000e7) dans les deux builds : il faut instrumenter par mesh (pas seulement les 12 premiers GT3) pour trouver ceux du corps. Les OT Lara sont maintenant indexes en mots 32 bits (db.ot + 0/1/2) au lieu de db.ot+2*8. Les sommets aberrants -32768 viennent du decor (lara=0), pas de Lara.
 
 ## Références
 

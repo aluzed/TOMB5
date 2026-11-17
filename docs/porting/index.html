@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+Lara : logique et generation OK en 64 bits, image encore absente. DrawLaraL1 est appele, db.polyptr avance d environ 15 Ko/frame, lara_item-&gt;pos=(46592,0,31232), mesh_bits=FFFFFFFF, lara.mesh_ptrs[0] valide et en-tete de mesh identique au 32 bits ; lara_matrices[0] coherente (m00=4095, translations faibles). Les entrees OT de Lara sont indexees en mots 32 bits ((PSX_ULONG*)db.ot + n) au lieu de db.ot+n*8. Les sommets aberrants -32768 viennent du decor (lara=0), pas de Lara. Les 12 premiers GT3 echantillonnes ont des SXY compacts dans les deux builds (008000e7) : il faut instrumenter par mesh (pointeur meshp, nombre de polygones, min/max SXY) pour identifier le corps. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 Niveau 1 rendu et chaine Lara atteinte en 64 bits. Corrections : conversion des drapeaux object_info_file vers les bitfields hotes (loaded/intelligent/save_*/HitEffect/undead/save_mesh), sinon objects[LARA].loaded restait a 0 ; tous les scratchpads locaux places sous 4 Gio via une reference de tableau (semantique de tableau preservee) ; DrawSkyMesh lit l entree OT en PSX_ULONG ; S_CalculateLight utilise &amp;scratchPad[21]. Resultat : DrawLaraL1 est appele sans crash, lara.mesh_ptrs[0]/[7] valides et mesh_bits=FFFFFFFF, 4911 sommets generes, 0 primitive non geree, processus stable 40 s. Reste : Lara n apparait pas encore dans l image et la bbox conserve des sommets aberrants (-32768, 1023), probablement dans la transformation/eclairage de ses meshes. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

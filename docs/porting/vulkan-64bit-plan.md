@@ -621,3 +621,21 @@ Corrections supplémentaires :
 - mais Lara n'apparaît pas encore dans l'image et la bbox conserve des
   sommets aberrants (`-32768`, `1023`), probablement dans la
   transformation/éclairage de ses meshes.
+
+## 21. Lara : logique et génération OK, image encore absente
+
+- `DrawLaraL1` est appelé, `db.polyptr` avance d'environ **15 Ko** par frame
+  (les primitives sont bien générées).
+- `lara_item->pos = (46592,0,31232)`, `mesh_bits = 0xFFFFFFFF`,
+  `lara.mesh_ptrs[0]` valide ; l'en-tête du mesh est **identique au 32 bits**.
+- `lara_matrices[0]` est cohérente (`m00 = 4095`, translations faibles).
+- Les entrées d'OT de Lara sont désormais indexées en mots 32 bits
+  (`(PSX_ULONG*)db.ot + n`) au lieu de `db.ot + n*8`.
+- Les sommets aberrants `-32768` observés viennent du décor (`lara=0`),
+  pas de Lara.
+
+Lara n'apparaît toujours pas à l'écran. Les 12 premiers polygones GT3
+échantillonnés ont des `SXY` très compacts dans **les deux builds**
+(`008000e7`), donc ils ne représentent pas le corps : il faut instrumenter
+**par mesh** (pointeur `meshp`, nombre de polygones, min/max SXY) pour
+identifier ceux du corps et comparer 32/64.

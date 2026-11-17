@@ -1,4 +1,5 @@
 #include "DRAWPHAS.H"
+int port_in_lara_draw = 0;
 #include <stdlib.h>
 
 #include "3D_GEN.H"
@@ -408,11 +409,16 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 			static int port_laradbg = 0;
 			if (getenv("TOMB5_DRAWDBG") != NULL && (port_laradbg++ % 120) == 0)
 			{
-				fprintf(stderr, "[LARA] type=%d obj=%d loaded=%d meshbits=%08x nodraw=%d itemptr=%p mesh0=%p mesh7=%p mindex=%d\n",
+				fprintf(stderr, "[LARA] type=%d obj=%d loaded=%d meshbits=%08x nodraw=%d pos=(%d,%d,%d) room=%d anim=%d frame=%d mesh0=%p/{%d,%d,%d,%d}\n",
 				        LaraDrawType, lara_item->object_number, objects[LARA].loaded,
-				        (unsigned)lara_item->mesh_bits, SCNoDrawLara, (void*)lara_item,
-				        (void*)lara.mesh_ptrs[0], (void*)lara.mesh_ptrs[7],
-				        objects[LARA].mesh_index);
+				        (unsigned)lara_item->mesh_bits, SCNoDrawLara,
+				        lara_item->pos.x_pos, lara_item->pos.y_pos, lara_item->pos.z_pos,
+				        lara_item->room_number, lara_item->anim_number, lara_item->frame_number,
+				        (void*)lara.mesh_ptrs[0],
+				        lara.mesh_ptrs[0] ? ((int*)lara.mesh_ptrs[0])[0] : 0,
+				        lara.mesh_ptrs[0] ? ((int*)lara.mesh_ptrs[0])[1] : 0,
+				        lara.mesh_ptrs[0] ? ((int*)lara.mesh_ptrs[0])[2] : 0,
+				        lara.mesh_ptrs[0] ? ((int*)lara.mesh_ptrs[0])[3] : 0);
 			}
 		}
 
@@ -421,6 +427,12 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 #if DEBUG_VERSION
 			ProfileRGB(0, 255, 0);
 #endif
+
+			{
+				char* port_poly_before = db.polyptr;
+				port_in_lara_draw = 1;
+				int port_lara_dbg2 = 0;
+				static int port_lara_dbg2_n = 0;
 
 #if !AUG_VERSION && !JULY_VERSION
 			switch (LaraDrawType)
@@ -442,6 +454,16 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 				break;
 			}
 #endif
+
+			port_in_lara_draw = 0;
+			port_lara_dbg2 = (int)(db.polyptr - port_poly_before);
+			if (getenv("TOMB5_DRAWDBG") != NULL && (port_lara_dbg2_n++ % 120) == 0)
+			{
+				fprintf(stderr, "[LARA2] delta=%d m00=%d tx=%d ty=%d tz=%d dbot=%p\n",
+				        port_lara_dbg2, lara_matrices[0].m00, lara_matrices[0].tx,
+				        lara_matrices[0].ty, lara_matrices[0].tz, (void*)db.ot);
+			}
+			}
 
 #if DEBUG_VERSION
 			ProfileRGB(255, 255, 0);

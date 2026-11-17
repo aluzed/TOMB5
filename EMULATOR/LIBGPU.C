@@ -42,6 +42,7 @@ struct Vertex g_vertexBuffer[MAX_NUM_POLY_BUFFER_VERTICES];
 struct VertexBufferSplit g_splits[MAX_NUM_INDEX_BUFFERS];
 int g_vertexIndex;
 int port_cur_prim_code = -1;
+extern int port_in_lara_draw;
 uintptr_t port_cur_prim_ptr = 0;
 int g_splitIndex;
 
@@ -939,6 +940,19 @@ int ParsePrimitive(uintptr_t primPtr)
 		{
 			POLY_GT3* poly = (POLY_GT3*)pTag;
 			activeDrawEnv.tpage = poly->tpage;
+
+			if (port_in_lara_draw && getenv("TOMB5_DRAWDBG"))
+			{
+				static int port_lp = 0;
+				if (port_lp++ < 12)
+				{
+					fprintf(stderr, "[LGT3] rgb=(%d,%d,%d)(%d,%d,%d)(%d,%d,%d) xy=(%d,%d)(%d,%d)(%d,%d) tpage=%d clut=%d\n",
+					        poly->r0, poly->g0, poly->b0, poly->r1, poly->g1, poly->b1,
+					        poly->r2, poly->g2, poly->b2,
+					        poly->x0, poly->y0, poly->x1, poly->y1, poly->x2, poly->y2,
+					        poly->tpage, poly->clut);
+				}
+			}
 
 			AddSplit(semi_transparent, poly->tpage, vramTexture);
 

@@ -31,6 +31,7 @@
 #include <stdint.h>
 
 extern int port_cur_prim_code;
+extern int port_in_lara_draw;
 extern uintptr_t port_cur_prim_ptr;
 
 static void port_check_vtx(const char* fn, short** pts, int n)
@@ -43,7 +44,7 @@ static void port_check_vtx(const char* fn, short** pts, int n)
 		int x = pts[i][0], y = pts[i][1];
 		if (x < -2000 || x > 2000 || y < -2000 || y > 2000)
 		{
-			fprintf(stderr, "[VBAD] %s code=%02x ptr=%p v=%d (%d,%d)\n", fn, port_cur_prim_code, (void*)port_cur_prim_ptr, i, x, y);
+			fprintf(stderr, "[VBAD] lara=%d %s code=%02x ptr=%p v=%d (%d,%d)\n", port_in_lara_draw, fn, port_cur_prim_code, (void*)port_cur_prim_ptr, i, x, y);
 			reported++;
 			return;
 		}

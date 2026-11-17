@@ -874,6 +874,16 @@ loc_88C:
                            ((int*)s5)[10] = t4;
                            t1 *= 2;
                            t1 += s6;
+                           if (getenv("TOMB5_DRAWDBG") != NULL)
+                           {
+                               static int port_gl = 0;
+                               if (port_gl++ < 12)
+                               {
+                                   fprintf(stderr, "[LGT3] sxy=%08x %08x %08x rgb=%08x %08x %08x otz=%d s6=%p\n",
+                                           (unsigned)SXY0, (unsigned)SXY1, (unsigned)SXY2,
+                                           (unsigned)t6, (unsigned)t7, (unsigned)t8, (int)OTZ, (void*)s6);
+                               }
+                           }
                            setlen(s5, 9);
                            addPrim(t1, s5);
 #else
@@ -1435,9 +1445,9 @@ void sub_2CL1(struct ITEM_INFO* item)
         if ((lara_item->mesh_bits >> 16)& (1 << 0xF))
         {
 #if defined(USE_32_BIT_ADDR)
-            db.polyptr = (char*)sub_658L1(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(db.ot+1*2));
+            db.polyptr = (char*)sub_658L1(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #else
-            db.polyptr = (char*)sub_658L1(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(db.ot+1));
+            db.polyptr = (char*)sub_658L1(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #endif
         }//loc_1FC
 
@@ -1573,9 +1583,9 @@ void sub_2CL1(struct ITEM_INFO* item)
             }//loc_408
 
 #if defined(USE_32_BIT_ADDR)
-            db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)(db.ot + 1 * 2));
+            db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #else
-            db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)(db.ot + 1));
+            db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #endif
         }
         //loc_410
