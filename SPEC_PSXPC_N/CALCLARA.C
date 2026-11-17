@@ -1567,12 +1567,20 @@ void DEL_CalcLaraMatrices_Interpolated_ASM(short* frame1, short* frame2, int fra
 		TRX = 0;
 		TRY = 0;
 		TRZ = 0;
+#if defined(__LP64__)
+		s0 = (short*)lara_joint_matrices;
+#else
 		t8[13] = (int)lara_joint_matrices;
+#endif
 	}
 	else
 	{
 		//loc_83C40
+#if defined(__LP64__)
+		s0 = (short*)lara_matrices;
+#else
 		t8[13] = (int)lara_matrices;
+#endif
 		mTranslateAbsXYZ_CL(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos);
 		if ((flag & 0x2))
 		{
@@ -1601,7 +1609,9 @@ void DEL_CalcLaraMatrices_Interpolated_ASM(short* frame1, short* frame2, int fra
 	mRotSuperPackedYXZ_CL(t8, 0);
 	iRotSuperPackedYXZ_CL(t8, 0);
 
+#if !defined(__LP64__)
 	s0 = (short*)t8[13];
+#endif
 
 	InterpolateMatrix_CL(t8, (int*)s0);
 	DEL_stash_both_matrices(t8, &t8[48]);

@@ -691,7 +691,7 @@ long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int flags)//91780(<)
 	switch (mode)
 	{
 	case SF_WAIT:
-		for (int i = 0; i < ArraySize(LaSlot); i++)
+		for (int i = 0; i < MAX_SOUND_SLOTS; i++)
 		{
 			if (LaSlot[i].nSampleInfo == info_num)
 			{
@@ -704,7 +704,7 @@ long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int flags)//91780(<)
 		break;
 
 	case SF_RESTART:
-		for (int i = 0; i < ArraySize(LaSlot); i++)
+		for (int i = 0; i < MAX_SOUND_SLOTS; i++)
 		{
 			if (LaSlot[i].nSampleInfo == info_num)
 			{
@@ -716,7 +716,7 @@ long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int flags)//91780(<)
 		break;
 
 	case SF_LOOP:
-		for (int i = 0; i < ArraySize(LaSlot); i++)
+		for (int i = 0; i < MAX_SOUND_SLOTS; i++)
 		{
 			if (LaSlot[i].nSampleInfo == info_num)
 			{
@@ -766,7 +766,7 @@ long SoundEffect(short sample_index, struct PHD_3DPOS* pos, int flags)//91780(<)
 	{
 		int nMinVolume = 0x8000000;
 		int nMinSlot = -1;
-		for (int i = 1; i < ArraySize(LaSlot); i++)
+		for (int i = 1; i < MAX_SOUND_SLOTS; i++)
 		{
 			if ((LaSlot[i].nSampleInfo >= 0) && (LaSlot[i].nVolume < nMinVolume))
 			{

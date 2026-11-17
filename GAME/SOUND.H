@@ -473,6 +473,10 @@ void SOUND_Stop();
 extern int sound_active;
 extern short* sample_lut;
 extern struct SAMPLE_INFO* sample_infos;
+#if defined(__LP64__)
+extern struct SoundSlot* LaSlot;
+#else
 extern struct SoundSlot LaSlot[MAX_SOUND_SLOTS];
+#endif
 
 #endif

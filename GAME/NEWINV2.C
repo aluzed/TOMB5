@@ -359,7 +359,10 @@ void S_DrawPickup(short object_number)//41608(<), 41A5C(<) (F)
 	ClearOTagR(db.pickup_ot, 256);
 	DrawThreeDeeObject2D(PickupX + 448, 200, convert_obj_to_invobj(object_number), 128, 0, (GnFrameCounter & 0x7F) << 9, 0, 0, 1);
 	
-#if defined(USE_32_BIT_ADDR)
+#if defined(__LP64__)
+	((PSX_ULONG*)db.pickup_ot)[0] = ((PSX_ULONG*)db.ot)[0];
+	db.ot[0] = (unsigned long)(uintptr_t)((PSX_ULONG*)db.pickup_ot + 255 * 2);
+#elif defined(USE_32_BIT_ADDR)
 	db.pickup_ot[0] = db.ot[0];
 	db.ot[0] = (uintptr_t)&db.pickup_ot[255 * 2];
 #else

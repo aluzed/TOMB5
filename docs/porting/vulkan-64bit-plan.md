@@ -472,3 +472,29 @@ Tailles vérifiées identiques 32/64 bits :
 
 Exécution 64 bits de **120 s** du mode attractif : **0** primitive non
 gérée, **0** SIGSEGV. Build 32 bits frais vert et exécuté 40 s sans erreur.
+
+## 17. Niveau 1 atteint en 64 bits, cutscene d'intro bloquée (17 novembre 2026)
+
+Avec des appuis clavier **maintenus** (`xdotool keydown` puis `keyup`), le
+menu 64 bits répond : `New Game` lance `DoLevel(Name=1)`, les lectures CD du
+niveau se terminent (dernières lectures `12` octets secteur 18231 et `8`
+octets secteur 18232). Trois crashs LP64 supplémentaires ont été corrigés
+pour arriver là :
+
+1. `SoundEffect` stockait `&LaSlot[...]` dans un `int` : `LaSlot` est
+   désormais alloué sous 4 Gio (`PORT_LowAlloc`).
+2. `InterpolateMatrix_CL` (chemin interpolé de Lara) passait par
+   `t8[13] = (int)lara_matrices` ; les pointeurs hôtes sont utilisés
+   directement en LP64.
+3. `S_DrawPickup` chaînait l'OT principal vers `&db.pickup_ot[255*2]`
+   calculé avec un pas de 8 octets ; l'arithmétique est faite en mots
+   32 bits.
+
+État : la cutscene d'intro reste bloquée sur `Handle cutseq triggering
+name: 1` (écran noir avec l'icône de chargement), alors qu'en 32 bits la
+salle s'affiche et la séquence passe au nom 3. Le niveau est donc chargé
+et le processus stable, mais le gameplay niveau 1 n'est pas encore atteint
+en 64 bits (RMIG-020).
+
+Tests : **4188 PASS** ; builds 64 et 32 bits verts ; aucune primitive non
+gérée sur les sessions de référence.

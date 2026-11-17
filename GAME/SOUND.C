@@ -1,4 +1,7 @@
 #include "SOUND.H"
+#if defined(__LP64__)
+#include "../SPEC_PSXPC_N/MALLOC.H"
+#endif
 
 #include "GAMEFLOW.H"
 #include "SPECIFIC.H"
@@ -14,7 +17,12 @@
 int sound_active = 0;
 short* sample_lut;
 struct SAMPLE_INFO* sample_infos;
+#if defined(__LP64__)
+/* Adresse tronquee en 32 bits dans SoundEffect : garder le tableau sous 4 Gio. */
+struct SoundSlot* LaSlot = (struct SoundSlot*)PORT_LowAlloc(MAX_SOUND_SLOTS * sizeof(struct SoundSlot));
+#else
 struct SoundSlot LaSlot[MAX_SOUND_SLOTS];
+#endif
 
 void SayNo()//55BE0(<), 56044(<) (F)
 {

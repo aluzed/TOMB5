@@ -2395,6 +2395,15 @@
       ],
       "status": "In progress",
       "summary": "Zero primitive non geree en 64 bits. Les structures DR_ENV/DR_MOVE/DR_AREA/DR_TPAGE et les macros de LIBGPU.H utilisaient encore u_long (8 octets en LP64) : sizeof(DR_ENV) valait 128 au lieu de 64, les paquets DR_* desynchronisaient la chaine et le parseur lisait des instructions MIPS (types 0x10/0x8C/0xFC/0xFF). Remplacement de tous les u_long de EMULATOR/LIBGPU.H et LIBGPU.C par PSX_ULONG (32 bits en LP64) et troncature explicite dans setaddr via uintptr_t. Tailles 32/64 identiques : P_TAG 12, POLY_F3 24, POLY_F4 28, POLY_FT3 36, POLY_FT4 44, POLY_GT3 44, POLY_GT4 56, TILE 20, SPRT 24, DR_ENV 64, DR_MOVE 28. Execution 64 bits de 120 s du mode attractif : 0 'Unhandled primitive type', 0 SIGSEGV, 0 stack smashing. Build 32 bits frais vert et execute 40 s sans erreur. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Niveau 1 atteint en 64 bits. Envoyer les touches en maintenu (keydown/keyup) permet au menu de repondre : New Game lance DoLevel(Name=1) et les lectures CD du niveau se terminent. Trois crashs LP64 corriges : LaSlot alloue sous 4 Gio pour SoundEffect ; InterpolateMatrix_CL utilise directement lara_matrices/lara_joint_matrices sans cast int ; S_DrawPickup chaine l OT pickup en mots 32 bits. Etat : la cutscene d intro reste bloquee sur 'Handle cutseq triggering name: 1' (ecran noir + icone) alors qu en 32 bits la salle s affiche et passe au nom 3 ; le gameplay niveau 1 n est pas encore atteint (RMIG-020). 4188 tests PASS, builds 64 et 32 bits verts, aucune primitive non geree. Aucun Done global."
     }
   ]
 }

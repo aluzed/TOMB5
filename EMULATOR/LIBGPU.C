@@ -534,6 +534,14 @@ void AggregatePTAGsToSplits(unsigned long* p, bool singlePrimitive)
 		//do
 		while ((uintptr_t)pTag != (uintptr_t)TERMINATOR_ADDR)
 		{
+#if defined(__LP64__)
+			/* Garde-fou : une table non initialisee peut renvoyer une addresse
+			 * nulle dans la chaine ; ne pas dereferencer NULL. */
+			if (pTag->addr == 0)
+			{
+				break;
+			}
+#endif
 			if (pTag->len > 0)
 			{
 				int lastSize = ParseLinkedPrimitiveList((uintptr_t)pTag, (uintptr_t)pTag + (uintptr_t)(pTag->len * 4) + 4 + LEN_OFFSET);
