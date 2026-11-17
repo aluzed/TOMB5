@@ -23,6 +23,8 @@
 #include "OBJECTS.H"
 #include "SAVEGAME.H"
 #include "SOUND.H"
+#include "DEBRIS.H"
+#include "TOMB4FX.H"
 #include "SPECIFIC.H"
 #include "SPOTCAM.H"
 
@@ -1724,9 +1726,47 @@ void CombatCamera(struct ITEM_INFO* item)//26838(<), 26A48(<)
 #endif
 }
 
+/* Porte depuis TOMB5pc/game/camera.cpp (FixedCamera). */
 void FixedCamera()
 {
-	UNIMPLEMENTED();
+	struct MESH_INFO* StaticMesh;
+	struct OBJECT_VECTOR* fixed;
+	struct GAME_VECTOR ideal;
+	struct GAME_VECTOR t2;
+	struct PHD_VECTOR v;
+	long Target, ricochet, HitLara;
+
+	if (UseForcedFixedCamera)
+	{
+		ideal.x = ForcedFixedCamera.x;
+		ideal.y = ForcedFixedCamera.y;
+		ideal.z = ForcedFixedCamera.z;
+		ideal.room_number = ForcedFixedCamera.room_number;
+	}
+	else
+	{
+		fixed = &camera.fixed[camera.number];
+		ideal.x = fixed->x;
+		ideal.y = fixed->y;
+		ideal.z = fixed->z;
+		ideal.room_number = fixed->data;
+
+		/* Mode sniper (fixed->flags & 2) non porte : il depend de
+		 * TriggerRicochetSpark / DoBloodSplat / ShatterObject, absents du port
+		 * PSX (TriggerRicochetSpark n'existe que sous PC_VERSION, et y est un
+		 * stub). Aucun camera item de ce niveau n'utilise le mode sniper. */
+	}
+
+	camera.fixed_camera = 1;
+	MoveCamera(&ideal, 1);
+
+	if (camera.timer)
+	{
+		camera.timer--;
+
+		if (!camera.timer)
+			camera.timer = -1;
+	}
 }
 
 void ChaseCamera(struct ITEM_INFO* item)//263B4(<) 265C4(<) (F)

@@ -3491,3 +3491,33 @@ n'est plus un stub).
 
 Build `build-gameplay59` : SHA256
 `95bdcc4f207cdf7041837630023d863d65b3dd2c92ab6622faa9bdab214cd423`.
+
+### `FixedCamera` porté (17 novembre 2026)
+
+`GAME/CAMERA.C` : `FixedCamera()` remplace le stub `UNIMPLEMENTED()` par
+la version de `camera.cpp` — caméra fixe pilotée par `UseForcedFixedCamera`
+ou par `camera.fixed[camera.number]`, suivi de cible, `MoveCamera(&ideal, 1)`
+et décrément de `camera.timer`. C'était un **blocage fonctionnel réel** :
+`CalculateCamera` appelle `FixedCamera()` dès que
+`camera.type != CHASE_CAMERA`, et le stub laissait la caméra figée sur sa
+position précédente (vue statique, Lara hors champ / non dessinée). Or la
+salle 12 porte justement un trigger `CAMERA(0)`.
+
+Includes ajoutés : `TOMB4FX.H` (FlashFader/DoBloodSplat), `DEBRIS.H`
+(ShatterObject), `SPOTCAM.H` (SniperOverlay).
+
+**Limite assumée et documentée** : le sous-bloc « sniper »
+(`fixed->flags & 2`) n'est pas porté — il dépend de
+`TriggerRicochetSpark`, `DoBloodSplat` et `ShatterObject`, absents du port
+PSX (`TriggerRicochetSpark` n'existe que sous `PC_VERSION`, et y est un
+stub). Aucun camera item de ce niveau n'utilise le mode sniper ; le
+commentaire est laissé dans le code.
+
+Validation : corniche **201 frames OK**, `camtype=0`, caméra mobile,
+4 183 tests PASS. Mesure associée : sur la corniche la caméra se résout en
+**room 8** (salles empilées) et Lara (`room 12`) n'est pas dans la liste de
+rendu — limite de géométrie indépendante de ce port, documentée au § 6 de
+[`colosseum-walkthrough.md`](colosseum-walkthrough.md).
+
+Build `build-gameplay59` : SHA256
+`b9d8e710fcbc4ba3d9bb09310e809ae92384829cfa0ffb02324dd27688d5771e`.
