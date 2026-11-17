@@ -270,3 +270,33 @@ Critère de sortie : un niveau se charge en 64 bits **sans SIGSEGV et sans
 
 État des builds à cette étape : 32 bits vert et **hash inchangé**
 (`b9d8e710…`), 64 bits vert (compile) mais plante au chargement comme décrit.
+
+## 12. RMIG-017 : conversions supplémentaires (17 novembre 2026)
+
+Ajouté au chemin LP64 de `LoadLevel` (le chemin 32 bits est intact) :
+
+- `struct anim_struct_file` (40 o, `frame_ptr` en 32 bits) +
+  `static_assert`, conversion vers `anims[]` avec
+  `frame_ptr = frames + offset` ;
+- `struct item_info_file` (144 o, `data` en adresse 32 bits) +
+  `static_assert`, conversion vers `items[256]` ; les drapeaux
+  (`active`, `status`, `ai_bits`…) sont dépliés **bit par bit** depuis le
+  mot 32 bits du fichier, un bitfield n'ayant pas d'adresse ;
+- `meshes[]` : lecture du tableau 32 bits du fichier et construction du
+  tableau de pointeurs hôtes (base `mesh_base` + offset) ;
+- `relocationPtr` typé `psx_i32*` : en `long*`, chaque champ de la table de
+  modules était lu sur 8 octets, ce qui donnait des tailles et offsets nuls.
+
+Résultat mesuré : le chargement 64 bits **dépasse** meshes/anims/items et
+s'arrête maintenant dans `RelocateModule`. Diagnostic précis :
+
+```
+ptr == ptr2 == 0x4019724c        (deux allocations de taille 0)
+level->numAiModules = 5  aiModuleIndices[0] = 15   (corrects)
+relocationPtr[0..4] = 0,0,0,0,0  → table vide
+```
+
+La lecture des 1920 octets de la table de modules
+(`DEL_CDFS_Read` dans `tsv_buffer[256]`) ne remplit pas le buffer : c'est le
+prochain point à instruire (positionnement CD vs lecture), pas un problème
+de layout.

@@ -1,8 +1,8 @@
 # RMIG-017 — Relocalisation 64 bits des tableaux de pointeurs du fichier
 
-Status: **Blocked** — priorité P0 — confiance Medium
+Status: **In progress** — priorité P0 — confiance Medium
 
-Avancement : Bloqué par RMIG-005.
+Avancement : En cours : conversions faites pour meshes, anims (frame_ptr) et items (144 o) ; le chargement 64 bits avance jusqu'à RelocateModule et s'y arrête car la table des modules AI est lue à zéro.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Nombre exact de tableaux concernés ; effets de bord sur l'IA (boxes) et les ani
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-17 : GAME/SETUP.C : structs de format fichier anim_struct_file (40 o, frame_ptr 32 bits) et item_info_file (144 o, data 32 bits, drapeaux dans un mot 32 bits) avec static_assert, conversions LP64 vers meshes (numBones*2 entrées), anims (frame_ptr = frames + offset) et items (256 entrées, drapeaux dépliés bit par bit car un bitfield n'a pas d'adresse). relocationPtr typé psx_i32* (en long*, chaque champ de la table de modules était lu sur 8 octets et donnait des tailles/offsets nuls). Builds 32 et 64 bits verts, hash 32 bits inchangé (b9d8e710…). Nouveau point d'arrêt mesuré : RelocateModule reçoit un module et une table identiques (ptr == ptr2 == 0x4019724c) parce que relocationPtr[0..4] valent tous 0 ; level->numAiModules=5 et aiModuleIndices[0]=15 sont corrects, donc c'est la lecture de la table de modules (DEL_CDFS_Read de 1920 o dans tsv_buffer[256]) qui ne remplit pas le buffer.
 
 ## Références
 

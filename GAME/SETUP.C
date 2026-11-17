@@ -86,6 +86,41 @@ struct room_info_file
 static_assert(sizeof(struct room_info_file) == 80, "level file room layout");
 #endif
 
+#if defined(__LP64__)
+/* Animations : le fichier stocke frame_ptr sur 32 bits (40 octets par entree).
+ * En LP64 un pointeur fait 8 octets, donc on lit ce format puis on convertit. */
+struct anim_struct_file
+{
+	psx_u32 frame_ptr;
+	short interpolation, current_anim_state;
+	psx_i32 velocity, acceleration, Xvelocity, Xacceleration;
+	short frame_base, frame_end, jump_anim_num, jump_frame_num;
+	short number_changes, change_index, number_commands, command_index;
+};
+static_assert(sizeof(struct anim_struct_file) == 40, "anim file layout");
+
+/* Items : 144 octets dans le fichier, `data` y est une adresse 32 bits. */
+struct item_info_file
+{
+	psx_i32 floor;
+	psx_u32 touch_bits, mesh_bits;
+	short object_number, current_anim_state, goal_anim_state, required_anim_state;
+	short anim_number, frame_number, room_number, next_item, next_active;
+	short speed, fallspeed, hit_points;
+	unsigned short box_number;
+	short timer, flags, shade, trigger_flags, carried_item, after_death;
+	unsigned short fired_weapon;
+	short item_flags[4];
+	psx_u32 data;
+	struct PHD_3DPOS pos;
+	struct ITEM_LIGHT il;
+	psx_u32 bits;
+	psx_u32 meshswap_meshbits;
+	short draw_room, TOSSPAD;
+};
+static_assert(sizeof(struct item_info_file) == 144, "item file layout");
+#endif
+
 /* Byte size of the object/static tables in a level file.  The skin and
  * scratch vertex blocks follow it, each 480 bytes. */
 #define LEVEL_OBJECT_DATA_SIZE (NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info))
@@ -1500,7 +1535,7 @@ void LoadLevel(FILE* nHandle)
 	char* ptr = NULL;
 	char* ptr2 = NULL;
 	int size, i, j;
-	long* relocationPtr = NULL;
+	psx_i32* relocationPtr = NULL;
 	long gunType;
 
 	InItemControlLoop = 0;
@@ -1810,11 +1845,57 @@ void LoadLevel(FILE* nHandle)
 	mesh_base = (short*)ptr;
 	ptr += level->meshBaseLength;
 
+#if defined(__LP64__)
+	{
+		/* Le fichier contient meshesLength octets de valeurs 32 bits. */
+		psx_u32* file_meshes = (psx_u32*)ptr;
+		int mesh_count = level->numBones * 2;
+		int mi;
+
+		meshes = (short**)game_malloc(sizeof(short*) * (mesh_count > 0 ? mesh_count : 1));
+		for (mi = 0; mi < mesh_count; mi++)
+		{
+			meshes[mi] = (short*)((uintptr_t)mesh_base + file_meshes[mi]);
+		}
+	}
+	ptr += level->meshesLength;
+#else
 	meshes = (short**)ptr;
 	ptr += level->meshesLength;
+#endif
 
+#if defined(__LP64__)
+	{
+		struct anim_struct_file* file_anims = (struct anim_struct_file*)ptr;
+		int an;
+
+		anims = (struct ANIM_STRUCT*)game_malloc(sizeof(struct ANIM_STRUCT) *
+		                                         (level->numAnims > 0 ? level->numAnims : 1));
+		for (an = 0; an < level->numAnims; an++)
+		{
+			/* offset 32 bits dans le bloc `frames` (arene < 4 Gio) */
+			anims[an].frame_ptr = (short*)((uintptr_t)frames + file_anims[an].frame_ptr);
+			anims[an].interpolation = file_anims[an].interpolation;
+			anims[an].current_anim_state = file_anims[an].current_anim_state;
+			anims[an].velocity = file_anims[an].velocity;
+			anims[an].acceleration = file_anims[an].acceleration;
+			anims[an].Xvelocity = file_anims[an].Xvelocity;
+			anims[an].Xacceleration = file_anims[an].Xacceleration;
+			anims[an].frame_base = file_anims[an].frame_base;
+			anims[an].frame_end = file_anims[an].frame_end;
+			anims[an].jump_anim_num = file_anims[an].jump_anim_num;
+			anims[an].jump_frame_num = file_anims[an].jump_frame_num;
+			anims[an].number_changes = file_anims[an].number_changes;
+			anims[an].change_index = file_anims[an].change_index;
+			anims[an].number_commands = file_anims[an].number_commands;
+			anims[an].command_index = file_anims[an].command_index;
+		}
+	}
+	ptr += level->animsLength;
+#else
 	anims = (struct ANIM_STRUCT*)ptr;
 	ptr += level->animsLength;
+#endif
 
 	changes = (struct CHANGE_STRUCT*)ptr;
 	ptr += level->changesLength;
@@ -1828,6 +1909,9 @@ void LoadLevel(FILE* nHandle)
 	bones = (long*)ptr;
 	ptr += level->bonesLength;
 
+#if defined(__LP64__)
+	/* La conversion a deja calcule les pointeurs hotes (meshes, frame_ptr). */
+#else
 	if (level->numBones * 2 > 0)
 	{
 		for (i = 0; i < level->numBones * 2; i++)
@@ -1852,6 +1936,7 @@ void LoadLevel(FILE* nHandle)
 #endif
 		}
 	}//loc_6BC
+#endif
 
 	AnimTextureRanges = (unsigned short*)ptr;
 	ptr += level->animTextureRangesLength;
@@ -1878,8 +1963,69 @@ void LoadLevel(FILE* nHandle)
 	sample_infos = (struct SAMPLE_INFO*)ptr;
 	ptr += level->sampleInfoLength;
 
+#if defined(__LP64__)
+	{
+		struct item_info_file* file_items = (struct item_info_file*)ptr;
+		int it;
+
+		items = (struct ITEM_INFO*)game_malloc(sizeof(struct ITEM_INFO) * 256);
+		for (it = 0; it < 256; it++)
+		{
+			items[it].floor = file_items[it].floor;
+			items[it].touch_bits = file_items[it].touch_bits;
+			items[it].mesh_bits = file_items[it].mesh_bits;
+			items[it].object_number = file_items[it].object_number;
+			items[it].current_anim_state = file_items[it].current_anim_state;
+			items[it].goal_anim_state = file_items[it].goal_anim_state;
+			items[it].required_anim_state = file_items[it].required_anim_state;
+			items[it].anim_number = file_items[it].anim_number;
+			items[it].frame_number = file_items[it].frame_number;
+			items[it].room_number = file_items[it].room_number;
+			items[it].next_item = file_items[it].next_item;
+			items[it].next_active = file_items[it].next_active;
+			items[it].speed = file_items[it].speed;
+			items[it].fallspeed = file_items[it].fallspeed;
+			items[it].hit_points = file_items[it].hit_points;
+			items[it].box_number = file_items[it].box_number;
+			items[it].timer = file_items[it].timer;
+			items[it].flags = file_items[it].flags;
+			items[it].shade = file_items[it].shade;
+			items[it].trigger_flags = file_items[it].trigger_flags;
+			items[it].carried_item = file_items[it].carried_item;
+			items[it].after_death = file_items[it].after_death;
+			items[it].fired_weapon = file_items[it].fired_weapon;
+			memcpy(items[it].item_flags, file_items[it].item_flags, sizeof(items[it].item_flags));
+			/* adresse 32 bits dans l'arene (< 4 Gio) */
+			items[it].data = (void*)(uintptr_t)file_items[it].data;
+			items[it].pos = file_items[it].pos;
+			items[it].il = file_items[it].il;
+			/* drapeaux : le fichier les stocke dans un mot 32 bits, la
+			 * structure hote les expose en bitfields (adresse interdite). */
+			{
+				psx_u32 bits = file_items[it].bits;
+
+				items[it].active = bits & 1;
+				items[it].status = (bits >> 1) & 3;
+				items[it].gravity_status = (bits >> 3) & 1;
+				items[it].hit_status = (bits >> 4) & 1;
+				items[it].collidable = (bits >> 5) & 1;
+				items[it].looked_at = (bits >> 6) & 1;
+				items[it].dynamic_light = (bits >> 7) & 1;
+				items[it].poisoned = (bits >> 8) & 1;
+				items[it].ai_bits = (bits >> 9) & 0x1F;
+				items[it].really_active = (bits >> 14) & 1;
+				items[it].InDrawRoom = (bits >> 15) & 1;
+			}
+			items[it].meshswap_meshbits = file_items[it].meshswap_meshbits;
+			items[it].draw_room = file_items[it].draw_room;
+			items[it].TOSSPAD = file_items[it].TOSSPAD;
+		}
+	}
+	ptr += 0x9000;
+#else
 	items = (struct ITEM_INFO*)ptr;
 	ptr += 0x9000;
+#endif
 
 	AIObjects = (struct AIOBJECT*)ptr;
 	ptr += sizeof(struct AIOBJECT) * level->numAIObjects;
@@ -2012,7 +2158,7 @@ void LoadLevel(FILE* nHandle)
 			//loc_938
 			for(i = 0; i < level->numAiModules; i++)
 			{
-				relocationPtr = (long*)((char*)&tsv_buffer[256] + (level->aiModuleIndices[i] * 20));
+				relocationPtr = (psx_i32*)((char*)&tsv_buffer[256] + (level->aiModuleIndices[i] * 20));
 				///relocationPtr = (long*)&((char*)&tsv_buffer)[level->aiModuleIndices[i] * 20];
 				ptr = game_malloc(relocationPtr[1]);
 

@@ -2350,6 +2350,15 @@
       ],
       "status": "In progress",
       "summary": "RMIG-005 en cours: deux mecanismes supposaient des adresses 32 bits. (1) Arene de jeu sous 4 Gio: MALLOC.C alloue malloc_buffer par mmap(MAP_32BIT) en LP64 (allocation statique inchangee en 32 bits), ce qui garde valides les adresses 32 bits stockees dans les blocs reloges; malloc_buffer devient char* en LP64 avec un acces conditionnel dans MALLOC.H. (2) Format fichier des salles: struct room_info_file (80 octets, pointeurs en psx_u32) avec static_assert, et LoadLevel lit ce format puis convertit champ par champ vers struct room_info sur le chemin LP64, les blocs etant relocalises depuis leur position dans le fichier. (3) Reste a faire et mesure: le binaire 64 bits plante desormais dans LoadLevel a GAME/SETUP.C:1838 sur '((int*)&meshes)[i] += (int)mesh_base + ...', premiere d'une famille de 487 occurrences de '(int*)&' dans GAME/ et SPEC_PSXPC_N/ qui traitent des tableaux de pointeurs comme des tableaux d'int; en LP64 l'element fait 8 octets donc lecture/ecriture fausses et corruption memoire. Ce reste est decoupe dans un nouveau ticket RMIG-017 (relocalisation 64 bits des tableaux de pointeurs issus du fichier: meshes, frame_ptr, models avec un helper base+offset 32 bits), critere de sortie: niveau charge en 64 bits sans SIGSEGV et sans 'Unhandled primitive type', positions d'items identiques a la reference 32 bits. Builds: 32 bits vert et hash INCHANGE b9d8e710, 64 bits vert (compile) mais plante au chargement. Backlog rendu: 5/17 Done, 1 In progress, 11 Blocked. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "RMIG-017 en cours: ajout au chemin LP64 de LoadLevel (chemin 32 bits intact) de struct anim_struct_file (40 octets, frame_ptr 32 bits, static_assert) converti vers anims[] avec frame_ptr = frames + offset, de struct item_info_file (144 octets, data en adresse 32 bits, static_assert) converti vers items[256] avec les drapeaux actives/status/ai_bits deplies bit par bit depuis le mot 32 bits du fichier (un bitfield n'a pas d'adresse), de la conversion de meshes[] (tableau 32 bits du fichier vers tableau de pointeurs hotes base mesh_base + offset), et de relocationPtr type psx_i32* car en long* chaque champ de la table de modules etait lu sur 8 octets ce qui donnait des tailles et offsets nuls. Builds 32 et 64 bits verts, hash 32 bits INCHANGE b9d8e710. Resultat mesure: le chargement 64 bits depasse meshes/anims/items et s'arrete maintenant dans RelocateModule avec ptr == ptr2 == 0x4019724c (deux allocations de taille 0) alors que level->numAiModules=5 et aiModuleIndices[0]=15 sont corrects et que relocationPtr[0..4] valent tous 0: la lecture des 1920 octets de la table de modules (DEL_CDFS_Read dans tsv_buffer[256]) ne remplit pas le buffer. C'est le prochain point a instruire (positionnement CD vs lecture), pas un probleme de layout. Aucun Done global."
     }
   ]
 }
