@@ -3454,3 +3454,24 @@ Corniche 201 frames OK, aucun changement de comportement.
 Build `build-gameplay59` : SHA256
 `2b2b6dc2ced7f6e9dd4b87d45782583f78a743bf2a079e9fea8496864bf3c85c`.
 Régression verrouillée par `tests/porting/test_stub_diagnostics.py`.
+
+### Note de reproductibilité du binaire (17 novembre 2026)
+
+Après nettoyage des sondes temporaires (printf `[LEVEL]`/`CPRET` dans
+`CONTROL.C`/`GAMEFLOW.C`, retirés — l'arbre est revenu à `HEAD`), la
+recompilation produit un `MAIN` de SHA256
+`b59fa0a336cd9653724838bb3f16eab04050863092061ed76ecbeaf958ba7b0f`,
+différent du `2b2b6dc2…` enregistré plus haut **à source identique** :
+l'archive `EMULATOR/libPSX.a` est réassemblée à la main (`ar r`) et les
+métadonnées d'archive ne sont pas reproductibles. Le comportement est
+vérifié identique (corniche 201 frames OK, 1 493 lignes de log, soit le
+même régime que la mesure « once »). Les SHA enregistrés servent de
+traçabilité, pas de garantie de reproductibilité bit-à-bit.
+
+Piste ouverte (documentée section 7 de
+[`colosseum-walkthrough.md`](colosseum-walkthrough.md)) : le retour au
+titre après chargement n'a pas été reproduit avec les sondes en place —
+le niveau 3 se lance et tourne (`[LEVEL] post-initial ControlPhase
+status=0 gameMode=0 level=3`) ; les observations « retour au titre »
+précédentes correspondent à des échantillonnages trop précoces pendant le
+chargement (et à la bufferisation de stdout), pas à une sortie du niveau.

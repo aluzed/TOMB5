@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+Bilan du diagnostic &#x27;retour au titre apres chargement&#x27;: avec des sondes temporaires instrumentees (printf [LEVEL] et CPRET avec fflush, retirees ensuite, arbre revenu a HEAD) le niveau 3 se lance et tourne ([LEVEL] check name=3 entry=5 nEntries=51 size=2711580 puis [LEVEL] post-initial ControlPhase status=0 gameMode=0 level=3 complete=0, et &#x27;Handle cutseq triggering name: 3&#x27; en boucle). Les observations precedentes de &#x27;retour au titre&#x27; correspondent a des echantillonnages trop precoces pendant le chargement (le chargement du niveau prend plus de 10 s apres [EMU] Initialising) et a la bufferisation de stdout, pas a une sortie du niveau. Egalement verifie: Gameflow-&gt;DemoDisc=0 et InputTimeout=18000 (pas de timeout de demo), gfScriptOffset[3]=187 pointe sur GF_KEY_ITEM1=0x92 (debut de preambule de bloc, normal), l&#x27;entree GAMEWAD du niveau 3 existe. Note de reproductibilite: apres nettoyage, la recompilation donne MAIN SHA256 b59fa0a336cd9653724838bb3f16eab04050863092061ed76ecbeaf958ba7b0f au lieu de 2b2b6dc2 a source identique, car l&#x27;archive EMULATOR/libPSX.a est reassemblee a la main (ar r) et ses metadonnees ne sont pas reproductibles; comportement verifie identique (corniche 201 frames OK, 1493 lignes de log). Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum, point ouvert documente: un chargement de sauvegarde ressort au titre. Reproduit avec une sauvegarde appliquee en room 12 (40448,1023,51712): le niveau 3 est bien lance puis, en quelques frames, retour au titre. Traces instrumentees: FL DoTitle Name=0 status=0 complete=0 currentLevel=0 gameMode=1; FL DoLevel Name=3 gfCurrentLevel=3 gameMode=4 fromTitle=1; FL DoTitle Name=0 status=1 complete=0 currentLevel=0 gameMode=0. DoLevel(3) est donc appele correctement (gfGameMode=4 = chargement) puis ControlPhase renvoie 1: DoGameflow reinitialise (gfInitialiseGame=1, gfCurrentLevel=0) et rappelle DoTitle. Elimine par mesure: reset_flag jamais ecrit (watch reset_flag ne declenche pas); gfLevelComplete jamais ecrit (watch ne declenche pas); Gameflow-&gt;DemoDisc=0 et InputTimeout=18000 donc ce n&#x27;est pas le timeout de demo de ControlPhase. Restent les autres return 1 de ControlPhase (menu pause, S_Death(), ou une branche de demo_mode). A trancher avec un point d&#x27;arret pose sur les sites return 1 dans la boucle in-level; attention la table de lignes de CONTROL.C est decalee dans gdb (break CONTROL.C:1291 retombe sur la ligne 1642), utiliser les compteurs de fonction plutot que les lignes. Piste prioritaire: lara.death_count &gt; 90 -&gt; S_Death() si la sauvegarde restaure un death_count incoherent. Documentation ajoutee dans docs/porting/colosseum-walkthrough.md section 7. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
