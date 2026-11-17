@@ -45,6 +45,17 @@
 #define UNIMPLEMENTED() eprinterr("Unimplemented!\n");
 #endif
 
+/* Meme intention que cote jeu : les appels par frame (PadSetActAlign, ...)
+ * n'annoncent leur absence qu'une fois, pour garder un log lisible. */
+#if defined(__EMSCRIPTEN__)
+#define UNIMPLEMENTED_ONCE() 0;
+#else
+#define UNIMPLEMENTED_ONCE() \
+	do { static int _unimplemented_once_ = 0; \
+	     if (!_unimplemented_once_) { _unimplemented_once_ = 1; \
+	         eprinterr("Unimplemented (once)!\n"); } } while (0)
+#endif
+
 #if defined(OGL)
 #define VRAM_FORMAT            GL_RG
 #define VRAM_INTERNAL_FORMAT   GL_RG8

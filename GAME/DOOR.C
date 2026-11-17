@@ -54,7 +54,7 @@ void ProcessClosedDoors()//2BDE8, 2C110
 {
 	long lp; // $s2
 	short room_number; // $s0
-	UNIMPLEMENTED();
+	UNIMPLEMENTED_ONCE();
 }
 
 void SequenceDoorControl(short item_number)//2BC28(<), 2BF50(?) (F)

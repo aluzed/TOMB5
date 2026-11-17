@@ -3428,3 +3428,29 @@ La bille **tombe, roule et s'arrête** ; 200 frames sans `SIGSEGV`.
 
 Build `build-gameplay59` : SHA256
 `513472275916c1390736ebddb6953147d729c3b8d275c51adfe6f8e3c3935a47`.
+
+### Diagnostics des stubs par frame : `UNIMPLEMENTED_ONCE()` (17 novembre 2026)
+
+Plusieurs fonctions encore non portées sont appelées **à chaque frame** :
+`UpdateFireSparks`, `UpdateGunShells`, `UpdateRats`, `UpdateBats`,
+`KlaxonTremor`, `ProcessClosedDoors`, `WadeSplash` côté jeu, et
+`PadSetActAlign`/`PadStartCom` côté émulateur. Leur `UNIMPLEMENTED()`
+imprimait une ligne par frame :
+
+- log illisible pendant les tests (9 050 lignes / 320 Ko pour 200 frames),
+- un `printf` par frame en pleine boucle de contrôle.
+
+Ajout de `UNIMPLEMENTED_ONCE()` dans `SPEC_PSXPC_N/SPECIFIC.H` et
+`EMULATOR/EMULATOR.H` (même message, préfixé `(once)`), utilisé à ces neuf
+emplacements. Le comportement (no-op) est **identique**, seule la
+diagnostique change.
+
+Mesure sur la sauvegarde corniche, 201 frames : chaque message apparaît
+**une seule fois** (`WadeSplash` 1, `UpdateFireSparks` 1,
+`ProcessClosedDoors` 1, `UpdateGunShells` 1, `PadSetActAlign` 1) et le log
+passe de 9 050 lignes / 320 Ko à **1 617 lignes / 54 Ko** (−83 %).
+Corniche 201 frames OK, aucun changement de comportement.
+
+Build `build-gameplay59` : SHA256
+`2b2b6dc2ced7f6e9dd4b87d45782583f78a743bf2a079e9fea8496864bf3c85c`.
+Régression verrouillée par `tests/porting/test_stub_diagnostics.py`.

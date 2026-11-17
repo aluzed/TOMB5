@@ -5,6 +5,15 @@
 #include "STYPES.H"
 #include <stdint.h>
 
+/* Diagnostics des fonctions encore non portees qui sont appelees a chaque
+ * frame (UpdateFireSparks, ProcessClosedDoors, ...). Sans garde, le log
+ * devient illisible et le printf coute cher : on n'annonce la fonction
+ * qu'une seule fois. Le comportement (no-op) est inchange. */
+#define UNIMPLEMENTED_ONCE() \
+	do { static int _unimplemented_once_ = 0; \
+	     if (!_unimplemented_once_) { _unimplemented_once_ = 1; \
+	         printf("[%s] - Unimplemented (once)!\n", __func__); } } while (0)
+
 /* RE-739: backend-local replacement for the target's inherited colour word.
  * The last S_UpdateInput / AnimateWaterfalls invocation publishes it;
  * UpdatePulseColour consumes it without changing either public call signature.

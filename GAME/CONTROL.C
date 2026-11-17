@@ -496,7 +496,7 @@ void UpdateSparks()
 
 void UpdateFireSparks()
 {
-	UNIMPLEMENTED();
+	UNIMPLEMENTED_ONCE();
 }
 
 void UpdateSmokeSparks()//87558(<), 8959C(<) (F)
@@ -1052,17 +1052,17 @@ void UpdateDrips()//87CC8(<), 89D0C(<) (F)
 
 void UpdateGunShells()
 {
-	UNIMPLEMENTED();
+	UNIMPLEMENTED_ONCE();
 }
 
 void UpdateRats()
 {
-	UNIMPLEMENTED();
+	UNIMPLEMENTED_ONCE();
 }
 
 void UpdateBats()
 {
-	UNIMPLEMENTED();
+	UNIMPLEMENTED_ONCE();
 }
 
 void UpdateShockwaves()
@@ -1172,7 +1172,7 @@ void UpdatePulseColour()
 
 void KlaxonTremor()
 {
-	UNIMPLEMENTED();
+	UNIMPLEMENTED_ONCE();
 }
 
 #if PC_VERSION

@@ -582,7 +582,7 @@ int PadChkVsync()
 
 void PadStartCom()
 {
-	UNIMPLEMENTED();
+	UNIMPLEMENTED_ONCE();
 }
 
 void PadStopCom()
@@ -646,7 +646,7 @@ int PadInfoComb(int unk00, int unk01, int unk02)
 
 int PadSetActAlign(int unk00, unsigned char* unk01)
 {
-	UNIMPLEMENTED();
+	UNIMPLEMENTED_ONCE();
 	return 0;
 }
 
