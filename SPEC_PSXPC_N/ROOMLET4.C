@@ -1920,7 +1920,11 @@ loc_4A0:
     }while (--s0);
 
     s2[0] = 0;
+    #if defined(__LP64__)
+    s2 = (unsigned int*)tsv_buffer;
+#else
     s2 = (unsigned int*)&tsv_buffer;
+#endif
 
 loc_64C:
     a1 = s2[0];

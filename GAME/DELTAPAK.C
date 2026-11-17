@@ -1,4 +1,7 @@
 #include "DELTAPAK.H"
+#if defined(__LP64__)
+#include "../SPEC_PSXPC_N/MALLOC.H"
+#endif
 
 #include "CDTRACKS.H"
 #include "CALCHAIR.H"
@@ -460,7 +463,14 @@ int cutseq_malloc_used;
 char* cutseq_malloc_ptr;
 int cutseq_malloc_free;
 unsigned short old_lara_holster;
+#if defined(__LP64__)
+/* Ce buffer est consomme via des adresses tronquees sur 32 bits
+ * (mRotSuperPackedYXZ_CL lit t8[9] comme un int) : il doit rester sous
+ * 4 Gio. */
+short* temp_rotation_buffer = (short*)PORT_LowAlloc(160 * sizeof(short));
+#else
 short temp_rotation_buffer[160];
+#endif
 int special_num;
 
 #if DEBUG_VERSION

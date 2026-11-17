@@ -9,6 +9,17 @@
 
 #define GAME_MALLOC_BUFFER_SIZE (1024*1060)
 
+#if defined(__LP64__)
+/* En LP64 les structures hotes sont plus grosses qu'en 32 bits : les
+ * ITEM_INFO/ANIM_STRUCT/room_info contiennent des pointeurs de 8 octets et
+ * les conversions du format fichier immobilisent des tampons
+ * supplementaires. Le niveau titre consomme ~1 061 000 octets contre
+ * ~922 000 en 32 bits, ce qui depassait l'arene d'origine. On garde une
+ * arene separee, toujours allouee sous 4 Gio (MAP_32BIT). */
+#undef GAME_MALLOC_BUFFER_SIZE
+#define GAME_MALLOC_BUFFER_SIZE (4*1024*1024)
+#endif
+
 char* malloc_ptr = NULL;
 int malloc_used = 0;
 int malloc_free = GAME_MALLOC_BUFFER_SIZE;
@@ -44,6 +55,47 @@ char malloc_buffer[GAME_MALLOC_BUFFER_SIZE];
  * Note: The entire malloc_buffer is zero initialised.
  * Note: Once the gameflow script is loaded it's always in malloc_buffer regardless.
  */
+
+#if defined(__LP64__)
+/* Petit pool bas (< 4 Gio) pour les buffers de travail qui stockent des
+ * pointeurs tronques sur 32 bits dans le code PSX (scratchpads de rendu).
+ * Il ne doit jamais etre libere par init_game_malloc(). */
+char* PORT_LowAlloc(int size)
+{
+	static char* pool = NULL;
+	static int used = 0;
+	const int POOL_SIZE = 16 * 1024 * 1024;
+
+	if (pool == NULL)
+	{
+		void* p = mmap(NULL, POOL_SIZE, PROT_READ | PROT_WRITE,
+		               MAP_PRIVATE | MAP_ANONYMOUS | MAP_32BIT, -1, 0);
+
+		if (p == MAP_FAILED)
+		{
+			perror("PORT_LowAlloc mmap(MAP_32BIT)");
+			exit(1);
+		}
+
+		pool = (char*)p;
+	}
+
+	size = (size + 15) & ~15;
+
+	if (used + size > POOL_SIZE)
+	{
+		fprintf(stderr, "PORT_LowAlloc: pool exhausted (%d + %d > %d)\n",
+		        used, size, POOL_SIZE);
+		exit(1);
+	}
+
+	{
+		char* ptr = &pool[used];
+		used += size;
+		return ptr;
+	}
+}
+#endif
 
 void init_game_malloc()//5E79C(<), 5F4F8(<) (F) (*) (D) (ND)
 {

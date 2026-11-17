@@ -1941,7 +1941,11 @@ void sub_158RL1(long underwater, struct room_info* r)
     } while (--s0);
 
     s2[0] = 0;
+    #if defined(__LP64__)
+    s2 = (int*)tsv_buffer;
+#else
     s2 = (int*)&tsv_buffer;
+#endif
 
 loc_64C:
     a1 = s2[0];

@@ -29,6 +29,15 @@ typedef	unsigned int	u_int;
 #define _ULONG_T
 typedef	unsigned long	u_long;
 #endif
+
+/* Mot 32 bits du materiel PSX. En LP64, `unsigned long` fait 8 octets et
+ * change la taille des structures de primitives (P_TAG, POLY_*), alors que
+ * le jeu ecrit/dessine des primitives au format 32 bits. */
+#if defined(__LP64__)
+#define PSX_ULONG unsigned int
+#else
+#define PSX_ULONG unsigned long
+#endif
 #ifndef _SYSIII_USHORT
 #define _SYSIII_USHORT
 typedef	unsigned short	ushort;		/* sys III compat */

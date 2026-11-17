@@ -363,12 +363,12 @@ typedef struct {
  */
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long addr;
+	PSX_ULONG addr;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	unsigned	addr: 24;
@@ -383,12 +383,12 @@ typedef struct {
 	
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -401,12 +401,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -420,12 +420,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -441,12 +441,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -464,12 +464,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -484,12 +484,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -506,12 +506,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -529,12 +529,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -558,12 +558,12 @@ typedef struct {
  */
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -575,12 +575,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -593,12 +593,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -612,12 +612,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -633,12 +633,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -653,12 +653,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -679,12 +679,12 @@ typedef struct {
  */
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -697,12 +697,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -714,12 +714,12 @@ typedef struct {
 		   
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -734,12 +734,12 @@ typedef struct {
  */
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -751,12 +751,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -767,12 +767,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -783,12 +783,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -802,12 +802,12 @@ typedef struct {
  */
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -817,12 +817,12 @@ typedef struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -832,12 +832,12 @@ typedef struct {
 		   
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -847,12 +847,12 @@ typedef struct {
 		   
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -862,12 +862,12 @@ typedef struct {
 		   
 typedef struct {			/* MoveImage */
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -877,12 +877,12 @@ typedef struct {			/* MoveImage */
 
 typedef struct {			/* LoadImage */
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -893,12 +893,12 @@ typedef struct {			/* LoadImage */
 
 typedef	struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;
@@ -908,12 +908,12 @@ typedef	struct {
 
 typedef struct {
 #if defined(USE_32_BIT_ADDR)
-	unsigned long tag;
+	PSX_ULONG tag;
 #if defined(PGXP)
 	unsigned short len;
 	unsigned short pgxp_index;
 #else
-	unsigned long len;
+	PSX_ULONG len;
 #endif
 #else
 	u_long	tag;

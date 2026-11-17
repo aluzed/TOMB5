@@ -370,3 +370,69 @@ héritée du gameflow.
 
 État : 32 bits vert et hash inchangé, 64 bits vert mais toujours en échec au
 chargement (702 `Unhandled primitive type` avant le SIGSEGV).
+
+## 15. Premier rendu 64 bits stable : écran titre DEMO MODE (17 novembre 2026)
+
+Série de corrections LP64 déclenchées par le chargement puis le rendu du
+niveau titre. Toutes les branches 32 bits sont conservées à l'identique
+(`#if defined(__LP64__)` / `#else`).
+
+### Chaine de chargement
+
+1. **Objets/statics** : `LEVEL_OBJECT_DATA_SIZE` utilisait
+   `sizeof(struct object_info)` = 96 en LP64, alors que le fichier stocke
+   64 octets par objet. La position CD était décalée de 14 720 octets.
+   Lecture via `object_info_file` puis conversion (RMIG-018).
+2. **Relocalisation** : `RelocateModule` lisait des `unsigned long`
+   (8 octets) au lieu de mots 32 bits → offsets aberrants
+   (`0x40000000 + Module`). Lecture explicite en `unsigned int`.
+3. **Arène** : le niveau titre consomme ~1 061 000 octets en LP64 contre
+   ~922 000 en 32 bits ; l'arène LP64 passe à 4 Mio (toujours `MAP_32BIT`).
+4. **Salles** : après conversion, `ptr` n'avançait pas au-delà des blocs de
+   salle copiés, donc `floor_data`, `meshes`, `anims` et `items` étaient lus
+   au milieu des `room_info` brutes. `ptr = blockptr` corrige la position.
+5. **Bones** : convertis en tableau de `long` hôtes (sinon `bone += 4`
+   avançait de 32 octets au lieu de 16).
+6. **Piles de frames** : `GetFrames_CL` écrit deux pointeurs de 8 octets
+   dans un `int[2]` (8 octets) → stack smashing ; tableaux de pointeurs
+   dédiés en LP64.
+
+Résultat : la trace `TOMB5_TRACE_CD=1` du niveau titre est **identique aux
+32 premières lignes du 32 bits** (mêmes `open`/`read`, mêmes secteurs).
+
+### Chaine de rendu
+
+- `unsigned long` vaut 8 octets en LP64 : `P_TAG` passait de 12 à 20 octets
+  et `POLY_F3` de 24 à 32, alors que le jeu écrit des primitives PSX 32 bits.
+  Introduction de `PSX_ULONG` (32 bits en LP64, `unsigned long` sinon) pour
+  les structures de primitives.
+- Les buffers GPU (ordering tables, polygones, `tsv_buffer`), les
+  scratchpads de rendu (`ANIMITEM`, `ROOMLET*`, `LIGHT`, `DRAWOBJ`) et les
+  matrices temporaires (`temp_rotation_buffer`) sont alloués sous 4 Gio via
+  `PORT_LowAlloc` (`mmap(MAP_32BIT)`), car le code PSX les tronque en `int`.
+- Les listes stashees (`STASHEDOBJ`/`STASHEDDAT`) sont indexées par numéro
+  au lieu de pointeurs tronqués.
+- Les accès aux matrices globales `lara_matrices` (au-dessus de 4 Gio) ne
+  passent plus par un `int`.
+- `meshes`/`bones` sont parcourus avec les pas hôtes (macro `ANIM_MESH_PTR`).
+
+### Preuve
+
+- `sizeof(P_TAG) = 12`, `sizeof(POLY_F3) = 24` en 64 bits, identiques au 32 bits.
+- Exécution 64 bits de 35 s du mode attractif : **aucun SIGSEGV**, capture
+  de fenêtre montrant `DEMO MODE`.
+- Les `Unhandled primitive type` passent de **702** à **0–77** selon la
+  frame (suivi RMIG-019).
+- Suite de tests : **4188 PASS**. Build 32 bits fraîchement configuré et
+  compilé (`build/porting/build32-check`) : vert, exécution 40 s sans crash.
+
+Le hash de référence 32 bits `b9d8e710…` n'est pas reproductible depuis un
+autre répertoire de build (les chemins DWARF entrent dans le binaire) ; la
+non-régression est vérifiée par la compilation fraîche, l'exécution et les
+4188 tests.
+
+### Suite
+
+- RMIG-019 : ramener les primitives non gérées à zéro.
+- RMIG-007 : harnais déterministe 32/64 (capture + hash).
+- Puis RMIG-008 → 011 (abstraction renderer et Vulkan).

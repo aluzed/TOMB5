@@ -427,7 +427,11 @@ void LOAD_Stop()//60434(<), 60FB4(<) (F) (*) (*) (D) (D)
 	db.draw[1].dtd = 1;
 	db.draw[0].dtd = 1;
 
+#if defined(__LP64__)
+	GPU_UseOrderingTables(GadwOrderingTables, GADW_OT_BYTES / (8 * POLYGON_BUFFER_MULT));
+#else
 	GPU_UseOrderingTables(&GadwOrderingTables[0], sizeof(GadwOrderingTables) / (8 * POLYGON_BUFFER_MULT));
+#endif
 	db.current_buffer = 0;
 
 	GPU_SyncBothScreens();

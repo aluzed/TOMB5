@@ -234,7 +234,9 @@ void LOAD_VSyncHandler() //5F074(<), 5FD54(<) (F)
 	draw_rotate_sprite(a0, a1, a2);
 	db.current_buffer ^= 1;
 	GnLastFrameCount = 0;
-#if defined(USE_32_BIT_ADDR)
+#if defined(__LP64__)
+	DrawOTagEnv((u_long*)((char*)db.ot + (db.nOTSize * 2 - 2) * sizeof(PSX_ULONG)), &db.draw[0]);
+#elif defined(USE_32_BIT_ADDR)
 	DrawOTagEnv(&db.ot[db.nOTSize * 2 - 2], & db.draw[0]);
 #else
 	DrawOTagEnv(&db.ot[db.nOTSize - 1], &db.draw[0]);
@@ -252,7 +254,11 @@ void GPU_BeginScene() //5F0F0(<), 5FDD0(<) (F)
 	db.ot = db.order_table[db.current_buffer];
 	db.polyptr = (char*)db.poly_buffer[db.current_buffer];
 	db.curpolybuf = (char*)db.poly_buffer[db.current_buffer];
+#if defined(__LP64__)
+	db.polybuf_limit = (char*)db.poly_buffer[db.current_buffer] + 26000 * POLYGON_BUFFER_MULT * sizeof(PSX_ULONG);
+#else
 	db.polybuf_limit = (char*)(db.poly_buffer[db.current_buffer] + (26000 * POLYGON_BUFFER_MULT));
+#endif
 	db.pickup_ot = db.pickup_order_table[db.current_buffer];
 	ClearOTagR(db.order_table[db.current_buffer], db.nOTSize);
 }

@@ -20,9 +20,21 @@ extern int rgbscaleme;
 extern int gfx_debugging_mode;
 extern struct DB_STRUCT db;
 extern struct MMTEXTURE* RoomTextInfo;
+#define GADW_OT_V2_WORDS (512 * POLYGON_BUFFER_MULT)
+#define GADW_OT_WORDS (5128 * POLYGON_BUFFER_MULT)
+#define GADW_PB_WORDS (52260 * POLYGON_BUFFER_MULT)
+#define GADW_OT_V2_BYTES (GADW_OT_V2_WORDS * (int)sizeof(PSX_ULONG))
+#define GADW_OT_BYTES (GADW_OT_WORDS * (int)sizeof(PSX_ULONG))
+#define GADW_PB_BYTES (GADW_PB_WORDS * (int)sizeof(PSX_ULONG))
+#if defined(__LP64__)
+extern unsigned long* GadwOrderingTables_V2;
+extern unsigned long* GadwOrderingTables;
+extern unsigned long* GadwPolygonBuffers;
+#else
 extern unsigned long GadwOrderingTables_V2[];
-extern unsigned long GadwOrderingTables[5128 * POLYGON_BUFFER_MULT];
-extern unsigned long GadwPolygonBuffers[52260 * POLYGON_BUFFER_MULT];
+extern unsigned long GadwOrderingTables[GADW_OT_WORDS];
+extern unsigned long GadwPolygonBuffers[GADW_PB_WORDS];
+#endif
 
 extern void GPU_UseOrderingTables(unsigned long* pBuffers, int nOTSize);
 extern void GPU_UsePolygonBuffers(unsigned long* pBuffers, int nPBSize);

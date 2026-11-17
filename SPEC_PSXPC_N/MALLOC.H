@@ -11,6 +11,9 @@ extern char malloc_buffer[];
 #endif
 extern int script_malloc_size;
 
+#if defined(__LP64__)
+extern char* PORT_LowAlloc(int size);
+#endif
 extern void init_game_malloc();
 extern char* game_malloc(int size);
 extern void game_free(int size);

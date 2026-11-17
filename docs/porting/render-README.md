@@ -20,6 +20,8 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-014](render/RMIG-014.md) | Reflets screen-space à presets | Blocked | P2 |
 | [RMIG-015](render/RMIG-015.md) | Raytracing matériel (ray_query) avec repli SSR | Blocked | P2 |
 | [RMIG-016](render/RMIG-016.md) | Menu debug avancé et budget de performance | Blocked | P2 |
-| [RMIG-017](render/RMIG-017.md) | Relocalisation 64 bits des tableaux de pointeurs du fichier | In progress | P0 |
+| [RMIG-017](render/RMIG-017.md) | Relocalisation 64 bits des tableaux de pointeurs du fichier | Done | P0 |
+| [RMIG-018](render/RMIG-018.md) | Rendu 64 bits : mots PSX 32 bits et buffers bas | Done | P0 |
+| [RMIG-019](render/RMIG-019.md) | Zero primitive PSX non geree en 64 bits | In progress | P1 |
 
-5/17 terminés.
+7/19 terminés.

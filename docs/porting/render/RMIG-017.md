@@ -1,8 +1,8 @@
 # RMIG-017 — Relocalisation 64 bits des tableaux de pointeurs du fichier
 
-Status: **In progress** — priorité P0 — confiance Medium
+Status: **Done** — priorité P0 — confiance Medium
 
-Avancement : En cours : conversions faites pour meshes, anims (frame_ptr) et items (144 o) ; le chargement 64 bits avance jusqu'à RelocateModule et s'y arrête car la table des modules AI est lue à zéro.
+Avancement : Termine : le niveau titre se charge integralement en 64 bits. La sequence CD (open/read) est identique au 32 bits, les tableaux du fichier (salles, meshes, anims/frame_ptr, bones, items, objets/statics) sont convertis vers des structures hotes, et le rendu logiciel PSX demarre sans SIGSEGV.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Nombre exact de tableaux concernés ; effets de bord sur l'IA (boxes) et les ani
 
 ## Preuves
 
-- 2026-11-17 : GAME/SETUP.C : structs de format fichier anim_struct_file (40 o, frame_ptr 32 bits) et item_info_file (144 o, data 32 bits, drapeaux dans un mot 32 bits) avec static_assert, conversions LP64 vers meshes (numBones*2 entrées), anims (frame_ptr = frames + offset) et items (256 entrées, drapeaux dépliés bit par bit car un bitfield n'a pas d'adresse). relocationPtr typé psx_i32* (en long*, chaque champ de la table de modules était lu sur 8 octets et donnait des tailles/offsets nuls). Builds 32 et 64 bits verts, hash 32 bits inchangé (b9d8e710…). Nouveau point d'arrêt mesuré : RelocateModule reçoit un module et une table identiques (ptr == ptr2 == 0x4019724c) parce que relocationPtr[0..4] valent tous 0 ; level->numAiModules=5 et aiModuleIndices[0]=15 sont corrects, donc c'est la lecture de la table de modules (DEL_CDFS_Read de 1920 o dans tsv_buffer[256]) qui ne remplit pas le buffer.
+- 2026-11-17 : Chargement 64 bits du niveau titre : la trace TOMB5_TRACE_CD=1 donne exactement les 32 premieres lignes de la sequence 32 bits (dont open file=2 sector=1636, read 42012/1768, 228/1789, 16/1790, 7616/1791, 262144/1795, 329832/2051, 524000/2213, 32360/2469, 1920/2485, 8344/2552, 348/2557, 3992/2655, 6812/2508, 9656/2581, 812/2586). Corrections : LEVEL_OBJECT_DATA_SIZE basee sur le format fichier 64/28 octets (plus sizeof LP64=96), conversion object_info_file, RelocateModule lisant des mots 32 bits, arena LP64 portee a 4 Mio, avance de ptr apres conversion des salles, tableaux bones hotes, frame_ptr/anims convertis. Preuve visuelle : capture de la fenetre apres 35 s (DEMO MODE, mode attractif) sans crash, 0 primitive non geree sur cette execution.
 
 ## Références
 

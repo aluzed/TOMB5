@@ -6,6 +6,10 @@
 
 #include <stdint.h>
 
+#if defined(__LP64__)
+char* PORT_LowAlloc(int size);
+#endif
+
 #include "LIBETC.H"
 
 #include <stdio.h>
@@ -61,6 +65,27 @@ void ResetPolyState()
 unsigned int terminator[2] = { -1, 0 };
 #else
 unsigned int terminator = -1;
+#endif
+
+#if defined(__LP64__)
+/* Le terminateur est reference par son adresse dans un champ 32 bits : il
+ * doit donc vivre sous 4 Gio. */
+static P_TAG* port_terminator = NULL;
+static P_TAG* port_get_terminator(void)
+{
+	if (port_terminator == NULL)
+	{
+		port_terminator = (P_TAG*)PORT_LowAlloc(16);
+		port_terminator->addr = 0xFFFFFFFFu;
+		port_terminator->len = 0;
+		port_terminator->r0 = port_terminator->g0 = 0;
+		port_terminator->b0 = port_terminator->code = 0;
+	}
+	return port_terminator;
+}
+#define TERMINATOR_ADDR port_get_terminator()
+#else
+#define TERMINATOR_ADDR (&terminator)
 #endif
 
 static char unk_1B00[1024];//unk_1B00
@@ -211,12 +236,26 @@ u_long* ClearOTag(u_long* ot, int n)
 	if (n == 0)
 		return NULL;
 
+#if defined(__LP64__)
+	{
+		/* En LP64 les tags font 8 octets mais `ot` est un unsigned long* :
+		 * on indexe en mots 32 bits pour garder le meme pas que la PSX. */
+		PSX_ULONG* w = (PSX_ULONG*)ot;
+		setaddr(&w[n - 2], TERMINATOR_ADDR);
+		setlen(&w[n - 2], 0);
+
+		for (int i = n - 4; i >= 0; i -= 2)
+		{
+			setaddr(&w[i], (PSX_ULONG)(uintptr_t)&w[i + 2]);
+		}
+	}
+#else
 	//last is special terminator
 #if defined(USE_32_BIT_ADDR)
-	setaddr(&ot[n - 2], &terminator);
+	setaddr(&ot[n - 2], TERMINATOR_ADDR);
 	setlen(&ot[n - 2], 0);
 #else
-	setaddr(&ot[n - 1], &terminator);
+	setaddr(&ot[n - 1], TERMINATOR_ADDR);
 	setlen(&ot[n - 1], 0);
 #endif
 
@@ -233,6 +272,7 @@ u_long* ClearOTag(u_long* ot, int n)
 		setaddr(&ot[i], (unsigned long)&ot[i + 1]);Ma
 #endif
 	}
+#endif
 
 	return NULL;
 }
@@ -243,8 +283,21 @@ u_long* ClearOTagR(u_long* ot, int n)
 	if (n == 0)
 		return NULL;
 
+#if defined(__LP64__)
+	{
+		PSX_ULONG* w = (PSX_ULONG*)ot;
+		setaddr(&w[0], TERMINATOR_ADDR);
+		setlen(&w[0], 0);
+
+		for (int i = 2; i < n * 2; i += 2)
+		{
+			setaddr(&w[i], (PSX_ULONG)(uintptr_t)&w[i - 2]);
+			setlen(&w[i], 0);
+		}
+	}
+#else
 	//First is special terminator
-	setaddr(ot, &terminator);
+	setaddr(ot, TERMINATOR_ADDR);
 	setlen(ot, 0);
 
 #if defined(USE_32_BIT_ADDR)
@@ -260,6 +313,7 @@ u_long* ClearOTagR(u_long* ot, int n)
 #endif
 		setlen(&ot[i], 0);
 	}
+#endif
 
 	return NULL;
 }
@@ -478,7 +532,7 @@ void AggregatePTAGsToSplits(u_long* p, bool singlePrimitive)
 
 		// P_TAG as primitive list
 		//do
-		while ((uintptr_t)pTag != (uintptr_t)&terminator)
+		while ((uintptr_t)pTag != (uintptr_t)TERMINATOR_ADDR)
 		{
 			if (pTag->len > 0)
 			{

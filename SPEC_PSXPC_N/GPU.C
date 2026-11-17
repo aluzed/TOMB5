@@ -15,6 +15,7 @@
 #include <EMULATOR_PRIVATE.H>
 #include <LIBGPU.H>
 #include "CONTROL.H"
+#include "MALLOC.H"
 
 unsigned long GnFrameCounter = 19;
 unsigned long GnLastFrameCount = 19;
@@ -24,19 +25,45 @@ int rgbscaleme = 256;
 int gfx_debugging_mode;
 struct DB_STRUCT db;
 struct MMTEXTURE* RoomTextInfo;
+#if defined(__LP64__)
+/* Les buffers GPU sont adresses par des int dans le code PSX (mots 32 bits).
+ * Ils doivent donc rester sous 4 Gio : on les alloue dans le pool bas. */
+unsigned long* GadwOrderingTables_V2 = NULL;
+static int LnFlipFrame;
+unsigned long* GadwOrderingTables = NULL;
+unsigned long* GadwPolygonBuffers = NULL;
+
+static void GPU_EnsureBuffers()
+{
+	if (GadwOrderingTables_V2 == NULL)
+	{
+		GadwOrderingTables_V2 = (unsigned long*)PORT_LowAlloc(GADW_OT_V2_BYTES);
+		GadwOrderingTables = (unsigned long*)PORT_LowAlloc(GADW_OT_BYTES);
+		GadwPolygonBuffers = (unsigned long*)PORT_LowAlloc(GADW_PB_BYTES);
+	}
+}
+#else
 unsigned long GadwOrderingTables_V2[512 * POLYGON_BUFFER_MULT];
 static int LnFlipFrame;
 unsigned long GadwOrderingTables[5128 * POLYGON_BUFFER_MULT];
 unsigned long GadwPolygonBuffers[52260 * POLYGON_BUFFER_MULT];
+#endif
 
 void GPU_UseOrderingTables(unsigned long* pBuffers, int nOTSize)//5DF68(<), 5F1C8(<) (D) (ND)
 {
+#if defined(__LP64__)
+	GPU_EnsureBuffers();
+#endif
 	db.order_table[0] = (unsigned long*)((unsigned long)&pBuffers[0]);
 	/* In 32-bit-address mode each ordering-table entry occupies two words
 	 * (address + length), so the second table starts after 2 * nOTSize words.
 	 * Using nOTSize made ClearOTagR run past GadwOrderingTables and corrupt the
 	 * adjacent polygon/global data. */
+#if defined(__LP64__)
+	db.order_table[1] = (unsigned long*)((char*)pBuffers + nOTSize * POLYGON_BUFFER_MULT * sizeof(PSX_ULONG));
+#else
 	db.order_table[1] = (unsigned long*)((unsigned long)&pBuffers[nOTSize * POLYGON_BUFFER_MULT]);
+#endif
 
 	db.nOTSize = nOTSize;
 
@@ -47,9 +74,16 @@ void GPU_UseOrderingTables(unsigned long* pBuffers, int nOTSize)//5DF68(<), 5F1C
 
 void GPU_UsePolygonBuffers(unsigned long* pBuffers, int nPBSize)//5DFB0(<), 
 {
+#if defined(__LP64__)
+	GPU_EnsureBuffers();
+#endif
 	db.nPBSize = nPBSize;
 	db.poly_buffer[0] = (unsigned long*)((unsigned long)&pBuffers[0]);
+#if defined(__LP64__)
+	db.poly_buffer[1] = (unsigned long*)((char*)pBuffers + nPBSize * sizeof(PSX_ULONG));
+#else
 	db.poly_buffer[1] = (unsigned long*)((unsigned long)&pBuffers[nPBSize]);
+#endif
 	return;
 }
 
@@ -124,7 +158,9 @@ int GPU_FlipNoIdle()//5E078(<), 5F264(<) (F)
 	GnLastFrameCount = 0;
 	PutDispEnv(&db.disp[db.current_buffer]);
 
-#if defined(USE_32_BIT_ADDR)
+#if defined(__LP64__)
+	DrawOTagEnv((u_long*)((char*)db.ot + (db.nOTSize * 2 - 2) * sizeof(PSX_ULONG)), &db.draw[db.current_buffer]);
+#elif defined(USE_32_BIT_ADDR)
 	DrawOTagEnv(&db.ot[db.nOTSize*2-2], &db.draw[db.current_buffer]);
 #else
 	DrawOTagEnv(&db.ot[db.nOTSize-1], &db.draw[db.current_buffer]);

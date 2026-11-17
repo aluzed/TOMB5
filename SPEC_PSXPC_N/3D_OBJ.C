@@ -3,8 +3,15 @@
 #include "DRAWOBJ.H"
 #include "GPU.H"
 #include "MISC.H"
+#include "MALLOC.H"
 
+#if defined(__LP64__)
+/* Buffer de travail PSX adresse par des int (rendu des primitives) : il doit
+ * rester sous 4 Gio. */
+struct TSV* tsv_buffer = (struct TSV*)PORT_LowAlloc(1024 * sizeof(struct TSV));
+#else
 struct TSV tsv_buffer[1024];
+#endif
 
 void CreateMonoScreen()//5F450(<), 60130(<) (F) (*) (D)
 {

@@ -10,6 +10,7 @@
 #include "GPU.H"
 #include "ROOMLETB.H"
 #include "EMULATOR_PRIVATE.H"
+#include "MALLOC.H"
 
 unsigned short* QuadVertTableRL3 = &QuadVertTable[0];
 unsigned short* TriVertTableRL3 = &TriVertTable[0];
@@ -718,8 +719,10 @@ char* DrawMeshRL3(int* sp, int* sp2, int mesh, struct DB_STRUCT* cdb)
     LR1 = mesh & 0xFFFF;
     LR2 = (mesh >> 16) & 0xFFFF;
     DQA = v0;
+#if !defined(__LP64__)
     LG2 = (unsigned int)cdb & 0xFFFF;
     LG3 = ((unsigned int)cdb >> 16) & 0xFFFF;
+#endif
     v0 &= 0xFF;
 
     //loc_1320
@@ -937,12 +940,21 @@ char* DrawMeshRL3(int* sp, int* sp2, int mesh, struct DB_STRUCT* cdb)
         a2 += 2;
     } while (--v0 != 0);
 
+#if defined(__LP64__)
+    a1 = (int)(uintptr_t)cdb;
+    v0 = DQA;
+
+    a22 = &RoomTextInfo[0];
+    a3 = (int)(uintptr_t)cdb->polyptr;
+    s0 = (short*)cdb->ot;
+#else
     a1 = (LG2 & 0xFFFF) | ((LG3 & 0xFFFF) << 16);
     v0 = DQA;
 
     a22 = &RoomTextInfo[0];
     a3 = ((int*)a1)[2];
     s0 = (short*)((int*)a1)[1];
+#endif
     s1 = (char*)&sp[0];
     v0 >>= 8;
 
@@ -1428,8 +1440,15 @@ void sub_158RL3(long underwater, struct room_info* r)
 	int s0 = 0;
     int* s3 = NULL;
     short* s4 = NULL;
+#if defined(__LP64__)
+    /* Ces buffers stockent des pointeurs tronques en int : ils doivent
+     * rester sous 4 Gio (voir PORT_LowAlloc). */
+    int* scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
+    int* scratchPad2 = (int*)PORT_LowAlloc(512 * sizeof(int));
+#else
     int scratchPad[256];
     int scratchPad2[512];
+#endif
     int* sp = &scratchPad[0];
     int* sp2 = &scratchPad2[0];
 
@@ -1781,7 +1800,11 @@ loc_4A0:
     }while (--s0);
 
     s2[0] = 0;
+    #if defined(__LP64__)
+    s2 = (int*)tsv_buffer;
+#else
     s2 = (int*)&tsv_buffer;
+#endif
 
 loc_64C:
     a1 = s2[0];

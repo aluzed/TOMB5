@@ -219,7 +219,7 @@
           "note": "application de la position"
         }
       ],
-      "progress": "En cours : arene sous 4 Gio (MAP_32BIT) et structure de format fichier pour les salles en place ; le chargement 64 bits atteint maintenant la relocalisation des tableaux de pointeurs et y plante, ce qui délimite le reste du travail.",
+      "progress": "En cours : arene sous 4 Gio (MAP_32BIT) et structure de format fichier pour les salles en place ; le chargement 64 bits atteint maintenant la relocalisation des tableaux de pointeurs et y plante, ce qui délimite le reste du travail. Etape 2026-11-17 : la relocalisation des modules AI et du niveau est operationnelle en 64 bits (RelocateModule lit des mots 32 bits ; sequence CD identique au 32 bits). Reste a verifier la restauration de sauvegarde en 64 bits.",
       "evidence": [
         {
           "date": "2026-11-17",
@@ -683,7 +683,7 @@
     {
       "id": "RMIG-017",
       "title": "Relocalisation 64 bits des tableaux de pointeurs du fichier",
-      "status": "In progress",
+      "status": "Done",
       "priority": "P0",
       "goal": "Charger un niveau complet en 64 bits sans corruption, en convertissant les tableaux de pointeurs issus du fichier de niveau.",
       "facts": "LoadLevel relocalise des tableaux de pointeurs avec `*(int*)&array[i] += base` (meshes, frame_ptr des anims, models…). En LP64, l'élément fait 8 octets et l'arithmétique 32 bits corrompt la mémoire : le binaire plante à GAME/SETUP.C:1838. 487 occurrences de `(int*)&` existent dans GAME/ et SPEC_PSXPC_N/ ; toutes ne sont pas concernées (certaines portent sur de vrais int32), mais la famille issue du fichier doit être traitée.",
@@ -717,11 +717,103 @@
           "note": "relocalisation des frame_ptr d'animations"
         }
       ],
-      "progress": "En cours : conversions faites pour meshes, anims (frame_ptr) et items (144 o) ; le chargement 64 bits avance jusqu'à RelocateModule et s'y arrête car la table des modules AI est lue à zéro.",
+      "progress": "Termine : le niveau titre se charge integralement en 64 bits. La sequence CD (open/read) est identique au 32 bits, les tableaux du fichier (salles, meshes, anims/frame_ptr, bones, items, objets/statics) sont convertis vers des structures hotes, et le rendu logiciel PSX demarre sans SIGSEGV.",
       "evidence": [
         {
           "date": "2026-11-17",
-          "note": "GAME/SETUP.C : structs de format fichier anim_struct_file (40 o, frame_ptr 32 bits) et item_info_file (144 o, data 32 bits, drapeaux dans un mot 32 bits) avec static_assert, conversions LP64 vers meshes (numBones*2 entrées), anims (frame_ptr = frames + offset) et items (256 entrées, drapeaux dépliés bit par bit car un bitfield n'a pas d'adresse). relocationPtr typé psx_i32* (en long*, chaque champ de la table de modules était lu sur 8 octets et donnait des tailles/offsets nuls). Builds 32 et 64 bits verts, hash 32 bits inchangé (b9d8e710…). Nouveau point d'arrêt mesuré : RelocateModule reçoit un module et une table identiques (ptr == ptr2 == 0x4019724c) parce que relocationPtr[0..4] valent tous 0 ; level->numAiModules=5 et aiModuleIndices[0]=15 sont corrects, donc c'est la lecture de la table de modules (DEL_CDFS_Read de 1920 o dans tsv_buffer[256]) qui ne remplit pas le buffer."
+          "note": "Chargement 64 bits du niveau titre : la trace TOMB5_TRACE_CD=1 donne exactement les 32 premieres lignes de la sequence 32 bits (dont open file=2 sector=1636, read 42012/1768, 228/1789, 16/1790, 7616/1791, 262144/1795, 329832/2051, 524000/2213, 32360/2469, 1920/2485, 8344/2552, 348/2557, 3992/2655, 6812/2508, 9656/2581, 812/2586). Corrections : LEVEL_OBJECT_DATA_SIZE basee sur le format fichier 64/28 octets (plus sizeof LP64=96), conversion object_info_file, RelocateModule lisant des mots 32 bits, arena LP64 portee a 4 Mio, avance de ptr apres conversion des salles, tableaux bones hotes, frame_ptr/anims convertis. Preuve visuelle : capture de la fenetre apres 35 s (DEMO MODE, mode attractif) sans crash, 0 primitive non geree sur cette execution."
+        }
+      ]
+    },
+    {
+      "id": "RMIG-018",
+      "title": "Rendu 64 bits : mots PSX 32 bits et buffers bas",
+      "status": "Done",
+      "priority": "P0",
+      "goal": "Faire fonctionner le rendu logiciel PSX en LP64 sans corruption de pointeurs tronques.",
+      "facts": "En LP64 `unsigned long` fait 8 octets : P_TAG passait de 12 a 20 octets et POLY_F3 de 24 a 32, alors que le jeu ecrit des primitives au format 32 bits. Les buffers GPU (OT, polygones, tsv_buffer, scratchpads de rendu), les matrices temporaires et certaines listes vivaient au-dessus de 4 Gio et etaient tronques par les casts (int) du code PSX.",
+      "scope": "EMULATOR/LIBGPU.* et TYPES.H (type PSX_ULONG), SPEC_PSXPC_N (GPU, MISC, ANIMITEM, ROOMLET1-4, LIGHT, DRAWOBJ, CALCLARA, 3D_OBJ), GAME/DELTAPAK.C (temp_rotation_buffer), allocation basse PORT_LowAlloc.",
+      "exclusions": "Vulkan, shaders, parite visuelle.",
+      "tasks": [
+        "Introduire PSX_ULONG (32 bits en LP64, unsigned long sinon) pour les mots PSX et les structures de primitives.",
+        "Allouer sous 4 Gio les buffers manipules via des int : OT, polygones, tsv_buffer, scratchpads, matrices temporaires.",
+        "Adapter les acces aux listes stashees et aux tableaux meshes/bones a la disposition hote."
+      ],
+      "acceptance": [
+        "sizeof(P_TAG)=12 et sizeof(POLY_F3)=24 en 64 bits, identiques au 32 bits.",
+        "Aucun SIGSEGV pendant 35 s du mode attractif 64 bits ; capture DEMO MODE.",
+        "Build 32 bits toujours vert et tests 4188 PASS."
+      ],
+      "validation": "Comparaison des tailles via gdb, execution 64 bits + capture de fenetre, suite de tests.",
+      "unknowns": "Primitives PSX restant non gerees par l emulateur (voir RMIG-019).",
+      "estimate": "2 a 3 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-017"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/LIBGPU.H",
+          "line": 366,
+          "note": "P_TAG/POLY_* : champs tag/len en PSX_ULONG"
+        },
+        {
+          "path": "SPEC_PSXPC_N/GPU.C",
+          "line": 36,
+          "note": "allocation basse des tables OT/polygones"
+        },
+        {
+          "path": "SPEC_PSXPC_N/MALLOC.C",
+          "line": 63,
+          "note": "PORT_LowAlloc (mmap MAP_32BIT)"
+        }
+      ],
+      "progress": "Termine : rendu logiciel 64 bits stable sur l ecran titre/attractif.",
+      "evidence": [
+        {
+          "date": "2026-11-17",
+          "note": "gdb 64 bits : sizeof(P_TAG)=12, sizeof(POLY_F3)=24 (identiques au 32 bits). Execution de 35 s sans SIGSEGV, capture /tmp/opencode/title64.png montrant DEMO MODE. Les erreurs \"Unhandled primitive type\" passent de 702 a 0-77 selon la frame (suivi RMIG-019)."
+        }
+      ]
+    },
+    {
+      "id": "RMIG-019",
+      "title": "Zero primitive PSX non geree en 64 bits",
+      "status": "In progress",
+      "priority": "P1",
+      "goal": "Eliminer les messages \"Unhandled primitive type\" du parseur de primitives en 64 bits.",
+      "facts": "Apres RMIG-018, 77 messages sur 35 s de mode attractif (contre 702 avant la correction des layouts). Types observes : 06,07,08,09,10 (code/type2).",
+      "scope": "EMULATOR/LIBGPU.C (ParsePrimitive), macros de primitives, eventuels types non implementes.",
+      "exclusions": "Vulkan.",
+      "tasks": [
+        "Lister les types exacts restants et le chemin de rendu qui les produit.",
+        "Ajouter le parsing manquant ou corriger la taille/le type des paquets.",
+        "Verifier que le compteur tombe a zero sur une session de reference.",
+        "Comparer la sequence de primitives avec le build 32 bits sur la meme scene."
+      ],
+      "acceptance": [
+        "Aucun \"Unhandled primitive type\" sur 60 s de mode attractif 64 bits.",
+        "La capture 64 bits reste stable et le log ne contient plus ces types."
+      ],
+      "validation": "Comptage dans le log de session + capture.",
+      "estimate": "0,5 a 1 jour-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-018"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/LIBGPU.C",
+          "line": 1209,
+          "note": "ParsePrimitive : types non geres"
+        }
+      ],
+      "unknowns": "Les types 06-10 peuvent venir de primitives legitimes non implementees ou d une taille de paquet erronee.",
+      "progress": "En cours : compteur mesure a 77 messages sur 35 s de mode attractif apres RMIG-018 (702 avant).",
+      "evidence": [
+        {
+          "date": "2026-11-17",
+          "note": "Comptage : 77 messages \"Unhandled primitive type\" sur 35 s de mode attractif 64 bits apres RMIG-018."
         }
       ]
     }

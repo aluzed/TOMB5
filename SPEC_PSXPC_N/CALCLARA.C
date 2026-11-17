@@ -907,12 +907,23 @@ void DEL_CalcLaraMatrices_Normal_ASM(short* frame, long* bone, int flag)
 		TRX = 0;
 		TRY = 0;
 		TRZ = 0;
+#if defined(__LP64__)
+		/* `lara_matrices`/`lara_joint_matrices` vivent au-dessus de 4 Gio :
+		 * les stocker dans un int tronquait le pointeur. On garde s0 en
+		 * pointeur hote. */
+		s0 = (int*)lara_joint_matrices;
+#else
 		t8[13] = (int)lara_joint_matrices;
+#endif
 	}
 	else
 	{
 		//loc_83C40
+#if defined(__LP64__)
+		s0 = (int*)lara_matrices;
+#else
 		t8[13] = (int)lara_matrices;
+#endif
 		mTranslateAbsXYZ_CL(item->pos.x_pos, item->pos.y_pos, item->pos.z_pos);
 		if ((flag & 0x2))
 		{
@@ -925,7 +936,9 @@ void DEL_CalcLaraMatrices_Normal_ASM(short* frame, long* bone, int flag)
 	mTranslateXYZ_CL(t9[6], t9[7], t9[8]);
 	mRotSuperPackedYXZ_CL(t8, 0);
 
+#if !defined(__LP64__)
 	s0 = (int*)t8[13];
+#endif
 	snaff_current_gte_matrix_V1(&t8[22]);
 	a3 = 6;
 
@@ -1908,7 +1921,13 @@ int GetFrames_CL(struct ITEM_INFO* item, int* a1, int* a2)//8582C
 
 short* GetBoundsAccurate(struct ITEM_INFO* item)//858F8, 8793C
 {
+#if defined(__LP64__)
+	/* GetFrames_CL ecrit deux POINTEURS (8 octets chacun en LP64) : un
+	 * tableau d'int ne fait que 8 octets et deborde la pile. */
+	short* var_10[2];
+#else
 	int var_10[2];
+#endif
 	int var_8;
 	int t0;
 	int i;//$a1
@@ -1919,7 +1938,7 @@ short* GetBoundsAccurate(struct ITEM_INFO* item)//858F8, 8793C
 	short* t5;
 	short* a2;
 
-	t0 = GetFrames_CL(item, &var_10[0], &var_8);
+	t0 = GetFrames_CL(item, (int*)&var_10[0], &var_8);
 
 	if (t0 == 0)
 	{
@@ -2166,12 +2185,17 @@ void GetLaraJointPos(struct PHD_VECTOR* pos /*a3*/, long joint)//85A58 (F)
 
 short* GetBestFrame(struct ITEM_INFO* item)//858C8(<)
 {
+#if defined(__LP64__)
+	/* idem GetBoundsAccurate : GetFrames_CL stocke deux pointeurs. */
+	short* var_10[2];
+#else
 	int var_10[2];
+#endif
 	int var_8 = 0;
 	int v0 = 0;
 	int v1 = 0;
 
-	v0 = GetFrames_CL(item, &var_10[0], &var_8);
+	v0 = GetFrames_CL(item, (int*)&var_10[0], &var_8);
 	v1 = var_8 >> 1;
 
 	if (v0 > (var_8 >> 1))

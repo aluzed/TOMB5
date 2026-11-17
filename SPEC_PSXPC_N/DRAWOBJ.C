@@ -1,4 +1,5 @@
 #include "DRAWOBJ.H"
+#include "MALLOC.H"
 
 #include "3D_OBJ.H"
 #include "DRAWSPKS.H"
@@ -1479,9 +1480,16 @@ void DrawMesh_Env(int gp, int at, int v0, int a1, int* s0, int* s1, int* a0, int
 	at &= 3;
 	at <<= 3;
 	t7 += at;
+#if defined(__LP64__)
+	/* envmap_data est un global au-dessus de 4 Gio : on lit ses mots
+	 * directement au lieu de passer par une adresse tronquee. */
+	t8 = (int)envmap_data[1];
+	t7 = (int)envmap_data[0];
+#else
 	t7 = (int)&envmap_data[0];//Im sure the above is doing some pointer fuckery here to obtain this address
 	t8 = ((int*)t7)[1];
 	t7 = ((int*)t7)[0];
+#endif
 	RGB1 = t8;
 	RGB2 = t7;
 	v0 &= 0xFFFF;
@@ -2334,7 +2342,11 @@ void phd_PutPolygons_normal(short* mesh, short clip)//(F)
 	int v1;
 	int a22;
 	int* a2;
+#if defined(__LP64__)
+	int* sp;
+#else
 	int sp[256];
+#endif
 	int* s7;
 	int t0;
 	int t1;
@@ -2357,7 +2369,19 @@ void phd_PutPolygons_normal(short* mesh, short clip)//(F)
 	int t9;
 	int s77 = 0;
 
+#if defined(__LP64__)
+	{
+		static int* port_sp = NULL;
+		if (port_sp == NULL)
+		{
+			port_sp = (int*)PORT_LowAlloc(256 * sizeof(int));
+		}
+		sp = port_sp;
+	}
+	S_MemSet((char*)&sp[0], 0, 256 * sizeof(int));
+#else
 	S_MemSet((char*)&sp[0], 0, sizeof(sp));
+#endif
 
 	initialise_light_matrix();
 

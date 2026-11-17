@@ -112,6 +112,42 @@ void RelocateModule(unsigned long Module, unsigned long* RelocData)//5E6D4(<), 5
 {
 	unsigned int* rel;
 
+#if defined(__LP64__)
+	/* La table de relocalisation est une suite de mots 32 bits (format
+	 * fichier PSX). En LP64 `unsigned long` fait 8 octets : la lire via
+	 * `RelocData` fusionnait deux entrees et produisait des offsets
+	 * aberrants (0x400000000 + Module), d'ou le SIGSEGV. On lit donc des
+	 * mots 32 bits explicites. */
+	const unsigned int* data = (const unsigned int*)RelocData;
+
+	if (*data != 0xFFFFFFFFu)
+	{
+		do
+		{
+			rel = (unsigned int*)(Module + (*data & ~3u));
+
+			switch (*data++ & 3u)
+			{
+			case 0:
+				//loc_5E738
+				((unsigned int*)rel)[0] += Module;
+				break;
+			case 1:
+				//loc_5E744
+				((unsigned short*)rel)[0] = (Module + *data++ + 0x8000) >> 16;
+				break;
+			case 2:
+				//loc_5E760:
+				((unsigned short*)rel)[0] += Module;
+				break;
+			case 3:
+				//loc_5E774
+				((unsigned int*)rel)[0] += ((Module << 4) >> 6);
+				break;
+			}
+		} while (*data != 0xFFFFFFFFu);
+	}
+#else
 	if (*RelocData != -1)
 	{
 		do
@@ -138,5 +174,6 @@ void RelocateModule(unsigned long Module, unsigned long* RelocData)//5E6D4(<), 5
 				break;
 			}
 		} while (*RelocData != -1);
-	}//locret_5E794
+	}
+#endif
 }

@@ -5,6 +5,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 //#include <SYS/TYPES.H>
@@ -67,6 +68,22 @@ struct GAMEWAD_header gwHeader;
 
 //LBA for the GAMEWAD.OBJ file on disc, this is set by InitNewCDSystem(), CDPosToInt() (See CD.C)
 int gwLba = 0;
+
+/* Trace CD optionnelle (TOMB5_TRACE_CD=1) : permet de comparer la sequence
+ * exacte des lectures entre deux binaires sans passer par gdb. */
+static int port_trace_cd(void)
+{
+	static int cached = -1;
+
+	if (cached < 0)
+	{
+		const char* v = getenv("TOMB5_TRACE_CD");
+		cached = (v != NULL && v[0] != '\0') ? 1 : 0;
+	}
+
+	return cached;
+}
+
 
 //Start sector for the current gamewad file entry.
 static int cdStartSector = 0;
@@ -450,6 +467,15 @@ int DEL_CDFS_OpenFile(int filenum /*$a0*/)//*, 5E3C0(<) (F) (D)
 {
 	DEL_ChangeCDMode(0);
 	cdCurrentSector = cdStartSector = gwLba + (gwHeader.entries[filenum].fileOffset >> CD_SECTOR_SHIFT);
+
+	if (port_trace_cd())
+	{
+		printf("[CD] open file=%d off=%d size=%d sector=%d gwLba=%d\n",
+		       filenum, gwHeader.entries[filenum].fileOffset,
+		       gwHeader.entries[filenum].fileSize, cdStartSector, gwLba);
+		fflush(stdout);
+	}
+
 	return gwHeader.entries[filenum].fileSize;
 }
 
@@ -471,6 +497,12 @@ int DEL_CDFS_Read(char* addr, int size)//*, 5E414(<) (F) (*)
 	char buf[1 << CD_SECTOR_SHIFT];
 
 	DEL_ChangeCDMode(0);
+
+	if (port_trace_cd())
+	{
+		printf("[CD] read size=%d sector=%d\n", size, cdCurrentSector);
+		fflush(stdout);
+	}
 
 	remainingDataToRead = size & ((1 << CD_SECTOR_SHIFT) - 1);
 	numSectorsToRead = size >> CD_SECTOR_SHIFT;

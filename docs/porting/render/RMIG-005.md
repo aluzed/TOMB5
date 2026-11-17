@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : En cours : arene sous 4 Gio (MAP_32BIT) et structure de format fichier pour les salles en place ; le chargement 64 bits atteint maintenant la relocalisation des tableaux de pointeurs et y plante, ce qui délimite le reste du travail.
+Avancement : En cours : arene sous 4 Gio (MAP_32BIT) et structure de format fichier pour les salles en place ; le chargement 64 bits atteint maintenant la relocalisation des tableaux de pointeurs et y plante, ce qui délimite le reste du travail. Etape 2026-11-17 : la relocalisation des modules AI et du niveau est operationnelle en 64 bits (RelocateModule lit des mots 32 bits ; sequence CD identique au 32 bits). Reste a verifier la restauration de sauvegarde en 64 bits.
 
 ## Objectif
 

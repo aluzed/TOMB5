@@ -12,7 +12,22 @@
 #include "LIGHT.H"
 
 #include "GTEREG.H"
+#include "MALLOC.H"
 #include <assert.h>
+
+#if defined(__LP64__)
+/* En LP64 `meshes` est un tableau de pointeurs hotes (8 octets). Le code
+ * d'origine parcourt le tableau 32 bits avec des pas de 4 octets : on
+ * encapsule les deux dispositions. Les adresses restent sous 4 Gio, donc
+ * les conversions vers int demeurent valides. */
+#define ANIM_MESH_PTR short**
+#define ANIM_MESH_PTR_GET(ptr, idx) ((int)(uintptr_t)((ptr)[idx]))
+#define ANIM_MESH_PTR_ADV(ptr) ((ptr)++)
+#else
+#define ANIM_MESH_PTR short*
+#define ANIM_MESH_PTR_GET(ptr, idx) (((int*)(ptr))[idx])
+#define ANIM_MESH_PTR_ADV(ptr) ((ptr) += 4)
+#endif
 
 void GetBounds_AI(int* t0, int* a2, int* a3, int* t1, int* t2, int* v0, int* a0, int* a1, int* t3, int* t4, int* t5)//8139C
 {
@@ -1454,7 +1469,12 @@ void iRotSuperPackedYXZ_AI(int* fp)//82140
 
 void InterpolateMatrix_AI(int v1, int* fp)
 {
+#if defined(__LP64__)
+	struct STASHEDDAT* sd = &stashed_matrix_list[fp[17]];
+	short* a0;
+#else
 	int* a0 = (int*)fp[17];
+#endif
 	int v0 = fp[19];
 	int* at = NULL;
 	int a1 = 0;
@@ -1469,12 +1489,20 @@ void InterpolateMatrix_AI(int v1, int* fp)
 	int t4 = 0;
 	int att = 0;
 
+#if defined(__LP64__)
+	sd->mesh = (short*)(uintptr_t)v1;
+	a0 = (short*)&sd->matrix[0];
+	v0 = 1;
+	fp[19] = v0;
+	fp[17]++;
+#else
 	a0[0] = v1;
 	at = &a0[9];
 	v0 = 1;
 	fp[19] = v0;
 	fp[17] = (int)at;
 	a0++;
+#endif
 
 	a2 = fp[20];
 	a1 = fp[21];
@@ -1731,7 +1759,7 @@ void iPopMatrix_AI(int* fp)//81EB0
 	fp[21] = (int)a1;
 }
 
-void erk_interpolated(struct ITEM_INFO* item /*s3*/, struct object_info* object /*s6*/, int s0, short* s2, long* s5, short* s7, int* fp)//81C60
+void erk_interpolated(struct ITEM_INFO* item /*s3*/, struct object_info* object /*s6*/, int s0, short* s2, long* s5, ANIM_MESH_PTR s7, int* fp)//81C60
 {
 	int v11 = 0;
 	short* v0 = NULL;
@@ -1776,18 +1804,18 @@ void erk_interpolated(struct ITEM_INFO* item /*s3*/, struct object_info* object 
 		v11 = 0;
 		if ((item->meshswap_meshbits & 1))
 		{
-			v11 = ((int*)s7)[1];
+			v11 = ANIM_MESH_PTR_GET(s7, 1);
 			InterpolateMatrix_AI(v11, fp);
 		}//loc_81CD4
 		else
 		{
-			v11 = ((int*)s7)[0];
+			v11 = ANIM_MESH_PTR_GET(s7, 0);
 			InterpolateMatrix_AI(v11, fp);
 		}
 	}
 	//loc_81CDC
 	s4 = object->nmeshes - 1;
-	s7 += 4;
+	ANIM_MESH_PTR_ADV(s7);
 	if (object->nmeshes - 1 <= 0)
 	{
 		//81714
@@ -1841,11 +1869,11 @@ void erk_interpolated(struct ITEM_INFO* item /*s3*/, struct object_info* object 
 			int v11 = 0;
 			if ((item->meshswap_meshbits & (1 << 1)))
 			{
-				v11 = ((int*)s7)[1];
+				v11 = ANIM_MESH_PTR_GET(s7, 1);
 			}
 			else
 			{
-				v11 = ((int*)s7)[0];
+				v11 = ANIM_MESH_PTR_GET(s7, 0);
 			}
 			//loc_81DD4
 			InterpolateMatrix_AI(v11, fp);
@@ -1853,7 +1881,7 @@ void erk_interpolated(struct ITEM_INFO* item /*s3*/, struct object_info* object 
 		//loc_81DDC
 		s4--;
 		s5 += 4;
-		s7 += 4;
+		ANIM_MESH_PTR_ADV(s7);
 	} while (s4 != 0);
 	//j       loc_81714
 	return;
@@ -1868,7 +1896,7 @@ void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* ob
 	int v0 = 0;
 	int* a2 = NULL;
 	int v1 = 0;
-	short* s7 = NULL;
+	ANIM_MESH_PTR s7 = NULL;
 	short* v00 = NULL;
 	int a0 = 0;
 	long* s5 = NULL;
@@ -1899,17 +1927,33 @@ void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* ob
 	if (v0 != 0)
 	{
 		fp[19] = 0;
+#if defined(__LP64__)
+		{
+			struct STASHEDOBJ* so = &stashed_objects_list[fp[16]];
+			v1 = fp[30];
+			so->clip = v0;
+			so->item = item;
+			so->frmptr0 = (short*)(uintptr_t)v1;
+		}
+#else
 		a2 = (int*)fp[16];
 		v1 = fp[30];
 		((short*)a2)[0] = v0;
 		a2[1] = (int)item;
 		a2[2] = v1;
+#endif
 		s2 = (short*)item->data;
 		//s1 = 1
 		//v0 = object->mesh_index
+#if defined(__LP64__)
+		s7 = &meshes[object->mesh_index];
+		//v0 = object->bone_index
+		s5 = &bones[object->bone_index];
+#else
 		s7 = (short*)(fp[40] + (object->mesh_index << 2));
 		//v0 = object->bone_index
 		s5 = (long*)(fp[41] + (object->bone_index << 2));
+#endif
 
 		if (frames != 0)
 		{
@@ -1921,8 +1965,13 @@ void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* ob
 			if (fp[19] > 0)
 			{
 				fp[18]++;
+#if defined(__LP64__)
+				stashed_objects_list[fp[16]].numnodestodraw = fp[19];
+				fp[16]++;
+#else
 				((short*)fp[16])[1] = fp[19];
 				fp[16] += 12;
+#endif
 			}
 
 			mmPopMatrix_AI(fp);
@@ -1939,17 +1988,17 @@ void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* ob
 
 		if ((item->mesh_bits & 1))
 		{
-			a0 = ((int*)s7)[0];
+			a0 = ANIM_MESH_PTR_GET(s7, 0);
 			if ((item->meshswap_meshbits & 1))
 			{
-				a0 = ((int*)s7)[1];
+				a0 = ANIM_MESH_PTR_GET(s7, 1);
 			}
 
 			//loc_81628
 			stash_the_info(a0, fp);
 		}
 		//loc_81630
-		s7 += 4;
+		ANIM_MESH_PTR_ADV(s7);
 		s4 = object->nmeshes - 1;
 		if (s4 <= 0)
 		{
@@ -1957,8 +2006,13 @@ void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* ob
 			if (fp[19] > 0)
 			{
 				fp[18]++;
+#if defined(__LP64__)
+				stashed_objects_list[fp[16]].numnodestodraw = fp[19];
+				fp[16]++;
+#else
 				((short*)fp[16])[1] = fp[19];
 				fp[16] += 12;
+#endif
 			}
 			mmPopMatrix_AI(fp);
 			return;
@@ -2004,19 +2058,19 @@ void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* ob
 			{
 				if (item->meshswap_meshbits & (1 << 1))
 				{
-					a0 = ((int*)s7)[1];
+					a0 = ANIM_MESH_PTR_GET(s7, 1);
 					stash_the_info(a0, fp);
 				}
 				else
 				{
-					a0 = ((int*)s7)[0];
+					a0 = ANIM_MESH_PTR_GET(s7, 0);
 					stash_the_info(a0, fp);
 				}
 				//loc_816FC
 			}
 			//loc_81704
 			s4--;
-			s7 += 4;
+			ANIM_MESH_PTR_ADV(s7);
 			s5 += 4;
 		} while (s4 != 0);
 
@@ -2024,8 +2078,13 @@ void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* ob
 		if (fp[19] > 0)
 		{
 			fp[18]++;
+#if defined(__LP64__)
+			stashed_objects_list[fp[16]].numnodestodraw = fp[19];
+			fp[16]++;
+#else
 			((short*)fp[16])[1] = fp[19];
 			fp[16] += 12;
+#endif
 		}
 	}
 	//loc_81738
@@ -2034,6 +2093,24 @@ void CalcAnimatingItem_ASM(struct ITEM_INFO* item /*s3*/, struct object_info* ob
 
 void stash_the_info(int meshp/*a0*/, int* fp)//81750
 {
+#if defined(__LP64__)
+	struct STASHEDDAT* at = &stashed_matrix_list[fp[17]];
+	int* mat = (int*)&at->matrix[0];
+
+	at->mesh = (short*)(uintptr_t)meshp;
+
+	mat[0] = (R11 & 0xFFFF) | ((R12 & 0xFFFF) << 16);
+	mat[1] = (R13 & 0xFFFF) | ((R21 & 0xFFFF) << 16);
+	mat[2] = (R22 & 0xFFFF) | ((R23 & 0xFFFF) << 16);
+	mat[3] = (R31 & 0xFFFF) | ((R32 & 0xFFFF) << 16);
+	mat[4] = (R33 & 0xFFFF);
+	mat[5] = TRX;
+	mat[6] = TRY;
+	mat[7] = TRZ;
+
+	fp[19]++;
+	fp[17]++;
+#else
 	int* at;
 
 	at = (int*)fp[17];
@@ -2054,6 +2131,7 @@ void stash_the_info(int meshp/*a0*/, int* fp)//81750
 
 	fp[19]++;
 	fp[17] = (int)at;
+#endif
 }
 
 void init_scratchpad(int* fp)//8281C(<) (F)
@@ -2087,8 +2165,15 @@ void init_scratchpad(int* fp)//8281C(<) (F)
 	at[6] = t6;
 	at[7] = t7;
 
+#if defined(__LP64__)
+	/* En LP64 ces listes vivent au-dessus de 4 Gio : on stocke des index
+	 * plutot que des pointeurs tronques. */
+	fp[16] = 0;
+	fp[17] = 0;
+#else
 	fp[16] = (int)&stashed_objects_list[0];
 	fp[17] = (int)&stashed_matrix_list[0];
+#endif
 	fp[18] = 0;
 	fp[24] = (int)&items[0];
 	fp[38] = (int)&room[0];
@@ -2115,7 +2200,13 @@ void init_scratchpad(int* fp)//8281C(<) (F)
 
 void CalcAllAnimatingItems_ASM()//82640, 84684
 {
+#if defined(__LP64__)
+	/* Le scratchpad stocke des pointeurs dans des int : il doit rester sous
+	 * 4 Gio pour que la troncature soit reversible. */
+	int* scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
+#else
 	int scratchPad[256];
+#endif
 	int* fp;
 	int v1;
 	struct room_info* r;//$s2
@@ -2171,8 +2262,19 @@ void CalcAllAnimatingItems_ASM()//82640, 84684
 
 						if (v0)
 						{
-							a2 = (int*)fp[16];
 							fp[18]++;
+#if defined(__LP64__)
+							{
+								struct STASHEDOBJ* so = &stashed_objects_list[fp[16]];
+								so->clip = v0;
+								so->numnodestodraw = 0;
+								so->item = (struct ITEM_INFO*)(uintptr_t)(int)&r->mesh[j];
+								so->frmptr0 = NULL;
+								fp[16]++;
+							}
+							stash_the_info((int)(uintptr_t)meshes[s5->mesh_number], fp);
+#else
+							a2 = (int*)fp[16];
 							((short*)a2)[0] = v0;
 							((int*)a2)[1] = (int)&r->mesh[j];
 							((short*)a2)[1] = 0;
@@ -2182,6 +2284,7 @@ void CalcAllAnimatingItems_ASM()//82640, 84684
 							v0 = fp[40];
 
 							stash_the_info(((int*)v0)[s5->mesh_number], fp);//((int*)meshes[s5->mesh_number])[0]
+#endif
 						}
 						//loc_8274C
 						mmPopMatrix_AI(fp);

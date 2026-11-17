@@ -141,7 +141,11 @@ extern int cutseq_malloc_used;
 extern char* cutseq_malloc_ptr;
 extern int cutseq_malloc_free;
 extern unsigned short old_lara_holster;
+#if defined(__LP64__)
+extern short* temp_rotation_buffer;
+#else
 extern short temp_rotation_buffer[160];
+#endif
 
 extern void andy11_end();
 extern void andy11_control();

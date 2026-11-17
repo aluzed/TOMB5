@@ -121,9 +121,37 @@ struct item_info_file
 static_assert(sizeof(struct item_info_file) == 144, "item file layout");
 #endif
 
+#if defined(__LP64__)
+/* Format fichier des objets (64 octets) : les pointeurs sont des adresses
+ * 32 bits. Les champs de fonction sont remplis plus tard par le jeu, on ne
+ * conserve donc que les valeurs de donnees. */
+struct object_info_file
+{
+	short nmeshes, mesh_index;
+	psx_i32 bone_index;
+	psx_u32 frame_base;
+	psx_u32 initialise, control, floor, ceiling, draw_routine, collision;
+	short object_mip, anim_index, hit_points, pivot_length, radius, shadow_size;
+	unsigned short bite_offset;
+	unsigned short flags;
+	psx_u32 draw_routine_extra;
+	psx_u32 explodable_meshbits;
+	psx_u32 padfuck;
+};
+static_assert(sizeof(struct object_info_file) == 64, "object file layout");
+#endif
+
 /* Byte size of the object/static tables in a level file.  The skin and
- * scratch vertex blocks follow it, each 480 bytes. */
-#define LEVEL_OBJECT_DATA_SIZE (NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info))
+ * scratch vertex blocks follow it, each 480 bytes.
+ *
+ * ATTENTION : ces tailles sont celles du FORMAT FICHIER (64 o par objet,
+ * 28 o par static), pas celles des structures hotes. En LP64
+ * `sizeof(struct object_info)` vaut 96 (huit pointeurs de 8 octets) : s'en
+ * servir pour dimensionner la lecture decalait la position CD de 14720
+ * octets et corrompait tout le chargement (RMIG-018). */
+#define LEVEL_OBJECT_INFO_FILE_BYTES 64
+#define LEVEL_STATIC_INFO_FILE_BYTES 28
+#define LEVEL_OBJECT_DATA_SIZE (NUMBER_OBJECTS * LEVEL_OBJECT_INFO_FILE_BYTES + NUMBER_STATIC_OBJECTS * LEVEL_STATIC_INFO_FILE_BYTES)
 #define LEVEL_SKIN_BYTES 480
 
 #if PC_VERSION
@@ -1761,6 +1789,12 @@ void LoadLevel(FILE* nHandle)
 			room[i].mesh = (struct MESH_INFO*)blockptr;
 			blockptr += size_mesh;
 		}
+
+		/* Les blocs de salle sont copies dans une nouvelle allocation : ptr
+		 * doit reprendre a la fin de ces blocs, sinon les sections suivantes
+		 * (floor_data, meshes, anims, items...) sont lues au milieu des
+		 * structures room_info brutes. */
+		ptr = blockptr;
 	}
 #else
 	room = (struct room_info*)ptr;
@@ -1906,8 +1940,27 @@ void LoadLevel(FILE* nHandle)
 	commands = (short*)ptr;
 	ptr += level->commandsLength;
 
+#if defined(__LP64__)
+	{
+		/* Le fichier stocke des mots 32 bits ; en LP64 `long` en fait 8 et
+		 * `bone += 4` avancerait de 32 octets au lieu de 16, ce qui
+		 * desalignait toutes les matrices de Lara. On convertit donc le bloc
+		 * en tableau de long hotes (valeurs identiques). */
+		psx_i32* file_bones = (psx_i32*)ptr;
+		int bone_words = level->bonesLength / 4;
+		int bi;
+
+		bones = (long*)game_malloc(sizeof(long) * (bone_words > 0 ? bone_words : 1));
+		for (bi = 0; bi < bone_words; bi++)
+		{
+			bones[bi] = file_bones[bi];
+		}
+	}
+	ptr += level->bonesLength;
+#else
 	bones = (long*)ptr;
 	ptr += level->bonesLength;
+#endif
 
 #if defined(__LP64__)
 	/* La conversion a deja calcule les pointeurs hotes (meshes, frame_ptr). */
@@ -2096,7 +2149,46 @@ void LoadLevel(FILE* nHandle)
 #if DISC_VERSION
 #if PSX_VERSION
 #if PSXPC_TEST
+#if defined(__LP64__)
+	{
+		/* Lire le format fichier dans le conteneur hote ne suffit pas : on
+		 * passe par un tampon dedie puis on convertit les champs de donnees.
+		 * Les pointeurs de fonction restent nuls (le jeu les reinstalle). */
+		static char object_block[LEVEL_OBJECT_DATA_SIZE + LEVEL_SKIN_BYTES * 2];
+		struct object_info_file* file_objs = (struct object_info_file*)object_block;
+		int oi;
+
+		DEL_CDFS_Read(object_block, LEVEL_OBJECT_DATA_SIZE + LEVEL_SKIN_BYTES * 2);
+
+		for (oi = 0; oi < NUMBER_OBJECTS; oi++)
+		{
+			objects[oi].nmeshes = file_objs[oi].nmeshes;
+			objects[oi].mesh_index = file_objs[oi].mesh_index;
+			objects[oi].bone_index = file_objs[oi].bone_index;
+			objects[oi].object_mip = file_objs[oi].object_mip;
+			objects[oi].anim_index = file_objs[oi].anim_index;
+			objects[oi].hit_points = file_objs[oi].hit_points;
+			objects[oi].pivot_length = file_objs[oi].pivot_length;
+			objects[oi].radius = file_objs[oi].radius;
+			objects[oi].shadow_size = file_objs[oi].shadow_size;
+			objects[oi].bite_offset = file_objs[oi].bite_offset;
+			objects[oi].explodable_meshbits = file_objs[oi].explodable_meshbits;
+			objects[oi].padfuck = file_objs[oi].padfuck;
+		}
+
+		memcpy(&objects_raw.m_static_objects[0],
+		       object_block + NUMBER_OBJECTS * LEVEL_OBJECT_INFO_FILE_BYTES,
+		       NUMBER_STATIC_OBJECTS * LEVEL_STATIC_INFO_FILE_BYTES);
+		memcpy(&objects_raw.m_SkinVertNums[0],
+		       object_block + LEVEL_OBJECT_DATA_SIZE,
+		       LEVEL_SKIN_BYTES);
+		memcpy(&objects_raw.m_ScratchVertNums[0],
+		       object_block + LEVEL_OBJECT_DATA_SIZE + LEVEL_SKIN_BYTES,
+		       LEVEL_SKIN_BYTES);
+	}
+#else
 	DEL_CDFS_Read((char*)&objects_raw, LEVEL_OBJECT_DATA_SIZE + LEVEL_SKIN_BYTES * 2);
+#endif
 #else
 	DEL_CDFS_Read((char*)&objects, NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info) + 480 + 480);
 #endif

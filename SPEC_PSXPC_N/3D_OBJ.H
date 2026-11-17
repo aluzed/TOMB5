@@ -3,7 +3,11 @@
 
 #include "STYPES.H"
 
+#if defined(__LP64__)
+extern struct TSV* tsv_buffer;
+#else
 extern struct TSV tsv_buffer[1024];
+#endif
 
 extern void CreateMonoScreen();
 

@@ -1,4 +1,5 @@
 #include "LIGHT.H"
+#include "MALLOC.H"
 
 #include "EFFECT2.H"
 #include "DRAW.H"
@@ -305,7 +306,12 @@ void CalculateObjectLighting(struct ITEM_INFO* item/*a0*/, short* frmptr/*a1*/, 
 void S_CalculateLight(long x, long y, long z, short room_num, struct ITEM_LIGHT* light)
 {
 	struct room_info* r;//$t0
+#if defined(__LP64__)
+	int* scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
+	int* s5p = NULL;
+#else
 	int scratchPad[256];
+#endif
 	int t3;
 	int t4;
 	int t5;
@@ -742,7 +748,11 @@ loc_85FD4:
 	t00[15] = (int)s3;
 
 	s66 = t00;
+#if defined(__LP64__)
+	s5p = (int*)light;
+#else
 	s5 = (int)light;
+#endif
 
 	s11 = SXY0;
 	s22 = SXY1;
@@ -757,7 +767,11 @@ loc_86154:
 		s4 = s66[1];
 		IR0 = s66[0];
 		t0 = ((int*)s4)[3];
+		#if defined(__LP64__)
+		t3 = s5p[2];
+#else
 		t3 = ((int*)s5)[2];
+#endif
 		s0 = t0 & 0xFF;
 		t2 = (unsigned)t0 >> 20;
 		t1 = ((unsigned)t0 >> 12) & 0xFF0;
@@ -796,14 +810,26 @@ loc_86154:
 			docop2(0x980011);
 			t4 = ((short*)s4)[9];
 			t5 = ((short*)s4)[10];
+			#if defined(__LP64__)
+			t0 = s5p[0];
+#else
 			t0 = ((int*)s5)[0];
+#endif
+			#if defined(__LP64__)
+			t2 = ((short*)s5p)[2];
+#else
 			t2 = ((short*)s5)[2];
+#endif
 			t1 = t0 >> 16;
 			t0 <<= 16;
 			t0 >>= 16;
 		}
 		//loc_86204
+		#if defined(__LP64__)
+		s5p[2] = RGB2;
+#else
 		((int*)s5)[2] = RGB2;
+#endif
 		((int*)s66)[2] = IR1;
 		((int*)s66)[3] = IR2;
 		((int*)s66)[4] = IR3;
@@ -834,8 +860,16 @@ loc_86154:
 		t0 &= 0xFFFF;
 		t1 <<= 16;
 		t0 |= t1;
+		#if defined(__LP64__)
+		s5p[0] = t0;
+#else
 		((int*)s5)[0] = t0;
+#endif
+		#if defined(__LP64__)
+		s5p[1] = t2;
+#else
 		((int*)s5)[1] = t2;
+#endif
 
 		if (s0 != 0)
 		{
@@ -845,7 +879,11 @@ loc_86154:
 		}
 		//loc_86280
 		s66 += 7;
+		#if defined(__LP64__)
+		s5p += 3;
+#else
 		s5 += 0xC;
+#endif
 
 		goto loc_86154;
 	}
@@ -853,9 +891,15 @@ loc_86154:
 	at = 0x1000000;
 	if (v1 != 0)
 	{
+#if defined(__LP64__)
+		IR1 = s5p[0];
+		IR2 = s5p[1];
+		IR3 = s5p[2];
+#else
 		IR1 = ((int*)s5)[0];
 		IR2 = ((int*)s5)[1];
 		IR3 = ((int*)s5)[2];
+#endif
 
 		RFC = s11;
 		GFC = s22;
@@ -871,9 +915,15 @@ loc_86154:
 
 	}//loc_862C8
 
+#if defined(__LP64__)
+	s5p[0] = s11;
+	s5p[1] = s22;
+	s5p[2] = s33 | at;
+#else
 	((int*)s5)[0] = s11;
 	((int*)s5)[1] = s22;
 	((int*)s5)[2] = s33 | at;
+#endif
 
 	s11 <<= 1;
 	s22 <<= 1;
