@@ -49,6 +49,7 @@ Primitives PSX restant non gerees par l emulateur (voir RMIG-019).
 ## Preuves
 
 - 2026-11-17 : gdb 64 bits : sizeof(P_TAG)=12, sizeof(POLY_F3)=24 (identiques au 32 bits). Execution de 35 s sans SIGSEGV, capture /tmp/opencode/title64.png montrant DEMO MODE. Les erreurs "Unhandled primitive type" passent de 702 a 0-77 selon la frame (suivi RMIG-019).
+- 2026-11-17 : Complement : apres conversion des u_long restants de LIBGPU (DR_ENV/DR_*), les tailles de toutes les primitives et environnements sont identiques entre 32 et 64 bits, et le compteur de primitives non gerees tombe a 0 (RMIG-019).
 
 ## Références
 

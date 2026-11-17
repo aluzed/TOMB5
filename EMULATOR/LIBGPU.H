@@ -189,11 +189,11 @@ extern	int (*GPU_printf)(const char *fmt, ...);
 #define setpgxpindex(p, _pgxp_index) (((P_TAG *)(p))->pgxp_index  = (u_short)(_pgxp_index))
 #endif
 #define setlen( p, _len) 	(((P_TAG *)(p))->len  = (u_char)(_len))
-#define setaddr(p, _addr)	(((P_TAG *)(p))->addr = (u_long)(_addr))
+#define setaddr(p, _addr)	(((P_TAG *)(p))->addr = (PSX_ULONG)(uintptr_t)(_addr))
 #define setcode(p, _code)	(((P_TAG *)(p))->code = (u_char)(_code))
 #define getlen(p)    		(u_char)(((P_TAG *)(p))->len)
 #define getcode(p)   		(u_char)(((P_TAG *)(p))->code)
-#define getaddr(p)   		(u_long)(((P_TAG *)(p))->addr)
+#define getaddr(p)   		(PSX_ULONG)(((P_TAG *)(p))->addr)
 
 #define nextPrim(p)  		(void *)((((P_TAG *)(p))->addr)|0x80000000)
 #define isendprim(p) 		((((P_TAG *)(p))->addr)==0xffffff)
@@ -237,11 +237,11 @@ extern	int (*GPU_printf)(const char *fmt, ...);
 #if defined(USE_32_BIT_ADDR)
 #define setDrawTPage(p, dfe, dtd, tpage)	\
 	setlen(p, 1),	\
-	((u_long *)(p))[2] = _get_mode(dfe, dtd, tpage)
+	((PSX_ULONG *)(p))[2] = _get_mode(dfe, dtd, tpage)
 #else
 #define setDrawTPage(p, dfe, dtd, tpage)	\
 	setlen(p, 1),	\
-	((u_long *)(p))[1] = _get_mode(dfe, dtd, tpage)
+	((PSX_ULONG *)(p))[1] = _get_mode(dfe, dtd, tpage)
 #endif
 
 #define _get_tw(tw)	\
@@ -251,8 +251,8 @@ extern	int (*GPU_printf)(const char *fmt, ...);
 
 #define setTexWindow(p, tw)			\
 	setlen(p, 2),				\
-	((u_long *)(p))[1] = _get_tw(tw),	\
-	((u_long *)(p))[2] = 0
+	((PSX_ULONG *)(p))[1] = _get_tw(tw),	\
+	((PSX_ULONG *)(p))[2] = 0
 
 #define _get_len(RECT16)	\
 		(((RECT16)->w*(RECT16)->h+1)/2+4)
@@ -261,8 +261,8 @@ extern	int (*GPU_printf)(const char *fmt, ...);
 	(_get_len(RECT16) <= 16) ? (				\
 		(setlen(pt, _get_len(RECT16))),			\
 		((pt)->code[0] = 0xa0000000),			\
-		((pt)->code[1] = *((u_long *)&(RECT16)->x)),	\
-		((pt)->code[2] = *((u_long *)&(RECT16)->w)),	\
+		((pt)->code[1] = *((PSX_ULONG *)&(RECT16)->x)),	\
+		((pt)->code[2] = *((PSX_ULONG *)&(RECT16)->w)),	\
 		((pt)->p[_get_len(RECT16)-4] = 0x01000000)	\
 	) : ( \
 		(setlen(pt,0)) \
@@ -270,19 +270,19 @@ extern	int (*GPU_printf)(const char *fmt, ...);
 
 #define setDrawStp(p, pbw) 				\
 		setlen(p, 2),					\
-		((u_long *)p)[1] = 0xe6000000|(pbw?0x01:0),	\
-		((u_long *)p)[2] = 0
+		((PSX_ULONG *)p)[1] = 0xe6000000|(pbw?0x01:0),	\
+		((PSX_ULONG *)p)[2] = 0
 
 #if defined(USE_32_BIT_ADDR)
 #define setDrawMode(p, dfe, dtd, tpage, tw) 		\
 		setlen(p, 3),					\
-		((u_long *)p)[2] = _get_mode(dfe, dtd, tpage),	\
-		((u_long *)p)[3] = _get_tw((RECT16 *)tw)
+		((PSX_ULONG *)p)[2] = _get_mode(dfe, dtd, tpage),	\
+		((PSX_ULONG *)p)[3] = _get_tw((RECT16 *)tw)
 #else
 #define setDrawMode(p, dfe, dtd, tpage, tw) 		\
 		setlen(p, 2),					\
-		((u_long *)p)[1] = _get_mode(dfe, dtd, tpage),	\
-		((u_long *)p)[2] = _get_tw((RECT16 *)tw)
+		((PSX_ULONG *)p)[1] = _get_mode(dfe, dtd, tpage),	\
+		((PSX_ULONG *)p)[2] = _get_tw((RECT16 *)tw)
 #endif
 
 	
@@ -334,8 +334,8 @@ typedef struct {
  * Environment 
  */
 typedef struct {
-	u_long	tag;
-	u_long	code[15];
+	PSX_ULONG	tag;
+	PSX_ULONG	code[15];
 } DR_ENV;				/* Packed Drawing Environment */
 		   
 typedef struct {
@@ -391,7 +391,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -409,7 +409,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -428,7 +428,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -449,7 +449,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -472,7 +472,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -492,7 +492,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -514,7 +514,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -537,7 +537,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -566,7 +566,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -583,7 +583,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -601,13 +601,13 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
 	short	x1,	y1;
 	short	x2,	y2;
-	u_long	pad;
+	PSX_ULONG	pad;
 } LINE_F3;				/* 2 connected Flat Line */
 
 typedef struct {
@@ -620,7 +620,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -628,7 +628,7 @@ typedef struct {
 	short	x1,	y1;
 	u_char	r2, g2, b2, p2;
 	short	x2,	y2;
-	u_long	pad;
+	PSX_ULONG	pad;
 } LINE_G3;				/* 2 connected Gouraud Line */
 
 typedef struct {
@@ -641,14 +641,14 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
 	short	x1,	y1;
 	short	x2,	y2;
 	short	x3,	y3;
-	u_long	pad;
+	PSX_ULONG	pad;
 } LINE_F4;				/* 3 connected Flat Line Quadrangle */
 
 typedef struct {
@@ -661,7 +661,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -671,7 +671,7 @@ typedef struct {
 	short	x2,	y2;
 	u_char	r3, g3, b3, p3;
 	short	x3,	y3;
-	u_long	pad;
+	PSX_ULONG	pad;
 } LINE_G4;				/* 3 connected Gouraud Line */
 
 /*
@@ -687,7 +687,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -705,7 +705,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -722,7 +722,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -742,7 +742,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -759,7 +759,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -775,7 +775,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -791,7 +791,7 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
 	u_char	r0, g0, b0, code;
 	short	x0, 	y0;
@@ -810,9 +810,9 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
-	u_long	code[2];
+	PSX_ULONG	code[2];
 } DR_MODE;				/* Drawing Mode */
 
 typedef struct {
@@ -825,9 +825,9 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
-	u_long	code[2];
+	PSX_ULONG	code[2];
 } DR_TWIN;				/* Texture Window */
 		   
 typedef struct {
@@ -840,9 +840,9 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
-	u_long	code[2];
+	PSX_ULONG	code[2];
 } DR_AREA;				/* Drawing Area */
 		   
 typedef struct {
@@ -855,9 +855,9 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
-	u_long	code[2];
+	PSX_ULONG	code[2];
 } DR_OFFSET;				/* Drawing Offset */
 		   
 typedef struct {			/* MoveImage */
@@ -870,9 +870,9 @@ typedef struct {			/* MoveImage */
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
-	u_long	code[5];
+	PSX_ULONG	code[5];
 } DR_MOVE;
 
 typedef struct {			/* LoadImage */
@@ -885,10 +885,10 @@ typedef struct {			/* LoadImage */
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
-	u_long	code[3];
-	u_long	p[13];
+	PSX_ULONG	code[3];
+	PSX_ULONG	p[13];
 } DR_LOAD;
 
 typedef	struct {
@@ -901,9 +901,9 @@ typedef	struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
-	u_long	code[1];
+	PSX_ULONG	code[1];
 } DR_TPAGE;				/* Drawing TPage */
 
 typedef struct {
@@ -916,9 +916,9 @@ typedef struct {
 	PSX_ULONG len;
 #endif
 #else
-	u_long	tag;
+	PSX_ULONG	tag;
 #endif
-	u_long  code[2];
+	PSX_ULONG  code[2];
 } DR_STP;                               /* Drawing STP */
 
 /*
@@ -931,7 +931,7 @@ typedef struct {
  *	Multi-purpose Sony-TMD primitive
  */
 typedef struct {
-	u_long	id;	
+	PSX_ULONG	id;	
 	u_char	r0, g0, b0, p0;		/* Color of vertex 0 */
 	u_char	r1, g1, b1, p1;		/* Color of vertex 1 */
 	u_char	r2, g2, b2, p2;		/* Color of vertex 2 */
@@ -960,11 +960,11 @@ typedef struct {
  *	Multi-purpose TIM image
  */
 typedef struct {
-	u_long  mode;		/* pixel mode */
+	PSX_ULONG  mode;		/* pixel mode */
 	RECT16	*cRECT16;		/* CLUT RECT16angle on frame buffer */
-	u_long	*caddr;		/* CLUT address on main memory */
+	PSX_ULONG	*caddr;		/* CLUT address on main memory */
 	RECT16	*pRECT16;		/* texture image RECT16angle on frame buffer */
-	u_long	*paddr;		/* texture image address on main memory */
+	PSX_ULONG	*paddr;		/* texture image address on main memory */
 } TIM_IMAGE;
 
 #pragma pack(pop)
@@ -989,7 +989,7 @@ extern DRAWENV *PutDrawEnv(DRAWENV *env);
 extern DRAWENV *SetDefDrawEnv(DRAWENV *env, int x, int y, int w, int h);
 extern TIM_IMAGE *ReadTIM(TIM_IMAGE *timimg);
 extern TMD_PRIM *ReadTMD(TMD_PRIM *tmdprim);
-extern int CheckPrim(char *s, u_long *p);
+extern int CheckPrim(char *s, PSX_ULONG *p);
 extern int ClearImage(RECT16 *RECT16, u_char r, u_char g, u_char b);
 extern int ClearImage2(RECT16 *RECT16, u_char r, u_char g, u_char b);
 extern int DrawSync(int mode);
@@ -999,37 +999,38 @@ extern int GetTimSize(u_char *sjis);
 extern int IsEndPrim(void *p);
 extern int KanjiFntOpen(int x, int y, int w, int h, int dx, int dy, int cx, int cy, int isbg, int n);
 extern void KanjiFntClose(void);
-extern int Krom2Tim(u_char *sjis, u_long *taddr, int dx, int dy, int cdx, int cdy, u_int fg, u_int bg);
-extern int LoadImagePSX(RECT16 *rect, u_long *p);
+extern int Krom2Tim(u_char *sjis, PSX_ULONG *taddr, int dx, int dy, int cdx, int cdy, u_int fg, u_int bg);
+extern int LoadImagePSX(RECT16 *rect, unsigned long *p);
 extern int MargePrim(void *p0, void *p1);
 extern int MoveImage(RECT16* rect, int x, int y);
-extern int OpenTIM(u_long *addr);
-extern int OpenTMD(u_long *tmd, int obj_no);
+extern int OpenTIM(PSX_ULONG *addr);
+extern int OpenTMD(PSX_ULONG *tmd, int obj_no);
 extern int ResetGraph(int mode);
 extern int SetGraphDebug(int level);
-extern int StoreImage(RECT16 *rect, u_long *p);
-extern u_long *ClearOTag(u_long *ot, int n);
-extern u_long *ClearOTagR(u_long *ot, int n);
-extern u_long *FntFlush(int id);
-extern u_long *KanjiFntFlush(int id);
+extern int StoreImage(RECT16 *rect, unsigned long *p);
+extern unsigned long *ClearOTag(unsigned long *ot, int n);
+extern unsigned long *ClearOTagR(unsigned long *ot, int n);
+extern PSX_ULONG *FntFlush(int id);
+extern PSX_ULONG *KanjiFntFlush(int id);
 extern u_long DrawSyncCallback(void (*func)(void));
 extern u_short GetClut(int x, int y);
 extern u_short GetTPage(int tp, int abr, int x, int y);
-extern u_short LoadClut(u_long *clut, int x, int y);
-extern u_short LoadClut2(u_long *clut, int x, int y);
-extern u_short LoadTPage(u_long *pix, int tp, int abr, int x, int y, int w, int h);
+extern u_short LoadClut(PSX_ULONG *clut, int x, int y);
+extern u_short LoadClut2(PSX_ULONG *clut, int x, int y);
+extern u_short LoadTPage(PSX_ULONG *pix, int tp, int abr, int x, int y, int w, int h);
 extern void *NextPrim(void *p);
 extern void AddPrim(void *ot, void *p);
 extern void AddPrims(void *ot, void *p0, void *p1);
 extern void CatPrim(void *p0, void *p1);
-extern void DrawOTag(u_long *p);
-extern void DrawOTagIO(u_long *p);
-extern void DrawOTagEnv(u_long *p, DRAWENV *env);
+extern void DrawOTag(unsigned long *p);
+extern void DrawOTagIO(unsigned long *p);
+extern void DrawOTagEnv(unsigned long *p, DRAWENV *env);
+
 extern void DrawPrim(void *p);
 extern void DumpClut(u_short clut);
 extern void DumpDispEnv(DISPENV *env);
 extern void DumpDrawEnv(DRAWENV *env);
-extern void DumpOTag(u_long *p);
+extern void DumpOTag(PSX_ULONG *p);
 extern void DumpTPage(u_short tpage);
 extern void FntLoad(int tx, int ty);
 extern void SetDispMask(int mask);
@@ -1067,14 +1068,14 @@ extern void SetTile1(TILE_1 *p);
 extern void SetTile16(TILE_16 *p);
 extern void SetTile8(TILE_8 *p);
 extern void TermPrim(void *p);
-extern u_long *BreakDraw(void);
-extern void ContinueDraw(u_long *insaddr, u_long *contaddr);
+extern PSX_ULONG *BreakDraw(void);
+extern void ContinueDraw(PSX_ULONG *insaddr, PSX_ULONG *contaddr);
 extern int IsIdleGPU(int max_count);
 extern int GetODE(void);
-extern int LoadImage2(RECT16 *RECT16, u_long *p);
-extern int StoreImage2(RECT16 *RECT16, u_long *p);
+extern int LoadImage2(RECT16 *RECT16, PSX_ULONG *p);
+extern int StoreImage2(RECT16 *RECT16, unsigned long *p);
 extern int MoveImage2(RECT16 *RECT16, int x, int y);
-extern int DrawOTag2(u_long *p);
+extern int DrawOTag2(unsigned long *p);
 extern void GetDrawMode(DR_MODE *p);
 extern void GetTexWindow(DR_TWIN *p);
 extern void GetDrawArea(DR_AREA *p);

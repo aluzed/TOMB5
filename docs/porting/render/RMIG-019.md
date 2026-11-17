@@ -1,8 +1,8 @@
 # RMIG-019 — Zero primitive PSX non geree en 64 bits
 
-Status: **In progress** — priorité P1 — confiance Medium
+Status: **Done** — priorité P1 — confiance Medium
 
-Avancement : En cours : compteur mesure a 77 messages sur 35 s de mode attractif apres RMIG-018 (702 avant).
+Avancement : Termine : 0 primitive non geree sur 120 s de mode attractif 64 bits.
 
 ## Objectif
 
@@ -48,7 +48,7 @@ Les types 06-10 peuvent venir de primitives legitimes non implementees ou d une 
 
 ## Preuves
 
-- 2026-11-17 : Comptage : 77 messages "Unhandled primitive type" sur 35 s de mode attractif 64 bits apres RMIG-018.
+- 2026-11-17 : Cause : les structures DR_ENV/DR_* et les macros de LIBGPU.H utilisaient encore `u_long` (8 octets en LP64), donc sizeof(DR_ENV) valait 128 au lieu de 64 et les paquets DR_* desynchronisaient la chaine de primitives (types 0x10/0x8C/0xFC/0xFF tires de code MIPS). Apres remplacement de tous les u_long de LIBGPU.H/.C par PSX_ULONG et troncature explicite dans setaddr, les tailles 32/64 sont identiques (P_TAG 12, POLY_F3 24, POLY_FT4 44, POLY_GT4 56, TILE 20, SPRT 24, DR_ENV 64, DR_MOVE 28). Execution 64 bits de 120 s : 0 "Unhandled primitive type", 0 SIGSEGV, 0 stack smashing. Build 32 bits frais vert et execute 40 s sans erreur.
 
 ## Références
 

@@ -167,7 +167,7 @@ int DrawSync(int mode)
 	return 0;
 }
 
-int LoadImagePSX(RECT16* rect, u_long* p)
+int LoadImagePSX(RECT16* rect, unsigned long* p)
 {
 	Emulator_CopyVRAM((unsigned short*)p, 0, 0, rect->w, rect->h, rect->x, rect->y);
 	return 0;
@@ -224,13 +224,13 @@ int SetGraphDebug(int level)
 	return 0;
 }
 
-int StoreImage(RECT16* rect, u_long* p)
+int StoreImage(RECT16* rect, unsigned long* p)
 {
 	Emulator_ReadVRAM((unsigned short*)p, rect->x, rect->y, rect->w, rect->h);
 	return 0;
 }
 
-u_long* ClearOTag(u_long* ot, int n)
+unsigned long* ClearOTag(unsigned long* ot, int n)
 {
 	//Nothing to do here.
 	if (n == 0)
@@ -277,7 +277,7 @@ u_long* ClearOTag(u_long* ot, int n)
 	return NULL;
 }
 
-u_long* ClearOTagR(u_long* ot, int n)
+unsigned long* ClearOTagR(unsigned long* ot, int n)
 {
 	//Nothing to do here.
 	if (n == 0)
@@ -515,7 +515,7 @@ void DrawAggregatedSplits()
 int ParsePrimitive(uintptr_t primPtr);
 int ParseLinkedPrimitiveList(uintptr_t packetStart, uintptr_t packetEnd);
 
-void AggregatePTAGsToSplits(u_long* p, bool singlePrimitive)
+void AggregatePTAGsToSplits(unsigned long* p, bool singlePrimitive)
 {
 	if (!p)
 		return;
@@ -547,7 +547,7 @@ void AggregatePTAGsToSplits(u_long* p, bool singlePrimitive)
 
 //------------------------------------------------------------------
 
-void DrawOTagEnv(u_long* p, DRAWENV* env)
+void DrawOTagEnv(unsigned long* p, DRAWENV* env)
 {
 	do
 	{
@@ -570,7 +570,7 @@ void DrawOTagEnv(u_long* p, DRAWENV* env)
 #endif
 }
 
-void DrawOTag(u_long* p)
+void DrawOTag(unsigned long* p)
 {
 	if (Emulator_BeginScene())
 	{
@@ -625,7 +625,7 @@ void DrawPrim(void* p)
 	polygon_count = 0;
 #endif
 
-	AggregatePTAGsToSplits((u_long*)p, TRUE);
+	AggregatePTAGsToSplits((unsigned long*)p, TRUE);
 	DrawAggregatedSplits();
 
 #if defined(PGXP)
@@ -1286,8 +1286,8 @@ void SetLineF3(LINE_F3* p)
 
 void FntLoad(int tx, int ty)
 {
-	unsigned long FontClut[] = { 0xFFFF0000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
-	unsigned long FontTex[] = {
+	PSX_ULONG FontClut[] = { 0xFFFF0000, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
+	PSX_ULONG FontTex[] = {
 	  0x00000000,0x00010000,0x00101000,0x00000000,0x00111000,0x01111100,0x00001000,0x00011000,0x01000000,0x00000100,0x00010000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00010000,0x00101000,0x00101000,0x01010100,0x01001100,0x00010100,0x00001100,0x00100000,0x00001000,0x01010100,0x00010000,0x00000000,0x00000000,0x00000000,0x01000000,
 	  0x00000000,0x00010000,0x00000000,0x01111100,0x00010100,0x00100000,0x00010100,0x00000000,0x00010000,0x00010000,0x00111000,0x00010000,0x00000000,0x00000000,0x00000000,0x00100000,0x00000000,0x00010000,0x00000000,0x00101000,0x00111000,0x00010000,0x00001000,0x00000000,0x00010000,0x00010000,0x00010000,0x01111100,0x00000000,0x01111100,0x00000000,
 	  0x00010000,0x00000000,0x00010000,0x00000000,0x00101000,0x01010000,0x00001000,0x01010100,0x00000000,0x00010000,0x00010000,0x00111000,0x00010000,0x00000000,0x00000000,0x00000000,0x00001000,0x00000000,0x00000000,0x00000000,0x01111100,0x01010100,0x01100100,0x00100100,0x00000000,0x00100000,0x00001000,0x01010100,0x00010000,0x00011000,0x00000000,
@@ -1325,7 +1325,7 @@ void CatPrim(void* p0, void* p1)
 	catPrim(p0, p1);
 }
 
-u_short LoadTPage(u_long* pix, int tp, int abr, int x, int y, int w, int h)
+u_short LoadTPage(PSX_ULONG* pix, int tp, int abr, int x, int y, int w, int h)
 {
 	RECT16 imageArea;
 	imageArea.x = x;
@@ -1369,7 +1369,7 @@ u_short LoadTPage(u_long* pix, int tp, int abr, int x, int y, int w, int h)
 	}
 
 	//loc_2AC
-	LoadImagePSX(&imageArea, pix);
+	LoadImagePSX(&imageArea, (unsigned long*)pix);
 	return GetTPage(tp, abr, x, y) & 0xFFFF;
 }
 
@@ -1378,32 +1378,32 @@ u_short GetTPage(int tp, int abr, int x, int y)
 	return getTPage(tp, abr, x, y);
 }
 
-u_short LoadClut(u_long* clut, int x, int y)
+u_short LoadClut(PSX_ULONG* clut, int x, int y)
 {
 	RECT16 rect;//&var_18
 	setRECT16(&rect, x, y, 256, 1);
-	LoadImagePSX(&rect, clut);
+	LoadImagePSX(&rect, (unsigned long*)clut);
 	return GetClut(x, y) & 0xFFFF;
 }
 
-u_short LoadClut2(u_long* clut, int x, int y)
+u_short LoadClut2(PSX_ULONG* clut, int x, int y)
 {
 	RECT16 drawArea;
 	drawArea.x = x;
 	drawArea.y = y;
 	drawArea.w = 16;
 	drawArea.h = 1;
-	LoadImagePSX(&drawArea, clut);
+	LoadImagePSX(&drawArea, (unsigned long*)clut);
 	return getClut(x, y);
 }
 
-u_long* KanjiFntFlush(int id)
+PSX_ULONG* KanjiFntFlush(int id)
 {
 	UNIMPLEMENTED();
 	return 0;
 }
 
-u_long* FntFlush(int id)
+PSX_ULONG* FntFlush(int id)
 {
 	UNIMPLEMENTED();
 	return 0;

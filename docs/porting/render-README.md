@@ -22,6 +22,6 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-016](render/RMIG-016.md) | Menu debug avancé et budget de performance | Blocked | P2 |
 | [RMIG-017](render/RMIG-017.md) | Relocalisation 64 bits des tableaux de pointeurs du fichier | Done | P0 |
 | [RMIG-018](render/RMIG-018.md) | Rendu 64 bits : mots PSX 32 bits et buffers bas | Done | P0 |
-| [RMIG-019](render/RMIG-019.md) | Zero primitive PSX non geree en 64 bits | In progress | P1 |
+| [RMIG-019](render/RMIG-019.md) | Zero primitive PSX non geree en 64 bits | Done | P1 |
 
-7/19 terminés.
+8/19 terminés.

@@ -436,3 +436,39 @@ non-régression est vérifiée par la compilation fraîche, l'exécution et les
 - RMIG-019 : ramener les primitives non gérées à zéro.
 - RMIG-007 : harnais déterministe 32/64 (capture + hash).
 - Puis RMIG-008 → 011 (abstraction renderer et Vulkan).
+
+## 16. Zéro primitive non gérée (17 novembre 2026)
+
+Après RMIG-018 il restait 46–77 `Unhandled primitive type` par session
+(types `0x10`, `0x8C`, `0xFC`, `0xFF`). Le diagnostic gdb a montré que le
+parseur lisait des **instructions MIPS** (`27bdffd0`, `afb20018`, …) : la
+chaîne de primitives avait dérivé hors du poly buffer.
+
+Cause : les structures `DR_ENV` / `DR_MOVE` / `DR_AREA` / `DR_TPAGE` et les
+macros de `LIBGPU.H` utilisaient encore `u_long`, qui vaut 8 octets en
+LP64. `sizeof(DR_ENV)` valait 128 au lieu de 64, donc chaque paquet
+d'environnement décalait le pointeur de 64 octets et le parseur finissait
+dans le code du module AI.
+
+Correction : tous les `u_long` de `EMULATOR/LIBGPU.H` et `LIBGPU.C` sont
+remplacés par `PSX_ULONG` (32 bits en LP64), et `setaddr` tronque
+explicitement via `uintptr_t` vers le champ 32 bits.
+
+Tailles vérifiées identiques 32/64 bits :
+
+| type | 32 bits | 64 bits |
+|---|---|---|
+| P_TAG | 12 | 12 |
+| POLY_F3 | 24 | 24 |
+| POLY_F4 | 28 | 28 |
+| POLY_FT3 | 36 | 36 |
+| POLY_FT4 | 44 | 44 |
+| POLY_GT3 | 44 | 44 |
+| POLY_GT4 | 56 | 56 |
+| TILE | 20 | 20 |
+| SPRT | 24 | 24 |
+| DR_ENV | 64 | 64 |
+| DR_MOVE | 28 | 28 |
+
+Exécution 64 bits de **120 s** du mode attractif : **0** primitive non
+gérée, **0** SIGSEGV. Build 32 bits frais vert et exécuté 40 s sans erreur.

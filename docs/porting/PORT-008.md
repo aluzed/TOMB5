@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+Zero primitive non geree en 64 bits. Les structures DR_ENV/DR_MOVE/DR_AREA/DR_TPAGE et les macros de LIBGPU.H utilisaient encore u_long (8 octets en LP64) : sizeof(DR_ENV) valait 128 au lieu de 64, les paquets DR_* desynchronisaient la chaine et le parseur lisait des instructions MIPS (types 0x10/0x8C/0xFC/0xFF). Remplacement de tous les u_long de EMULATOR/LIBGPU.H et LIBGPU.C par PSX_ULONG (32 bits en LP64) et troncature explicite dans setaddr via uintptr_t. Tailles 32/64 identiques : P_TAG 12, POLY_F3 24, POLY_F4 28, POLY_FT3 36, POLY_FT4 44, POLY_GT3 44, POLY_GT4 56, TILE 20, SPRT 24, DR_ENV 64, DR_MOVE 28. Execution 64 bits de 120 s du mode attractif : 0 'Unhandled primitive type', 0 SIGSEGV, 0 stack smashing. Build 32 bits frais vert et execute 40 s sans erreur. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 Premier rendu 64 bits stable. Corrections LP64 : objet/statics lus via object_info_file (LEVEL_OBJECT_DATA_SIZE basee sur 64/28 octets de fichier, plus sizeof LP64=96) ; RelocateModule lit des mots 32 bits ; arene LP64 portee a 4 Mio (MAP_32BIT) ; avance de ptr apres conversion des salles ; bones convertis en tableau de long hotes ; GetFrames_CL recoit des tableaux de pointeurs. La trace TOMB5_TRACE_CD est identique aux 32 premieres lignes du 32 bits. Rendu : PSX_ULONG (32 bits en LP64) pour P_TAG/POLY_* ; buffers GPU, tsv_buffer, scratchpads ANIMITEM/ROOMLET*/LIGHT/DRAWOBJ et temp_rotation_buffer alloues sous 4 Gio via PORT_LowAlloc (mmap MAP_32BIT) ; listes stashees indexees par numero ; matrices globales lara_matrices accedees sans cast int ; meshes/bones parcourus avec les pas hotes. Preuve : sizeof(P_TAG)=12 et sizeof(POLY_F3)=24 en 64 bits (identiques au 32 bits) ; execution 64 bits de 35 s du mode attractif sans SIGSEGV avec capture montrant DEMO MODE ; Unhandled primitive type de 702 a 0-77 (suivi RMIG-019) ; 4188 tests PASS ; build 32 bits fraichement configure (build/porting/build32-check) vert et execute 40 s sans crash. Le hash b9d8e710 n'est pas reproductible depuis un autre repertoire de build (chemins DWARF), la non-regression est couverte par le build frais, l'execution et les tests. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
