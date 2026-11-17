@@ -60,6 +60,32 @@
 #include <string.h>
 #endif
 
+#if defined(__LP64__)
+/* Format du fichier de niveau pour les salles (RMIG-005).
+ *
+ * Le fichier stocke, pour chaque salle, cinq valeurs 32 bits (tailles/offsets)
+ * suivi des champs scalaires, soit 80 octets. En LP64 `struct room_info`
+ * contient cinq pointeurs de 8 octets : le caster directement decalerait tous
+ * les champs suivants. On lit donc ce format intermediaire puis on reconstruit
+ * le tableau hote.
+ */
+struct room_info_file
+{
+	psx_u32 data, door, floor, light, mesh;
+	psx_i32 x, y, z, minfloor, maxceiling;
+	short x_size, y_size;
+	CVECTOR ambient;
+	short num_lights, num_meshes;
+	unsigned char ReverbType, FlipNumber;
+	char MeshEffect, bound_active;
+	short left, right, top, bottom;
+	short test_left, test_right, test_top, test_bottom;
+	short item_number, fx_number, flipped_room;
+	unsigned short flags;
+};
+static_assert(sizeof(struct room_info_file) == 80, "level file room layout");
+#endif
+
 /* Byte size of the object/static tables in a level file.  The skin and
  * scratch vertex blocks follow it, each 480 bytes. */
 #define LEVEL_OBJECT_DATA_SIZE (NUMBER_OBJECTS * sizeof(struct object_info) + NUMBER_STATIC_OBJECTS * sizeof(struct static_info))
@@ -1634,6 +1660,74 @@ void LoadLevel(FILE* nHandle)
 	FILE_Read(ptr, 1, level->roomInfoLength, nHandle);
 #endif
 
+#if defined(__LP64__)
+	{
+		/* LP64 : convertir le format fichier (80 o/salle) vers la structure
+		 * hote, puis relocaliser les blocs a partir de leur position dans le
+		 * fichier. L'arene est allouee sous 4 Gio (MALLOC.C), donc les
+		 * offsets 32 bits restent des adresses valides. */
+		struct room_info_file* raw = (struct room_info_file*)ptr;
+		char* blockptr = (char*)raw + sizeof(struct room_info_file) * level->numRooms;
+
+		room = (struct room_info*)game_malloc(sizeof(struct room_info) * level->numRooms);
+		number_rooms = level->numRooms;
+
+		for (i = 0; i < number_rooms; i++)
+		{
+			psx_u32 size_data = raw[i].data;
+			psx_u32 size_door = raw[i].door;
+			psx_u32 size_floor = raw[i].floor;
+			psx_u32 size_light = raw[i].light;
+			psx_u32 size_mesh = raw[i].mesh;
+
+			room[i].x = raw[i].x;
+			room[i].y = raw[i].y;
+			room[i].z = raw[i].z;
+			room[i].minfloor = raw[i].minfloor;
+			room[i].maxceiling = raw[i].maxceiling;
+			room[i].x_size = raw[i].x_size;
+			room[i].y_size = raw[i].y_size;
+			room[i].ambient = raw[i].ambient;
+			room[i].num_lights = raw[i].num_lights;
+			room[i].num_meshes = raw[i].num_meshes;
+			room[i].ReverbType = raw[i].ReverbType;
+			room[i].FlipNumber = raw[i].FlipNumber;
+			room[i].MeshEffect = raw[i].MeshEffect;
+			room[i].bound_active = raw[i].bound_active;
+			room[i].left = raw[i].left;
+			room[i].right = raw[i].right;
+			room[i].top = raw[i].top;
+			room[i].bottom = raw[i].bottom;
+			room[i].test_left = raw[i].test_left;
+			room[i].test_right = raw[i].test_right;
+			room[i].test_top = raw[i].test_top;
+			room[i].test_bottom = raw[i].test_bottom;
+			room[i].item_number = raw[i].item_number;
+			room[i].fx_number = raw[i].fx_number;
+			room[i].flipped_room = raw[i].flipped_room;
+			room[i].flags = raw[i].flags;
+
+			room[i].data = (short*)blockptr;
+			for (j = 0; j < 24; j++)
+			{
+				*(int*)&blockptr[4 + (j * 4)] += (int)(uintptr_t)room[i].data;
+			}
+			blockptr += size_data;
+
+			room[i].door = (short*)blockptr;
+			blockptr += size_door;
+
+			room[i].floor = (struct FLOOR_INFO*)blockptr;
+			blockptr += size_floor;
+
+			room[i].light = (struct LIGHTINFO*)blockptr;
+			blockptr += size_light;
+
+			room[i].mesh = (struct MESH_INFO*)blockptr;
+			blockptr += size_mesh;
+		}
+	}
+#else
 	room = (struct room_info*)ptr;
 	ptr += sizeof(struct room_info) * level->numRooms;
 
@@ -1698,7 +1792,8 @@ void LoadLevel(FILE* nHandle)
 			room[i].mesh = (struct MESH_INFO*)ptr;
 			ptr += size;
 		}
-	}//loc_570
+	}
+#endif//loc_570
 
 	floor_data = (short*)ptr;
 	ptr += level->floorDataLength;

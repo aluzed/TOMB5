@@ -13,7 +13,30 @@ char* malloc_ptr = NULL;
 int malloc_used = 0;
 int malloc_free = GAME_MALLOC_BUFFER_SIZE;
 int script_malloc_size = 0;
+#if defined(__LP64__)
+/* L'arene du jeu doit rester sous 4 Gio : le moteur stocke des adresses
+ * 32 bits dans les blocs reloges depuis le fichier de niveau, et certains
+ * chemins additionnent la valeur basse d'un pointeur a un offset.
+ * MAP_32BIT garantit cette contrainte sur x86-64 (RMIG-005). */
+#include <sys/mman.h>
+char* malloc_buffer = NULL;
+
+static void port_alloc_game_arena(void)
+{
+	void* p = mmap(NULL, GAME_MALLOC_BUFFER_SIZE, PROT_READ | PROT_WRITE,
+	               MAP_PRIVATE | MAP_ANONYMOUS | MAP_32BIT, -1, 0);
+
+	if (p == MAP_FAILED)
+	{
+		perror("game arena mmap(MAP_32BIT)");
+		exit(1);
+	}
+
+	malloc_buffer = (char*)p;
+}
+#else
 char malloc_buffer[GAME_MALLOC_BUFFER_SIZE];
+#endif
 
 /*
  * [FUNCTIONALITY] - init_game_malloc.
@@ -24,6 +47,13 @@ char malloc_buffer[GAME_MALLOC_BUFFER_SIZE];
 
 void init_game_malloc()//5E79C(<), 5F4F8(<) (F) (*) (D) (ND)
 {
+#if defined(__LP64__)
+	if (malloc_buffer == NULL)
+	{
+		port_alloc_game_arena();
+	}
+#endif
+
 	malloc_used = gfScriptLen;
 	malloc_free = GAME_MALLOC_BUFFER_SIZE - gfScriptLen;
 	malloc_ptr = &malloc_buffer[gfScriptLen];

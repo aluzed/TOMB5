@@ -8,7 +8,7 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-002](render/RMIG-002.md) | Cible de build 64 bits sans dépendance 32 bits | Done | P0 |
 | [RMIG-003](render/RMIG-003.md) | Typedefs PSX à largeur fixe et garde de tailles (STYPES.H) | Done | P0 |
 | [RMIG-004](render/RMIG-004.md) | Conversion des structures de GAME/TYPES.H | Done | P0 |
-| [RMIG-005](render/RMIG-005.md) | Code manipulant les champs convertis | Todo | P1 |
+| [RMIG-005](render/RMIG-005.md) | Code manipulant les champs convertis | In progress | P1 |
 | [RMIG-006](render/RMIG-006.md) | Pointeur↔entier et fichiers en erreur en -m64 | Done | P0 |
 | [RMIG-007](render/RMIG-007.md) | Harnais de comparaison 32 bits / 64 bits | Blocked | P1 |
 | [RMIG-008](render/RMIG-008.md) | Abstraction renderer (interface + sélection) | Blocked | P1 |
@@ -20,5 +20,6 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-014](render/RMIG-014.md) | Reflets screen-space à presets | Blocked | P2 |
 | [RMIG-015](render/RMIG-015.md) | Raytracing matériel (ray_query) avec repli SSR | Blocked | P2 |
 | [RMIG-016](render/RMIG-016.md) | Menu debug avancé et budget de performance | Blocked | P2 |
+| [RMIG-017](render/RMIG-017.md) | Relocalisation 64 bits des tableaux de pointeurs du fichier | Blocked | P0 |
 
-5/16 terminés.
+5/17 terminés.

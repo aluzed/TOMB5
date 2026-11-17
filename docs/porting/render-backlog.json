@@ -183,16 +183,17 @@
     {
       "id": "RMIG-005",
       "title": "Code manipulant les champs convertis",
-      "status": "Todo",
+      "status": "In progress",
       "priority": "P1",
       "goal": "Adapter le code qui lit/écrit les champs convertis, en particulier la relocation du niveau et la restauration de sauvegarde.",
-      "facts": "LoadLevel lit les enregistrements de salle directement dans struct room_info (DEL_CDFS_Read puis cast) et la relocalisation lit la taille dans le premier champ 32 bits ; les items passent par un format compact, mais room_info contient cinq pointeurs. En LP64 ces champs font 8 octets : le cast décale tous les champs suivants. C'est la cause probable des 'Unhandled primitive type' observés sur le binaire 64 bits (594 en 20 s) alors que le 32 bits est correct.",
+      "facts": "LoadLevel lit les salles dans un buffer puis relocalise cinq champs par salle. Deux mécanismes supposent des adresses 32 bits : (1) le cast direct du buffer en struct room_info, corrigé par room_info_file + conversion ; (2) une famille d'instructions `*(int*)&array[i] += base` qui traite des tableaux de pointeurs comme des tableaux de int (meshes, frame_ptr des anims, models…). Mesure : 487 occurrences de `(int*)&` dans GAME/ et SPEC_PSXPC_N/. Le binaire 64 bits plante désormais dans LoadLevel à GAME/SETUP.C:1838 sur la relocalisation de `meshes`.",
       "scope": "GAME/SETUP.C (relocation), GAME/SAVEGAME.C, GAME/PORTSAVE.C, GAME/ITEMS.C et accès directs aux champs convertis.",
       "exclusions": "Rendue, backend Vulkan.",
       "tasks": [
-        "Recenser les écritures de champs convertis via des long et les adapter.",
-        "Vérifier la relocation des pointeurs (uintptr_t) et l'absence de troncature.",
-        "Rejouer un chargement de niveau 3 et une sauvegarde/reprise."
+        "Introduire une arène de jeu garantie sous 4 Gio (mmap MAP_32BIT) — fait.",
+        "Lire le format fichier des salles via une structure dédiée puis convertir vers la structure hôte — fait.",
+        "Traiter la famille de relocalisations `*(int*)&array[i] += base` sur les tableaux de pointeurs issus du fichier (meshes, anims, models…), éventuellement en sous-ticket RMIG-017.",
+        "Vérifier le chargement complet d'un niveau en 64 bits et l'absence d'`Unhandled primitive type`."
       ],
       "acceptance": [
         "Un chargement de niveau complet ne produit aucun décalage (positions d'items comparées à la référence 32 bits).",
@@ -218,8 +219,13 @@
           "note": "application de la position"
         }
       ],
-      "progress": "À démarrer (RMIG-004 terminé).",
-      "evidence": []
+      "progress": "En cours : arene sous 4 Gio (MAP_32BIT) et structure de format fichier pour les salles en place ; le chargement 64 bits atteint maintenant la relocalisation des tableaux de pointeurs et y plante, ce qui délimite le reste du travail.",
+      "evidence": [
+        {
+          "date": "2026-11-17",
+          "note": "Arène sous 4 Gio : MALLOC.C utilise mmap(MAP_32BIT) en LP64, ce qui garde valides les adresses 32 bits stockées dans les blocs relogés. Salles : struct room_info_file (80 o, pointeurs psx_u32) + static_assert, et conversion champ par champ vers room_info dans LoadLevel (chemin LP64), les blocs étant relocalisés depuis leur position fichier. Builds 32 et 64 bits verts, hash 32 bits inchangé (b9d8e710…). Nouvelle limite mesurée : le binaire 64 bits plante dans LoadLevel à GAME/SETUP.C:1838 (`((int*)&meshes)[i] += …`), première d'une famille de 487 `(int*)&` qui traitent des tableaux de pointeurs comme des int."
+        }
+      ]
     },
     {
       "id": "RMIG-006",
@@ -672,6 +678,46 @@
         }
       ],
       "progress": "Bloqué par l'overlay.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-017",
+      "title": "Relocalisation 64 bits des tableaux de pointeurs du fichier",
+      "status": "Blocked",
+      "priority": "P0",
+      "goal": "Charger un niveau complet en 64 bits sans corruption, en convertissant les tableaux de pointeurs issus du fichier de niveau.",
+      "facts": "LoadLevel relocalise des tableaux de pointeurs avec `*(int*)&array[i] += base` (meshes, frame_ptr des anims, models…). En LP64, l'élément fait 8 octets et l'arithmétique 32 bits corrompt la mémoire : le binaire plante à GAME/SETUP.C:1838. 487 occurrences de `(int*)&` existent dans GAME/ et SPEC_PSXPC_N/ ; toutes ne sont pas concernées (certaines portent sur de vrais int32), mais la famille issue du fichier doit être traitée.",
+      "scope": "Tableaux de pointeurs lus depuis le fichier (meshes, anims, models, frame_ptr, changes/ranges si concernés) : lecture en psx_u32 puis conversion en pointeurs hôtes, avec un helper commun.",
+      "exclusions": "Structures purement hôtes et code de rendu.",
+      "tasks": [
+        "Lister les tableaux effectivement remplis depuis le fichier (meshes, anims, models, frame_ptr) et distinguer les `(int*)&` légitimes.",
+        "Introduire un helper de conversion (base + offset 32 bits) et l'appliquer à ces tableaux.",
+        "Rejouer le chargement d'un niveau complet en 64 bits et vérifier la cohérence des positions d'items avec la référence 32 bits."
+      ],
+      "acceptance": [
+        "Un niveau se charge en 64 bits sans SIGSEGV et sans `Unhandled primitive type`.",
+        "Les positions d'items et de Lara correspondent à la référence 32 bits."
+      ],
+      "validation": "Comparaison des positions (sonde gdb) et du nombre de primitives non gérées entre 32 et 64 bits.",
+      "unknowns": "Nombre exact de tableaux concernés ; effets de bord sur l'IA (boxes) et les animations.",
+      "estimate": "2 à 4 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-005"
+      ],
+      "references": [
+        {
+          "path": "GAME/SETUP.C",
+          "line": 1838,
+          "note": "relocalisation de meshes (crash 64 bits)"
+        },
+        {
+          "path": "GAME/SETUP.C",
+          "line": 1848,
+          "note": "relocalisation des frame_ptr d'animations"
+        }
+      ],
+      "progress": "Bloqué par RMIG-005.",
       "evidence": []
     }
   ]

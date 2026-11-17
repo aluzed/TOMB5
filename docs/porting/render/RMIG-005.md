@@ -1,8 +1,8 @@
 # RMIG-005 — Code manipulant les champs convertis
 
-Status: **Todo** — priorité P1 — confiance Medium
+Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : À démarrer (RMIG-004 terminé).
+Avancement : En cours : arene sous 4 Gio (MAP_32BIT) et structure de format fichier pour les salles en place ; le chargement 64 bits atteint maintenant la relocalisation des tableaux de pointeurs et y plante, ce qui délimite le reste du travail.
 
 ## Objectif
 
@@ -10,7 +10,7 @@ Adapter le code qui lit/écrit les champs convertis, en particulier la relocatio
 
 ## Faits établis
 
-LoadLevel lit les enregistrements de salle directement dans struct room_info (DEL_CDFS_Read puis cast) et la relocalisation lit la taille dans le premier champ 32 bits ; les items passent par un format compact, mais room_info contient cinq pointeurs. En LP64 ces champs font 8 octets : le cast décale tous les champs suivants. C'est la cause probable des 'Unhandled primitive type' observés sur le binaire 64 bits (594 en 20 s) alors que le 32 bits est correct.
+LoadLevel lit les salles dans un buffer puis relocalise cinq champs par salle. Deux mécanismes supposent des adresses 32 bits : (1) le cast direct du buffer en struct room_info, corrigé par room_info_file + conversion ; (2) une famille d'instructions `*(int*)&array[i] += base` qui traite des tableaux de pointeurs comme des tableaux de int (meshes, frame_ptr des anims, models…). Mesure : 487 occurrences de `(int*)&` dans GAME/ et SPEC_PSXPC_N/. Le binaire 64 bits plante désormais dans LoadLevel à GAME/SETUP.C:1838 sur la relocalisation de `meshes`.
 
 ## Périmètre
 
@@ -20,9 +20,10 @@ Hors périmètre : Rendue, backend Vulkan.
 
 ## Tâches
 
-- [ ] Recenser les écritures de champs convertis via des long et les adapter.
-- [ ] Vérifier la relocation des pointeurs (uintptr_t) et l'absence de troncature.
-- [ ] Rejouer un chargement de niveau 3 et une sauvegarde/reprise.
+- [ ] Introduire une arène de jeu garantie sous 4 Gio (mmap MAP_32BIT) — fait.
+- [ ] Lire le format fichier des salles via une structure dédiée puis convertir vers la structure hôte — fait.
+- [ ] Traiter la famille de relocalisations `*(int*)&array[i] += base` sur les tableaux de pointeurs issus du fichier (meshes, anims, models…), éventuellement en sous-ticket RMIG-017.
+- [ ] Vérifier le chargement complet d'un niveau en 64 bits et l'absence d'`Unhandled primitive type`.
 
 ## Critères d’acceptation
 
@@ -48,7 +49,7 @@ Effets de bord sur les zones/boxes des créatures.
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-17 : Arène sous 4 Gio : MALLOC.C utilise mmap(MAP_32BIT) en LP64, ce qui garde valides les adresses 32 bits stockées dans les blocs relogés. Salles : struct room_info_file (80 o, pointeurs psx_u32) + static_assert, et conversion champ par champ vers room_info dans LoadLevel (chemin LP64), les blocs étant relocalisés depuis leur position fichier. Builds 32 et 64 bits verts, hash 32 bits inchangé (b9d8e710…). Nouvelle limite mesurée : le binaire 64 bits plante dans LoadLevel à GAME/SETUP.C:1838 (`((int*)&meshes)[i] += …`), première d'une famille de 487 `(int*)&` qui traitent des tableaux de pointeurs comme des int.
 
 ## Références
 

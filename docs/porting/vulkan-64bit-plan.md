@@ -231,3 +231,42 @@ Le prochain levier n'est plus le typage des structures de jeu mais la
 directement en `struct room_info`, qui contient cinq pointeurs (8 octets en
 LP64) → décalage de tous les champs suivants. C'est l'objet de RMIG-005
 (structure de format à pointeurs 32 bits + conversion).
+
+## 11. RMIG-005 : chargement du format fichier (17 novembre 2026)
+
+Deux mécanismes supposaient des adresses 32 bits. Le premier est traité, le
+second est mesuré et découpé.
+
+**1. Arène de jeu sous 4 Gio (fait).** `MALLOC.C` alloue désormais
+`malloc_buffer` par `mmap(MAP_32BIT)` en LP64 (allocation statique
+inchangée en 32 bits). Les adresses 32 bits stockées dans les blocs relogés
+restent donc valides, comme le suppose le moteur.
+
+**2. Format fichier des salles (fait).** `struct room_info_file`
+(80 octets, pointeurs en `psx_u32`) décrit le format PSX, avec
+`static_assert(sizeof == 80)`. `LoadLevel` lit ce format puis convertit
+champ par champ vers `struct room_info` (chemin LP64 uniquement), les blocs
+étant relocalisés depuis leur position **dans le fichier**.
+
+**3. Relocalisation des tableaux de pointeurs (reste à faire).** Le binaire
+64 bits atteint maintenant `GAME/SETUP.C:1838` et y plante :
+
+```c
+((int*)&meshes)[i] += (int)mesh_base + ((((int)meshes[i] + ((int)meshes[i] >> 31)) >> 1) << 1);
+```
+
+C'est la première d'une famille `*(int*)&array[i] += base` qui traite des
+**tableaux de pointeurs** comme des tableaux d'`int`. En LP64 l'élément fait
+8 octets : la lecture et l'écriture sont fausses et la mémoire est corrompue.
+Mesure : **487 occurrences de `(int*)&`** dans `GAME/` et `SPEC_PSXPC_N/`
+(toutes ne sont pas concernées — certaines portent sur de vrais `int32`).
+
+Ce reste est découpé dans le ticket **RMIG-017** : lister les tableaux
+réellement issus du fichier (`meshes`, `frame_ptr` des animations, `models`),
+introduire un helper « base + offset 32 bits » et convertir au chargement.
+Critère de sortie : un niveau se charge en 64 bits **sans SIGSEGV et sans
+`Unhandled primitive type`**, positions d'items identiques à la référence
+32 bits.
+
+État des builds à cette étape : 32 bits vert et **hash inchangé**
+(`b9d8e710…`), 64 bits vert (compile) mais plante au chargement comme décrit.

@@ -4,7 +4,11 @@
 extern char* malloc_ptr;
 extern int malloc_used;
 extern int malloc_free;
+#if defined(__LP64__)
+extern char* malloc_buffer;
+#else
 extern char malloc_buffer[];
+#endif
 extern int script_malloc_size;
 
 extern void init_game_malloc();
