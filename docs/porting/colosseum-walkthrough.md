@@ -258,3 +258,27 @@ produit alors une sauvegarde valide.
 
 Sauvegarde de référence ainsi obtenue :
 `/tmp/opencode/TOMB5.valid_level1.sav` (level 1, room 2, `46592,0,35779`).
+
+### Précision sur l'invisibilité : ce n'est pas `InDrawRoom`
+
+`InDrawRoom` n'est **jamais écrit** dans le port (déclaré dans `STYPES.H`,
+aucune affectation) : la valeur `0` observée ne prouve donc rien. Les
+conditions réelles de rendu de Lara (`SPEC_PSXPC_N/DRAWPHAS.C:382`) :
+
+```c
+if (objects[LARA].loaded && !(lara_item->flags & 0x40))
+    if (lara_item->mesh_bits != 0 && SCNoDrawLara == 0)
+        switch (LaraDrawType) { ... DrawLaraL1/L2 ... }
+```
+
+Mesures sur la sauvegarde corniche (room 12, position hors grille) :
+`SCNoDrawLara = 0`, `lara_item->flags = 0x0`, `mesh_bits = 0xFFFFFFFF`,
+`bUseSpotCam = 0`, `current_spline_camera = 2` → **toutes les conditions
+de rendu sont réunies**, et pourtant Lara n'apparaît pas (vérifié en
+zoomant et en poussant la luminosité ×3 : que du sol).
+
+En revanche, en partie normale (niveau 1, position issue d'une sauvegarde
+`F5`), Lara est parfaitement rendue. La différence est donc bien la
+**position de sauvegarde invalide** (hors grille de la room 12) qui alimente
+le pipeline de matrices de Lara. Conclusion opérationnelle inchangée :
+jouer depuis une nouvelle partie, sauvegarder avec `F5`.

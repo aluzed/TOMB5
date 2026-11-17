@@ -2287,6 +2287,15 @@
       ],
       "status": "In progress",
       "summary": "Chaine de demarrage confirmee en conditions reelles (captures a l'appui): titre en attract-mode -> 'c' -> cinematique d'intro (Lara derriere des barreaux) -> flyby du niveau 1 (camera haute, Lara minuscule au fond) -> gameplay avec camera derriere Lara et controles actifs; 'Handle cutseq triggering name: 1' confirme l'execution du niveau 1 et un Up de 2 s deplace Lara dans la ruelle (verifie sur capture). F5 produit alors une sauvegarde valide (level 1 room 2 46592,0,35779), conservee comme reference dans /tmp/opencode/TOMB5.valid_level1.sav. La campagne est donc jouable depuis une nouvelle partie, avec des points de reprise fiables produits par le moteur, ce qui rend caduque la pratique des sauvegardes patchees a la main. Documentation ajoutee dans docs/porting/colosseum-walkthrough.md section 8. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Precision sur l'invisibilite de Lara dans la zone de la corniche: InDrawRoom n'est JAMAIS ecrit dans le port (declare dans STYPES.H, aucune affectation), donc la valeur 0 observee ne prouve rien. Les conditions reelles de rendu (SPEC_PSXPC_N/DRAWPHAS.C:382) sont objects[LARA].loaded && !(lara_item->flags & 0x40) puis lara_item->mesh_bits != 0 && SCNoDrawLara == 0 puis switch (LaraDrawType). Mesures sur la sauvegarde corniche (room 12, position hors grille): SCNoDrawLara=0, lara_item->flags=0x0, mesh_bits=0xFFFFFFFF, bUseSpotCam=0, current_spline_camera=2, donc toutes les conditions de rendu sont reunies et pourtant Lara n'apparait pas (verifie en zoomant et en poussant la luminosite x3: que du sol). En partie normale (niveau 1, position issue d'une sauvegarde F5) Lara est parfaitement rendue. La difference est donc bien la position de sauvegarde invalide (hors grille de la room 12) qui alimente le pipeline de matrices de Lara. Conclusion operationnelle inchangee: jouer depuis une nouvelle partie et sauvegarder avec F5. Documentation mise a jour dans docs/porting/colosseum-walkthrough.md section 6. Aucun Done global."
     }
   ]
 }
