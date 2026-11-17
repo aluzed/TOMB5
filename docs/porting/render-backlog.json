@@ -824,7 +824,7 @@
     {
       "id": "RMIG-020",
       "title": "Cutscene d intro du niveau 1 en 64 bits",
-      "status": "In progress",
+      "status": "Done",
       "priority": "P1",
       "goal": "Faire avancer et rendre correctement la cutscene d introduction du niveau 1 en 64 bits, puis atteindre le gameplay.",
       "facts": "Avec les entrees clavier maintenues (xdotool keydown/keyup), le menu 64 bits s ouvre et New Game lance le niveau 1 (DoLevel Name=1). La sequence CD du niveau se termine (dernieres lectures 12/18231 et 8/18232) mais l ecran reste noir avec l icone de chargement et le log repete 'Handle cutseq triggering name: 1' toutes les frames ; en 32 bits, la meme sequence affiche la salle sombre de la cutscene et passe au nom 3. Corrections deja faites pour arriver la : LaSlot en zone basse (SoundEffect), lara_matrices/lara_joint_matrices accedees sans cast int (InterpolateMatrix_CL), OT de pickup en mots 32 bits (S_DrawPickup).",
@@ -859,7 +859,7 @@
           "note": "DrawCutSeqActors"
         }
       ],
-      "progress": "Gameplay niveau 1 atteint via TOMB5_START_LEVEL (Lara visible/deplacable, F5 OK). Le chemin normal (menu -> cutscene -> niveau) ne plante plus apres correction de div3tab/div4tab/dword_2C, mais reste a verifier l avancee de cutscene et l affichage de Lara dans ce chemin.",
+      "progress": "Termine : chemin normal menu -> New Game -> cutscene -> niveau 1 valide, Lara visible et deplacable, F5 ecrit une sauvegarde valide.",
       "evidence": [
         {
           "date": "2026-11-17",
@@ -896,6 +896,56 @@
         {
           "date": "2026-11-17",
           "note": "Chemin normal : crashs SubDiv/SubDiv4 dans DrawAllAnimatingItems dus aux tables globales div3tab/div4tab tronquees en (int)&table[0] (copies basses ajoutees), et crash sub_658L4 sur dword_2C tronque (copie basse ajoutee). Apres correction, le chemin menu -> New Game -> cutscene -> niveau reste stable (processus vivant apres ~60 s) sans SIGSEGV. La capture montre le decor mais Lara n est pas encore visible dans cette phase (camera/cutscene). Le chemin TOMB5_START_LEVEL, lui, montre Lara et permet le deplacement et F5."
+        },
+        {
+          "date": "2026-11-17",
+          "note": "Validation du chemin normal sans TOMB5_START_LEVEL : menu -> New Game -> cutscene -> niveau 1. [LARA] type=1 lvl=1 pos=(46592,0,31232), mesh_bits=FFFFFFFF ; capture montrant Lara dans le couloir ; deplacement Up operationnel ; F5 ecrit TOMB5.SAV (level 1 room 0 X 46592 Y 0 Z 34346, level data 586 bytes). Processus stable, aucune primitive non geree."
+        }
+      ]
+    },
+    {
+      "id": "RMIG-021",
+      "title": "Campagne 64 bits : parcours du Colosseum",
+      "status": "In progress",
+      "priority": "P1",
+      "goal": "Parcourir The Colosseum (niveau 3) en 64 bits et valider la stabilite/rendu des salles du parcours.",
+      "facts": "TOMB5_START_LEVEL=3 charge le niveau 3 (The Colosseum, 125 salles). Le decor est rendu, Lara est visible/deplacable (pos 90642,4608,52736 room 20), le processus reste stable. Le rendu du sable est encore deforme par endroits et la camera peut regarder un mur sombre apres deplacement.",
+      "scope": "SPEC_PSXPC_N/ROOMLET* / DRAW*, GAME/EFFECTS/control du niveau 3.",
+      "exclusions": "Vulkan, ImGui, RT.",
+      "tasks": [
+        "Rejouer le parcours 12 -> 26 -> 27 -> 108 -> 15 -> 18 -> 100 -> 90 -> 102 -> 110 -> 83 -> 111 -> 85 -> 70 en 64 bits.",
+        "Corriger les derniers polygones deformes/rendu sable observes dans le Colosseum.",
+        "Verifier les sauvegardes F5/F6 aux etapes cles du parcours."
+      ],
+      "acceptance": [
+        "Le parcours du Colosseum est realisable sans SIGSEGV en 64 bits.",
+        "Les salles cles et les objets du parcours sont rendus correctement.",
+        "Une sauvegarde en milieu de niveau est rechargee correctement."
+      ],
+      "validation": "Execution 64 bits avec captures et journal, comparaison avec le parcours 32 bits documente.",
+      "unknowns": "Le rendu deforme du sable peut venir de la sous-division (SubDiv/div3tab/div4tab) ou de la projection des grands polygones.",
+      "estimate": "1 a 2 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-020"
+      ],
+      "references": [
+        {
+          "path": "docs/porting/colosseum-walkthrough.md",
+          "line": 7,
+          "note": "parcours salle par salle"
+        },
+        {
+          "path": "SPEC_PSXPC_N/DRAWOBJ.C",
+          "line": 680,
+          "note": "SubDiv/div tables"
+        }
+      ],
+      "progress": "Niveau 3 charge et stable, Lara deplacable ; parcours complet et rendu du sable a valider.",
+      "evidence": [
+        {
+          "date": "2026-11-17",
+          "note": "TOMB5_START_LEVEL=3 : [DRAW] lvl=3 nrooms=125 room=20, [LARA] pos=(90642,4608,52736) mesh_bits=FFFFFFFF, 3897 sommets, processus stable apres deplacement Up. Capture du Colosseum (arene de sable, murs) correcte mais sable partiellement deforme."
         }
       ]
     }

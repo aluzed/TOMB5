@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+Chemin normal valide et Colosseum charge en 64 bits. Parcours menu -> New Game -> cutscene -> niveau 1 : [LARA] type=1 lvl=1 pos=(46592,0,31232), Lara visible, deplacement Up operationnel, F5 ecrit TOMB5.SAV (level 1 room 0 X 46592 Y 0 Z 34346, level data 586 bytes). RMIG-020 passe Done. TOMB5_START_LEVEL=3 charge The Colosseum : 125 salles, [LARA] pos=(90642,4608,52736) room 20, 3897 sommets, decor rendu, processus stable apres deplacement ; sable partiellement deforme et camera parfois face a un mur sombre, parcours complet suivi par RMIG-021. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 Chemin normal (menu -> cutscene -> niveau) stabilise en 64 bits. Crashs corriges : div3tab/div4tab tronques en (int)&table[0] dans SubDiv3/SubDiv4 (DrawAllAnimatingItems), copies basses ajoutees ; dword_2C tronque dans sub_658L4, copie basse ajoutee. Le parcours menu -> New Game -> cutscene -> niveau reste vivant ~60 s sans SIGSEGV ; la capture montre le decor mais Lara n est pas visible dans cette phase (camera/cutscene). Le chemin TOMB5_START_LEVEL affiche Lara, permet le deplacement et F5. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

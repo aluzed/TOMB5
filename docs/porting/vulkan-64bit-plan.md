@@ -678,3 +678,16 @@ reste stable (processus vivant après ~60 s, aucun SIGSEGV). La capture
 montre le décor ; Lara n'est pas encore visible dans cette phase
 (caméra/cutscene), alors que `TOMB5_START_LEVEL=1` affiche Lara, permet le
 déplacement et la sauvegarde F5.
+
+## 24. Chemin normal validé et Colosseum chargé
+
+Le parcours **menu → New Game → cutscene → niveau 1** fonctionne :
+`[LARA] type=1 lvl=1 pos=(46592,0,31232)`, Lara visible, déplacement
+`Up` opérationnel, `F5` écrit `TOMB5.SAV` (level 1, room 0,
+`46592,0,34346`). RMIG-020 passe **Done**.
+
+Le niveau 3 (**The Colosseum**) se charge également via
+`TOMB5_START_LEVEL=3` : 125 salles, `[LARA] pos=(90642,4608,52736)
+room 20`, 3897 sommets, décor rendu et processus stable après déplacement.
+Le rendu du sable reste partiellement déformé et la caméra peut regarder un
+mur sombre ; le parcours complet du Colosseum est suivi par **RMIG-021**.
