@@ -19,6 +19,21 @@
 
 #define genRGB(r, g, b) ((((((b) & 0xFF) << 8) | ((g) & 0xFF)) << 8) | ((r) & 0xFF))
 
+/* Largeur fixe pour les donnees PSX (RMIG-003).
+ *
+ * Sur la cible i386, `long` fait 4 octets et les structures ci-dessous ont
+ * exactement les tailles du format PSX (les offsets sont documentes en
+ * commentaire). En LP64 `long` fait 8 octets : sans ces typedefs, chaque
+ * structure relogee depuis le fichier de niveau changerait de taille et le
+ * flux de paquets GPU serait mal interprete (cf. assertion ParsePrimitive).
+ *
+ * psx_i32/psx_u32 = int32_t/uint32_t : meme taille et meme alignement que
+ * `long` sur i386, donc zero changement sur la cible 32 bits.
+ */
+#include <stdint.h>
+typedef int32_t psx_i32;
+typedef uint32_t psx_u32;
+
 struct DB_STRUCT
 {
 	int current_buffer;
@@ -43,11 +58,11 @@ struct room_info
 	struct FLOOR_INFO* floor; // size=8, offset=8
 	struct LIGHTINFO* light; // size=32, offset=12
 	struct MESH_INFO* mesh; // size=20, offset=16
-	long x; // size=0, offset=20
-	long y; // size=0, offset=24
-	long z; // size=0, offset=28
-	long minfloor; // size=0, offset=32
-	long maxceiling; // size=0, offset=36
+	psx_i32 x; // size=0, offset=20
+	psx_i32 y; // size=0, offset=24
+	psx_i32 z; // size=0, offset=28
+	psx_i32 minfloor; // size=0, offset=32
+	psx_i32 maxceiling; // size=0, offset=36
 	short x_size; // size=0, offset=40
 	short y_size; // size=0, offset=42
 	CVECTOR ambient; // size=4, offset=44
@@ -74,7 +89,7 @@ struct room_info
 struct object_info {
 	short nmeshes; // size=0, offset=0
 	short mesh_index; // size=0, offset=2
-	long bone_index; // size=0, offset=4
+	psx_i32 bone_index; // size=0, offset=4
 	short *frame_base; // size=0, offset=8
 	void(*initialise)(short item_number); // size=0, offset=12
 	void(*control)(short item_number); // size=0, offset=16
@@ -103,8 +118,8 @@ struct object_info {
 	unsigned short undead : 1; // offset=51.4
 	unsigned short save_mesh : 1; // offset=51.5
 	void(*draw_routine_extra)(struct ITEM_INFO* item); // size=0, offset=52
-	unsigned long explodable_meshbits; // size=0, offset=56
-	unsigned long padfuck; // size=0, offset=60
+	psx_u32 explodable_meshbits; // size=0, offset=56
+	psx_u32 padfuck; // size=0, offset=60
 };
 
 struct TEXTURE
@@ -160,17 +175,17 @@ struct PSXTEXTI
 
 struct VECTOR3D
 {
-	long x;
-	long y;
-	long z;
+	psx_i32 x;
+	psx_i32 y;
+	psx_i32 z;
 };
 
 struct PSXTEXTSTRUCT
 {
-	unsigned long u0v0clut;
-	unsigned long u1v1tpage;
-	unsigned long u2v2pad;
-	unsigned long u3v3pad;
+	psx_u32 u0v0clut;
+	psx_u32 u1v1tpage;
+	psx_u32 u2v2pad;
+	psx_u32 u3v3pad;
 };
 
 struct PSXSPRITESTRUCT
@@ -194,8 +209,8 @@ struct MMTEXTURE
 
 struct TSV
 {
-	unsigned long xy;
-	unsigned long rgz;
+	psx_u32 xy;
+	psx_u32 rgz;
 };
 
 typedef unsigned short PadData;
@@ -262,14 +277,14 @@ ControllerPacket;
 
 struct pad_configs
 {
-	unsigned long pad_L2;
-	unsigned long pad_R2;
-	unsigned long pad_L1;
-	unsigned long pad_R1;
-	unsigned long pad_triangle;
-	unsigned long pad_square; 
-	unsigned long pad_circle;
-	unsigned long pad_cross;
+	psx_u32 pad_L2;
+	psx_u32 pad_R2;
+	psx_u32 pad_L1;
+	psx_u32 pad_R1;
+	psx_u32 pad_triangle;
+	psx_u32 pad_square; 
+	psx_u32 pad_circle;
+	psx_u32 pad_cross;
 };
 
 struct GouraudBarColourSet
@@ -315,10 +330,10 @@ struct REQUESTER
 	unsigned short nOptions : 3;
 	unsigned short CursorPos : 3;
 	unsigned short OptionCol : 5;
-	unsigned long JustifyL : 5;
-	unsigned long JustifyR : 5;
-	unsigned long Arrows : 5;
-	unsigned long Ignore : 5;
+	psx_u32 JustifyL : 5;
+	psx_u32 JustifyR : 5;
+	psx_u32 Arrows : 5;
+	psx_u32 Ignore : 5;
 	unsigned short OptionTxt[5];
 };
 
@@ -369,9 +384,9 @@ struct ITEM_LIGHT
 };
 
 struct ITEM_INFO {
-	long floor; // size=0, offset=0
-	unsigned long touch_bits; // size=0, offset=4
-	unsigned long mesh_bits; // size=0, offset=8
+	psx_i32 floor; // size=0, offset=0
+	psx_u32 touch_bits; // size=0, offset=4
+	psx_u32 mesh_bits; // size=0, offset=8
 	short object_number; // size=0, offset=12
 	short current_anim_state; // size=0, offset=14
 	short goal_anim_state; // size=0, offset=16
@@ -396,18 +411,18 @@ struct ITEM_INFO {
 	void* data; // size=0, offset=60
 	struct PHD_3DPOS pos; // size=20, offset=64
 	struct ITEM_LIGHT il; // size=48, offset=84
-	unsigned long active : 1; // offset=132.0
-	unsigned long status : 2; // offset=132.1
-	unsigned long gravity_status : 1; // offset=132.3
-	unsigned long hit_status : 1; // offset=132.4
-	unsigned long collidable : 1; // offset=132.5
-	unsigned long looked_at : 1; // offset=132.6
-	unsigned long dynamic_light : 1; // offset=132.7
-	unsigned long poisoned : 1; // offset=133.0
-	unsigned long ai_bits : 5; // offset=133.1
-	unsigned long really_active : 1; // offset=133.6
-	unsigned long InDrawRoom : 1; // offset=133.7
-	unsigned long meshswap_meshbits; // size=0, offset=136
+	psx_u32 active : 1; // offset=132.0
+	psx_u32 status : 2; // offset=132.1
+	psx_u32 gravity_status : 1; // offset=132.3
+	psx_u32 hit_status : 1; // offset=132.4
+	psx_u32 collidable : 1; // offset=132.5
+	psx_u32 looked_at : 1; // offset=132.6
+	psx_u32 dynamic_light : 1; // offset=132.7
+	psx_u32 poisoned : 1; // offset=133.0
+	psx_u32 ai_bits : 5; // offset=133.1
+	psx_u32 really_active : 1; // offset=133.6
+	psx_u32 InDrawRoom : 1; // offset=133.7
+	psx_u32 meshswap_meshbits; // size=0, offset=136
 	short draw_room; // size=0, offset=140
 	short TOSSPAD; // size=0, offset=142
 };
@@ -435,9 +450,9 @@ struct creature_info {
 
 struct DRIP_STRUCT
 {
-	long x; // size=0, offset=0
-	long y; // size=0, offset=4
-	long z; // size=0, offset=8
+	psx_i32 x; // size=0, offset=0
+	psx_i32 y; // size=0, offset=4
+	psx_i32 z; // size=0, offset=8
 	unsigned char On; // size=0, offset=12
 	unsigned char R; // size=0, offset=13
 	unsigned char G; // size=0, offset=14
@@ -450,4 +465,27 @@ struct DRIP_STRUCT
 	unsigned char Pad; // size=0, offset=23
 };
 
+#endif
+
+/* Garde-fous de layout (RMIG-003) : ces tailles sont celles du format PSX
+ * verifiees sur le binaire 32 bits de reference. Elles doivent rester
+ * identiques en 32 bits et ne plus dependre de la largeur de `long`. */
+/* Structures sans pointeur : elles doivent garder le layout du format PSX
+ * quelle que soit l'ABI. */
+static_assert(sizeof(struct DRIP_STRUCT) == 24, "DRIP_STRUCT layout");
+static_assert(sizeof(struct TEXTURE) == 16, "TEXTURE layout");
+static_assert(sizeof(struct static_info) == 28, "static_info layout");
+static_assert(sizeof(struct REQUESTER) == 20, "REQUESTER layout");
+static_assert(sizeof(struct ITEM_LIGHT) == 48, "ITEM_LIGHT layout");
+
+#if !defined(__LP64__)
+/* Structures qui embarquent des pointeurs hotes (room_info.data/door/floor/
+ * light/mesh, ITEM_INFO.data, creature_info.enemy/ai_target) : leur taille
+ * est celle du format PSX sur i386 seulement. En LP64 les pointeurs font 8
+ * octets ; il faut donc lire le format fichier via une structure dediee
+ * (RMIG-004/RMIG-005) plutot que de forcer la taille ici. */
+static_assert(sizeof(struct room_info) == 80, "room_info layout (i386)");
+static_assert(sizeof(struct ITEM_INFO) == 144, "ITEM_INFO layout (i386)");
+static_assert(sizeof(struct object_info) == 64, "object_info layout (i386)");
+static_assert(sizeof(struct creature_info) == 228, "creature_info layout (i386)");
 #endif

@@ -182,3 +182,25 @@ pas un ajustement du parseur.
 **Aucune régression 32 bits** : arbre recompilé vert (0 erreur) et binaire
 de hash inchangé (`b9d8e710…`), les correctifs n'ajoutant que des
 déclarations.
+
+## 9. RMIG-003 : largeur fixe dans `STYPES.H` (17 novembre 2026)
+
+- `typedef int32_t psx_i32; typedef uint32_t psx_u32;` puis conversion des
+  champs de `SPEC_PSXPC_N/STYPES.H` (seul `long` restant : les pointeurs de
+  `DB_STRUCT`, structure hôte de buffers, hors données PSX).
+- `static_assert` de layout : `DRIP_STRUCT` 24, `TEXTURE` 16,
+  `static_info` 28, `REQUESTER` 20, `ITEM_LIGHT` 48 — valables **toutes
+  ABI**. Et `room_info` 80, `ITEM_INFO` 144, `object_info` 64,
+  `creature_info` 228 **uniquement hors LP64** : ces structures embarquent
+  des pointeurs hôtes, leur taille change donc légitimement en 64 bits.
+- **Conséquence de conception** (à retenir pour RMIG-004/005) : il ne faut
+  pas forcer `sizeof` sur ces structures, mais **lire le format fichier via
+  une structure dédiée** (pointeurs 32 bits) et convertir vers la structure
+  hôte au chargement.
+
+Résultats mesurés :
+
+| cible | build | binaire | comportement |
+| --- | --- | --- | --- |
+| 32 bits | vert (0 erreur) | **hash inchangé** `b9d8e710…` | référence intacte |
+| 64 bits | vert (0 erreur) | ELF64 | affiche l'écran de démarrage Tomb Raider Chronicles ; plus d'assertion `ParsePrimitive`, il reste des `Unhandled primitive type` (507 en 20 s) |

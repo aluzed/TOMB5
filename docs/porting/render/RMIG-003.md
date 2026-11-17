@@ -1,8 +1,8 @@
 # RMIG-003 — Typedefs PSX à largeur fixe et garde de tailles (STYPES.H)
 
-Status: **Todo** — priorité P0 — confiance Medium
+Status: **Done** — priorité P0 — confiance Medium
 
-Avancement : Bloqué par la cible 64 bits.
+Avancement : Terminé : STYPES.H converti en types à largeur fixe, assert 32 bits préservés, build 64 bits vert.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Champs dont la largeur est volontairement celle de l'hôte (pointeurs déguisés
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-17 : SPEC_PSXPC_N/STYPES.H : typedefs psx_i32/psx_u32 (int32_t/uint32_t) et conversion des champs (le seul `long` restant est dans DB_STRUCT, structure hôte de buffers, non PSX). static_assert sur les structures sans pointeur (DRIP_STRUCT 24, TEXTURE 16, static_info 28, REQUESTER 20, ITEM_LIGHT 48) pour toutes les ABI, et sur room_info 80 / ITEM_INFO 144 / object_info 64 / creature_info 228 seulement hors LP64 (elles embarquent des pointeurs hôtes). Build 32 bits vert et binaire de hash INCHANGÉ (b9d8e710…). Build 64 bits vert ; l'écran de démarrage Tomb Raider Chronicles s'affiche correctement (capture) et l'assertion ParsePrimitive ne se déclenche plus, il ne reste que des 'Unhandled primitive type' (507 en 20 s) qui relèvent de RMIG-004 (TYPES.H).
 
 ## Références
 

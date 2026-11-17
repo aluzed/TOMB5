@@ -93,7 +93,7 @@
     {
       "id": "RMIG-003",
       "title": "Typedefs PSX à largeur fixe et garde de tailles (STYPES.H)",
-      "status": "Todo",
+      "status": "Done",
       "priority": "P0",
       "goal": "Rendre les structures de données PSX indépendantes de la largeur de long, en commençant par SPEC_PSXPC_N/STYPES.H.",
       "facts": "SPEC_PSXPC_N/STYPES.H contient 52 long et 39 unsigned long. Ces structures (room_info, FLOOR_INFO, ITEM_INFO) sont relogées depuis le fichier de niveau et comparées par sizeof ; sur LP64 leurs tailles changent silencieusement.",
@@ -127,16 +127,21 @@
           "note": "relocation et floor_data"
         }
       ],
-      "progress": "Bloqué par la cible 64 bits.",
-      "evidence": []
+      "progress": "Terminé : STYPES.H converti en types à largeur fixe, assert 32 bits préservés, build 64 bits vert.",
+      "evidence": [
+        {
+          "date": "2026-11-17",
+          "note": "SPEC_PSXPC_N/STYPES.H : typedefs psx_i32/psx_u32 (int32_t/uint32_t) et conversion des champs (le seul `long` restant est dans DB_STRUCT, structure hôte de buffers, non PSX). static_assert sur les structures sans pointeur (DRIP_STRUCT 24, TEXTURE 16, static_info 28, REQUESTER 20, ITEM_LIGHT 48) pour toutes les ABI, et sur room_info 80 / ITEM_INFO 144 / object_info 64 / creature_info 228 seulement hors LP64 (elles embarquent des pointeurs hôtes). Build 32 bits vert et binaire de hash INCHANGÉ (b9d8e710…). Build 64 bits vert ; l'écran de démarrage Tomb Raider Chronicles s'affiche correctement (capture) et l'assertion ParsePrimitive ne se déclenche plus, il ne reste que des 'Unhandled primitive type' (507 en 20 s) qui relèvent de RMIG-004 (TYPES.H)."
+        }
+      ]
     },
     {
       "id": "RMIG-004",
       "title": "Conversion des structures de GAME/TYPES.H",
-      "status": "Blocked",
+      "status": "Todo",
       "priority": "P0",
       "goal": "Appliquer la même conversion aux structures de GAME/TYPES.H (le cœur des données de jeu).",
-      "facts": "GAME/TYPES.H contient 148 long et 14 unsigned long : lara_info, FLOOR_INFO, ITEM_INFO (pour partie), SAVEGAME_INFO, lumières, caméra. Ce sont les structures qui traversent sauvegardes et relocations.",
+      "facts": "GAME/TYPES.H contient 148 long et 14 unsigned long : lara_info, FLOOR_INFO, SAVEGAME_INFO, lumières, caméra, et surtout PHD_VECTOR/PHD_3DPOS (3 longs = 12 octets) utilisés partout. Constat de RMIG-003 : les structures qui embarquent des pointeurs hôtes (room_info, ITEM_INFO, creature_info) ne peuvent PAS garder la taille du format PSX en LP64 ; il faut lire le format fichier via une structure dédiée plutôt que forcer sizeof.",
       "scope": "GAME/TYPES.H et les structures qu'il définit, avec asserts de taille.",
       "exclusions": "Les long locaux des fichiers .C.",
       "tasks": [
@@ -167,7 +172,7 @@
           "note": "lecture de sauvegarde"
         }
       ],
-      "progress": "Bloqué par RMIG-003.",
+      "progress": "À démarrer (RMIG-003 terminé).",
       "evidence": []
     },
     {

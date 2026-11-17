@@ -2323,6 +2323,15 @@
       ],
       "status": "In progress",
       "summary": "RMIG-002 et RMIG-006 termines: cible 64 bits operationnelle et 16 erreurs de compilation -m64 corrigees. Configuration reproductible via scripts/porting/configure64.sh (pas de -m32, SDL2 x86-64 systeme, GLEW 64 bits compile depuis les sources vendored avec -DGLEW_NO_GLU car libglu1-mesa-dev absent); build complet vert et binaire ELF 64-bit LSB pie executable avec ldd entierement x86-64. Corrections de portabilite: collision de macro B de GTEREG.H avec les parametres de DIVFP/MULFP (renommes X/Y dans SPEC_PSXPC_N/GETSTUFF.H), includes manquants ajoutes (SWITCH.C: SPHERE.H+NEWINV2.H; NEWINV2.C: SPOTCAM.H+LARAFIRE.H; OBJLIGHT.C: GETSTUFF.H; COLLIDE.C: DRAW.H). Premiere execution du binaire 64 bits: demarrage (init emulateur, audio, video) puis arret sur l'assertion ParsePrimitive (EMULATOR/LIBGPU.C:1141) avec des 'Unhandled primitive type: 10/08/07/06/05', signature d'un decalage de layout dans le flux de paquets GPU, ce qui confirme l'ordre RMIG-003 -> RMIG-005 (conversion des structures PSX) plutot qu'un ajustement du parseur. Aucune regression 32 bits: arbre recompile vert (0 erreur) et binaire de hash inchange b9d8e710. Backlog rendu: 3/16 tickets Done. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "RMIG-003 termine: SPEC_PSXPC_N/STYPES.H converti en types a largeur fixe. Ajout de typedef int32_t psx_i32 et uint32_t psx_u32 et conversion des champs (seul long restant: les pointeurs de DB_STRUCT, structure hote de buffers hors donnees PSX). static_assert de layout valables toutes ABI pour les structures sans pointeur (DRIP_STRUCT 24, TEXTURE 16, static_info 28, REQUESTER 20, ITEM_LIGHT 48) et seulement hors LP64 pour room_info 80, ITEM_INFO 144, object_info 64, creature_info 228 car elles embarquent des pointeurs hotes: consequence de conception retenue pour RMIG-004/005, il ne faut pas forcer sizeof sur ces structures mais lire le format fichier via une structure dediee a pointeurs 32 bits et convertir au chargement. Resultats mesures: build 32 bits vert (0 erreur) avec binaire de hash INCHANGE b9d8e710 (reference intacte); build 64 bits vert (0 erreur) produisant un ELF64 qui affiche desormais correctement l'ecran de demarrage Tomb Raider Chronicles (capture) et ne declenche plus l'assertion ParsePrimitive, avec 507 'Unhandled primitive type' en 20 s qui relevent de RMIG-004 (TYPES.H). Backlog rendu: 4/16 tickets Done, RMIG-004 passe en Todo. Aucun Done global."
     }
   ]
 }

@@ -1,8 +1,8 @@
 # RMIG-004 — Conversion des structures de GAME/TYPES.H
 
-Status: **Blocked** — priorité P0 — confiance Medium
+Status: **Todo** — priorité P0 — confiance Medium
 
-Avancement : Bloqué par RMIG-003.
+Avancement : À démarrer (RMIG-003 terminé).
 
 ## Objectif
 
@@ -10,7 +10,7 @@ Appliquer la même conversion aux structures de GAME/TYPES.H (le cœur des donn�
 
 ## Faits établis
 
-GAME/TYPES.H contient 148 long et 14 unsigned long : lara_info, FLOOR_INFO, ITEM_INFO (pour partie), SAVEGAME_INFO, lumières, caméra. Ce sont les structures qui traversent sauvegardes et relocations.
+GAME/TYPES.H contient 148 long et 14 unsigned long : lara_info, FLOOR_INFO, SAVEGAME_INFO, lumières, caméra, et surtout PHD_VECTOR/PHD_3DPOS (3 longs = 12 octets) utilisés partout. Constat de RMIG-003 : les structures qui embarquent des pointeurs hôtes (room_info, ITEM_INFO, creature_info) ne peuvent PAS garder la taille du format PSX en LP64 ; il faut lire le format fichier via une structure dédiée plutôt que forcer sizeof.
 
 ## Périmètre
 
