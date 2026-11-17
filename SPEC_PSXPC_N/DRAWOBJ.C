@@ -798,7 +798,13 @@ void IniPrim(int at, int t6, int t7, int t8, int fp, int gp, char* s0, int s4, i
 
 char* SubDiv4(int t0, int t1, int t2, int t3, int t6, int s4, int* s7, int t7, int s5, int t8, int t4, int s6, char* s0, char* s1, int a3, int t9, int t5)//7E8F4(<)
 {
-	int scratchPad[256];
+	#if defined(__LP64__)
+		static int (*port_scratchPad)[256] = NULL;
+		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+		int (&scratchPad)[256] = *port_scratchPad;
+	#else
+		int scratchPad[256];
+	#endif
 	int* s2 = s7;
 	int fp;
 	int gp;
@@ -906,7 +912,13 @@ lui     $gp, 0xC00
 
 char* SubDiv3(int t0, int t1, int t2, int t3, int t6, int s4, int* s7, int t7, int s5, int t8, int t4, int s6, char* s0, char* s1, int a3)//7E830(<)
 {
-	int scratchPad[256];
+	#if defined(__LP64__)
+		static int (*port_scratchPad)[256] = NULL;
+		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+		int (&scratchPad)[256] = *port_scratchPad;
+	#else
+		int scratchPad[256];
+	#endif
 	int s3 = 0x9000000;
 	int s77;
 	unsigned int t9;

@@ -1,4 +1,5 @@
 #include "LARA1.H"
+#include "MALLOC.H"
 
 #include "3D_OBJ.H"
 #include "MISC.H"
@@ -17,7 +18,12 @@
 #include "ROOMLOAD.H"
 #include <assert.h>
 
+#if defined(__LP64__)
+static int (*port_scratchPad)[256] = (int (*)[256])PORT_LowAlloc(256 * sizeof(int));
+static int (&scratchPad)[256] = *port_scratchPad;
+#else
 static int scratchPad[256];
+#endif
 
 int dword_2C[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 

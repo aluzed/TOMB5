@@ -1,4 +1,5 @@
 #include "DRAWSKY.H"
+#include "MALLOC.H"
 
 #include "GAMEFLOW.H"
 #include "GPU.H"
@@ -15,7 +16,21 @@ void DrawSkyMesh(short* mesh)
 	int v0;
 	int s6;
 	int a1;
-	int scratchPad[256];
+#if defined(__LP64__)
+	static int* scratchPad = NULL;
+	if (scratchPad == NULL)
+	{
+		scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
+	}
+#else
+	#if defined(__LP64__)
+		static int (*port_scratchPad)[256] = NULL;
+		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+		int (&scratchPad)[256] = *port_scratchPad;
+	#else
+		int scratchPad[256];
+	#endif
+#endif
 	int* a2;
 	int at;
 	int v1;
@@ -36,7 +51,9 @@ void DrawSkyMesh(short* mesh)
 	s5 = db.polyptr;
 	t9 = db.ot;
 	v0 = ((int*)mesh)[2];
-#if defined(USE_32_BIT_ADDR)
+#if defined(__LP64__)
+	s6 = (int)((PSX_ULONG*)db.ot)[2563 * 2];
+#elif defined(USE_32_BIT_ADDR)
 	s6 = t9[2563*2];
 #else
 	s6 = t9[2563];
@@ -292,7 +309,13 @@ int HorClipXY(int t1, int t2, int t3, int t4)//7DF00, ? (F)
 
 void DrawFlatSky_ASM(CVECTOR layer, short pos, int flags)
 {
-	int scratchPad[256];
+	#if defined(__LP64__)
+		static int (*port_scratchPad)[256] = NULL;
+		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+		int (&scratchPad)[256] = *port_scratchPad;
+	#else
+		int scratchPad[256];
+	#endif
 	int* t0 = &scratchPad[0];
 	unsigned long t4;
 	int v0;

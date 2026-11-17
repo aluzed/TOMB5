@@ -2431,6 +2431,15 @@
       ],
       "status": "In progress",
       "summary": "Le niveau 1 s affiche correctement en 64 bits. Cause principale des polygones deformes : 23 occurrences de sizeof(unsigned long) utilisees comme pas de primitive (POLY_GT3/GT4, boucle de copie MISC) valent 8 octets en LP64 au lieu de 4, donc les primitives se chevauchaient et le parseur lisait des UV/couleurs comme coordonnees ecran ([VBAD] quad code=3c v=(8224,32)). Remplacement global par sizeof(PSX_ULONG). Resultat : bbox (-174,-154)-(628,354) au lieu de ±32000, plus aucun [VBAD], capture du niveau 1 montrant correctement le couloir de Streets of Rome avec textures et eclairage (3717 sommets, 111 splits). Reste a valider l avancee de la cutscene et l affichage/controle de Lara en 64 bits. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Niveau 1 rendu et chaine Lara atteinte en 64 bits. Corrections : conversion des drapeaux object_info_file vers les bitfields hotes (loaded/intelligent/save_*/HitEffect/undead/save_mesh), sinon objects[LARA].loaded restait a 0 ; tous les scratchpads locaux places sous 4 Gio via une reference de tableau (semantique de tableau preservee) ; DrawSkyMesh lit l entree OT en PSX_ULONG ; S_CalculateLight utilise &scratchPad[21]. Resultat : DrawLaraL1 est appele sans crash, lara.mesh_ptrs[0]/[7] valides et mesh_bits=FFFFFFFF, 4911 sommets generes, 0 primitive non geree, processus stable 40 s. Reste : Lara n apparait pas encore dans l image et la bbox conserve des sommets aberrants (-32768, 1023), probablement dans la transformation/eclairage de ses meshes. Aucun Done global."
     }
   ]
 }

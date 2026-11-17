@@ -1,4 +1,5 @@
 #include "MATHS.H"
+#include "MALLOC.H"
 #include <stdint.h>
 
 #include "LOAD_LEV.H"
@@ -1288,7 +1289,13 @@ void SetRoomBounds(struct tr_room_portal* portal, int room_number, struct room_i
 
 void GetRoomBoundsAsm(short room_number)//77E70(<), 79EB4(<) ///@TODO check if in right file
 {
-	int scratchPad[256];
+	#if defined(__LP64__)
+		static int (*port_scratchPad)[256] = NULL;
+		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+		int (&scratchPad)[256] = *port_scratchPad;
+	#else
+		int scratchPad[256];
+	#endif
 	struct room_info* r;//a0
 	int t1;
 	int t2;
@@ -1326,7 +1333,7 @@ void GetRoomBoundsAsm(short room_number)//77E70(<), 79EB4(<) ///@TODO check if i
 	s4 = (short*)&scratchPad[63];
 	s5 = 0;
 	fp = outside;
-	((char*)&scratchPad)[0] = room_number;
+	((char*)scratchPad)[0] = room_number;
 	r = &room[room_number];
 
 	((int*)&r->test_left)[0] = 0x1FF0000;
@@ -1353,8 +1360,8 @@ void GetRoomBoundsAsm(short room_number)//77E70(<), 79EB4(<) ///@TODO check if i
 loc_77F18:
 	if (s2 != s3)
 	{
-		//t0 = ((char*)&scratchPad)[s2]
-		s6 = ((unsigned char*)&scratchPad)[s2];
+		//t0 = ((char*)scratchPad)[s2]
+		s6 = ((unsigned char*)scratchPad)[s2];
 		s2++;
 		s2 &= 0x7F;
 
@@ -1479,9 +1486,9 @@ loc_77F18:
 
 		docop2(0x41E012);
 
-		t3 = ((int*)&scratchPad)[44];
-		t4 = ((int*)&scratchPad)[45];
-		t5 = ((int*)&scratchPad)[46];
+		t3 = ((int*)scratchPad)[44];
+		t4 = ((int*)scratchPad)[45];
+		t5 = ((int*)scratchPad)[46];
 
 		TRX = t3;
 		TRY = t4;
@@ -1814,7 +1821,7 @@ loc_77F18:
 												v1 |= 2;
 												if (at == 0)
 												{
-													((char*)&scratchPad)[s3] = a1;
+													((char*)scratchPad)[s3] = a1;
 													s3++;
 													s3 &= 0x7F;
 													t1 <<= 16;

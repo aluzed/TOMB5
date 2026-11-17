@@ -597,3 +597,27 @@ Résultat :
 
 Reste à valider : avancée de la cutscene et affichage/contrôle de Lara en
 64 bits.
+
+## 20. Niveau 1 rendu, chaîne Lara atteinte
+
+Corrections supplémentaires :
+
+- **Drapeaux d'objets** : `object_info_file.flags` (mot 16 bits) est converti
+  vers les bitfields hôtes (`loaded`, `intelligent`, `save_*`, `HitEffect`,
+  `undead`, `save_mesh`). Sans cela `objects[LARA].loaded` restait à 0 et
+  Lara n'était jamais dessinée.
+- **Scratchpads** : tous les buffers locaux `int scratchPad[N]` sont placés
+  sous 4 Gio via une **référence de tableau** (`int (&scratchPad)[N]`), ce
+  qui préserve exactement la sémantique `scratchPad[i]` / `&scratchPad[i]`
+  sans troncature de pointeur.
+- `DrawSkyMesh` lit l'entrée d'ordering table avec `PSX_ULONG`.
+- `S_CalculateLight` utilise `&scratchPad[21]`.
+
+État mesuré :
+
+- `DrawLaraL1` est atteint sans crash ;
+- `lara.mesh_ptrs[0]` / `[7]` valides, `mesh_bits = 0xFFFFFFFF` ;
+- 4911 sommets générés, aucune primitive non gérée, processus stable 40 s ;
+- mais Lara n'apparaît pas encore dans l'image et la bbox conserve des
+  sommets aberrants (`-32768`, `1023`), probablement dans la
+  transformation/éclairage de ses meshes.

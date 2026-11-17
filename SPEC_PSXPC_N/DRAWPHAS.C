@@ -404,6 +404,18 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 	{
 		InitObjGTE();
 
+		{
+			static int port_laradbg = 0;
+			if (getenv("TOMB5_DRAWDBG") != NULL && (port_laradbg++ % 120) == 0)
+			{
+				fprintf(stderr, "[LARA] type=%d obj=%d loaded=%d meshbits=%08x nodraw=%d itemptr=%p mesh0=%p mesh7=%p mindex=%d\n",
+				        LaraDrawType, lara_item->object_number, objects[LARA].loaded,
+				        (unsigned)lara_item->mesh_bits, SCNoDrawLara, (void*)lara_item,
+				        (void*)lara.mesh_ptrs[0], (void*)lara.mesh_ptrs[7],
+				        objects[LARA].mesh_index);
+			}
+		}
+
 		if (lara_item->mesh_bits != 0 && SCNoDrawLara == 0)
 		{
 #if DEBUG_VERSION

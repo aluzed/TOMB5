@@ -307,7 +307,9 @@ void S_CalculateLight(long x, long y, long z, short room_num, struct ITEM_LIGHT*
 {
 	struct room_info* r;//$t0
 #if defined(__LP64__)
-	int* scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
+	static int (*port_scratchPad)[256] = NULL;
+	if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+	int (&scratchPad)[256] = *port_scratchPad;
 	int* s5p = NULL;
 #else
 	int scratchPad[256];

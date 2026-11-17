@@ -859,7 +859,7 @@
           "note": "DrawCutSeqActors"
         }
       ],
-      "progress": "Quasi termine : le niveau 1 s affiche correctement en 64 bits (couloir de Streets of Rome, geometrie et textures). Reste a verifier l avancee de la cutscene et l affichage/controle de Lara.",
+      "progress": "En cours : le niveau 1 se rend correctement et la chaine DrawLaraL1 est atteinte sans crash (mesh_ptrs valides, mesh_bits=FFFFFFFF), mais Lara n est pas encore visible dans l image et la bbox conserve quelques sommets aberrants (-32768, 1023).",
       "evidence": [
         {
           "date": "2026-11-17",
@@ -880,6 +880,10 @@
         {
           "date": "2026-11-17",
           "note": "Cause principale des polygones deformes : 23 occurrences de sizeof(unsigned long) (pas des primitives POLY_GT3/GT4, boucle de copie MISC) valent 8 en LP64 au lieu de 4. Remplacees par sizeof(PSX_ULONG). Apres correction : [OT] bbox (-174,-154)-(628,354) au lieu de ±32000, capture du niveau 1 montrant correctement le couloir de Streets of Rome avec textures et eclairage. Aucun [VBAD] restant. Reste a valider cutscene/Lara/gameplay."
+        },
+        {
+          "date": "2026-11-17",
+          "note": "Corrections : conversion des drapeaux object_info_file -> bitfields hotes (loaded/intelligent/...), sinon objects[LARA].loaded restait a 0 et Lara n etait jamais dessinee ; tous les scratchpads locaux passes en tableaux bas via une reference (semantique de tableau preservee, plus de &scratchPad tronque) ; DrawSkyMesh lit l entree OT avec PSX_ULONG ; S_CalculateLight utilise &scratchPad[21]. Resultat : DrawLaraL1 est appele, lara_item mesh_ptrs[0]=0x... et mesh_bits=FFFFFFFF, 4911 sommets generes, aucune primitive non geree, processus stable 40 s. Reste : Lara n apparait pas encore (probable transformation/lighting de ses meshes) et bbox (-32768,-154)-(1023,565) contient des sommets aberrants."
         }
       ]
     }

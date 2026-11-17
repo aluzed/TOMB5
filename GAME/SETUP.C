@@ -2174,6 +2174,27 @@ void LoadLevel(FILE* nHandle)
 			objects[oi].bite_offset = file_objs[oi].bite_offset;
 			objects[oi].explodable_meshbits = file_objs[oi].explodable_meshbits;
 			objects[oi].padfuck = file_objs[oi].padfuck;
+
+			/* Drapeaux du format fichier (mot 16 bits) -> bitfields hotes.
+			 * Sans cela `loaded` restait a 0 et Lara (comme d autres objets)
+			 * n etait jamais dessinee en LP64. */
+			{
+				unsigned short fl = file_objs[oi].flags;
+
+				objects[oi].loaded = (fl >> 0) & 1;
+				objects[oi].intelligent = (fl >> 1) & 1;
+				objects[oi].non_lot = (fl >> 2) & 1;
+				objects[oi].save_position = (fl >> 3) & 1;
+				objects[oi].save_hitpoints = (fl >> 4) & 1;
+				objects[oi].save_flags = (fl >> 5) & 1;
+				objects[oi].save_anim = (fl >> 6) & 1;
+				objects[oi].semi_transparent = (fl >> 7) & 1;
+				objects[oi].water_creature = (fl >> 8) & 1;
+				objects[oi].using_drawanimating_item = (fl >> 9) & 1;
+				objects[oi].HitEffect = (fl >> 10) & 3;
+				objects[oi].undead = (fl >> 12) & 1;
+				objects[oi].save_mesh = (fl >> 13) & 1;
+			}
 		}
 
 		memcpy(&objects_raw.m_static_objects[0],

@@ -2228,7 +2228,13 @@ void CalcAllAnimatingItems_ASM()//82640, 84684
 	 * 4 Gio pour que la troncature soit reversible. */
 	int* scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
 #else
-	int scratchPad[256];
+	#if defined(__LP64__)
+		static int (*port_scratchPad)[256] = NULL;
+		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+		int (&scratchPad)[256] = *port_scratchPad;
+	#else
+		int scratchPad[256];
+	#endif
 #endif
 	int* fp;
 	int v1;

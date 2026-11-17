@@ -1,4 +1,5 @@
 #include "DELTAPAK_S.H"
+#include "MALLOC.H"
 
 #include "DELTAPAK.H"
 #include "DRAW.H"
@@ -14,11 +15,17 @@
 
 void CalcActorLighting()
 {
-	int scratchPad[256];
+	#if defined(__LP64__)
+		static int (*port_scratchPad)[256] = NULL;
+		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+		int (&scratchPad)[256] = *port_scratchPad;
+	#else
+		int scratchPad[256];
+	#endif
 	int* s1 = &scratchPad[0];
 	short room_no;
 
-	S_MemSet((char*)&scratchPad, 0, 1024);
+	S_MemSet((char*)scratchPad, 0, 1024);
 
 	mPushUnitMatrix();
 	mSetTrans(0, 0, 0);

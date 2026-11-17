@@ -1,4 +1,5 @@
 #include "COLLIDE_S.H"
+#include "MALLOC.H"
 
 #include "CAMERA.H"
 #include "COLLIDE.H"
@@ -191,7 +192,13 @@ int CollideStaticObjects(struct COLL_INFO* coll, long xpos, long ypos, long zpos
 	short a1;
 	int t4;
 	int t9;
-	int scratchPad[1024];
+	#if defined(__LP64__)
+		static int (*port_scratchPad)[1024] = NULL;
+		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[1024])PORT_LowAlloc(1024 * sizeof(int)); }
+		int (&scratchPad)[1024] = *port_scratchPad;
+	#else
+		int scratchPad[1024];
+	#endif
 	short* t0 = (short*)&scratchPad[0];
 	short* t8;
 	struct room_info* r2;

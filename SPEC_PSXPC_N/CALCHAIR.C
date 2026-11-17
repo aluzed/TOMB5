@@ -1,4 +1,5 @@
 #include "CALCHAIR.H"
+#include "MALLOC.H"
 
 #include "GETSTUFF.H"
 #include "CALCLARA.H"
@@ -507,7 +508,13 @@ void save_matrix(int* at)
 void HairControl(int unk01, int bIsYoungLara, short* frame)
 {
 	struct ANIM_STRUCT* anim = NULL;//$v1
-	int scratchPad[256];
+	#if defined(__LP64__)
+		static int (*port_scratchPad)[256] = NULL;
+		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+		int (&scratchPad)[256] = *port_scratchPad;
+	#else
+		int scratchPad[256];
+	#endif
 	short* hit_frame = NULL;//$s3
 	struct object_info* object = NULL;//$at
 	long* bone = NULL;//$s6
@@ -525,7 +532,7 @@ void HairControl(int unk01, int bIsYoungLara, short* frame)
 	int v1 = 0;
 	int* t4 = NULL;
 	int t2 = 0;
-	S_MemSet((char*)&scratchPad, 0, 1024);
+	S_MemSet((char*)scratchPad, 0, 1024);
 
 	//s0 = gfLevelFlags & 1
 	fp = &scratchPad[0];
