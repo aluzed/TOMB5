@@ -19,20 +19,8 @@
 
 #define genRGB(r, g, b) ((((((b) & 0xFF) << 8) | ((g) & 0xFF)) << 8) | ((r) & 0xFF))
 
-/* Largeur fixe pour les donnees PSX (RMIG-003).
- *
- * Sur la cible i386, `long` fait 4 octets et les structures ci-dessous ont
- * exactement les tailles du format PSX (les offsets sont documentes en
- * commentaire). En LP64 `long` fait 8 octets : sans ces typedefs, chaque
- * structure relogee depuis le fichier de niveau changerait de taille et le
- * flux de paquets GPU serait mal interprete (cf. assertion ParsePrimitive).
- *
- * psx_i32/psx_u32 = int32_t/uint32_t : meme taille et meme alignement que
- * `long` sur i386, donc zero changement sur la cible 32 bits.
- */
-#include <stdint.h>
-typedef int32_t psx_i32;
-typedef uint32_t psx_u32;
+/* psx_i32/psx_u32 (int32_t/uint32_t) sont definis dans GAME/TYPES.H,
+ * inclus ci-dessus : largeur fixe pour les donnees PSX (RMIG-003/004). */
 
 struct DB_STRUCT
 {

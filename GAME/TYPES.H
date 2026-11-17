@@ -15,6 +15,14 @@ typedef struct MATRIX3D MatrixThing;
 #endif
 #endif
 
+/* Largeur fixe pour les donnees PSX (RMIG-003/004).
+ * `long` fait 4 octets sur i386 (format PSX) mais 8 en LP64 : sans ces
+ * typedefs, vecteurs, positions et structures relogees changent de taille et
+ * le flux de paquets GPU est mal interprete. */
+#include <stdint.h>
+typedef int32_t psx_i32;
+typedef uint32_t psx_u32;
+
 // required for NULL macro because if we define it ourselves it shits brixes
 #if PSXPC_TEST
 #include <stdint.h>
@@ -81,7 +89,7 @@ typedef struct MATRIX3D MatrixThing;
 #define phd_atan_asm phd_atan
 #endif
 #if 0 // for later...
-inline int phd_atan(long x, long y)
+inline int phd_atan(psx_i32 x, psx_i32 y)
 {
     char octant = 0;
     int res;
@@ -97,7 +105,7 @@ inline int phd_atan(long x, long y)
 	}
 	if (y > x)
 	{
-		const long tmp = x;
+		const psx_i32 tmp = x;
 		x = y;
 		y = tmp;
 		octant += 1;
@@ -113,7 +121,7 @@ inline int phd_atan(long x, long y)
 #if PC_VERSION
 #include <math.h>
 
-inline int phd_atan(long x, long y)
+inline int phd_atan(psx_i32 x, psx_i32 y)
 {
 	return (int)(atan2(y, x) * 32768.0 / 3.14159265359);
 }
@@ -315,20 +323,20 @@ enum command_types
 #if !(PSXPC_TEST || SAT_VERSION)
 struct VECTOR
 {
- /* 0x00 */ long vx;
- /* 0x04 */ long vy;
- /* 0x08 */ long vz;
+ /* 0x00 */ psx_i32 vx;
+ /* 0x04 */ psx_i32 vy;
+ /* 0x08 */ psx_i32 vz;
 #if PSXENGINE
- /* 0x0C */ long pad;
+ /* 0x0C */ psx_i32 pad;
 #endif
 };
 #endif
 
 struct PHD_VECTOR
 {
- /* 0x00 */ long x;
- /* 0x04 */ long y;
- /* 0x08 */ long z;
+ /* 0x00 */ psx_i32 x;
+ /* 0x04 */ psx_i32 y;
+ /* 0x08 */ psx_i32 z;
 };
 
 struct WATERTAB
@@ -344,9 +352,9 @@ struct WATERTAB
 #endif
 struct PHD_3DPOS
 {
- /* 0x00 */ long x_pos; // off 0 [64]
- /* 0x04 */ long y_pos; // off 4 [68]
- /* 0x08 */ long z_pos; // off 8 [72]
+ /* 0x00 */ psx_i32 x_pos; // off 0 [64]
+ /* 0x04 */ psx_i32 y_pos; // off 4 [68]
+ /* 0x08 */ psx_i32 z_pos; // off 8 [72]
  /* 0x0C */ short x_rot; // off 12 [76]
  /* 0x0E */ short y_rot; // off 14 [78]
  /* 0x10 */ short z_rot; // off 16 [80]
@@ -369,9 +377,9 @@ struct FLOOR_INFO
 
 struct LIGHTINFO
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ unsigned char Type; // size=0, offset=12
  /* 0x0D */ unsigned char r; // size=0, offset=13
  /* 0x0E */ unsigned char g; // size=0, offset=14
@@ -389,9 +397,9 @@ struct LIGHTINFO
 
 struct MESH_INFO
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short y_rot; // size=0, offset=12
  /* 0x0E */ short shade; // size=0, offset=14
  /* 0x10 */ short Flags; // size=0, offset=16
@@ -463,7 +471,7 @@ struct ROPE_STRUCT
  /* 0x240 */ struct PHD_VECTOR NormalisedSegment[24]; // size=288, offset=576
  /* 0x360 */ struct PHD_VECTOR MeshSegment[24]; // size=288, offset=864
  /* 0x480 */ struct PHD_VECTOR Position; // size=12, offset=1152
- /* 0x48C */ long SegmentLength; // size=0, offset=1164
+ /* 0x48C */ psx_i32 SegmentLength; // size=0, offset=1164
  /* 0x490 */ short Active; // size=0, offset=1168
  /* 0x492 */ short Coiled; // size=0, offset=1170
 };
@@ -514,7 +522,7 @@ struct lara_info
 			 unsigned short LitTorch : 1; // offset=69.6 - 0x4000
 			 unsigned short IsClimbing : 1; // offset=69.7 - 0x8000
 			 unsigned short Fired : 1; // offset=70.0 - 0x0001
- /* 0x048 */ long water_surface_dist; // size=0, offset=72
+ /* 0x048 */ psx_i32 water_surface_dist; // size=0, offset=72
  /* 0x04C */ struct PHD_VECTOR last_pos; // size=12, offset=76
  /* 0x058 */ struct FX_INFO* spaz_effect; // size=44, offset=88
  /* 0x05C */ int mesh_effects; // size=0, offset=92
@@ -533,8 +541,8 @@ struct lara_info
  /* 0x0C8 */ struct lara_arm right_arm; // size=20, offset=200
  /* 0x0DC */ unsigned short holster; // size=0, offset=220
  /* 0x0E0 */ struct creature_info* creature; // size=228, offset=224
- /* 0x0E4 */ long CornerX; // size=0, offset=228
- /* 0x0E8 */ long CornerZ; // size=0, offset=232
+ /* 0x0E4 */ psx_i32 CornerX; // size=0, offset=228
+ /* 0x0E8 */ psx_i32 CornerZ; // size=0, offset=232
  /* 0x0EC */ char RopeSegment; // size=0, offset=236
  /* 0x0ED */ char RopeDirection; // size=0, offset=237
  /* 0x0EE */ short RopeArcFront; // size=0, offset=238
@@ -542,14 +550,14 @@ struct lara_info
  /* 0x0F2 */ short RopeLastX; // size=0, offset=242
  /* 0x0F4 */ short RopeMaxXForward; // size=0, offset=244
  /* 0x0F6 */ short RopeMaxXBackward; // size=0, offset=246
- /* 0x0F8 */ long RopeDFrame; // size=0, offset=248
- /* 0x0FC */ long RopeFrame; // size=0, offset=252
+ /* 0x0F8 */ psx_i32 RopeDFrame; // size=0, offset=248
+ /* 0x0FC */ psx_i32 RopeFrame; // size=0, offset=252
  /* 0x100 */ unsigned short RopeFrameRate; // size=0, offset=256
  /* 0x102 */ unsigned short RopeY; // size=0, offset=258
- /* 0x104 */ long RopePtr; // size=0, offset=260
+ /* 0x104 */ psx_i32 RopePtr; // size=0, offset=260
  /* 0x108 */ void* GeneralPtr; // size=0, offset=264
  /* 0x10C */ int RopeOffset; // size=0, offset=268
- /* 0x110 */ unsigned long RopeDownVel; // size=0, offset=272
+ /* 0x110 */ psx_u32 RopeDownVel; // size=0, offset=272
  /* 0x114 */ char RopeFlag; // size=0, offset=276
  /* 0x115 */ char MoveCount; // size=0, offset=277
  /* 0x118 */ int RopeCount; // size=0, offset=280
@@ -596,10 +604,10 @@ struct lara_info
 };
 
 struct STATS {
- /* 0x00 */ unsigned long Timer; // size=0, offset=0
- /* 0x04 */ unsigned long Distance; // size=0, offset=4
- /* 0x08 */ unsigned long AmmoUsed; // size=0, offset=8
- /* 0x0C */ unsigned long AmmoHits; // size=0, offset=12
+ /* 0x00 */ psx_u32 Timer; // size=0, offset=0
+ /* 0x04 */ psx_u32 Distance; // size=0, offset=4
+ /* 0x08 */ psx_u32 AmmoUsed; // size=0, offset=8
+ /* 0x0C */ psx_u32 AmmoHits; // size=0, offset=12
  /* 0x10 */ unsigned short Kills; // size=0, offset=16
  /* 0x12 */ unsigned char Secrets; // size=0, offset=18
  /* 0x13 */ unsigned char HealthUsed; // size=0, offset=19
@@ -626,8 +634,8 @@ struct savegame_info
  /* 0x19C */ short WeaponFrame; // size=0, offset=412
  /* 0x19E */ short WeaponCurrent; // size=0, offset=414
  /* 0x1A0 */ short WeaponGoal; // size=0, offset=416
- /* 0x1A4 */ unsigned long CutSceneTriggered1; // size=0, offset=420
- /* 0x1A8 */ unsigned long CutSceneTriggered2; // size=0, offset=424
+ /* 0x1A4 */ psx_u32 CutSceneTriggered1; // size=0, offset=420
+ /* 0x1A8 */ psx_u32 CutSceneTriggered2; // size=0, offset=424
  /* 0x1AC */ char GameComplete; // size=0, offset=428
  /* 0x1AD */ unsigned char CurrentLevel; // size=0, offset=429
  /* 0x1AE */ unsigned char CampaignSecrets[4]; // size=4, offset=430
@@ -646,9 +654,9 @@ struct MATRIX3D
  /* 0x0E */ short m21; // size=0, offset=14
  /* 0x10 */ short m22; // size=0, offset=16
  /* 0x12 */ short pad; // size=0, offset=18
- /* 0x14 */ long tx; // size=0, offset=20
- /* 0x18 */ long ty; // size=0, offset=24
- /* 0x1C */ long tz; // size=0, offset=28
+ /* 0x14 */ psx_i32 tx; // size=0, offset=20
+ /* 0x18 */ psx_i32 ty; // size=0, offset=24
+ /* 0x1C */ psx_i32 tz; // size=0, offset=28
 };
 
 struct GAMEFLOW
@@ -681,28 +689,28 @@ struct STRINGHEADER
 
 struct GAME_VECTOR
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short room_number; // size=0, offset=12
  /* 0x0E */ short box_number; // size=0, offset=14
 };
 
 struct OBJECT_VECTOR
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short data; // size=0, offset=12
  /* 0x0E */ short flags; // size=0, offset=14
 };
 
 struct SPHERE
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
- /* 0x0C */ long r; // size=0, offset=12
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
+ /* 0x0C */ psx_i32 r; // size=0, offset=12
 };
 
 struct PENDULUM
@@ -783,28 +791,28 @@ struct CHARDEF
 
 struct COLL_INFO
 {
- /* 0x00 */ long mid_floor; // size=0, offset=0
- /* 0x04 */ long mid_ceiling; // size=0, offset=4
- /* 0x08 */ long mid_type; // size=0, offset=8
- /* 0x0C */ long front_floor; // size=0, offset=12
- /* 0x10 */ long front_ceiling; // size=0, offset=16
- /* 0x14 */ long front_type; // size=0, offset=20
- /* 0x18 */ long left_floor; // size=0, offset=24
- /* 0x1C */ long left_ceiling; // size=0, offset=28
- /* 0x20 */ long left_type; // size=0, offset=32
- /* 0x24 */ long right_floor; // size=0, offset=36
- /* 0x28 */ long right_ceiling; // size=0, offset=40
- /* 0x2C */ long right_type; // size=0, offset=44
- /* 0x30 */ long left_floor2; // size=0, offset=48
- /* 0x34 */ long left_ceiling2; // size=0, offset=52
- /* 0x38 */ long left_type2; // size=0, offset=56
- /* 0x3C */ long right_floor2; // size=0, offset=60
- /* 0x40 */ long right_ceiling2; // size=0, offset=64
- /* 0x44 */ long right_type2; // size=0, offset=68
- /* 0x48 */ long radius; // size=0, offset=72
- /* 0x4C */ long bad_pos; // size=0, offset=76
- /* 0x50 */ long bad_neg; // size=0, offset=80
- /* 0x54 */ long bad_ceiling; // size=0, offset=84
+ /* 0x00 */ psx_i32 mid_floor; // size=0, offset=0
+ /* 0x04 */ psx_i32 mid_ceiling; // size=0, offset=4
+ /* 0x08 */ psx_i32 mid_type; // size=0, offset=8
+ /* 0x0C */ psx_i32 front_floor; // size=0, offset=12
+ /* 0x10 */ psx_i32 front_ceiling; // size=0, offset=16
+ /* 0x14 */ psx_i32 front_type; // size=0, offset=20
+ /* 0x18 */ psx_i32 left_floor; // size=0, offset=24
+ /* 0x1C */ psx_i32 left_ceiling; // size=0, offset=28
+ /* 0x20 */ psx_i32 left_type; // size=0, offset=32
+ /* 0x24 */ psx_i32 right_floor; // size=0, offset=36
+ /* 0x28 */ psx_i32 right_ceiling; // size=0, offset=40
+ /* 0x2C */ psx_i32 right_type; // size=0, offset=44
+ /* 0x30 */ psx_i32 left_floor2; // size=0, offset=48
+ /* 0x34 */ psx_i32 left_ceiling2; // size=0, offset=52
+ /* 0x38 */ psx_i32 left_type2; // size=0, offset=56
+ /* 0x3C */ psx_i32 right_floor2; // size=0, offset=60
+ /* 0x40 */ psx_i32 right_ceiling2; // size=0, offset=64
+ /* 0x44 */ psx_i32 right_type2; // size=0, offset=68
+ /* 0x48 */ psx_i32 radius; // size=0, offset=72
+ /* 0x4C */ psx_i32 bad_pos; // size=0, offset=76
+ /* 0x50 */ psx_i32 bad_neg; // size=0, offset=80
+ /* 0x54 */ psx_i32 bad_ceiling; // size=0, offset=84
  /* 0x58 */ struct PHD_VECTOR shift; // size=12, offset=88
  /* 0x64 */ struct PHD_VECTOR old; // size=12, offset=100
  /* 0x70 */ short old_anim_state; // size=0, offset=112
@@ -831,10 +839,10 @@ struct ANIM_STRUCT
  /* 0x00 */ short* frame_ptr; // size=0, offset=0
  /* 0x04 */ short interpolation; // size=0, offset=4
  /* 0x06 */ short current_anim_state; // size=0, offset=6
- /* 0x08 */ long velocity; // size=0, offset=8
- /* 0x0C */ long acceleration; // size=0, offset=12
- /* 0x10 */ long Xvelocity; // size=0, offset=16
- /* 0x14 */ long Xacceleration; // size=0, offset=20
+ /* 0x08 */ psx_i32 velocity; // size=0, offset=8
+ /* 0x0C */ psx_i32 acceleration; // size=0, offset=12
+ /* 0x10 */ psx_i32 Xvelocity; // size=0, offset=16
+ /* 0x14 */ psx_i32 Xacceleration; // size=0, offset=20
  /* 0x18 */ short frame_base; // size=0, offset=24
  /* 0x1A */ short frame_end; // size=0, offset=26
  /* 0x1C */ short jump_anim_num; // size=0, offset=28
@@ -847,9 +855,9 @@ struct ANIM_STRUCT
 
 struct SPARKS
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short Xvel; // size=0, offset=12
  /* 0x0E */ short Yvel; // size=0, offset=14
  /* 0x10 */ short Zvel; // size=0, offset=16
@@ -895,8 +903,8 @@ struct ACTORME
 
 struct RTDECODE
 {
- /* 0x00 */ unsigned long length; // size=0, offset=0
- /* 0x04 */ unsigned long off; // size=0, offset=4
+ /* 0x00 */ psx_u32 length; // size=0, offset=0
+ /* 0x04 */ psx_u32 off; // size=0, offset=4
  /* 0x08 */ unsigned short counter; // size=0, offset=8
  /* 0x0A */ unsigned short data; // size=0, offset=10
  /* 0x0C */ unsigned char decodetype; // size=0, offset=12
@@ -915,9 +923,9 @@ struct PACKNODE
  /* 0x0C */ struct RTDECODE decode_x; // size=16, offset=12
  /* 0x1C */ struct RTDECODE decode_y; // size=16, offset=28
  /* 0x2C */ struct RTDECODE decode_z; // size=16, offset=44
- /* 0x3C */ unsigned long xlength; // size=0, offset=60
- /* 0x40 */ unsigned long ylength; // size=0, offset=64
- /* 0x44 */ unsigned long zlength; // size=0, offset=68
+ /* 0x3C */ psx_u32 xlength; // size=0, offset=60
+ /* 0x40 */ psx_u32 ylength; // size=0, offset=64
+ /* 0x44 */ psx_u32 zlength; // size=0, offset=68
  /* 0x48 */ char* xpacked; // size=0, offset=72
  /* 0x4C */ char* ypacked; // size=0, offset=76
  /* 0x50 */ char* zpacked; // size=0, offset=80
@@ -999,17 +1007,17 @@ struct RANGE_STRUCT
 
 struct door_vbuf
 {
- /* 0x00 */ long xv; // size=0, offset=0
- /* 0x04 */ long yv; // size=0, offset=4
- /* 0x08 */ long zv; // size=0, offset=8
+ /* 0x00 */ psx_i32 xv; // size=0, offset=0
+ /* 0x04 */ psx_i32 yv; // size=0, offset=4
+ /* 0x08 */ psx_i32 zv; // size=0, offset=8
 };
 
 struct BITE_INFO
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
- /* 0x0C */ long mesh_num; // size=0, offset=12
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
+ /* 0x0C */ psx_i32 mesh_num; // size=0, offset=12
 };
 
 struct box_info
@@ -1026,9 +1034,9 @@ struct AI_info
 {
  /* 0x00 */ short zone_number; // size=0, offset=0
  /* 0x02 */ short enemy_zone; // size=0, offset=2
- /* 0x04 */ long distance; // size=0, offset=4
- /* 0x08 */ long ahead; // size=0, offset=8
- /* 0x0C */ long bite; // size=0, offset=12
+ /* 0x04 */ psx_i32 distance; // size=0, offset=4
+ /* 0x08 */ psx_i32 ahead; // size=0, offset=8
+ /* 0x0C */ psx_i32 bite; // size=0, offset=12
  /* 0x10 */ short angle; // size=0, offset=16
  /* 0x12 */ short x_angle; // size=0, offset=18
  /* 0x14 */ short enemy_facing; // size=0, offset=20
@@ -1038,9 +1046,9 @@ struct AIOBJECT
 {
  /* 0x00 */ short object_number; // size=0, offset=0
  /* 0x02 */ short room_number; // size=0, offset=2
- /* 0x04 */ long x; // size=0, offset=4
- /* 0x08 */ long y; // size=0, offset=8
- /* 0x0C */ long z; // size=0, offset=12
+ /* 0x04 */ psx_i32 x; // size=0, offset=4
+ /* 0x08 */ psx_i32 y; // size=0, offset=8
+ /* 0x0C */ psx_i32 z; // size=0, offset=12
  /* 0x10 */ short trigger_flags; // size=0, offset=16
  /* 0x12 */ short flags; // size=0, offset=18
  /* 0x14 */ short y_rot; // size=0, offset=20
@@ -1053,13 +1061,13 @@ struct CAMERA_INFO
  /* 0x10 */ struct GAME_VECTOR target; // size=16, offset=16
  /* 0x20 */ enum camera_type type; // size=4, offset=32
  /* 0x24 */ enum camera_type old_type; // size=4, offset=36
- /* 0x28 */ long shift; // size=0, offset=40
- /* 0x2C */ long flags; // size=0, offset=44
- /* 0x30 */ long fixed_camera; // size=0, offset=48
- /* 0x34 */ long number_frames; // size=0, offset=52
- /* 0x38 */ long bounce; // size=0, offset=56
- /* 0x3C */ long underwater; // size=0, offset=60
- /* 0x40 */ long target_distance; // size=0, offset=64
+ /* 0x28 */ psx_i32 shift; // size=0, offset=40
+ /* 0x2C */ psx_i32 flags; // size=0, offset=44
+ /* 0x30 */ psx_i32 fixed_camera; // size=0, offset=48
+ /* 0x34 */ psx_i32 number_frames; // size=0, offset=52
+ /* 0x38 */ psx_i32 bounce; // size=0, offset=56
+ /* 0x3C */ psx_i32 underwater; // size=0, offset=60
+ /* 0x40 */ psx_i32 target_distance; // size=0, offset=64
  /* 0x44 */ short target_angle; // size=0, offset=68
  /* 0x46 */ short target_elevation; // size=0, offset=70
  /* 0x48 */ short actual_elevation; // size=0, offset=72
@@ -1086,7 +1094,7 @@ struct SHATTER_ITEM
  //  The compiler doesnt seem to care about the other wrong typedefs?
  /* 0x10 */ struct ITEM_LIGHT* il; // size=48, offset=16
  /* 0x14 */ short* meshp; // size=0, offset=20
- /* 0x18 */ long Bit; // size=0, offset=24
+ /* 0x18 */ psx_i32 Bit; // size=0, offset=24
  /* 0x1C */ short YRot; // size=0, offset=28
  /* 0x1E */ short Flags; // size=0, offset=30
 };
@@ -1095,7 +1103,7 @@ struct OLD_CAMERA
 {
  /* 0x00 */ short current_anim_state; // size=0, offset=0
  /* 0x02 */ short goal_anim_state; // size=0, offset=2
- /* 0x04 */ long target_distance; // size=0, offset=4
+ /* 0x04 */ psx_i32 target_distance; // size=0, offset=4
  /* 0x08 */ short target_angle; // size=0, offset=8
  /* 0x0A */ short target_elevation; // size=0, offset=10
  /* 0x0C */ short actual_elevation; // size=0, offset=12
@@ -1107,9 +1115,9 @@ struct OLD_CAMERA
 struct DEBRIS_STRUCT
 {
  /* 0x00 */ void* TextInfo; // size=0, offset=0
- /* 0x04 */ long x; // size=0, offset=4
- /* 0x08 */ long y; // size=0, offset=8
- /* 0x0C */ long z; // size=0, offset=12
+ /* 0x04 */ psx_i32 x; // size=0, offset=4
+ /* 0x08 */ psx_i32 y; // size=0, offset=8
+ /* 0x0C */ psx_i32 z; // size=0, offset=12
  /* 0x10 */ short XYZOffsets1[3]; // size=6, offset=16
  /* 0x16 */ short Dir; // size=0, offset=22
  /* 0x18 */ short XYZOffsets2[3]; // size=6, offset=24
@@ -1129,12 +1137,12 @@ struct DEBRIS_STRUCT
 
 struct SPOTCAM
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
- /* 0x0C */ long tx; // size=0, offset=12
- /* 0x10 */ long ty; // size=0, offset=16
- /* 0x14 */ long tz; // size=0, offset=20
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
+ /* 0x0C */ psx_i32 tx; // size=0, offset=12
+ /* 0x10 */ psx_i32 ty; // size=0, offset=16
+ /* 0x14 */ psx_i32 tz; // size=0, offset=20
  /* 0x18 */ unsigned char sequence; // size=0, offset=24
  /* 0x19 */ unsigned char camera; // size=0, offset=25
  /* 0x1A */ short fov; // size=0, offset=26
@@ -1154,9 +1162,9 @@ struct QUAKE_CAM
 
 struct DYNAMIC
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ unsigned char on; // size=0, offset=12
  /* 0x0D */ unsigned char r; // size=0, offset=13
  /* 0x0E */ unsigned char g; // size=0, offset=14
@@ -1164,7 +1172,7 @@ struct DYNAMIC
  /* 0x10 */ unsigned short falloff; // size=0, offset=16
  /* 0x12 */ unsigned char used; // size=0, offset=18
  /* 0x13 */ unsigned char pad1[1]; // size=1, offset=19
- /* 0x14 */ long FalloffScale; // size=0, offset=20
+ /* 0x14 */ psx_i32 FalloffScale; // size=0, offset=20
 };
 
 struct SP_DYNAMIC
@@ -1180,9 +1188,9 @@ struct SP_DYNAMIC
 
 struct SPLASH_STRUCT
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short InnerRad; // size=0, offset=12
  /* 0x0E */ short InnerSize; // size=0, offset=14
  /* 0x10 */ short InnerRadVel; // size=0, offset=16
@@ -1202,9 +1210,9 @@ struct SPLASH_STRUCT
 
 struct RIPPLE_STRUCT
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ char flags; // size=0, offset=12
  /* 0x0D */ unsigned char life; // size=0, offset=13
  /* 0x0E */ unsigned char size; // size=0, offset=14
@@ -1213,9 +1221,9 @@ struct RIPPLE_STRUCT
 
 struct SPLASH_SETUP
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short InnerRad; // size=0, offset=12
  /* 0x0E */ short InnerSize; // size=0, offset=14
  /* 0x10 */ short InnerRadVel; // size=0, offset=16
@@ -1234,9 +1242,9 @@ struct SPLASH_SETUP
 
 struct FIRE_LIST
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ char on; // size=0, offset=12
  /* 0x0D */ char size; // size=0, offset=13
  /* 0x0E */ short room_number; // size=0, offset=14
@@ -1279,9 +1287,9 @@ struct FIRE_SPARKS
 
 struct SMOKE_SPARKS
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short Xvel; // size=0, offset=12
  /* 0x0E */ short Yvel; // size=0, offset=14
  /* 0x10 */ short Zvel; // size=0, offset=16
@@ -1312,9 +1320,9 @@ struct SMOKE_SPARKS
 
 struct BLOOD_STRUCT
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short Xvel; // size=0, offset=12
  /* 0x0E */ short Yvel; // size=0, offset=14
  /* 0x10 */ short Zvel; // size=0, offset=16
@@ -1381,9 +1389,9 @@ struct NODEOFFSET_INFO
 
 struct SHOCKWAVE_STRUCT
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short InnerRad; // size=0, offset=12
  /* 0x0E */ short OuterRad; // size=0, offset=14
  /* 0x10 */ short XRot; // size=0, offset=16
@@ -1421,9 +1429,9 @@ struct LIGHTNING_STRUCT
 
 struct GUARDIAN_TARGET
 {
- /* 0x00 */ long x;
- /* 0x04 */ long y;
- /* 0x08 */ long z;
+ /* 0x00 */ psx_i32 x;
+ /* 0x04 */ psx_i32 y;
+ /* 0x08 */ psx_i32 z;
  /* 0x0C */ struct LIGHTNING_STRUCT* elptr[2];
  /* 0x14 */ struct LIGHTNING_STRUCT* blptr[4];
  /* 0x1C */ char ricochet[2];
@@ -1435,9 +1443,9 @@ struct GUARDIAN_TARGET
 
 struct RG_TARGET
 {
- /* 0x00 */ long dynx;
- /* 0x04 */ long dyny;
- /* 0x08 */ long dynz;
+ /* 0x00 */ psx_i32 dynx;
+ /* 0x04 */ psx_i32 dyny;
+ /* 0x08 */ psx_i32 dynz;
  /* 0x0C */ struct LIGHTNING_STRUCT* pulptr[8];
  /* 0x2C */ char dynval;
 };
@@ -1464,7 +1472,7 @@ struct INVOBJ
  /* 0x0A */ short zrot; // size=0, offset=10
  /* 0x0C */ short flags; // size=0, offset=12
  /* 0x0E */ short objname; // size=0, offset=14
- /* 0x10 */ unsigned long meshbits; // size=0, offset=16
+ /* 0x10 */ psx_u32 meshbits; // size=0, offset=16
 };
 
 struct OBJLIST
@@ -1554,15 +1562,15 @@ struct SoundSlot
  /* 0x08 */ int nPan; // size=0, offset=8
  /* 0x0C */ int nPitch; // size=0, offset=12
  /* 0x10 */ int nSampleInfo; // size=0, offset=16
- /* 0x14 */ unsigned long distance; // size=0, offset=20
+ /* 0x14 */ psx_u32 distance; // size=0, offset=20
  /* 0x18 */ struct PHD_VECTOR pos; // size=12, offset=24
 };
 
 struct FOOTPRINT
 {
- /* 0x00 */ long x; // size=0, offset=0
- /* 0x04 */ long y; // size=0, offset=4
- /* 0x08 */ long z; // size=0, offset=8
+ /* 0x00 */ psx_i32 x; // size=0, offset=0
+ /* 0x04 */ psx_i32 y; // size=0, offset=4
+ /* 0x08 */ psx_i32 z; // size=0, offset=8
  /* 0x0C */ short YRot; // size=0, offset=12
  /* 0x0E */ short Active; // size=0, offset=14
 };
@@ -1578,7 +1586,7 @@ struct MESH_STRUCT
 {
  /* 0x00 */ short unk00;//0
  /* 0x02 */ short unk01;//2
- /* 0x04 */ long unk02;//4
+ /* 0x04 */ psx_i32 unk02;//4
  /* 0x08 */ unsigned char unk03;//8
 };
 
@@ -1615,3 +1623,13 @@ struct tr_room_portal  // 32 bytes
 #if PC_VERSION
 #pragma clang diagnostic pop
 #endif
+
+/* Garde-fous de layout (RMIG-004) : structures sans pointeur, elles doivent
+ * garder le format PSX quelle que soit l'ABI. */
+static_assert(sizeof(struct PHD_VECTOR) == 12, "PHD_VECTOR layout");
+static_assert(sizeof(struct PHD_3DPOS) == 20, "PHD_3DPOS layout");
+static_assert(sizeof(struct FLOOR_INFO) == 8, "FLOOR_INFO layout");
+static_assert(sizeof(struct LIGHTINFO) == 32, "LIGHTINFO layout");
+static_assert(sizeof(struct MESH_INFO) == 20, "MESH_INFO layout");
+static_assert(sizeof(struct OBJECT_VECTOR) == 16, "OBJECT_VECTOR layout");
+static_assert(sizeof(struct SPOTCAM) == 40, "SPOTCAM layout");

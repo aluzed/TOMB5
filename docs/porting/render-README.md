@@ -7,8 +7,8 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-001](render/RMIG-001.md) | Étude 32 vs 64 bits du raytracing Vulkan | Done | P0 |
 | [RMIG-002](render/RMIG-002.md) | Cible de build 64 bits sans dépendance 32 bits | Done | P0 |
 | [RMIG-003](render/RMIG-003.md) | Typedefs PSX à largeur fixe et garde de tailles (STYPES.H) | Done | P0 |
-| [RMIG-004](render/RMIG-004.md) | Conversion des structures de GAME/TYPES.H | Todo | P0 |
-| [RMIG-005](render/RMIG-005.md) | Code manipulant les champs convertis | Blocked | P1 |
+| [RMIG-004](render/RMIG-004.md) | Conversion des structures de GAME/TYPES.H | Done | P0 |
+| [RMIG-005](render/RMIG-005.md) | Code manipulant les champs convertis | Todo | P1 |
 | [RMIG-006](render/RMIG-006.md) | Pointeur↔entier et fichiers en erreur en -m64 | Done | P0 |
 | [RMIG-007](render/RMIG-007.md) | Harnais de comparaison 32 bits / 64 bits | Blocked | P1 |
 | [RMIG-008](render/RMIG-008.md) | Abstraction renderer (interface + sélection) | Blocked | P1 |
@@ -21,4 +21,4 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-015](render/RMIG-015.md) | Raytracing matériel (ray_query) avec repli SSR | Blocked | P2 |
 | [RMIG-016](render/RMIG-016.md) | Menu debug avancé et budget de performance | Blocked | P2 |
 
-4/16 terminés.
+5/16 terminés.

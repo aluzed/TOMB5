@@ -2332,6 +2332,15 @@
       ],
       "status": "In progress",
       "summary": "RMIG-003 termine: SPEC_PSXPC_N/STYPES.H converti en types a largeur fixe. Ajout de typedef int32_t psx_i32 et uint32_t psx_u32 et conversion des champs (seul long restant: les pointeurs de DB_STRUCT, structure hote de buffers hors donnees PSX). static_assert de layout valables toutes ABI pour les structures sans pointeur (DRIP_STRUCT 24, TEXTURE 16, static_info 28, REQUESTER 20, ITEM_LIGHT 48) et seulement hors LP64 pour room_info 80, ITEM_INFO 144, object_info 64, creature_info 228 car elles embarquent des pointeurs hotes: consequence de conception retenue pour RMIG-004/005, il ne faut pas forcer sizeof sur ces structures mais lire le format fichier via une structure dediee a pointeurs 32 bits et convertir au chargement. Resultats mesures: build 32 bits vert (0 erreur) avec binaire de hash INCHANGE b9d8e710 (reference intacte); build 64 bits vert (0 erreur) produisant un ELF64 qui affiche desormais correctement l'ecran de demarrage Tomb Raider Chronicles (capture) et ne declenche plus l'assertion ParsePrimitive, avec 507 'Unhandled primitive type' en 20 s qui relevent de RMIG-004 (TYPES.H). Backlog rendu: 4/16 tickets Done, RMIG-004 passe en Todo. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "RMIG-004 termine: GAME/TYPES.H converti en types a largeur fixe. Les typedefs psx_i32/psx_u32 (int32_t/uint32_t) sont desormais definis dans GAME/TYPES.H (inclus par STYPES.H) et les 148 long + 14 unsigned long du fichier sont convertis (PHD_VECTOR, PHD_3DPOS, FLOOR_INFO, LIGHTINFO, MESH_INFO, OBJECT_VECTOR, SPOTCAM, lara_info, savegame_info...). static_assert sur les structures sans pointeur: PHD_VECTOR 12, PHD_3DPOS 20, FLOOR_INFO 8, LIGHTINFO 32, MESH_INFO 20, OBJECT_VECTOR 16, SPOTCAM 40, donc le format PSX est preserve en 64 bits. Correction induite: UpdateLightning (GAME/CONTROL.C) parcourait les points avec un long* -> type psx_i32*. Resultats: build 32 bits vert avec hash INCHANGE b9d8e710 (aucune regression), build 64 bits vert; le binaire 64 bits rend toujours correctement l'ecran de demarrage mais conserve environ 594 'Unhandled primitive type' en 20 s, ce qui montre que le rendu 2D/sprite passe mais que le flux 3D reste mal interprete. Conclusion: le prochain levier n'est plus le typage des structures de jeu mais la lecture du format fichier, car LoadLevel caste le buffer de salles directement en struct room_info qui contient cinq pointeurs (8 octets en LP64) et decale tous les champs suivants: c'est RMIG-005 (structure de format a pointeurs 32 bits + conversion). Backlog rendu: 5/16 Done, RMIG-005 passe en Todo. Aucun Done global."
     }
   ]
 }

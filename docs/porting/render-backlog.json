@@ -138,7 +138,7 @@
     {
       "id": "RMIG-004",
       "title": "Conversion des structures de GAME/TYPES.H",
-      "status": "Todo",
+      "status": "Done",
       "priority": "P0",
       "goal": "Appliquer la même conversion aux structures de GAME/TYPES.H (le cœur des données de jeu).",
       "facts": "GAME/TYPES.H contient 148 long et 14 unsigned long : lara_info, FLOOR_INFO, SAVEGAME_INFO, lumières, caméra, et surtout PHD_VECTOR/PHD_3DPOS (3 longs = 12 octets) utilisés partout. Constat de RMIG-003 : les structures qui embarquent des pointeurs hôtes (room_info, ITEM_INFO, creature_info) ne peuvent PAS garder la taille du format PSX en LP64 ; il faut lire le format fichier via une structure dédiée plutôt que forcer sizeof.",
@@ -172,16 +172,21 @@
           "note": "lecture de sauvegarde"
         }
       ],
-      "progress": "À démarrer (RMIG-003 terminé).",
-      "evidence": []
+      "progress": "Terminé : GAME/TYPES.H converti, asserts de layout en place, 32 bits inchangé, 64 bits vert.",
+      "evidence": [
+        {
+          "date": "2026-11-17",
+          "note": "GAME/TYPES.H : typedefs déplacés ici (psx_i32/psx_u32, int32_t/uint32_t) et conversion des 148 long + 14 unsigned long (PHD_VECTOR, PHD_3DPOS, FLOOR_INFO, LIGHTINFO, MESH_INFO, OBJECT_VECTOR, SPOTCAM, lara_info, savegame_info…). static_assert sur les structures sans pointeur : PHD_VECTOR 12, PHD_3DPOS 20, FLOOR_INFO 8, LIGHTINFO 32, MESH_INFO 20, OBJECT_VECTOR 16, SPOTCAM 40. Corrections induites : UpdateLightning (GAME/CONTROL.C) utilisait long* pour parcourir des psx_i32. Build 32 bits vert avec hash INCHANGÉ (b9d8e710…), build 64 bits vert. Le binaire 64 bits rend toujours correctement l'écran de démarrage mais conserve ~594 'Unhandled primitive type' en 20 s : le flux de paquets reste mal interprété, ce qui déplace le problème sur les structures lues depuis le fichier de niveau (pointeurs 32 bits) → RMIG-005."
+        }
+      ]
     },
     {
       "id": "RMIG-005",
       "title": "Code manipulant les champs convertis",
-      "status": "Blocked",
+      "status": "Todo",
       "priority": "P1",
       "goal": "Adapter le code qui lit/écrit les champs convertis, en particulier la relocation du niveau et la restauration de sauvegarde.",
-      "facts": "LoadLevel relocalise les pointeurs stockés dans les structures ; sgRestoreGame et PortSave_ApplyPending réinjectent des états. Le binaire 64 bits démarre mais s'arrête sur l'assertion ParsePrimitive (EMULATOR/LIBGPU.C:1141) : le flux de paquets GPU est mal interprété, signature d'un décalage de layout déjà présent.",
+      "facts": "LoadLevel lit les enregistrements de salle directement dans struct room_info (DEL_CDFS_Read puis cast) et la relocalisation lit la taille dans le premier champ 32 bits ; les items passent par un format compact, mais room_info contient cinq pointeurs. En LP64 ces champs font 8 octets : le cast décale tous les champs suivants. C'est la cause probable des 'Unhandled primitive type' observés sur le binaire 64 bits (594 en 20 s) alors que le 32 bits est correct.",
       "scope": "GAME/SETUP.C (relocation), GAME/SAVEGAME.C, GAME/PORTSAVE.C, GAME/ITEMS.C et accès directs aux champs convertis.",
       "exclusions": "Rendue, backend Vulkan.",
       "tasks": [
@@ -213,7 +218,7 @@
           "note": "application de la position"
         }
       ],
-      "progress": "Bloqué par RMIG-003/004.",
+      "progress": "À démarrer (RMIG-004 terminé).",
       "evidence": []
     },
     {

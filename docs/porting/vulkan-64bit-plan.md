@@ -204,3 +204,30 @@ Résultats mesurés :
 | --- | --- | --- | --- |
 | 32 bits | vert (0 erreur) | **hash inchangé** `b9d8e710…` | référence intacte |
 | 64 bits | vert (0 erreur) | ELF64 | affiche l'écran de démarrage Tomb Raider Chronicles ; plus d'assertion `ParsePrimitive`, il reste des `Unhandled primitive type` (507 en 20 s) |
+
+## 10. RMIG-004 : `GAME/TYPES.H` en largeur fixe (17 novembre 2026)
+
+- Typedefs `psx_i32`/`psx_u32` désormais définis dans `GAME/TYPES.H`
+  (inclus par `STYPES.H`) et conversion des 148 `long` + 14 `unsigned long`
+  du fichier : `PHD_VECTOR`, `PHD_3DPOS`, `FLOOR_INFO`, `LIGHTINFO`,
+  `MESH_INFO`, `OBJECT_VECTOR`, `SPOTCAM`, `lara_info`, `savegame_info`…
+- `static_assert` sur les structures sans pointeur : `PHD_VECTOR` 12,
+  `PHD_3DPOS` 20, `FLOOR_INFO` 8, `LIGHTINFO` 32, `MESH_INFO` 20,
+  `OBJECT_VECTOR` 16, `SPOTCAM` 40 — elles gardent donc le format PSX en
+  64 bits.
+- Correction induite : `UpdateLightning` (`GAME/CONTROL.C`) parcourait les
+  points avec un `long*` ; typé `psx_i32*`.
+
+Résultats :
+
+| cible | build | binaire | rendu |
+| --- | --- | --- | --- |
+| 32 bits | vert | **hash inchangé** `b9d8e710…` | référence |
+| 64 bits | vert | ELF64 | écran de démarrage correct, mais **~594 `Unhandled primitive type` en 20 s** |
+
+Conclusion : le rendu 2D/sprite passe, le flux **3D** reste mal interprété.
+Le prochain levier n'est plus le typage des structures de jeu mais la
+**lecture du format fichier** : `LoadLevel` caste le buffer de salles
+directement en `struct room_info`, qui contient cinq pointeurs (8 octets en
+LP64) → décalage de tous les champs suivants. C'est l'objet de RMIG-005
+(structure de format à pointeurs 32 bits + conversion).

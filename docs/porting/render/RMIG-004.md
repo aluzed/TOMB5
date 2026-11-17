@@ -1,8 +1,8 @@
 # RMIG-004 — Conversion des structures de GAME/TYPES.H
 
-Status: **Todo** — priorité P0 — confiance Medium
+Status: **Done** — priorité P0 — confiance Medium
 
-Avancement : À démarrer (RMIG-003 terminé).
+Avancement : Terminé : GAME/TYPES.H converti, asserts de layout en place, 32 bits inchangé, 64 bits vert.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Structures partagées entre niveaux et blocs de sauvegarde.
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-17 : GAME/TYPES.H : typedefs déplacés ici (psx_i32/psx_u32, int32_t/uint32_t) et conversion des 148 long + 14 unsigned long (PHD_VECTOR, PHD_3DPOS, FLOOR_INFO, LIGHTINFO, MESH_INFO, OBJECT_VECTOR, SPOTCAM, lara_info, savegame_info…). static_assert sur les structures sans pointeur : PHD_VECTOR 12, PHD_3DPOS 20, FLOOR_INFO 8, LIGHTINFO 32, MESH_INFO 20, OBJECT_VECTOR 16, SPOTCAM 40. Corrections induites : UpdateLightning (GAME/CONTROL.C) utilisait long* pour parcourir des psx_i32. Build 32 bits vert avec hash INCHANGÉ (b9d8e710…), build 64 bits vert. Le binaire 64 bits rend toujours correctement l'écran de démarrage mais conserve ~594 'Unhandled primitive type' en 20 s : le flux de paquets reste mal interprété, ce qui déplace le problème sur les structures lues depuis le fichier de niveau (pointeurs 32 bits) → RMIG-005.
 
 ## Références
 

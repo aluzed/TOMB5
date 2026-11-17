@@ -1113,7 +1113,7 @@ void UpdateLightning()
 {
 	/* Porté depuis TOMB5pc/game/tomb4fx.cpp (UpdateLightning). */
 	struct LIGHTNING_STRUCT* lptr;
-	long* pPoint;
+	psx_i32* pPoint;
 	char* pVel;
 
 	for (int i = 0; i < 16; i++)

@@ -1,8 +1,8 @@
 # RMIG-005 — Code manipulant les champs convertis
 
-Status: **Blocked** — priorité P1 — confiance Medium
+Status: **Todo** — priorité P1 — confiance Medium
 
-Avancement : Bloqué par RMIG-003/004.
+Avancement : À démarrer (RMIG-004 terminé).
 
 ## Objectif
 
@@ -10,7 +10,7 @@ Adapter le code qui lit/écrit les champs convertis, en particulier la relocatio
 
 ## Faits établis
 
-LoadLevel relocalise les pointeurs stockés dans les structures ; sgRestoreGame et PortSave_ApplyPending réinjectent des états. Le binaire 64 bits démarre mais s'arrête sur l'assertion ParsePrimitive (EMULATOR/LIBGPU.C:1141) : le flux de paquets GPU est mal interprété, signature d'un décalage de layout déjà présent.
+LoadLevel lit les enregistrements de salle directement dans struct room_info (DEL_CDFS_Read puis cast) et la relocalisation lit la taille dans le premier champ 32 bits ; les items passent par un format compact, mais room_info contient cinq pointeurs. En LP64 ces champs font 8 octets : le cast décale tous les champs suivants. C'est la cause probable des 'Unhandled primitive type' observés sur le binaire 64 bits (594 en 20 s) alors que le 32 bits est correct.
 
 ## Périmètre
 
