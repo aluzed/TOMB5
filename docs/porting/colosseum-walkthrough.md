@@ -136,3 +136,38 @@ Depuis la sauvegarde corniche (`43364,768,52325`, `y_rot=-16384`) :
 Pour descendre vers la salle 26 il faut donc une manœuvre volontaire
 (agripper le rebord puis se lâcher, ou saut avec élan depuis plus loin) —
 c'est le premier point à faire à la main.
+
+## 6. Pourquoi Lara n'est pas dessinée dans la zone de la corniche
+
+Observation (capture + gdb, 17 novembre 2026) : dans la zone de la
+corniche, on voit le décor et **l'ombre de Lara, mais pas Lara**. La caméra
+avance quand on marche (les entrées fonctionnent), donc ce n'est pas un
+gel.
+
+Mesures :
+
+```
+LD lara_room=12 draw_room=0 InDrawRoom=0 mesh_bits=0xffffffff
+LD cam_room=8  cam_type=0 (CHASE)  flip=0
+```
+
+- La caméra se résout dans la **room 8** (`GetFloor` sur la position caméra,
+  qui est au-dessus de Lara dans un empilement de salles), tandis que
+  `lara_item->room_number` vaut **12** : la salle de Lara n'est donc pas
+  dans la liste de rendu → `InDrawRoom=0` → elle est **culled**, seule son
+  ombre reste.
+- La cause est la **sauvegarde** : sa position est hors de la grille de
+  cellules de la room 12 (`x=43364` alors que la grille s'arrête à
+  `43008`). Le moteur le montre d'ailleurs au chargement :
+  `[SAVE] applied saved position: room 26 X 40448 Y 1024 Z 51712` quand on
+  tente une position « dans » la room 12 à `y=1024`.
+- `GetFloor` à `(40448, y, 51712)` : `y=1024` → **room 26**, `y=1023` →
+  **room 12**, `y=768` → **room 12**. La dalle de la corniche est donc
+  franchie dès qu'on est pile à sa hauteur (`y >= floor`) : c'est le
+  `pit_room` qui prend le relais.
+
+**Conséquence pratique** : il ne faut pas patcher une sauvegarde à la main
+dans cette zone (position hors grille ⇒ caméra dans une autre salle ⇒ Lara
+invisible). Il faut **jouer** depuis un point valide et faire un `F5` en
+jeu : la sauvegarde produite par le moteur contient alors une position
+cohérente avec sa salle.

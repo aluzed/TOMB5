@@ -2224,6 +2224,15 @@
       ],
       "status": "In progress",
       "summary": "Diagnostics des stubs appeles a chaque frame: plusieurs fonctions non portees sont invoquees par frame (UpdateFireSparks, UpdateGunShells, UpdateRats, UpdateBats, KlaxonTremor, ProcessClosedDoors, WadeSplash cote jeu; PadSetActAlign et PadStartCom cote emulateur) et leur UNIMPLEMENTED() imprimait une ligne par frame, rendant les logs illisibles (9050 lignes / 320 Ko pour 200 frames) et coutant un printf par frame dans la boucle de controle. Ajout de UNIMPLEMENTED_ONCE() dans SPEC_PSXPC_N/SPECIFIC.H et EMULATOR/EMULATOR.H (meme message prefixe '(once)') et utilisation a ces neuf emplacements; le comportement (no-op) est identique, seule la diagnostique change. Mesure sur la sauvegarde corniche 201 frames: chaque message apparait une seule fois (WadeSplash 1, UpdateFireSparks 1, ProcessClosedDoors 1, UpdateGunShells 1, PadSetActAlign 1) et le log passe de 9050 lignes / 320 Ko a 1617 lignes / 54 Ko (-83%). Corniche 201 frames OK. Regression verrouillee par tests/porting/test_stub_diagnostics.py. Build-gameplay59 SHA256 2b2b6dc2ced7f6e9dd4b87d45782583f78a743bf2a079e9fea8496864bf3c85c. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "The Colosseum, invisibilite de Lara dans la zone de la corniche expliquee: observation en capture (on voit le decor et l'ombre de Lara mais pas Lara; la camera avance quand on marche, donc les entrees fonctionnent). Mesures gdb: lara_room=12 mais draw_room=0 et InDrawRoom=0, mesh_bits=0xffffffff, camera.pos.room_number=8, cam_type=0 (CHASE), flip=0. La camera se resout dans la room 8 (GetFloor sur la position camera, au-dessus de Lara dans un empilement de salles) tandis que lara_item->room_number vaut 12: la salle de Lara n'est pas dans la liste de rendu, elle est culled et seule son ombre reste. La cause est la sauvegarde: position hors de la grille de cellules de la room 12 (x=43364 alors que la grille s'arrete a 43008); le moteur le montre au chargement ([SAVE] applied saved position: room 26 X 40448 Y 1024 Z 51712 quand on tente une position dans la room 12 a y=1024). GetFloor a (40448,y,51712): y=1024 -> room 26; y=1023 -> room 12; y=768 -> room 12: la dalle de la corniche est franchie des qu'on est pile a sa hauteur (y >= floor), c'est le pit_room qui prend le relais. Consequence pratique: ne pas patcher une sauvegarde a la main dans cette zone (position hors grille => camera dans une autre salle => Lara invisible); jouer depuis un point valide et faire un F5 en jeu pour obtenir une position coherente avec la salle. Documentation ajoutee dans docs/porting/colosseum-walkthrough.md section 6. Aucun Done global."
     }
   ]
 }
