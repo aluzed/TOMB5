@@ -1,4 +1,5 @@
 #include "DRAWPHAS.H"
+#include <stdlib.h>
 
 #include "3D_GEN.H"
 #include "BUBBLES.H"
@@ -234,6 +235,18 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 
 	CurrentRoom = current_room;
 	r = &room[current_room];
+
+	{
+		static int port_drawdbg = 0;
+
+		if (getenv("TOMB5_DRAWDBG") != NULL && (port_drawdbg++ % 120) == 0)
+		{
+			fprintf(stderr, "[DRAW] lvl=%d room=%d nrooms=%d pos=(%d,%d,%d) size=(%d,%d) ndraw=%d fade=%d/%d fading=%d height=%d/%d\n",
+			        gfCurrentLevel, current_room, number_rooms, camera.pos.x, camera.pos.y, camera.pos.z,
+			        r->x_size, r->y_size, number_draw_rooms,
+			        ScreenFade, dScreenFade, ScreenFading, FadeScreenHeight, DestFadeScreenHeight);
+		}
+	}
 
 	r->test_left = 0;
 	phd_left = 0;

@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : En cours : niveau 1 charge, cutscene bloquee au nom 1 (ecran noir + icone), 32 bits passe au nom 3.
+Avancement : En cours : niveau 1 charge et boucle de rendu stable (ndraw=3, fade=0), mais ecran noir en 64 bits. La comparaison 32 bits a charge un autre niveau (gfCurrentLevel=3) ; il faut forcer le meme niveau pour conclure.
 
 ## Objectif
 
@@ -49,6 +49,7 @@ La boucle peut venir du timing audio XA (dummy) ou d un pointeur cutseq converti
 ## Preuves
 
 - 2026-11-17 : 64 bits : New Game -> DoLevel(Name=1), lectures CD du niveau terminees, log repete "Handle cutseq triggering name: 1" pendant 50 s, ecran noir avec icone ; aucun SIGSEGV. 32 bits sur la meme sequence : salle de cutscene visible, nom 3.
+- 2026-11-17 : Diagnostic DRAWDBG (env TOMB5_DRAWDBG=1) : en 64 bits, gfCurrentLevel=1, number_rooms=242, camera room 0 pos (46592,-960,30080), number_draw_rooms=3, ScreenFade=0, ScreenFading=0 -> la boucle et la fade sont normales mais l image reste noire (seule une icone 2D apparait). En 32 bits, le meme scenario de touches charge gfCurrentLevel=3 (125 salles, camera room 8) et affiche la salle : les deux executions ne comparent pas le meme niveau. Le menu 32 bits a un defaut de selection deja connu (byte_46). Prochain test : forcer le niveau 1 en 32 bits (level select) et comparer camera/ndraw/fade, puis verifier la projection LP64 (matrices GTE) si l ecart persiste.
 
 ## Références
 

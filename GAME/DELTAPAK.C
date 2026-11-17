@@ -1,4 +1,5 @@
 #include "DELTAPAK.H"
+#include <stdlib.h>
 #if defined(__LP64__)
 #include "../SPEC_PSXPC_N/MALLOC.H"
 #endif
@@ -3991,6 +3992,16 @@ void handle_cutseq_triggering(int name)//2C3C4(<), 2C6EC(<) (F)
 	int fuck; // $a0
 
 	printf("Handle cutseq triggering name: %d\n", name);
+	{
+		static int port_cutdbg = 0;
+
+		if (getenv("TOMB5_CUTDBG") != NULL && (port_cutdbg++ % 60) == 0)
+		{
+			fprintf(stderr, "[CUT] name=%d num=%d trig=%d frame=%d nframes=%d play=%d\n",
+			        name, cutseq_num, cutseq_trig, GLOBAL_cutseq_frame,
+			        GLOBAL_numcutseq_frames, GLOBAL_playing_cutseq);
+		}
+	}
 
 	//s1 = Name
 

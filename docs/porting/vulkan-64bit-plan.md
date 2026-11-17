@@ -498,3 +498,21 @@ en 64 bits (RMIG-020).
 
 Tests : **4188 PASS** ; builds 64 et 32 bits verts ; aucune primitive non
 gérée sur les sessions de référence.
+
+### 17.1 Diagnostic du rendu noir (niveau 1)
+
+Sonde `TOMB5_DRAWDBG=1` ajoutée dans `DrawRooms` (nom du niveau, salle,
+position caméra, taille de salle, `number_draw_rooms`, fade) et
+`TOMB5_CUTDBG=1` dans `handle_cutseq_triggering`.
+
+- 64 bits : `gfCurrentLevel=1`, `number_rooms=242`, caméra salle 0
+  `(46592,-960,30080)`, `number_draw_rooms=3`, `ScreenFade=0`,
+  `ScreenFading=0`. La boucle, le chargement et la fade sont donc normaux,
+  mais l'image reste noire (seule une icône 2D apparaît).
+- 32 bits, même scénario de touches : `gfCurrentLevel=3` (125 salles, salle 8)
+  et la salle s'affiche. Les deux exécutions ne chargent pas le même niveau
+  (sélection de menu 32 bits déjà connue comme fragile, `byte_46`).
+
+Prochain test : forcer le niveau 1 côté 32 bits via le level select, puis
+comparer caméra/`number_draw_rooms`/fade et, si l'écart persiste, vérifier
+la projection LP64 (matrices GTE, `SetGeomScreen`/`SetGeomOffset`).
