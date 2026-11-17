@@ -16,7 +16,6 @@ HOT_STUBS = [
     ("GAME/CONTROL.C", "void UpdateGunShells()"),
     ("GAME/CONTROL.C", "void UpdateRats()"),
     ("GAME/CONTROL.C", "void UpdateBats()"),
-    ("GAME/CONTROL.C", "void KlaxonTremor()"),
     ("GAME/DOOR.C", "void ProcessClosedDoors()"),
     ("SPEC_PSXPC_N/FXTRIG.C",
      "void WadeSplash(struct ITEM_INFO* item, int water_height, int water_depth)"),

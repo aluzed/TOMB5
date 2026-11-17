@@ -3475,3 +3475,19 @@ le niveau 3 se lance et tourne (`[LEVEL] post-initial ControlPhase
 status=0 gameMode=0 level=3`) ; les observations « retour au titre »
 précédentes correspondent à des échantillonnages trop précoces pendant le
 chargement (et à la bufferisation de stdout), pas à une sortie du niveau.
+
+### `KlaxonTremor` porté (17 novembre 2026)
+
+`GAME/CONTROL.C` : `KlaxonTremor` remplace le stub par la version de
+`joby.cpp` — klaxon périodique (`SFX_KLAXON` toutes les 512 frames),
+tremblement de caméra par impulsions (`camera.bounce`) déclenché
+aléatoirement après 450 frames, avec les deux compteurs `static`
+(`timer`, `bounce`) du code d'origine. Un stub de moins parmi les
+fonctions appelées chaque frame.
+
+Validation : corniche **201 frames OK**, aucun `SIGSEGV`, 4 183 tests
+PASS (le test `test_stub_diagnostics.py` a été mis à jour : `KlaxonTremor`
+n'est plus un stub).
+
+Build `build-gameplay59` : SHA256
+`95bdcc4f207cdf7041837630023d863d65b3dd2c92ab6622faa9bdab214cd423`.

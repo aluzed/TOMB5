@@ -1170,9 +1170,38 @@ void UpdatePulseColour()
 }
 #endif
 
+/* Porte depuis TOMB5pc/game/joby.cpp (KlaxonTremor). */
 void KlaxonTremor()
 {
-	UNIMPLEMENTED_ONCE();
+	static short timer = 0;
+	static short bounce;
+
+	if (!(GlobalCounter & 0x1FF))
+		SoundEffect(SFX_KLAXON, 0, 0x1000 | SFX_SETVOL);
+
+	if (timer >= 0)
+		timer++;
+
+	if (timer > 450 && !(GetRandomControl() & 0x1FF))
+	{
+		bounce = 0;
+		timer = -32 - (GetRandomControl() & 0x1F);
+		return;
+	}
+
+	if (timer < 0)
+	{
+		if (bounce < abs(timer))
+		{
+			bounce++;
+			camera.bounce = -(GetRandomControl() % bounce);
+		}
+		else
+		{
+			camera.bounce = -(GetRandomControl() % abs(timer));
+			timer++;
+		}
+	}
 }
 
 #if PC_VERSION
