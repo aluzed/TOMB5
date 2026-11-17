@@ -306,7 +306,7 @@ int* SubPolyGT4RL2(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//
     int ra = 0;
     int s4;
     int s5;
-    int s6;
+    intptr_t s6;
 	int att = 0;
 //    int t00;
 
@@ -381,7 +381,7 @@ int* SubPolyGT4RL2(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//
                 s3 = 1;
                 s4 = gp;
                 s5 = ra;
-                s6 = (int)t0;
+                s6 = (intptr_t)t0;
 
                 a3 = SubPolyGT4RL2((int*)QuadVertTables[gp], &s1[231], s1, a3, s0, s3, fp);
                 t1 = (int*)RGB2;
@@ -475,7 +475,7 @@ char* SubPolyGT3RL2(int* t0, int* t1, int* s1, int* a3, int s3, int fp, int s0)
     int t9;
     int at;
     int s4;
-    int s6;
+    intptr_t s6;
 
     t0 = SubPolyGTLoopRL2(3, t0, t1, (int)s1);
     gp = 3;
@@ -533,7 +533,7 @@ char* SubPolyGT3RL2(int* t0, int* t1, int* s1, int* a3, int s3, int fp, int s0)
             {
                 s3 = 1;
                 s4 = gp;
-                s6 = (int)t0;
+                s6 = (intptr_t)t0;
                 //t0 = TriVertTables[gp]
                 a3 = (int*)SubPolyGT3RL2((int*)TriVertTables[gp], &s1[216], s1, a3, s3, fp, s0);
 
@@ -1510,7 +1510,7 @@ void sub_158RL2(long underwater, struct room_info* r)
     int t6;
     int t7;
     int t8;
-    int s6;
+    intptr_t s6;
     int fpp;
     int s7;
     int a0;

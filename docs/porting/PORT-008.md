@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+La 3D du niveau 1 s affiche partiellement en 64 bits. Corrections supplementaires : matrix_stack/w2v_matrix/phd_mxptr en mots 32 bits ; roomlets lisant x/y/z et left/right/top/bottom par champs nommes ; SubPolyGTLoopRLx recevant directement le pointeur de table ; s6 passe en intptr_t (sauvegarde du curseur de table sans troncature) ; calc_animating_item_clip_window utilise les champs hotes de room_info pour la porte et x/z/minfloor/maxceiling. Mesure : [OT] verts=3717 splits=111, capture avec surfaces bleues visibles. Anomalie restante : bbox des sommets (-32632,-130)-(30848,15472) au lieu de rester dans 0..512 x 0..240, donc une partie des polygones a des coordonnees ecran invalides et la scene reste surtout noire. Prochain pas : comparer SXY/SZ des premiers polygones avec le 32 bits au meme endroit. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 Projection 3D 64 bits corrigee. matrix_stack/w2v_matrix/phd_mxptr etaient des long (8 octets) : les ecritures matrix_stack[9] et lectures phd_mxptr[3] n utilisaient plus le meme pas, toute la projection etait fausse ; ils passent en int en LP64. Les roomlets lisent x/y/z et left/right/top/bottom par nom au lieu des offsets int 5/6/7/14/15 dependants du layout LP64. SubPolyGTLoopRLx recoit directement le pointeur de table (plus de t0[0] sur l adresse d un pointeur global) et les appels ne prennent plus &QuadVertTableRLx/&TriVertTableRLx. DrawMeshRL1 est desormais atteint et produit des appels SubPolyGT4RL1 ; le crash restant est dans SubPolyGT4RL1 sur un pointeur de table tronque (0x5572f1fc au lieu de 0x55555572f1fc sous gdb). Ajout de TOMB5_START_LEVEL=n pour demarrer directement un niveau (diagnostic, ~40 s au lieu de ~90 s). Builds 64 et 32 bits verts, tests a relancer. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

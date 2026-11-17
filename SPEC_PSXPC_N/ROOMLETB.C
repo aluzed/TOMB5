@@ -368,7 +368,7 @@ int* SubPolyGT4(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//(F)
 	int ra = 0;
 	int s4;
 	int s5;
-	int s6;
+	intptr_t s6;
 	int att = 0;
 //	int t00;
 
@@ -443,7 +443,7 @@ int* SubPolyGT4(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//(F)
 				s3 = 1;
 				s4 = gp;
 				s5 = ra;
-				s6 = (int)t0;
+				s6 = (intptr_t)t0;
 
 				a3 = SubPolyGT4((int*)QuadVertTables[gp], &s1[231], s1, a3, s0, s3, fp);
 				t1 = (int*)RGB2;
@@ -538,7 +538,7 @@ int* SubPolyGT3(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//(F)
 	int t9;
 	int at;
 	int ra = 0;
-	int s6;
+	intptr_t s6;
 	int s4;
 	int s5;
 //	int t00;
@@ -602,7 +602,7 @@ int* SubPolyGT3(int* t0, int* t1, int* s1, int* a3, int s0, int s3, int fp)//(F)
 				s4 = gp;
 				s5 = ra;
 
-				s6 = (int)t0;
+				s6 = (intptr_t)t0;
 
 				a3 = SubPolyGT3((int*)TriVertTables[gp], &s1[216], s1, a3, s0, s3, fp);
 
@@ -1646,7 +1646,7 @@ void DrawRoomletListAsmBinocular(long underwater, struct room_info* r)//roomletb
 	int t3;
 	int t4;
 	int t5;
-	int s6;
+	intptr_t s6;
 	int* s1;
 	int fpp;
 	int s7;

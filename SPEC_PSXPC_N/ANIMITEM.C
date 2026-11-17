@@ -557,6 +557,9 @@ void mRotYXZ_AI(int y, int x, int z, int* fp)//818FC
 void calc_animating_item_clip_window(struct ITEM_INFO* item /*s3*/, unsigned short* s2, int* fp)//80DD8
 {
 	int* s1 = (int*)fp[25];
+#if defined(__LP64__)
+	struct room_info* rr = (struct room_info*)s1;
+#endif
 	int t3 = 0;
 	int t2 = 0;
 	int t1 = 0;
@@ -704,19 +707,39 @@ void calc_animating_item_clip_window(struct ITEM_INFO* item /*s3*/, unsigned sho
 		t8 += a0;
 		s22 += a0;
 
+		#if defined(__LP64__)
+		t6 = rr->x + 1024;
+#else
 		t6 = s1[5] + 1024;
+#endif
+		#if defined(__LP64__)
+		t55 = rr->z + 1024;
+#else
 		t55 = s1[7] + 1024;
+#endif
 
 		a0 = t6 + ((((short*)s1)[21] - 2) << 10);
 		a1 = t55 + ((((short*)s1)[20] - 2) << 10);
 
+		#if defined(__LP64__)
+		t7 = rr->maxceiling;
+#else
 		t7 = s1[9];
+#endif
+		#if defined(__LP64__)
+		v1 = rr->minfloor;
+#else
 		v1 = s1[8];
+#endif
 
 		if (s5 < t6 || a0 < s4 || s7 < t7 || v1 < t9 || t8 < t55 || a1 < s22)
 		{
 			//loc_80FE4
+			#if defined(__LP64__)
+			t3 = (int)(uintptr_t)rr->door;
+#else
 			t3 = s1[1];
+#endif
 			if (((short*)fp)[53] == item->room_number)
 			{
 				return;

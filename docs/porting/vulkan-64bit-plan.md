@@ -548,3 +548,29 @@ chaîne.
 `TOMB5_START_LEVEL=<n>` saute le menu et démarre directement le niveau
 `n` (chemin de diagnostic, disponible dans les deux builds). Cela réduit
 une reproduction de ~90 s à ~40 s.
+
+## 18. La 3D du niveau 1 s'affiche (partiellement)
+
+Après RMIG-020, la chaîne de rendu des salles atteint enfin
+`DrawMeshRL1` et dessine des polygones en 64 bits (capture avec surfaces
+bleues). Corrections supplémentaires :
+
+- `matrix_stack`, `w2v_matrix`, `phd_mxptr` en mots 32 bits (matrice
+  monde→vue correcte).
+- Roomlets : `x/y/z` et `left/right/top/bottom` lus par champs nommés.
+- `SubPolyGTLoopRLx` reçoit directement le pointeur de table ; plus de
+  `t0[0]` sur l'adresse d'une globale.
+- `s6 = (int)t0; t0 = (int*)s6;` remplacé par `intptr_t` (sauvegarde du
+  curseur de table sans troncature).
+- `calc_animating_item_clip_window` : `s1[1]` (porte) et
+  `s1[5/7/8/9]` (x/z/minfloor/maxceiling) remplacés par les champs hôtes
+  de `room_info`.
+
+Mesure : `[OT] verts=3717 splits=111`, capture avec géométrie visible.
+Anomalie restante : la bbox des sommets vaut
+`(-32632,-130)-(30848,15472)` au lieu de rester dans
+`0..512 × 0..240` ; une partie des polygones a des coordonnées écran
+invalides, ce qui laisse la scène majoritairement noire. Prochain pas :
+comparer `SXY`/`SZ` des premiers polygones au même endroit que le 32 bits
+(même salle/caméra), puis corriger la dernière erreur de projection ou de
+base de vertices.
