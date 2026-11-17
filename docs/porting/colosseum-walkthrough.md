@@ -243,3 +243,18 @@ Lara culled — cf. § 6).
 Cela confirme au passage que l'invisibilité observée dans la zone de la
 corniche est bien un artefact de sauvegarde patchée : en niveau 1, avec une
 position valide, Lara se dessine parfaitement.
+
+### Chaîne de démarrage confirmée (captures à l'appui)
+
+```
+titre (attract-mode)  --c-->  cinématique d'intro (Lara derrière des barreaux)
+                            --> flyby du niveau 1 (caméra haute, Lara minuscule au fond)
+                            --> gameplay : caméra derrière Lara, contrôles actifs
+```
+
+`Handle cutseq triggering name: 1` dans le log confirme l'exécution du niveau 1.
+Un `Up` de 2 s déplace Lara dans la ruelle (vérifié sur capture). `F5`
+produit alors une sauvegarde valide.
+
+Sauvegarde de référence ainsi obtenue :
+`/tmp/opencode/TOMB5.valid_level1.sav` (level 1, room 2, `46592,0,35779`).
