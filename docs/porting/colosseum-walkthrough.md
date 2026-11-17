@@ -202,3 +202,44 @@ lignes de `CONTROL.C` est décalée dans gdb, un `break CONTROL.C:1291`
 retombe sur la ligne 1642 — utiliser les numéros de fonction/compteur
 plutôt que les lignes). Piste prioritaire : `lara.death_count > 90 →
 S_Death()` si la sauvegarde restaure un `death_count` incohérent.
+
+## 8. Démarrer une partie : la touche de validation est `c`, pas `x`
+
+Point qui a bloqué toutes les tentatives de test : dans les menus, la
+validation est **`c`** (action), pas `x`.
+
+`EMULATOR/INPUTMAP.C` :
+
+```c
+{ "action", "confirm", INPUTMAP_IN_ACTION, INPUTMAP_RAW_CROSS },
+{ "jump",   "jump",    INPUTMAP_IN_JUMP,   INPUTMAP_RAW_SQUARE },
+```
+
+Les menus testent `RawEdge & IN_CROSS` (bit `0x4000`) : seule la touche
+mappée sur l'action (« confirm ») valide. `x` ne produit que
+`INPUTMAP_RAW_SQUARE` (saut) et **ne valide rien**.
+
+Recette vérifiée en conditions réelles :
+
+1. lancer le jeu (sans `TOMB5_AUTOLOAD`) ;
+2. au titre, appuyer sur **`c`** — éventuellement plusieurs fois à ~4 s
+   d'intervalle, car le titre joue une **attract-mode** (demo) pendant
+   laquelle les entrées sont ignorées (`title_controls_locked_out`) ;
+3. le niveau démarre (`Handle cutseq triggering name: 1` dans le log) et
+   Lara est **visible**, caméra derrière elle, contrôles au clavier
+   (`Up` avant, `Left`/`Right` rotation, `x` saut, `c` action).
+
+### Sauvegarde F5 : valide, contrairement aux sauvegardes patchées
+
+```
+[SAVE] wrote TOMB5.SAV: level 1 room 2 X 46592 Y 0 Z 35779, level data 586 bytes
+```
+
+`F5` produit une sauvegarde **cohérente avec la salle** de Lara. C'est la
+seule source fiable de point de reprise : les positions écrites à la main
+dans `TOMB5.SAV` peuvent être hors grille (⇒ caméra dans une autre salle,
+Lara culled — cf. § 6).
+
+Cela confirme au passage que l'invisibilité observée dans la zone de la
+corniche est bien un artefact de sauvegarde patchée : en niveau 1, avec une
+position valide, Lara se dessine parfaitement.
