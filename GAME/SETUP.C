@@ -2239,12 +2239,14 @@ void LoadLevel(FILE* nHandle)
 	 * the scratch block lands at m_SkinVertNums + 480 instead of in
 	 * m_ScratchVertNums.  Move it to its real destination; otherwise the
 	 * scratch indices stay zero and Lara's matrices produce a huge polygon. */
+#if !defined(__LP64__)
 	if (sizeof(objects_raw.m_SkinVertNums) >= LEVEL_SKIN_BYTES * 2)
 	{
 		memmove(&objects_raw.m_ScratchVertNums[0],
 		        &objects_raw.m_SkinVertNums[LEVEL_SKIN_BYTES],
 		        LEVEL_SKIN_BYTES);
 	}
+#endif
 #endif
 
 	for (i = 63; i >= 0; i--)

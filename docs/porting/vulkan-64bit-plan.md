@@ -639,3 +639,27 @@ Lara n'apparaît toujours pas à l'écran. Les 12 premiers polygones GT3
 (`008000e7`), donc ils ne représentent pas le corps : il faut instrumenter
 **par mesh** (pointeur `meshp`, nombre de polygones, min/max SXY) pour
 identifier ceux du corps et comparer 32/64.
+
+## 22. Gameplay niveau 1 en 64 bits : Lara visible et déplaçable
+
+Cause de l'invisibilité de Lara : après la lecture contiguë du bloc
+objets/skin/scratch, le loader 32 bits déplace `m_SkinVertNums + 480` vers
+`m_ScratchVertNums`. En LP64, les deux blocs sont **déjà** copiés
+séparément (`object_block + LEVEL_OBJECT_DATA_SIZE` et `+ 480`), donc ce
+`memmove` écrasait `ScratchVertNums` avec des zéros. Les sommets skinnés
+se repliaient alors tous sur un point (`SXY ≈ 0x008000e7`) et Lara
+disparaissait.
+
+Le `memmove` est maintenant limité au chemin 32 bits
+(`#if !defined(__LP64__)`).
+
+Résultat :
+
+- décor de Streets of Rome correct ;
+- **Lara visible**, déplacement `Up` opérationnel ;
+- **F5 écrit `TOMB5.SAV`** : `level 1 room 0 X 46592 Y 0 Z 34346`,
+  `level data 586 bytes` ;
+- processus stable.
+
+Reste à valider le chemin normal (menu → cutscene → gameplay) sans le
+raccourci `TOMB5_START_LEVEL`.

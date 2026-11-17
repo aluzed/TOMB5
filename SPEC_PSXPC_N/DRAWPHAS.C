@@ -459,9 +459,12 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 			port_lara_dbg2 = (int)(db.polyptr - port_poly_before);
 			if (getenv("TOMB5_DRAWDBG") != NULL && (port_lara_dbg2_n++ % 120) == 0)
 			{
-				fprintf(stderr, "[LARA2] delta=%d m00=%d tx=%d ty=%d tz=%d dbot=%p\n",
-				        port_lara_dbg2, lara_matrices[0].m00, lara_matrices[0].tx,
-				        lara_matrices[0].ty, lara_matrices[0].tz, (void*)db.ot);
+				fprintf(stderr, "[LARA2] delta=%d m=%d,%d,%d %d,%d,%d %d,%d,%d t=%d,%d,%d\n",
+				        port_lara_dbg2,
+				        lara_matrices[0].m00, lara_matrices[0].m01, lara_matrices[0].m02,
+				        lara_matrices[0].m10, lara_matrices[0].m11, lara_matrices[0].m12,
+				        lara_matrices[0].m20, lara_matrices[0].m21, lara_matrices[0].m22,
+				        lara_matrices[0].tx, lara_matrices[0].ty, lara_matrices[0].tz);
 			}
 			}
 

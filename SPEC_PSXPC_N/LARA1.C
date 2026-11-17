@@ -1030,6 +1030,16 @@ loc_9FC:
                            s5[10] = t4;
                            s5[11] = t9;
                            s5[13] = t5;
+                           if (getenv("TOMB5_DRAWDBG") != NULL)
+                           {
+                               static int port_gl4 = 0;
+                               if (port_gl4++ < 12)
+                               {
+                                   fprintf(stderr, "[LGT4] sxy=%08x %08x %08x v3=%08x rgb=%08x %08x %08x %08x otz=%d\n",
+                                           (unsigned)SXY0, (unsigned)SXY1, (unsigned)SXY2, (unsigned)s5[12],
+                                           (unsigned)t6, (unsigned)t7, (unsigned)t8, (unsigned)t4, (int)OTZ);
+                               }
+                           }
                            t1 *= 2;
                            t1 += s6;
                            setlen(s5, 12);

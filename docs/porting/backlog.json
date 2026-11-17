@@ -2449,6 +2449,15 @@
       ],
       "status": "In progress",
       "summary": "Lara : logique et generation OK en 64 bits, image encore absente. DrawLaraL1 est appele, db.polyptr avance d environ 15 Ko/frame, lara_item->pos=(46592,0,31232), mesh_bits=FFFFFFFF, lara.mesh_ptrs[0] valide et en-tete de mesh identique au 32 bits ; lara_matrices[0] coherente (m00=4095, translations faibles). Les entrees OT de Lara sont indexees en mots 32 bits ((PSX_ULONG*)db.ot + n) au lieu de db.ot+n*8. Les sommets aberrants -32768 viennent du decor (lara=0), pas de Lara. Les 12 premiers GT3 echantillonnes ont des SXY compacts dans les deux builds (008000e7) : il faut instrumenter par mesh (pointeur meshp, nombre de polygones, min/max SXY) pour identifier le corps. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Gameplay niveau 1 atteint en 64 bits via TOMB5_START_LEVEL. Cause de l invisibilite de Lara : le loader 32 bits fait un memmove de m_SkinVertNums+480 vers m_ScratchVertNums apres lecture contigue ; en LP64 les deux blocs sont deja copies separement, donc ce memmove ecrasait ScratchVertNums avec des zeros et les sommets skinnes se repliaient sur un point (SXY ~0x008000e7). Memmove guarde par #if !defined(__LP64__). Resultat : decor rendu, Lara visible, deplacement Up operationnel, F5 ecrit TOMB5.SAV (level 1 room 0 X 46592 Y 0 Z 34346, level data 586 bytes), processus stable. Reste : chemin normal menu/cutscene sans le raccourci. Aucun Done global."
     }
   ]
 }

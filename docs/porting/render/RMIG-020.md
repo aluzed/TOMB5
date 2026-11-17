@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : En cours : niveau 1 rendu, DrawLaraL1 et DrawAllAnimatingItems executes sans crash ; Lara genere ~15 Ko de primitives mais n apparait pas encore a l ecran. Ses matrices et positions sont correctes (pos 46592,0,31232, mesh_ptrs valides, mesh_bits=FFFFFFFF).
+Avancement : Gameplay niveau 1 atteint en 64 bits via TOMB5_START_LEVEL : decor rendu, Lara visible et deplacable, sauvegarde F5 fonctionnelle. Reste a valider le chemin normal (menu/cutscene) sans le raccourci.
 
 ## Objectif
 
@@ -55,6 +55,7 @@ La boucle peut venir du timing audio XA (dummy) ou d un pointeur cutseq converti
 - 2026-11-17 : Cause principale des polygones deformes : 23 occurrences de sizeof(unsigned long) (pas des primitives POLY_GT3/GT4, boucle de copie MISC) valent 8 en LP64 au lieu de 4. Remplacees par sizeof(PSX_ULONG). Apres correction : [OT] bbox (-174,-154)-(628,354) au lieu de ±32000, capture du niveau 1 montrant correctement le couloir de Streets of Rome avec textures et eclairage. Aucun [VBAD] restant. Reste a valider cutscene/Lara/gameplay.
 - 2026-11-17 : Corrections : conversion des drapeaux object_info_file -> bitfields hotes (loaded/intelligent/...), sinon objects[LARA].loaded restait a 0 et Lara n etait jamais dessinee ; tous les scratchpads locaux passes en tableaux bas via une reference (semantique de tableau preservee, plus de &scratchPad tronque) ; DrawSkyMesh lit l entree OT avec PSX_ULONG ; S_CalculateLight utilise &scratchPad[21]. Resultat : DrawLaraL1 est appele, lara_item mesh_ptrs[0]=0x... et mesh_bits=FFFFFFFF, 4911 sommets generes, aucune primitive non geree, processus stable 40 s. Reste : Lara n apparait pas encore (probable transformation/lighting de ses meshes) et bbox (-32768,-154)-(1023,565) contient des sommets aberrants.
 - 2026-11-17 : Diagnostic : DrawLaraL1 est appele, delta db.polyptr ~15 Ko par frame, lara_matrices coherentes (m00=4095, tx/ty/tz petits), mesh0 header identique au 32 bits. Les polygones GT3 echantillonnes ont des SXY compresses (ex. 008000e7) dans les deux builds : il faut instrumenter par mesh (pas seulement les 12 premiers GT3) pour trouver ceux du corps. Les OT Lara sont maintenant indexes en mots 32 bits (db.ot + 0/1/2) au lieu de db.ot+2*8. Les sommets aberrants -32768 viennent du decor (lara=0), pas de Lara.
+- 2026-11-17 : Cause de l invisibilite de Lara : le loader 32 bits fait un memmove de m_SkinVertNums+480 vers m_ScratchVertNums apres la lecture contigue ; en LP64 les deux blocs sont deja copies separement, donc ce memmove ecrasait ScratchVertNums avec des zeros et tous les sommets skinnes se repliaient sur un point (SXY autour de 008000e7). Guarde par #if !defined(__LP64__). Resultat : Lara visible dans le couloir, deplacement Up operationnel, F5 ecrit TOMB5.SAV (level 1 room 0 X 46592 Y 0 Z 34346, level data 586 bytes), processus stable. Reste : chemin normal menu/cutscene.
 
 ## Références
 
