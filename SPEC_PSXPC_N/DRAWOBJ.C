@@ -1,4 +1,5 @@
 #include "DRAWOBJ.H"
+#include <string.h>
 #include "MALLOC.H"
 
 #include "3D_OBJ.H"
@@ -832,7 +833,19 @@ char* SubDiv4(int t0, int t1, int t2, int t3, int t6, int s4, int* s7, int t7, i
 	((int*)&scratchPad[0])[18] = t9;
 	((short*)&scratchPad[0])[38] = t5;
 
+#if defined(__LP64__)
+	{
+		static unsigned char* port_div4tab = NULL;
+		if (port_div4tab == NULL)
+		{
+			port_div4tab = (unsigned char*)PORT_LowAlloc(sizeof(div4tab));
+			memcpy(port_div4tab, div4tab, sizeof(div4tab));
+		}
+		s4 = (int)(uintptr_t)port_div4tab;
+	}
+#else
 	s4 = (int)&div4tab[0];
+#endif
 	s5 = (int)&scratchPad[0] + 0x50;///@INFO original is |= but since we don't actually use scratch base on win32 we have to add
 	s6 = (int)&scratchPad[0];
 	s77 = 4;
@@ -932,7 +945,19 @@ char* SubDiv3(int t0, int t1, int t2, int t3, int t6, int s4, int* s7, int t7, i
 	((int*)&scratchPad[0])[2] = SZ1;
 	((int*)&scratchPad[0])[7] = SZ2;
 	((int*)&scratchPad[0])[12] = SZ3;
+#if defined(__LP64__)
+	{
+		static unsigned char* port_div3tab = NULL;
+		if (port_div3tab == NULL)
+		{
+			port_div3tab = (unsigned char*)PORT_LowAlloc(sizeof(div3tab));
+			memcpy(port_div3tab, div3tab, sizeof(div3tab));
+		}
+		s4 = (int)(uintptr_t)port_div3tab;
+	}
+#else
 	s4 = (int)&div3tab[0];
+#endif
 	s5 = (int)&scratchPad[0] + 0x3C;///@INFO original is |= but since we don't actually use scratch base on win32 we have to add
 	s6 = (int)&scratchPad[0];
 	s77 = 2;

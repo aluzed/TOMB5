@@ -663,3 +663,18 @@ Résultat :
 
 Reste à valider le chemin normal (menu → cutscene → gameplay) sans le
 raccourci `TOMB5_START_LEVEL`.
+
+## 23. Chemin normal (menu → cutscene → niveau) stabilisé
+
+Le parcours normal a révélé trois nouvelles tables globales tronquées :
+
+- `div3tab` / `div4tab` : `s4 = (int)&div3tab[0]` dans `SubDiv3`/`SubDiv4`
+  (`DrawAllAnimatingItems`). Copies basses ajoutées en LP64.
+- `dword_2C` : `sub_658L4` construisait des pointeurs couleur à partir de
+  `(int)&dword_2C[0]`. Copie basse ajoutée.
+
+Après correction, le parcours **menu → New Game → cutscene → niveau**
+reste stable (processus vivant après ~60 s, aucun SIGSEGV). La capture
+montre le décor ; Lara n'est pas encore visible dans cette phase
+(caméra/cutscene), alors que `TOMB5_START_LEVEL=1` affiche Lara, permet le
+déplacement et la sauvegarde F5.

@@ -25,6 +25,9 @@ static int (&scratchPad)[256] = *port_scratchPad;
 static int scratchPad[256];
 #endif
 
+#if defined(__LP64__)
+static int* port_dword2C = (int*)PORT_LowAlloc(64 * sizeof(int));
+#endif
 int dword_2C[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void sub_1A48L4()//(F)
@@ -1352,7 +1355,11 @@ int* sub_658L4(short* meshp, int* s5/*db.polyptr*/, int s6/*ot*/)//(F)
                             if (at != 0)
                             {
                                 at = RGB0;
+                                #if defined(__LP64__)
+                                t5 = (int)(uintptr_t)port_dword2C;
+#else
                                 t5 = (int)&dword_2C[0];
+#endif
                                 t8 = at >> 15;
                                 t8 &= 0x1FE;
                                 t8 += t5;
@@ -1553,7 +1560,11 @@ int* sub_658L4(short* meshp, int* s5/*db.polyptr*/, int s6/*ot*/)//(F)
                             if (at != 0)
                             {
                                 at = RGB0;
+                                #if defined(__LP64__)
+                                t5 = (int)(uintptr_t)port_dword2C;
+#else
                                 t5 = (int)&dword_2C[0];
+#endif
                                 t9 = at >> 23;
                                 t8 = at >> 15;
                                 t8 &= 0x1FE;

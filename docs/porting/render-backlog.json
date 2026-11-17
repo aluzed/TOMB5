@@ -859,7 +859,7 @@
           "note": "DrawCutSeqActors"
         }
       ],
-      "progress": "Gameplay niveau 1 atteint en 64 bits via TOMB5_START_LEVEL : decor rendu, Lara visible et deplacable, sauvegarde F5 fonctionnelle. Reste a valider le chemin normal (menu/cutscene) sans le raccourci.",
+      "progress": "Gameplay niveau 1 atteint via TOMB5_START_LEVEL (Lara visible/deplacable, F5 OK). Le chemin normal (menu -> cutscene -> niveau) ne plante plus apres correction de div3tab/div4tab/dword_2C, mais reste a verifier l avancee de cutscene et l affichage de Lara dans ce chemin.",
       "evidence": [
         {
           "date": "2026-11-17",
@@ -892,6 +892,10 @@
         {
           "date": "2026-11-17",
           "note": "Cause de l invisibilite de Lara : le loader 32 bits fait un memmove de m_SkinVertNums+480 vers m_ScratchVertNums apres la lecture contigue ; en LP64 les deux blocs sont deja copies separement, donc ce memmove ecrasait ScratchVertNums avec des zeros et tous les sommets skinnes se repliaient sur un point (SXY autour de 008000e7). Guarde par #if !defined(__LP64__). Resultat : Lara visible dans le couloir, deplacement Up operationnel, F5 ecrit TOMB5.SAV (level 1 room 0 X 46592 Y 0 Z 34346, level data 586 bytes), processus stable. Reste : chemin normal menu/cutscene."
+        },
+        {
+          "date": "2026-11-17",
+          "note": "Chemin normal : crashs SubDiv/SubDiv4 dans DrawAllAnimatingItems dus aux tables globales div3tab/div4tab tronquees en (int)&table[0] (copies basses ajoutees), et crash sub_658L4 sur dword_2C tronque (copie basse ajoutee). Apres correction, le chemin menu -> New Game -> cutscene -> niveau reste stable (processus vivant apres ~60 s) sans SIGSEGV. La capture montre le decor mais Lara n est pas encore visible dans cette phase (camera/cutscene). Le chemin TOMB5_START_LEVEL, lui, montre Lara et permet le deplacement et F5."
         }
       ]
     }

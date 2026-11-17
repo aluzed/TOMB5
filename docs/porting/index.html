@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+Chemin normal (menu -&gt; cutscene -&gt; niveau) stabilise en 64 bits. Crashs corriges : div3tab/div4tab tronques en (int)&amp;table[0] dans SubDiv3/SubDiv4 (DrawAllAnimatingItems), copies basses ajoutees ; dword_2C tronque dans sub_658L4, copie basse ajoutee. Le parcours menu -&gt; New Game -&gt; cutscene -&gt; niveau reste vivant ~60 s sans SIGSEGV ; la capture montre le decor mais Lara n est pas visible dans cette phase (camera/cutscene). Le chemin TOMB5_START_LEVEL affiche Lara, permet le deplacement et F5. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 Gameplay niveau 1 atteint en 64 bits via TOMB5_START_LEVEL. Cause de l invisibilite de Lara : le loader 32 bits fait un memmove de m_SkinVertNums+480 vers m_ScratchVertNums apres lecture contigue ; en LP64 les deux blocs sont deja copies separement, donc ce memmove ecrasait ScratchVertNums avec des zeros et les sommets skinnes se repliaient sur un point (SXY ~0x008000e7). Memmove guarde par #if !defined(__LP64__). Resultat : decor rendu, Lara visible, deplacement Up operationnel, F5 ecrit TOMB5.SAV (level 1 room 0 X 46592 Y 0 Z 34346, level data 586 bytes), processus stable. Reste : chemin normal menu/cutscene sans le raccourci. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
