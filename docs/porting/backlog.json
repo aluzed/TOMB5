@@ -2188,6 +2188,15 @@
       ],
       "status": "In progress",
       "summary": "The Colosseum, comportement mesure au bord de la corniche (sauvegarde 43364,768,52325, y_rot=-16384): (1) saut sur place (IN_JUMP seul) donne state=28 JUMP_UP avec y 768 -> 14 -> 768, retour exact au point de depart, speed=2 (aucune avance horizontale); (2) saut+avant (IN_FORWARD|IN_JUMP) donne state=14 GRAB_TO_FALL puis retour state=2 au meme endroit: le rebord est agrippable et Lara s'y raccroche; (3) marche seule: arret net a x=43109, bord de la grille de la room 12 (x_size=5, fin a 43008), au-dela aucun sol. Pour descendre vers la salle 26 il faut donc une manoeuvre volontaire (agripper le rebord puis se lacher, ou saut avec elan depuis plus loin); c'est le premier point a faire a la main. Documentation ajoutee dans docs/porting/colosseum-walkthrough.md section 5. Aucun Done global."
+    },
+    {
+      "date": "2026-11-17",
+      "authorization_until": "2026-11-17T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Selection de niveau, chemin de code verifie: dans TitleOptions (SPEC_PSXPC_N/TITSEQ.C) branche MENU_LEVEL_SELECT_MENU, byte_46 est l'entree courante bornee a [0, Gameflow->nLevels-2] et sur IN_CROSS le code fait gfLevelComplete = byte_46 + 1; byte_46 = 0; ret = 3. Dans DoGameflow (GAME/GAMEFLOW.C) branche GF_TITLE_LEVEL, avec gfStatus == 3 il fait gfCurrentLevel = gfLevelComplete ET repositionne le pointeur de script gf = &gfScriptWad[gfScriptOffset[gfCurrentLevel]], donc la mecanique de saut de niveau est complete. Le defaut restant est donc en amont dans l'entree de menu: soit byte_46 n'est pas initialise a l'ouverture de MENU_LEVEL_SELECT_MENU (il est reutilise par le menu de chargement et remis a 0 a plusieurs endroits), soit la navigation IN_DPAD_UP/DOWN n'incremente pas pendant la fenetre de RawEdge. Verification en jeu tentee: la navigation clavier fonctionne dans le menu principal (New Game -> Special Features se deplace), mais sous gdb la cadence tombe a ~0,5 fps et un x sur Special Features declenche le DEMO MODE avant que le sous-menu ne s'affiche; watch gfCurrentLevel n'a enregistre aucune bascule. Le point demande une passe manuelle (menu -> Special Features -> Level Select). Aucun correctif speculatif applique. Aucun Done global."
     }
   ]
 }

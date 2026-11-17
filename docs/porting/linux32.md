@@ -3346,3 +3346,34 @@ La bascule vers la salle 26 se fait donc à l'**extrémité ouest** de la
 corniche (`x≈39424`), avec une marche de quelques centaines d'unités et
 non une chute de 2048 : c'est un pas vers l'ouest, ce qui corrige
 l'hypothèse « chute maîtrisée ».
+
+### Sélection de niveau : chemin de code vérifié (17 novembre 2026)
+
+Investigation statique du « choisir Trajan's Markets démarre le niveau 1 » :
+
+1. `TitleOptions()` (`SPEC_PSXPC_N/TITSEQ.C`), branche
+   `MENU_LEVEL_SELECT_MENU` : `byte_46` est l'entrée courante (bornée à
+   `[0, Gameflow->nLevels - 2]`), et sur `IN_CROSS` :
+   ```c
+   gfLevelComplete = byte_46 + 1;
+   byte_46 = 0;
+   ret = 3;
+   ```
+2. `DoGameflow()` (`GAME/GAMEFLOW.C`), branche `GF_TITLE_LEVEL` : avec
+   `gfStatus == 3`, il fait `gfCurrentLevel = gfLevelComplete` **et**
+   repositionne le pointeur de script
+   `gf = &gfScriptWad[gfScriptOffset[gfCurrentLevel]]` (ligne suivant le
+   `else if (gfStatus == 4)`), donc la mécanique de saut de niveau est
+   complète.
+
+Le défaut restant est donc en amont, dans **l'entrée de menu** : soit
+`byte_46` n'est pas initialisé à l'ouverture de `MENU_LEVEL_SELECT_MENU`
+(il est réutilisé par le menu de chargement et remis à 0 à plusieurs
+endroits), soit la navigation `IN_DPAD_UP/DOWN` n'incrémente pas pendant la
+fenêtre de `RawEdge`. Vérification en jeu tentée : la navigation clavier
+fonctionne dans le menu principal (`New Game` → `Special Features` se
+déplace), mais sous gdb la cadence tombe à ~0,5 fps et un `x` sur
+`Special Features` déclenche le **DEMO MODE** avant que le sous-menu ne
+s'affiche ; `watch gfCurrentLevel` n'a enregistré aucune bascule. Le point
+demande donc une passe manuelle (menu → Special Features → Level Select)
+pour trancher. Aucun correctif spéculatif appliqué.
