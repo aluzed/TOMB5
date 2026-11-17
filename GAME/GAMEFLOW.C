@@ -1295,6 +1295,25 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 
 	S_LoadLevelFile(Name);
 
+#if defined(__LP64__)
+	{
+		const char* start_pos = getenv("TOMB5_START_POS");
+		if (start_pos != NULL)
+		{
+			int px, py, pz, pr, prot;
+			if (sscanf(start_pos, "%d,%d,%d,%d,%d", &px, &py, &pz, &pr, &prot) == 5)
+			{
+				lara_item->pos.x_pos = px;
+				lara_item->pos.y_pos = py;
+				lara_item->pos.z_pos = pz;
+				lara_item->pos.y_rot = (short)prot;
+				lara_item->room_number = (short)pr;
+				fprintf(stderr, "[START_POS] x=%d y=%d z=%d room=%d rot=%d\n", px, py, pz, pr, prot);
+			}
+		}
+	}
+#endif
+
 #if PC_VERSION
 	//SetFogColor(...); todo
 

@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
+Colosseum : chargement et reprise a la corniche en 64 bits. TOMB5_START_LEVEL=3 charge le niveau 3 (125 salles), decor rendu, Lara deplacable, processus stable. Nouvel outil TOMB5_START_POS=x,y,z,room,rot place Lara apres chargement ; reprise testee en room 12 (43364,768,52325, rot -16384), deplacement Up -> room 14 puis camera room 26, chute volontaire -> GAME OVER attendu (pas de SIGSEGV). Comparaison 32 bits au meme point : sable/grands polygones egalement deformes, donc defaut pre-existant non specifique au 64 bits. Parcours complet du Colosseum reste a derouler (RMIG-021). Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-11-17
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.

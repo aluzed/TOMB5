@@ -691,3 +691,18 @@ Le niveau 3 (**The Colosseum**) se charge également via
 room 20`, 3897 sommets, décor rendu et processus stable après déplacement.
 Le rendu du sable reste partiellement déformé et la caméra peut regarder un
 mur sombre ; le parcours complet du Colosseum est suivi par **RMIG-021**.
+
+## 25. Colosseum : chargement et reprise à la corniche
+
+- `TOMB5_START_LEVEL=3` charge The Colosseum (125 salles), décor rendu,
+  Lara déplaçable, processus stable.
+- Nouvel outil de diagnostic : `TOMB5_START_POS=x,y,z,room,rot` place Lara
+  après le chargement du niveau. Reprise testée à la corniche :
+  `43364,768,52325,12,-16384`, salle 12. Le déplacement `Up` fait passer
+  Lara en salle 14 puis la caméra en salle 26 ; une chute depuis la
+  corniche déclenche un **GAME OVER attendu** (pas un SIGSEGV).
+- Le rendu de sable/grands polygones est **également déformé en 32 bits**
+  au même endroit : ce n’est pas une régression 64 bits, mais un défaut
+  pré-existant du rendu à corriger séparément.
+
+Le parcours complet du Colosseum reste à dérouler (RMIG-021).

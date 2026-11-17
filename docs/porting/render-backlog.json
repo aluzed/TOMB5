@@ -941,11 +941,15 @@
           "note": "SubDiv/div tables"
         }
       ],
-      "progress": "Niveau 3 charge et stable, Lara deplacable ; parcours complet et rendu du sable a valider.",
+      "progress": "Niveau 3 charge et jouable en 64 bits ; outil TOMB5_START_POS=x,y,z,room,rot ajoute pour reprendre a la corniche (room 12). Le parcours complet reste a derouler ; le rendu de sable deforme est present aussi en 32 bits (pas une regression 64 bits).",
       "evidence": [
         {
           "date": "2026-11-17",
           "note": "TOMB5_START_LEVEL=3 : [DRAW] lvl=3 nrooms=125 room=20, [LARA] pos=(90642,4608,52736) mesh_bits=FFFFFFFF, 3897 sommets, processus stable apres deplacement Up. Capture du Colosseum (arene de sable, murs) correcte mais sable partiellement deforme."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "TOMB5_START_LEVEL=3 + TOMB5_START_POS=43364,768,52325,12,-16384 place Lara en room 12 et le gameplay repond (deplacement Up change pos/room, camera room 26). Une chute volontaire depuis la corniche declenche un GAME OVER attendu (pas un crash). Comparaison 32 bits au meme point : le sable et les grands polygones sont egalement deformes, donc ce defaut visuel est pre-existant et non specifique au 64 bits."
         }
       ]
     }
