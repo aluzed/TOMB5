@@ -300,3 +300,37 @@ La lecture des 1920 octets de la table de modules
 (`DEL_CDFS_Read` dans `tsv_buffer[256]`) ne remplit pas le buffer : c'est le
 prochain point à instruire (positionnement CD vs lecture), pas un problème
 de layout.
+
+## 13. Sonde CD : la lecture ne ramène que des zéros (17 novembre 2026)
+
+Instrumentation temporaire de `DEL_CDFS_Read`, `CdControlB(CdlSetloc)` et
+`CdReadSync`, puis exécution comparée (instrumentation retirée ensuite,
+arbre revenu à `HEAD`).
+
+**En 64 bits** (chargement du niveau titre, `Name=0`) :
+
+```
+[CD] Setloc sector=2492 off=5861184 fseek=0 ftell=5861184
+[CD] CdReadSync fread=1 pos=5863536
+[CD] DEL_CDFS_Read addr=0x555555755d60 size=1920
+[CD] copied 1920 bytes dst=00000000 src=00000000
+```
+
+Le seek et le `fread` **réussissent**, mais les données du secteur sont
+nulles : `src` (buffer de pile) est déjà à zéro. Ce n'est donc ni un
+problème de pointeur ni de layout.
+
+**En 32 bits**, sur la même session : **aucun** `copied` n'apparaît, c'est-à-
+dire qu'aucune lecture non multiple de 2048 octets n'a lieu — le bloc
+`if (level->numAiModules != 0)` n'est pas exécuté. Autrement dit, le niveau
+titre se charge avec `numAiModules == 0` en 32 bits et `== 5` en 64 bits.
+
+Conclusion : la lecture CD n'est pas cassée ; c'est **le chemin de chargement
+du niveau titre qui diffère** avant ce point (les deux binaires ne lisent pas
+la même chose), et en 64 bits la table demandée tombe sur une zone nulle de
+l'image. Prochaine investigation : comparer pas à pas la séquence de
+`DEL_CDFS_Read`/`Setloc` des deux binaires pendant `S_LoadLevelFile(Name=0)`
+pour trouver la première divergence de position.
+
+Le reste est inchangé : 32 bits vert et **hash `b9d8e710…`** restauré, 64 bits
+vert.

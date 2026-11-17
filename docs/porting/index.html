@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
 
+Sonde CD sur le chargement 64 bits (instrumentation temporaire de DEL_CDFS_Read, CdControlB(CdlSetloc) et CdReadSync, retiree ensuite, arbre revenu a HEAD). En 64 bits, chargement du niveau titre (Name=0): Setloc sector=2492 off=5861184 fseek=0 ftell=5861184, CdReadSync fread=1 pos=5863536, DEL_CDFS_Read addr=0x555555755d60 size=1920, puis &#x27;copied 1920 bytes dst=00000000 src=00000000&#x27;. Le seek et le fread reussissent mais les donnees du secteur sont nulles: src (buffer de pile) est deja a zero, donc ce n&#x27;est ni un probleme de pointeur ni de layout. En 32 bits, sur la meme session, aucun &#x27;copied&#x27; n&#x27;apparait: aucune lecture non multiple de 2048 octets n&#x27;a lieu, donc le bloc if (level-&gt;numAiModules != 0) n&#x27;est pas execute, autrement dit le niveau titre se charge avec numAiModules == 0 en 32 bits et == 5 en 64 bits. Conclusion: la lecture CD n&#x27;est pas cassee, c&#x27;est le chemin de chargement du niveau titre qui diverge avant ce point (les deux binaires ne lisent pas la meme chose) et en 64 bits la table demandee tombe sur une zone nulle de l&#x27;image. Prochaine investigation: comparer pas a pas la sequence de DEL_CDFS_Read/Setloc des deux binaires pendant S_LoadLevelFile(Name=0) pour trouver la premiere divergence de position. Etat: 32 bits vert avec hash b9d8e710 restaure, 64 bits vert. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-17
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-17T23:59:00+01:00. Linux32 provisoire.
+
 RMIG-017 en cours: ajout au chemin LP64 de LoadLevel (chemin 32 bits intact) de struct anim_struct_file (40 octets, frame_ptr 32 bits, static_assert) converti vers anims[] avec frame_ptr = frames + offset, de struct item_info_file (144 octets, data en adresse 32 bits, static_assert) converti vers items[256] avec les drapeaux actives/status/ai_bits deplies bit par bit depuis le mot 32 bits du fichier (un bitfield n&#x27;a pas d&#x27;adresse), de la conversion de meshes[] (tableau 32 bits du fichier vers tableau de pointeurs hotes base mesh_base + offset), et de relocationPtr type psx_i32* car en long* chaque champ de la table de modules etait lu sur 8 octets ce qui donnait des tailles et offsets nuls. Builds 32 et 64 bits verts, hash 32 bits INCHANGE b9d8e710. Resultat mesure: le chargement 64 bits depasse meshes/anims/items et s&#x27;arrete maintenant dans RelocateModule avec ptr == ptr2 == 0x4019724c (deux allocations de taille 0) alors que level-&gt;numAiModules=5 et aiModuleIndices[0]=15 sont corrects et que relocationPtr[0..4] valent tous 0: la lecture des 1920 octets de la table de modules (DEL_CDFS_Read dans tsv_buffer[256]) ne remplit pas le buffer. C&#x27;est le prochain point a instruire (positionnement CD vs lecture), pas un probleme de layout. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).
