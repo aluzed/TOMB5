@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Colosseum : outils de saut de cinematique ajoutes (TOMB5_SKIP_CUTSCENE force GLOBAL_playing_cutseq/cutseq_num/cutseq_trig a 0 chaque frame ; TOMB5_START_POS_HOLD=n force START_POS pendant n frames). Avec hold=600, Lara reste en room12 mais le niveau reste en ScreenFade=239/fading=1 sans progression : le start trigger/cinematique garde la main. Les reprises directes en rooms 15/90/102 restent la voie fiable pour tester le rendu. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Colosseum : tentative de reprise en room 12 via TOMB5_START_POS=40448,1023,51712,12,-16384. Lara est bien placee en room12 mais le demarrage/cinematique du niveau la repousse en room14 (y=6144, anim25), meme avec TOMB5_SKIP_CUTSCENE=1 (GLOBAL_playing_cutseq=0, cutseq_num=0, cutseq_trig=0). Les reprises directes en rooms 15/90/102 restent valides et rendues. Pour rejouer le parcours depuis la corniche il faut jouer en 64 bits ou restaurer une sauvegarde 64 bits native ; la compatibilite des sauvegardes 32 bits reste ouverte. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

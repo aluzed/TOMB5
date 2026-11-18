@@ -66,6 +66,39 @@ short MonitorOff2;
 
 long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 {
+#if defined(__LP64__)
+	if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
+	{
+		GLOBAL_playing_cutseq = 0;
+		cutseq_num = 0;
+		cutseq_trig = 0;
+	}
+
+	if (getenv("TOMB5_START_POS") != NULL)
+	{
+		static int port_force_pos = 0;
+		static int port_hold = -1;
+		if (port_hold < 0)
+		{
+			const char* h = getenv("TOMB5_START_POS_HOLD");
+			port_hold = (h != NULL) ? atoi(h) : 5;
+		}
+
+		if (port_force_pos < port_hold)
+		{
+			int px, py, pz, pr, prot;
+			if (sscanf(getenv("TOMB5_START_POS"), "%d,%d,%d,%d,%d", &px, &py, &pz, &pr, &prot) == 5)
+			{
+				lara_item->pos.x_pos = px;
+				lara_item->pos.y_pos = py;
+				lara_item->pos.z_pos = pz;
+				lara_item->pos.y_rot = (short)prot;
+				lara_item->room_number = (short)pr;
+			}
+			port_force_pos++;
+		}
+	}
+#endif
 	short scalarx = 0;
 	short scalary = 0;
 	short scalarz = 0;

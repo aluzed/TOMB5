@@ -739,3 +739,13 @@ Les reprises **directes** dans les rooms 15/90/102 restent valides et ont
 servi à valider le rendu. Pour rejouer le parcours depuis la corniche, il
 faut soit jouer en 64 bits, soit restaurer une sauvegarde 64 bits native ;
 la compatibilité des sauvegardes 32 bits reste un point ouvert.
+
+### 26.2 Outils de saut de cinématique
+
+Ajout de `TOMB5_SKIP_CUTSCENE=1` (force `GLOBAL_playing_cutseq`,
+`cutseq_num`, `cutseq_trig` à 0 à chaque frame) et
+`TOMB5_START_POS_HOLD=n` (force la position de départ pendant `n` frames).
+Avec `hold=600`, Lara reste bien en room 12, mais le niveau reste en
+`ScreenFade=239 / fading=1` et ne progresse pas : le start trigger/la
+cinématique reprend la main. Les reprises directes dans les rooms
+15/90/102 restent la méthode fiable pour tester le rendu en 64 bits.

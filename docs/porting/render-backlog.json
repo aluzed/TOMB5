@@ -958,6 +958,10 @@
         {
           "date": "2026-11-18",
           "note": "Tentative de reprise en room 12 (40448,1023,51712) avec TOMB5_SKIP_CUTSCENE : Lara est placee en room 12 mais est immediate repoussee en room 14 (y=6144, anim 25) par le demarrage/cinematique du niveau. Les reprises directes en rooms 15/90/102 restent valides. Le parcours depuis la corniche doit donc se faire en jeu (ou via une sauvegarde 64 bits native) ; la compatibilite des sauvegardes 32 bits reste un point ouvert."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Outils de debug ajoutes : TOMB5_SKIP_CUTSCENE (force GLOBAL_playing_cutseq/cutseq_num/cutseq_trig a 0) et TOMB5_START_POS_HOLD=n (force la position START_POS pendant n frames). Avec hold=600, la position room12 est maintenue mais le niveau reste en fade (ScreenFade=239, fading=1) sans progression observable : la cinematique/le start trigger garde la main. Les reprises directes en rooms 15/90/102 restent la voie valide pour tester le rendu."
         }
       ]
     }
