@@ -844,3 +844,35 @@ affiche `lvl=4 room=70`. La fin de The Colosseum fonctionne donc en 64 bits.
 Blocage suivant : l'introduction du niveau 4 (The Great Wall) reste sur un
 écran noir (`ndraw=1`, caméra à `12288,2048,49152`, aucune action `c` ne la
 fait avancer) ; le lecteur de cinématique n'est pas encore porté.
+
+## 30. Niveau 4 : costume Lara type 6 (module LARA6 absent)
+
+Après la fin du Colosseum, le niveau 4 se charge mais Lara **n'était pas
+dessinée** : `LaraDrawType = 6`, et le `switch` de `DrawPhaseGame` ne
+couvrait que les types 1 à 5. Les types connus sont 1 (normal), 2 (young),
+3 (bunhead), 4 (catsuit), 5 (divesuit) ; le type 6 correspond à un sixième
+module PSX (`LARA6`) non porté.
+
+Repli temporaire :
+
+- type 6 -> `DrawLaraL1()` ;
+- ce repli dessine bien le corps, mais une pièce du modèle (skin non gérée
+  par les tables de L1) étire un grand polygone noir sur l'écran ;
+- en masquant les meshes optionnels pendant le draw
+  (`mesh_bits = 0x80000000`), le polygone disparaît et le corps reste
+  visible. La valeur d'origine est restaurée après le draw pour ne pas
+  perturber la logique de jeu.
+
+Outils de diagnostic ajoutés :
+
+- **F10** : lit `/tmp/tomb5_laradraw` (entier 1..5) et force le type de
+  draw Lara, pour comparer les modules sans recompiler ;
+- **F11** : lit `/tmp/tomb5_meshbits` (hex) et force `lara_item->mesh_bits`,
+  pour isoler une pièce de modèle.
+
+État du niveau 4 : avec `TOMB5_START_LEVEL=4 TOMB5_SKIP_CUTSCENE=1`, la
+salle 99 se charge, Lara est visible (repli type 6) et **contrôlable**
+(déplacement mesuré : `(35328,-4096,29596)` -> `(33893,-4096,30019)`).
+L'introduction du niveau reste un écran noir sans `SKIP_CUTSCENE` : le
+lecteur de cinématique n'est pas porté. Le vrai correctif est de porter le
+module `LARA6` (skin/tables propres au costume).

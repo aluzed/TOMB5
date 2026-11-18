@@ -974,6 +974,10 @@
         {
           "date": "2026-11-18",
           "note": "Fin de The Colosseum atteinte en 64 bits via F9 (teleport runtime depuis /tmp/tomb5_teleport). Salles 15/90/102 rendues et stables (captures), pickup final obj220 ocb66 salle 70 (55808,7936,70144) pris -> transition effective vers le niveau 4 : lvl=4 room=70 nrooms=169. Blocage suivant : intro du niveau 4 sur ecran noir (ndraw=1, camera 12288,2048,49152, action c sans effet), lecteur de cinematique non porte."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Niveau 4 : LaraDrawType=6 (module LARA6 non porte) -> Lara invisible (aucun case dans le switch). Repli temporaire type 6 -> DrawLaraL1 + masquage des meshes optionnels pendant le draw (0x80000000) pour supprimer un polygone noir etire du a une skin non geree. Avec TOMB5_START_LEVEL=4 TOMB5_SKIP_CUTSCENE=1, salle 99 chargee, Lara visible et controlable (35328,-4096,29596 -> 33893,-4096,30019). Outils F10 (/tmp/tomb5_laradraw) et F11 (/tmp/tomb5_meshbits). Reste : porter LARA6 et le lecteur de cinematique (intro niveau 4 en ecran noir sans SKIP_CUTSCENE)."
         }
       ]
     }

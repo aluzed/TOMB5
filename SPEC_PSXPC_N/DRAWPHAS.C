@@ -7,6 +7,8 @@ uintptr_t port_lara_prim_hi = 0;
 int port_lara_prims_parsed = 0;
 int port_lara_verts_generated = 0;
 int port_teleport_request = 0;
+int port_lara_draw_type = 0;
+unsigned int port_lara_meshbits_override = 0;
 int port_lara_minx = 32767;
 int port_lara_maxx = -32768;
 int port_lara_miny = 32767;
@@ -112,6 +114,11 @@ long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 			}
 			fclose(fp);
 		}
+	}
+
+	if (port_lara_meshbits_override != 0)
+	{
+		lara_item->mesh_bits = port_lara_meshbits_override;
 	}
 
 	if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
@@ -535,7 +542,18 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 				static int port_lara_dbg2_n = 0;
 
 #if !AUG_VERSION && !JULY_VERSION
-			switch (LaraDrawType)
+			int port_draw_type = port_lara_draw_type != 0 ? port_lara_draw_type : LaraDrawType;
+			unsigned int port_meshbits_saved = (unsigned int)lara_item->mesh_bits;
+			if (port_draw_type == 6)
+			{
+				/* Costume 6 (module LARA6 non porte) : le jeu de meshes
+				 * contient une piece dont la skin n'est pas geree par le
+				 * repli L1 et qui etire un polygone noir sur l'ecran.
+				 * On masque les meshes optionnels pour garder le corps
+				 * visible en attendant le module dedie. */
+				lara_item->mesh_bits = 0x80000000u;
+			}
+			switch (port_draw_type)
 			{
 			case 1:
 				DrawLaraL1();
@@ -552,7 +570,22 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 			case 5:
 				DrawLaraL5();
 				break;
+			default:
+				/* Types 6+ (nouveaux costumes TR5) : le module PSX d'origine
+				 * utilise le modele standard, faute de module dedie. */
+				{
+					static int port_lara_type_warned = 0;
+					if (!port_lara_type_warned)
+					{
+						fprintf(stderr, "[LARA] LaraDrawType=%d non implemente, repli sur L1\n", port_draw_type);
+						fflush(stderr);
+						port_lara_type_warned = 1;
+					}
+				}
+				DrawLaraL1();
+				break;
 			}
+			lara_item->mesh_bits = (long)port_meshbits_saved;
 #endif
 
 			port_in_lara_draw = 0;

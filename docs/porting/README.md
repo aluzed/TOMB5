@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Niveau 4 : LaraDrawType=6, module LARA6 non porte -> Lara invisible. Repli temporaire type 6 -> L1 avec masquage des meshes optionnels pendant le draw (0x80000000) : corps visible, polygone noir etire supprime. Avec TOMB5_START_LEVEL=4 TOMB5_SKIP_CUTSCENE=1, salle 99 chargee et Lara controlable (deplacement mesure). Outils F10 (override draw type via /tmp/tomb5_laradraw) et F11 (override mesh bits via /tmp/tomb5_meshbits). Restent a porter : module LARA6 et lecteur de cinematique (intro niveau 4 noire sans SKIP_CUTSCENE). Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 The Colosseum (niveau 3) : fin de niveau atteinte en 64 bits. Outil F9 de teleport runtime (lit /tmp/tomb5_teleport, format x,y,z,room,rot, reinitialise la camera) ; salles 15/90/102 rendues et stables ; pickup final obj220 salle 70 (55808,7936,70144) pris -> transition effective vers le niveau 4 (lvl=4 room=70, 169 salles). Blocage suivant : introduction du niveau 4 sur ecran noir (cutscene non portee), aucune action c ne la fait avancer. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

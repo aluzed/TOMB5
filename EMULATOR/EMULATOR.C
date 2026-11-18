@@ -2848,6 +2848,40 @@ void Emulator_DoPollEvent()
 						port_teleport_request = 1;
 						break;
 					}
+					if (nKey == SDL_SCANCODE_F11)
+					{
+						extern unsigned int port_lara_meshbits_override;
+						FILE* mf = fopen("/tmp/tomb5_meshbits", "r");
+						unsigned int mb = 0;
+						if (mf != NULL)
+						{
+							if (fscanf(mf, "%x", &mb) == 1)
+							{
+								port_lara_meshbits_override = mb;
+								fprintf(stderr, "[LARA] meshbits override = %08x\n", mb);
+								fflush(stderr);
+							}
+							fclose(mf);
+						}
+						break;
+					}
+					if (nKey == SDL_SCANCODE_F10)
+					{
+						extern int port_lara_draw_type;
+						FILE* lf = fopen("/tmp/tomb5_laradraw", "r");
+						int nd = 0;
+						if (lf != NULL)
+						{
+							if (fscanf(lf, "%d", &nd) == 1)
+							{
+								port_lara_draw_type = nd;
+								fprintf(stderr, "[LARA] draw type override = %d\n", nd);
+								fflush(stderr);
+							}
+							fclose(lf);
+						}
+						break;
+					}
 				}
 
 				// lshift/right shift
