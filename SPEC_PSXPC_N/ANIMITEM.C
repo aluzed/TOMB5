@@ -2225,16 +2225,15 @@ void CalcAllAnimatingItems_ASM()//82640, 84684
 {
 #if defined(__LP64__)
 	/* Le scratchpad stocke des pointeurs dans des int : il doit rester sous
-	 * 4 Gio pour que la troncature soit reversible. */
-	int* scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
+	 * 4 Gio pour que la troncature soit reversible. Allocation unique. */
+	static int* port_scratchPad = NULL;
+	if (port_scratchPad == NULL)
+	{
+		port_scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
+	}
+	int* scratchPad = port_scratchPad;
 #else
-	#if defined(__LP64__)
-		static int (*port_scratchPad)[256] = NULL;
-		if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
-		int (&scratchPad)[256] = *port_scratchPad;
-	#else
-		int scratchPad[256];
-	#endif
+	int scratchPad[256];
 #endif
 	int* fp;
 	int v1;

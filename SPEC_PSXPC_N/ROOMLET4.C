@@ -1578,23 +1578,15 @@ void sub_158RL4(long underwater, struct room_info* r)
     short* s4 = NULL;
 	struct DYNAMIC* dyn = NULL;
 #if defined(__LP64__)
-    int* scratchPad = (int*)PORT_LowAlloc(256 * sizeof(int));
-    int* scratchPad2 = (int*)PORT_LowAlloc(512 * sizeof(int));
+    static int (*port_scratchPad)[256] = NULL;
+    static int (*port_scratchPad2)[512] = NULL;
+    if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
+    if (port_scratchPad2 == NULL) { port_scratchPad2 = (int (*)[512])PORT_LowAlloc(512 * sizeof(int)); }
+    int (&scratchPad)[256] = *port_scratchPad;
+    int (&scratchPad2)[512] = *port_scratchPad2;
 #else
-    #if defined(__LP64__)
-    	static int (*port_scratchPad)[256] = NULL;
-    	if (port_scratchPad == NULL) { port_scratchPad = (int (*)[256])PORT_LowAlloc(256 * sizeof(int)); }
-    	int (&scratchPad)[256] = *port_scratchPad;
-    #else
-    	int scratchPad[256];
-    #endif
-    #if defined(__LP64__)
-    	static int (*port_scratchPad2)[512] = NULL;
-    	if (port_scratchPad2 == NULL) { port_scratchPad2 = (int (*)[512])PORT_LowAlloc(512 * sizeof(int)); }
-    	int (&scratchPad2)[512] = *port_scratchPad2;
-    #else
-    	int scratchPad2[512];
-    #endif
+    int scratchPad[256];
+    int scratchPad2[512];
 #endif
     int* sp = &scratchPad[0];
     int* sp2 = &scratchPad2[0];

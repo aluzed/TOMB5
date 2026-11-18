@@ -458,11 +458,11 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 			static int port_laradbg = 0;
 			if (getenv("TOMB5_DRAWDBG") != NULL && (port_laradbg++ % 120) == 0)
 			{
-				fprintf(stderr, "[LARA] type=%d obj=%d loaded=%d meshbits=%08x nodraw=%d pos=(%d,%d,%d) room=%d anim=%d frame=%d mesh0=%p/{%d,%d,%d,%d}\n",
+				fprintf(stderr, "[LARA] type=%d obj=%d loaded=%d meshbits=%08x nodraw=%d pos=(%d,%d,%d) room=%d rot=%d anim=%d frame=%d mesh0=%p/{%d,%d,%d,%d}\n",
 				        LaraDrawType, lara_item->object_number, objects[LARA].loaded,
 				        (unsigned)lara_item->mesh_bits, SCNoDrawLara,
 				        lara_item->pos.x_pos, lara_item->pos.y_pos, lara_item->pos.z_pos,
-				        lara_item->room_number, lara_item->anim_number, lara_item->frame_number,
+				        lara_item->room_number, (int)lara_item->pos.y_rot, lara_item->anim_number, lara_item->frame_number,
 				        (void*)lara.mesh_ptrs[0],
 				        lara.mesh_ptrs[0] ? ((int*)lara.mesh_ptrs[0])[0] : 0,
 				        lara.mesh_ptrs[0] ? ((int*)lara.mesh_ptrs[0])[1] : 0,

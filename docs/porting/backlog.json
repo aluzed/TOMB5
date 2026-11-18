@@ -2521,6 +2521,15 @@
       ],
       "status": "In progress",
       "summary": "Colosseum 64 bits : clignotement/etirement de Lara corrige. Diagnostic : primitives generees et parsees chaque frame mais bbox ecran alternee ; TOMB5_NO_LARA_INTERP=1 stabilise le modele. Cause racine dans DEL_CalcLaraMatrices_Interpolated_ASM : (1) s0 ecrase par lara_matrices avant la lecture de la translation de frame ; (2) indexation du squelette en short* sur le tableau hote bones (long 8 octets). Correction : m0 separe pour les matrices + b1 long* avec index en mots. Validation : bbox pleine chaque frame, translation stable (-8,155,1295), captures stables, build 32 bits inchange. Aucun Done global."
+    },
+    {
+      "date": "2026-11-18",
+      "authorization_until": "2026-11-18T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Colosseum 64 bits : disparitions du processus expliquees et corrigees. Reproduit sous gdb : exit code 1 apres PORT_LowAlloc: pool exhausted (16777056 + 1024 > 16777216). Le pool bas de 16 Mio etait sature par des allocations par appel dans ROOMLET1/2/3/4/B (scratchPad 1K + scratchPad2 2K) et ANIMITEM.CalcAllAnimatingItems_ASM (1K par frame) ; le cache statique LP64 existait mais etait dans un #else inatteignable. Correction : allocation unique par pointeur statique local. Validation : reproduction gdb de plusieurs minutes (marche, rotations, animations) sans epuisement ; build 32 bits inchange. Aucun Done global."
     }
   ]
 }

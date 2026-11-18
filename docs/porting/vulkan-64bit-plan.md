@@ -791,3 +791,30 @@ Validation :
 - build 32 bits reconstruit et rendu inchangé ;
 - outils de diagnostic ajoutés : `TOMB5_LARAFRAME=1` (`[LF]`, `[OTF]`) et
   `TOMB5_NO_LARA_INTERP=1` (force la pose clé).
+
+## 28. Fin des disparitions du processus : épuisement du pool bas
+
+Après la correction de l'interpolation, le processus disparaissait encore
+après 2 à 3 minutes de jeu, sans message de crash. Reproduit sous gdb :
+l'inférieur sortait avec le code 1 après
+
+```
+PORT_LowAlloc: pool exhausted (16777056 + 1024 > 16777216)
+```
+
+Le pool `PORT_LowAlloc` (mmap `MAP_32BIT`, 16 Mio, bump allocator sans
+libération) était saturé. Cause : plusieurs fonctions de rendu allouaient
+leurs scratchpads **à chaque appel** au lieu d'une seule fois :
+
+- `ROOMLET1.C`, `ROOMLET2.C`, `ROOMLET3.C`, `ROOMLET4.C`, `ROOMLETB.C`
+  (`scratchPad` 1 Kio + `scratchPad2` 2 Kio par appel) ;
+- `ANIMITEM.C` / `CalcAllAnimatingItems_ASM` (1 Kio par frame).
+
+Le bloc `#else` contenait déjà le code de cache statique prévu pour LP64,
+mais il était rendu inatteignable par un `#if defined(__LP64__)` extérieur
+qui allouait directement. Correction : allocation **unique** via un
+pointeur statique local à chaque fonction, puis réutilisation.
+
+Validation : la séquence de reproduction sous gdb (marche, rotations,
+animations pendant plusieurs minutes) survit désormais sans épuisement du
+pool ; build 32 bits inchangé.

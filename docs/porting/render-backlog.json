@@ -966,6 +966,10 @@
         {
           "date": "2026-11-18",
           "note": "Clignotement de Lara corrige en 64 bits. Les primitives de Lara etaient generees et parsees chaque frame (laraPrims 286..418) mais la bbox ecran alternait corps complet / sous-ensemble. La desactivation de l interpolation (TOMB5_NO_LARA_INTERP=1) stabilisait le modele. Cause : dans DEL_CalcLaraMatrices_Interpolated_ASM, l adaptation LP64 affectait s0=lara_matrices avant mTranslateXYZ_CL(s0[6..8]) (translation lue dans les rotations), et l arithmetique du squelette utilisait des index short* sur le tableau hote bones (long, 8 octets). Correction : pointeur m0 separe pour les matrices, pointeur long* b1 avec index en mots. Validation : bbox pleine chaque frame, lara_matrices stable autour de (-8,155,1295), captures stables ; build 32 bits inchange."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Fin des disparitions du processus : le pool PORT_LowAlloc (16 Mio, MAP_32BIT) etait sature par des allocations par appel. Reproduit sous gdb : exit code 1 apres PORT_LowAlloc: pool exhausted (16777056 + 1024 > 16777216). Sites : ROOMLET1/2/3/4/B (scratchPad 1K + scratchPad2 2K par appel) et ANIMITEM CalcAllAnimatingItems_ASM (1K par frame). Le code de cache statique LP64 existait mais etait dans un #else inatteignable. Correction : allocation unique via pointeur statique local. Validation : reproduction gdb de plusieurs minutes (marche, rotations, animations) sans epuisement ; build 32 bits inchange."
         }
       ]
     }
