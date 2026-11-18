@@ -12,7 +12,7 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-006](render/RMIG-006.md) | Pointeur↔entier et fichiers en erreur en -m64 | Done | P0 |
 | [RMIG-007](render/RMIG-007.md) | Harnais de comparaison 32 bits / 64 bits | Done | P1 |
 | [RMIG-008](render/RMIG-008.md) | Abstraction renderer (interface + sélection) | In progress | P1 |
-| [RMIG-009](render/RMIG-009.md) | Backend Vulkan : instance, device, swapchain, présentation | Blocked | P1 |
+| [RMIG-009](render/RMIG-009.md) | Backend Vulkan : instance, device, swapchain, présentation | In progress | P1 |
 | [RMIG-010](render/RMIG-010.md) | Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables) | Blocked | P1 |
 | [RMIG-011](render/RMIG-011.md) | Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT) | Blocked | P1 |
 | [RMIG-012](render/RMIG-012.md) | Parité visuelle et retrait du chemin OpenGL | Blocked | P1 |

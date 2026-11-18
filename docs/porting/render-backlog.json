@@ -372,7 +372,7 @@
     {
       "id": "RMIG-009",
       "title": "Backend Vulkan : instance, device, swapchain, présentation",
-      "status": "Blocked",
+      "status": "In progress",
       "priority": "P1",
       "goal": "Afficher une frame Vulkan vide via SDL2, avec le bon périphérique et sans dépendance à OpenGL.",
       "facts": "SDL2 2.30 (64 bits) et le loader Vulkan sont disponibles ; la machine expose une RTX 2080 Ti et llvmpipe. Le contexte GL actuel est créé avec SDL_WINDOW_OPENGL ; Vulkan exigera SDL_WINDOW_VULKAN et une swapchain explicite.",
@@ -406,8 +406,13 @@
           "note": "étape E"
         }
       ],
-      "progress": "Bloqué par l'abstraction.",
-      "evidence": []
+      "progress": "Outil de validation Vulkan autonome (tools/vulkan_smoke.cpp) : instance, surface SDL2/X11, sélection physique, device + queue graphics/present, swapchain 640x480 (4 images), render pass clear, 60 frames présentées, arrêt propre. Validé sur le driver Vulkan de la machine (lavapipe/NVIDIA). Reste : intégrer ce squelette dans EMULATOR/RENDERER_VK.C et brancher le pipeline PSX.",
+      "evidence": [
+        {
+          "date": "2026-11-18",
+          "note": "tools/vulkan_smoke.cpp compile et s’exécute : [VK] instance/device/swapchain OK: 640x480, 4 images ; [VK] presented, shutting down ; exit 0. Script scripts/porting/vulkan_smoke.sh. Le squelette servira de base à RENDERER_VK.C (RMIG-010/011)."
+        }
+      ]
     },
     {
       "id": "RMIG-010",

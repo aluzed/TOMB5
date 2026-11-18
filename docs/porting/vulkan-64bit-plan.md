@@ -931,3 +931,26 @@ Reste pour terminer RMIG-008 : déplacer les appels GL hors de
 `EMULATOR.C` dans le backend, puis ajouter la sélection d’un backend
 Vulkan. Les fonctions `Emulator_CopyVRAM` restent directes pour préserver
 le harnais de test PSX existant.
+
+## 33. Smoke test Vulkan (RMIG-009)
+
+`tools/vulkan_smoke.cpp` valide la chaîne Vulkan minimale hors du jeu :
+
+- instance + extensions SDL2/X11 ;
+- sélection d’un device et d’une queue graphics/present ;
+- `SDL_Vulkan_CreateSurface`, swapchain 640x480 (4 images), image views,
+  render pass clear, framebuffers, command buffers, sémaphores/fence ;
+- 60 frames `vkAcquireNextImageKHR` / `vkQueueSubmit` /
+  `vkQueuePresentKHR`, puis arrêt propre.
+
+Exécution validée :
+
+```
+[VK] instance/device/swapchain OK: 640x480, 4 images
+[VK] presented, shutting down
+```
+
+Script : `scripts/porting/vulkan_smoke.sh`.
+
+Le squelette sert de base à `RENDERER_VK.C` ; l’intégration du pipeline
+PSX (VRAM, vertex buffer, ordering tables, shaders) reste RMIG-010/011.

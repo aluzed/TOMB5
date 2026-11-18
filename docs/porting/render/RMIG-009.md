@@ -1,8 +1,8 @@
 # RMIG-009 — Backend Vulkan : instance, device, swapchain, présentation
 
-Status: **Blocked** — priorité P1 — confiance Medium
+Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Bloqué par l'abstraction.
+Avancement : Outil de validation Vulkan autonome (tools/vulkan_smoke.cpp) : instance, surface SDL2/X11, sélection physique, device + queue graphics/present, swapchain 640x480 (4 images), render pass clear, 60 frames présentées, arrêt propre. Validé sur le driver Vulkan de la machine (lavapipe/NVIDIA). Reste : intégrer ce squelette dans EMULATOR/RENDERER_VK.C et brancher le pipeline PSX.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Disponibilité de la validation layer en 64 bits, comportement multi-GPU.
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-18 : tools/vulkan_smoke.cpp compile et s’exécute : [VK] instance/device/swapchain OK: 640x480, 4 images ; [VK] presented, shutting down ; exit 0. Script scripts/porting/vulkan_smoke.sh. Le squelette servira de base à RENDERER_VK.C (RMIG-010/011).
 
 ## Références
 
