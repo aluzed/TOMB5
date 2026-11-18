@@ -2962,6 +2962,12 @@ int Emulator_BeginScene()
 }
 
 #if !defined(__EMSCRIPTEN__) && !defined(__ANDROID__)
+static const char* g_screenshotPath = "SCREENSHOT.BMP";
+void Emulator_SetScreenshotPath(const char* path)
+{
+	g_screenshotPath = path;
+}
+
 void Emulator_TakeScreenshot()
 {
 	unsigned char* pixels = new unsigned char[windowWidth * windowHeight * 4];
@@ -2972,7 +2978,8 @@ void Emulator_TakeScreenshot()
 
 #if defined(SDL2)
 	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, windowWidth, windowHeight, 8 * 4, windowWidth * 4, 0, 0, 0, 0);
-	SDL_SaveBMP(surface, "SCREENSHOT.BMP");
+	SDL_SaveBMP(surface, g_screenshotPath);
+	fprintf(stderr, "[CAPTURE] saved %s (%dx%d)\n", g_screenshotPath, windowWidth, windowHeight);
 	SDL_FreeSurface(surface);
 #endif
 

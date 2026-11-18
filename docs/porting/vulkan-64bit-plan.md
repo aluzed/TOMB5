@@ -876,3 +876,37 @@ salle 99 se charge, Lara est visible (repli type 6) et **contrôlable**
 L'introduction du niveau reste un écran noir sans `SKIP_CUTSCENE` : le
 lecteur de cinématique n'est pas porté. Le vrai correctif est de porter le
 module `LARA6` (skin/tables propres au costume).
+
+## 31. Harnais déterministe 32/64 bits (RMIG-007)
+
+Le jeu accepte maintenant une exécution déterministe pilotée par
+l’environnement, dans `DoLevel` :
+
+- `TOMB5_FRAMES=n` : exécuter `n` frames de contrôle après le chargement ;
+- `TOMB5_CAPTURE=chemin.bmp` : capturer l’image à la dernière frame puis
+  quitter ;
+- `TOMB5_REPLAY=fichier` : entrées scriptées `frame pad_hex` (pad PSX actif
+  haut), appliquées avant `QuickControlPhase`.
+
+La capture passe par `Emulator_TakeScreenshot()` (lecture du framebuffer),
+avec un chemin configurable. Les captures sont comparées par
+`scripts/porting/capture_compare.py` et archivées dans
+`docs/porting/replay/`.
+
+Scène de référence : niveau 3, 1800 frames, aucune entrée.
+
+Résultats :
+
+| build | sha256 (2 runs identiques) |
+| --- | --- |
+| 32 bits | `083d24a01588e14023b5f2ddb654dcaee278a58d9ce9e4a7fa443a6d7f7750b6` |
+| 64 bits | `675e2c8da064bfefb4dcb4347f7629d5e114026bb0082c78b584ede61a9b651b` |
+
+L’état de jeu est identique (`Lara pos=(90642,4608,52736) room=20
+rot=-16384 anim=103 frame=1611`). L’écart image 32/64 est
+`mean_abs_diff=18.730`, gain global `0.965`, `26.12 %` de pixels à ±8
+après gain : le 64 bits est globalement plus sombre, **HUD compris**.
+L’écart n’est donc pas seulement l’éclairage 3D ; il est reporté dans
+RMIG-012 pour la parité Vulkan.
+
+RMIG-007 est terminé ; RMIG-008 (abstraction du renderer) est débloqué.

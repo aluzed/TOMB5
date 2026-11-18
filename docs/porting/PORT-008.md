@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+RMIG-007 : harnais déterministe 32/64 opérationnel (TOMB5_FRAMES/TOMB5_CAPTURE, capture puis sortie). Deux runs du même binaire donnent des BMP identiques : 32 bits sha256 083d24a0…, 64 bits sha256 675e2c8d…. État de jeu identique à la capture (Lara pos=(90642,4608,52736) room=20 rot=-16384 anim=103 frame=1611). Écart image 32/64 mesuré : mean_abs_diff=18.730, gain 0.965, 26.12% de pixels à +/-8 ; le 64 bits est globalement plus sombre, HUD compris. Captures et rapport dans docs/porting/replay/. RMIG-007 Done ; RMIG-008 débloqué. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Niveau 4 : LaraDrawType=6, module LARA6 non porte -> Lara invisible. Repli temporaire type 6 -> L1 avec masquage des meshes optionnels pendant le draw (0x80000000) : corps visible, polygone noir etire supprime. Avec TOMB5_START_LEVEL=4 TOMB5_SKIP_CUTSCENE=1, salle 99 chargee et Lara controlable (deplacement mesure). Outils F10 (override draw type via /tmp/tomb5_laradraw) et F11 (override mesh bits via /tmp/tomb5_meshbits). Restent a porter : module LARA6 et lecteur de cinematique (intro niveau 4 noire sans SKIP_CUTSCENE). Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

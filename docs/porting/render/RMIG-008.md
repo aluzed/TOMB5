@@ -1,8 +1,8 @@
 # RMIG-008 — Abstraction renderer (interface + sélection)
 
-Status: **Blocked** — priorité P1 — confiance Medium
+Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Bloqué par la cible 64 bits.
+Avancement : Débloqué par la cible 64 bits et le harnais RMIG-007 : l’interface renderer_* peut maintenant être introduite et validée par capture déterministe.
 
 ## Objectif
 
@@ -44,6 +44,7 @@ Fuites d'état GL (blend, scissor) entre passes.
 ## Dépendances
 
 - RMIG-002
+- RMIG-007
 
 ## Preuves
 

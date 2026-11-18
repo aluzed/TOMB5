@@ -12,8 +12,8 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | RMIG-004 | Conversion des structures de GAME/TYPES.H | Done | P0 | RMIG-003 |
 | RMIG-005 | Code manipulant les champs convertis | In progress | P1 | RMIG-003, RMIG-004 |
 | RMIG-006 | Pointeur↔entier et fichiers en erreur en -m64 | Done | P0 | RMIG-002 |
-| RMIG-007 | Harnais de comparaison 32 bits / 64 bits | Blocked | P1 | RMIG-002, RMIG-006 |
-| RMIG-008 | Abstraction renderer (interface + sélection) | Blocked | P1 | RMIG-002 |
+| RMIG-007 | Harnais de comparaison 32 bits / 64 bits | Done | P1 | RMIG-002, RMIG-006 |
+| RMIG-008 | Abstraction renderer (interface + sélection) | In progress | P1 | RMIG-002, RMIG-007 |
 | RMIG-009 | Backend Vulkan : instance, device, swapchain, présentation | Blocked | P1 | RMIG-008 |
 | RMIG-010 | Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables) | Blocked | P1 | RMIG-009 |
 | RMIG-011 | Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT) | Blocked | P1 | RMIG-010 |
@@ -28,7 +28,7 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | RMIG-020 | Cutscene d intro du niveau 1 en 64 bits | Done | P1 | RMIG-018, RMIG-019 |
 | RMIG-021 | Campagne 64 bits : parcours du Colosseum | In progress | P1 | RMIG-020 |
 
-**9/21 terminés** — In progress : 2 — Blocked : 10 — Todo : 0
+**10/21 terminés** — In progress : 3 — Blocked : 8 — Todo : 0
 
 Dernière mise à jour : 2026-11-17
 
@@ -39,8 +39,8 @@ Dernière mise à jour : 2026-11-17
 <li><a href="RMIG-004.md">RMIG-004 — Conversion des structures de GAME/TYPES.H</a> : Done</li>
 <li><a href="RMIG-005.md">RMIG-005 — Code manipulant les champs convertis</a> : In progress</li>
 <li><a href="RMIG-006.md">RMIG-006 — Pointeur↔entier et fichiers en erreur en -m64</a> : Done</li>
-<li><a href="RMIG-007.md">RMIG-007 — Harnais de comparaison 32 bits / 64 bits</a> : Blocked</li>
-<li><a href="RMIG-008.md">RMIG-008 — Abstraction renderer (interface + sélection)</a> : Blocked</li>
+<li><a href="RMIG-007.md">RMIG-007 — Harnais de comparaison 32 bits / 64 bits</a> : Done</li>
+<li><a href="RMIG-008.md">RMIG-008 — Abstraction renderer (interface + sélection)</a> : In progress</li>
 <li><a href="RMIG-009.md">RMIG-009 — Backend Vulkan : instance, device, swapchain, présentation</a> : Blocked</li>
 <li><a href="RMIG-010.md">RMIG-010 — Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables)</a> : Blocked</li>
 <li><a href="RMIG-011.md">RMIG-011 — Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT)</a> : Blocked</li>

@@ -89,6 +89,12 @@ int dword_A1894;
 int dword_A1890;
 int dword_A1898;
 
+/* Etat du harnais deterministe (RMIG-007), defini ici pour que les
+ * harnesses de test qui ne lient que PSXINPUT.C puissent resoudre les
+ * symboles. GAMEFLOW.C les declare en extern. */
+int port_replay_active = 0;
+unsigned int port_replay_pad = 0;
+
 void S_UpdateInput()//5F628(<), 6038C(<)
 {
 	int state; // $s1
@@ -113,6 +119,16 @@ void S_UpdateInput()//5F628(<), 6038C(<)
 	SecondaryPulseColour = 0;
 	Emulator_UpdateInput();
 
+	{
+		extern int port_replay_active;
+		extern unsigned int port_replay_pad;
+		if (port_replay_active)
+		{
+			/* Pad scripte actif haut : RawPad = (~pad) ^ 0xFFFF = pad. */
+			GPad1.data.pad = (unsigned short)~port_replay_pad;
+		}
+	}
+
 	in = 0;
 
 	if (SayNoCount != 0)
@@ -121,8 +137,21 @@ void S_UpdateInput()//5F628(<), 6038C(<)
 	}
 
 	//loc_5F650
-	state = PadGetState(0);
-	type = PadInfoMode(0, InfoModeCurID, 0);
+	{
+		extern int port_replay_active;
+		if (port_replay_active)
+		{
+			/* En mode replay, il n'y a pas de pad physique : forcer une
+			 * manette connectee pour que la branche de lecture soit prise. */
+			state = 1;
+			type = 4;
+		}
+		else
+		{
+			state = PadGetState(0);
+			type = PadInfoMode(0, InfoModeCurID, 0);
+		}
+	}
 
 	if (state != 0 && (type == 4 || type == 7))
 	{

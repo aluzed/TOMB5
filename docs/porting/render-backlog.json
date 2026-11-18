@@ -280,7 +280,7 @@
     {
       "id": "RMIG-007",
       "title": "Harnais de comparaison 32 bits / 64 bits",
-      "status": "Blocked",
+      "status": "Done",
       "priority": "P1",
       "goal": "Pouvoir prouver que la migration ne change ni la géométrie, ni l'image, avant de supprimer l'ancien chemin.",
       "facts": "Les sondes gdb existantes (probe_sanity, positions d'items) et les captures de fenêtre donnent déjà des points de comparaison. Il manque un mode déterministe (frame figée) et un hash d'image.",
@@ -315,13 +315,18 @@
           "note": "GetRandomControl"
         }
       ],
-      "progress": "Bloqué par la cible 64 bits.",
-      "evidence": []
+      "progress": "Harnais déterministe opérationnel : le jeu exécute N frames de contrôle, applique une entrée scriptée optionnelle (TOMB5_REPLAY), capture l’image (TOMB5_CAPTURE) puis quitte. Deux exécutions du même binaire produisent des BMP identiques (32 bits et 64 bits). La scène de référence niveau 3 à 1800 frames donne le même état de jeu (Lara pos/anim/frame) dans les deux builds ; un écart colorimétrique global subsiste et est documenté pour RMIG-012.",
+      "evidence": [
+        {
+          "date": "2026-11-18",
+          "note": "Scène : TOMB5_START_LEVEL=3, 1800 frames de contrôle, capture à la frame 1799. Deux runs 32 bits : sha256 083d24a01588e14023b5f2ddb654dcaee278a58d9ce9e4a7fa443a6d7f7750b6 (identiques). Deux runs 64 bits : sha256 675e2c8da064bfefb4dcb4347f7629d5e114026bb0082c78b584ede61a9b651b (identiques). État identique 32/64 : Lara pos=(90642,4608,52736) room=20 rot=-16384 anim=103 frame=1611. Écart image 32/64 : mean_abs_diff=18.730, gain global 0.965, 26.12% de pixels à +/-8 après gain ; le 64 bits est plus sombre, y compris le HUD, donc l’écart n’est pas seulement l’éclairage 3D. Captures/README dans docs/porting/replay/ et script scripts/porting/capture_compare.py."
+        }
+      ]
     },
     {
       "id": "RMIG-008",
       "title": "Abstraction renderer (interface + sélection)",
-      "status": "Blocked",
+      "status": "In progress",
       "priority": "P1",
       "goal": "Isoler les neuf points d'entrée du rendu derrière une interface, pour brancher Vulkan sans toucher au jeu.",
       "facts": "Le rendu est déjà regroupé dans EMULATOR/EMULATOR.C (init, upload VRAM, vertex buffer, draw triangles, blending, swap) avec des #if OGL/D3D. Aucune abstraction commune n'existe.",
@@ -341,7 +346,8 @@
       "estimate": "1 à 2 jours-personne.",
       "confidence": "Medium",
       "dependencies": [
-        "RMIG-002"
+        "RMIG-002",
+        "RMIG-007"
       ],
       "references": [
         {
@@ -355,7 +361,7 @@
           "note": "texture VRAM"
         }
       ],
-      "progress": "Bloqué par la cible 64 bits.",
+      "progress": "Débloqué par la cible 64 bits et le harnais RMIG-007 : l’interface renderer_* peut maintenant être introduite et validée par capture déterministe.",
       "evidence": []
     },
     {
@@ -484,7 +490,7 @@
       "status": "Blocked",
       "priority": "P1",
       "goal": "Valider Vulkan sur des scènes réelles puis supprimer OpenGL du build 64 bits.",
-      "facts": "Le remplacement est décidé : aucun backend GL ne doit rester dans la cible 64 bits. La référence de comparaison est produite par RMIG-007.",
+      "facts": "Le remplacement est décidé : aucun backend GL ne doit rester dans la cible 64 bits. La référence de comparaison est produite par RMIG-007. Le harnais RMIG-007 a mesuré un écart 32/64 : mean_abs_diff=18.730, 26.12% de pixels à +/-8 après gain global ; le 64 bits est plus sombre, HUD compris. Cet écart devra être expliqué ou accepté dans la parité Vulkan.",
       "scope": "Comparaison sur plusieurs niveaux (Rome, Colosseum), correction des écarts, retrait des fichiers/dépendances GL.",
       "exclusions": "Refonte du gameplay.",
       "tasks": [

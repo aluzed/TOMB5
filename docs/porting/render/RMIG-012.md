@@ -10,7 +10,7 @@ Valider Vulkan sur des scènes réelles puis supprimer OpenGL du build 64 bits.
 
 ## Faits établis
 
-Le remplacement est décidé : aucun backend GL ne doit rester dans la cible 64 bits. La référence de comparaison est produite par RMIG-007.
+Le remplacement est décidé : aucun backend GL ne doit rester dans la cible 64 bits. La référence de comparaison est produite par RMIG-007. Le harnais RMIG-007 a mesuré un écart 32/64 : mean_abs_diff=18.730, 26.12% de pixels à +/-8 après gain global ; le 64 bits est plus sombre, HUD compris. Cet écart devra être expliqué ou accepté dans la parité Vulkan.
 
 ## Périmètre
 

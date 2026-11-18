@@ -1,5 +1,6 @@
 #include "GAMEFLOW.H"
 #include <stdlib.h>
+#include <stdio.h>
 
 #if PSXPC_TEST
 #include "INPUTUI.H"
@@ -9,6 +10,95 @@
 #if defined(__EMSCRIPTEN__)
 #include <emscripten.h>
 #endif
+
+/* Harnais deterministe 32/64 bits (RMIG-007).
+ * TOMB5_REPLAY=<fichier> : lignes "frame pad_hex" (pad PSX actif haut).
+ * TOMB5_FRAMES=<n>       : nombre de frames de controle a executer.
+ * TOMB5_CAPTURE=<bmp>    : capture l'image a la derniere frame puis quitte. */
+extern int port_replay_active;
+extern unsigned int port_replay_pad;
+static int port_replay_frame = 0;
+static int port_replay_frames = 0;
+static const char* port_replay_capture = NULL;
+
+struct PORT_REPLAY_KEY { int frame; unsigned int pad; };
+static struct PORT_REPLAY_KEY port_replay_keys[128];
+static int port_replay_nkeys = 0;
+
+extern void Emulator_SetScreenshotPath(const char* path);
+extern void Emulator_TakeScreenshot(void);
+
+static void PortReplay_Init(void)
+{
+	const char* file = getenv("TOMB5_REPLAY");
+	const char* frames = getenv("TOMB5_FRAMES");
+	const char* capture = getenv("TOMB5_CAPTURE");
+
+	port_replay_active = 0;
+	port_replay_frame = 0;
+	port_replay_frames = 0;
+	port_replay_nkeys = 0;
+	port_replay_pad = 0;
+	port_replay_capture = capture;
+
+	if (frames != NULL)
+	{
+		port_replay_frames = atoi(frames);
+	}
+	if (file != NULL)
+	{
+		FILE* fp = fopen(file, "r");
+		if (fp != NULL)
+		{
+			int fr;
+			unsigned int pad;
+			while (port_replay_nkeys < 128 && fscanf(fp, "%d %x", &fr, &pad) == 2)
+			{
+				port_replay_keys[port_replay_nkeys].frame = fr;
+				port_replay_keys[port_replay_nkeys].pad = pad;
+				port_replay_nkeys++;
+			}
+			fclose(fp);
+		}
+	}
+
+	if (port_replay_frames <= 0)
+	{
+		port_replay_frames = 600;
+	}
+
+	if (file != NULL || frames != NULL)
+	{
+		port_replay_active = 1;
+		if (capture != NULL)
+		{
+			Emulator_SetScreenshotPath(capture);
+		}
+		fprintf(stderr, "[REPLAY] active frames=%d capture=%s keys=%d\n",
+		        port_replay_frames, capture != NULL ? capture : "(none)", port_replay_nkeys);
+		fflush(stderr);
+	}
+}
+
+static void PortReplay_SetFrame(int frame)
+{
+	int i;
+	unsigned int pad = 0;
+
+	if (!port_replay_active)
+	{
+		return;
+	}
+
+	for (i = 0; i < port_replay_nkeys; i++)
+	{
+		if (port_replay_keys[i].frame <= frame)
+		{
+			pad = port_replay_keys[i].pad;
+		}
+	}
+	port_replay_pad = pad;
+}
 
 #if !PC_VERSION
 #include "3D_GEN.H"
@@ -1454,6 +1544,8 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 	InitialiseCamera();
 	bUseSpotCam = 0;
 
+	PortReplay_Init();
+
 #if DEBUG_VERSION
 	show_game_malloc_totals();
 #endif
@@ -1471,6 +1563,7 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 	//loc_10D30
 	while (gfStatus == 0)
 	{
+		PortReplay_SetFrame(port_replay_frame);
 		GPU_BeginScene();
 
 		if (gfLegendTime != 0 && DestFadeScreenHeight == 0 && FadeScreenHeight == 0 && cutseq_num == 0)
@@ -1487,6 +1580,17 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 
 		//loc_10DC4
 		nframes = DrawPhaseGame();
+
+		if (port_replay_active && port_replay_frame == port_replay_frames - 1)
+		{
+			if (port_replay_capture != NULL)
+			{
+				Emulator_TakeScreenshot();
+			}
+			fprintf(stderr, "[REPLAY] captured frame %d\n", port_replay_frame);
+			fflush(stderr);
+			exit(0);
+		}
 #if PSXPC_TEST
 		if (!InputUI_IsOpen())
 #endif
@@ -1519,6 +1623,11 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 		{
 			gfStatus = 3;
 			break;
+		}
+
+		if (port_replay_active)
+		{
+			port_replay_frame++;
 		}
 	}
 
