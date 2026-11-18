@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Niveau 3 charge et jouable en 64 bits ; outil TOMB5_START_POS=x,y,z,room,rot ajoute pour reprendre a la corniche (room 12). Le parcours complet reste a derouler ; le rendu de sable deforme est present aussi en 32 bits (pas une regression 64 bits).
+Avancement : Niveau 3 stable et salles cles rendues en 64 bits : 15 (gladiateur/cle), 90 (Roman God/arene), 102 (serrure 2/porte). Outil TOMB5_START_POS operationnel. Reste le parcours/puzzle complet et la correction du rendu deforme pre-existant.
 
 ## Objectif
 
@@ -50,6 +50,7 @@ Le rendu deforme du sable peut venir de la sous-division (SubDiv/div3tab/div4tab
 
 - 2026-11-17 : TOMB5_START_LEVEL=3 : [DRAW] lvl=3 nrooms=125 room=20, [LARA] pos=(90642,4608,52736) mesh_bits=FFFFFFFF, 3897 sommets, processus stable apres deplacement Up. Capture du Colosseum (arene de sable, murs) correcte mais sable partiellement deforme.
 - 2026-11-18 : TOMB5_START_LEVEL=3 + TOMB5_START_POS=43364,768,52325,12,-16384 place Lara en room 12 et le gameplay repond (deplacement Up change pos/room, camera room 26). Une chute volontaire depuis la corniche declenche un GAME OVER attendu (pas un crash). Comparaison 32 bits au meme point : le sable et les grands polygones sont egalement deformes, donc ce defaut visuel est pre-existant et non specifique au 64 bits.
+- 2026-11-18 : Salles validees en 64 bits via TOMB5_START_LEVEL=3 + TOMB5_START_POS : room15 (48640,1024,58880) rendue avec bannieres/colonnes ; room90 (48640,512,70144) rendue avec arene/arches/ciel, Lara visible ; room102 (49664,512,62976) rendue avec porte/serrure. Aucun SIGSEGV, processus stable. Coordonnees de room : R15 x=45056 z=53248, R90 x=46080 z=65536, R102 x=48128 z=60416 ; items : gladiateur probable obj59 room15, Roman God obj61 item79 room90 (48154,512,69120), keyhole2 obj259 room102, pickup final obj220 room70 (55808,7936,70144).
 
 ## Références
 

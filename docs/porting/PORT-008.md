@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Colosseum : salles cles validees en 64 bits via TOMB5_START_LEVEL=3 + TOMB5_START_POS. Room15 (48640,1024,58880) rendue avec bannieres/colonnes et gladiateur ; room90 (48640,512,70144) rendue avec arene/arches/ciel et Lara visible ; room102 (49664,512,62976) rendue avec porte/serrure. Aucun SIGSEGV, processus stable. Coordonnees extraites du niveau : R15 x=45056 z=53248, R90 x=46080 z=65536, R102 x=48128 z=60416 ; Roman God obj61 item79 room90 (48154,512,69120), pickup final obj220 room70 (55808,7936,70144). Reste parcours/puzzle complet et rendu deforme pre-existant. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Colosseum : chargement et reprise a la corniche en 64 bits. TOMB5_START_LEVEL=3 charge le niveau 3 (125 salles), decor rendu, Lara deplacable, processus stable. Nouvel outil TOMB5_START_POS=x,y,z,room,rot place Lara apres chargement ; reprise testee en room 12 (43364,768,52325, rot -16384), deplacement Up -> room 14 puis camera room 26, chute volontaire -> GAME OVER attendu (pas de SIGSEGV). Comparaison 32 bits au meme point : sable/grands polygones egalement deformes, donc defaut pre-existant non specifique au 64 bits. Parcours complet du Colosseum reste a derouler (RMIG-021). Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

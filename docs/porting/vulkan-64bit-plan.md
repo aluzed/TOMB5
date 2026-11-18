@@ -706,3 +706,22 @@ mur sombre ; le parcours complet du Colosseum est suivi par **RMIG-021**.
   pré-existant du rendu à corriger séparément.
 
 Le parcours complet du Colosseum reste à dérouler (RMIG-021).
+
+## 26. Colosseum : salles clés validées en 64 bits
+
+Via `TOMB5_START_LEVEL=3` + `TOMB5_START_POS`, les salles clés du
+Colosseum se chargent et se rendent sans crash :
+
+| salle | position de test | résultat |
+| --- | --- | --- |
+| 15 | `48640,1024,58880` | bannières/colonnes rendues, gladiateur présent |
+| 90 | `48640,512,70144` | arène/arches/ciel rendus, Lara visible |
+| 102 | `49664,512,62976` | porte/serrure rendues |
+
+Coordonnées extraites du niveau 3 : R15 `x=45056 z=53248`, R90
+`x=46080 z=65536`, R102 `x=48128 z=60416` ; le Roman God (obj 61,
+item 79) est en `48154,512,69120`, le pickup final (obj 220) en
+`55808,7936,70144` (salle 70).
+
+Le parcours/puzzle complet reste à dérouler ; le rendu de certains grands
+polygones/sable reste déformé, y compris en 32 bits.
