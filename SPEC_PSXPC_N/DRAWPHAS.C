@@ -6,6 +6,7 @@ uintptr_t port_lara_prim_lo = 0;
 uintptr_t port_lara_prim_hi = 0;
 int port_lara_prims_parsed = 0;
 int port_lara_verts_generated = 0;
+int port_teleport_request = 0;
 int port_lara_minx = 32767;
 int port_lara_maxx = -32768;
 int port_lara_miny = 32767;
@@ -77,6 +78,42 @@ short MonitorOff2;
 long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 {
 #if defined(__LP64__)
+	if (port_teleport_request)
+	{
+		/* Diagnostic : F9 lit une position dans TOMB5_TELEPORT_FILE
+		 * (defaut /tmp/tomb5_teleport, format x,y,z,room,rot) et y place
+		 * Lara sans redemarrer le jeu. */
+		const char* tf = getenv("TOMB5_TELEPORT_FILE");
+		FILE* fp;
+		int px, py, pz, pr, prot;
+
+		port_teleport_request = 0;
+		if (tf == NULL)
+		{
+			tf = "/tmp/tomb5_teleport";
+		}
+		fp = fopen(tf, "r");
+		if (fp != NULL)
+		{
+			if (fscanf(fp, "%d,%d,%d,%d,%d", &px, &py, &pz, &pr, &prot) == 5)
+			{
+				lara_item->pos.x_pos = px;
+				lara_item->pos.y_pos = py;
+				lara_item->pos.z_pos = pz;
+				lara_item->pos.y_rot = (short)prot;
+				lara_item->room_number = (short)pr;
+				lara_item->speed = 0;
+				lara_item->fallspeed = 0;
+				extern void InitialiseCamera();
+				InitialiseCamera();
+				fprintf(stderr, "[TELEPORT] x=%d y=%d z=%d room=%d rot=%d\n",
+				        px, py, pz, pr, prot);
+				fflush(stderr);
+			}
+			fclose(fp);
+		}
+	}
+
 	if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
 	{
 		GLOBAL_playing_cutseq = 0;

@@ -941,7 +941,7 @@
           "note": "SubDiv/div tables"
         }
       ],
-      "progress": "Niveau 3 stable et salles cles rendues en 64 bits : 15 (gladiateur/cle), 90 (Roman God/arene), 102 (serrure 2/porte). Outil TOMB5_START_POS operationnel. Reste le parcours/puzzle complet et la correction du rendu deforme pre-existant.",
+      "progress": "Fin de The Colosseum atteinte en 64 bits : pickup final salle 70 -> chargement du niveau 4 (169 salles). Outil F9 de teleport runtime ajoute. Reste : cinematique d intro du niveau 4 (ecran noir) et parcours manuel complet.",
       "evidence": [
         {
           "date": "2026-11-17",
@@ -970,6 +970,10 @@
         {
           "date": "2026-11-18",
           "note": "Fin des disparitions du processus : le pool PORT_LowAlloc (16 Mio, MAP_32BIT) etait sature par des allocations par appel. Reproduit sous gdb : exit code 1 apres PORT_LowAlloc: pool exhausted (16777056 + 1024 > 16777216). Sites : ROOMLET1/2/3/4/B (scratchPad 1K + scratchPad2 2K par appel) et ANIMITEM CalcAllAnimatingItems_ASM (1K par frame). Le code de cache statique LP64 existait mais etait dans un #else inatteignable. Correction : allocation unique via pointeur statique local. Validation : reproduction gdb de plusieurs minutes (marche, rotations, animations) sans epuisement ; build 32 bits inchange."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Fin de The Colosseum atteinte en 64 bits via F9 (teleport runtime depuis /tmp/tomb5_teleport). Salles 15/90/102 rendues et stables (captures), pickup final obj220 ocb66 salle 70 (55808,7936,70144) pris -> transition effective vers le niveau 4 : lvl=4 room=70 nrooms=169. Blocage suivant : intro du niveau 4 sur ecran noir (ndraw=1, camera 12288,2048,49152, action c sans effet), lecteur de cinematique non porte."
         }
       ]
     }

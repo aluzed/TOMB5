@@ -818,3 +818,29 @@ pointeur statique local à chaque fonction, puis réutilisation.
 Validation : la séquence de reproduction sous gdb (marche, rotations,
 animations pendant plusieurs minutes) survit désormais sans épuisement du
 pool ; build 32 bits inchangé.
+
+## 29. Colosseum : fin de niveau atteinte, téléport runtime F9
+
+Nouvel outil de diagnostic : **F9** lit `/tmp/tomb5_teleport`
+(`TOMB5_TELEPORT_FILE` pour changer de chemin, format `x,y,z,room,rot`)
+et place Lara à cette position **sans redémarrer le jeu**. Contrairement à
+`TOMB5_START_POS`, appliqué au chargement, il intervient dans une partie
+déjà initialisée et réinitialise la caméra (`InitialiseCamera()`).
+
+Salles validées en 64 bits avec ce téléport (captures stables, Lara
+visible, aucun SIGSEGV) :
+
+| salle | position | rendu |
+| --- | --- | --- |
+| 15 | `47616,1024,55808` | sol orné, bannières, porte, ciel |
+| 90 | `47616,512,68096` | autel du Roman God, dallage |
+| 102 | `49664,512,64000` | bannières, porte noire, socle |
+| 70 | `55808,7936,70144` | pickup final (`obj 220`, `ocb 66`) |
+
+Le téléport sur le pickup final de la salle 70 a déclenché la prise de
+l'objet et la **transition vers le niveau 4** : le jeu charge 169 salles et
+affiche `lvl=4 room=70`. La fin de The Colosseum fonctionne donc en 64 bits.
+
+Blocage suivant : l'introduction du niveau 4 (The Great Wall) reste sur un
+écran noir (`ndraw=1`, caméra à `12288,2048,49152`, aucune action `c` ne la
+fait avancer) ; le lecteur de cinématique n'est pas encore porté.

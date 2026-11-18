@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Niveau 3 stable et salles cles rendues en 64 bits : 15 (gladiateur/cle), 90 (Roman God/arene), 102 (serrure 2/porte). Outil TOMB5_START_POS operationnel. Reste le parcours/puzzle complet et la correction du rendu deforme pre-existant.
+Avancement : Fin de The Colosseum atteinte en 64 bits : pickup final salle 70 -> chargement du niveau 4 (169 salles). Outil F9 de teleport runtime ajoute. Reste : cinematique d intro du niveau 4 (ecran noir) et parcours manuel complet.
 
 ## Objectif
 
@@ -55,6 +55,7 @@ Le rendu deforme du sable peut venir de la sous-division (SubDiv/div3tab/div4tab
 - 2026-11-18 : Outils de debug ajoutes : TOMB5_SKIP_CUTSCENE (force GLOBAL_playing_cutseq/cutseq_num/cutseq_trig a 0) et TOMB5_START_POS_HOLD=n (force la position START_POS pendant n frames). Avec hold=600, la position room12 est maintenue mais le niveau reste en fade (ScreenFade=239, fading=1) sans progression observable : la cinematique/le start trigger garde la main. Les reprises directes en rooms 15/90/102 restent la voie valide pour tester le rendu.
 - 2026-11-18 : Clignotement de Lara corrige en 64 bits. Les primitives de Lara etaient generees et parsees chaque frame (laraPrims 286..418) mais la bbox ecran alternait corps complet / sous-ensemble. La desactivation de l interpolation (TOMB5_NO_LARA_INTERP=1) stabilisait le modele. Cause : dans DEL_CalcLaraMatrices_Interpolated_ASM, l adaptation LP64 affectait s0=lara_matrices avant mTranslateXYZ_CL(s0[6..8]) (translation lue dans les rotations), et l arithmetique du squelette utilisait des index short* sur le tableau hote bones (long, 8 octets). Correction : pointeur m0 separe pour les matrices, pointeur long* b1 avec index en mots. Validation : bbox pleine chaque frame, lara_matrices stable autour de (-8,155,1295), captures stables ; build 32 bits inchange.
 - 2026-11-18 : Fin des disparitions du processus : le pool PORT_LowAlloc (16 Mio, MAP_32BIT) etait sature par des allocations par appel. Reproduit sous gdb : exit code 1 apres PORT_LowAlloc: pool exhausted (16777056 + 1024 > 16777216). Sites : ROOMLET1/2/3/4/B (scratchPad 1K + scratchPad2 2K par appel) et ANIMITEM CalcAllAnimatingItems_ASM (1K par frame). Le code de cache statique LP64 existait mais etait dans un #else inatteignable. Correction : allocation unique via pointeur statique local. Validation : reproduction gdb de plusieurs minutes (marche, rotations, animations) sans epuisement ; build 32 bits inchange.
+- 2026-11-18 : Fin de The Colosseum atteinte en 64 bits via F9 (teleport runtime depuis /tmp/tomb5_teleport). Salles 15/90/102 rendues et stables (captures), pickup final obj220 ocb66 salle 70 (55808,7936,70144) pris -> transition effective vers le niveau 4 : lvl=4 room=70 nrooms=169. Blocage suivant : intro du niveau 4 sur ecran noir (ndraw=1, camera 12288,2048,49152, action c sans effet), lecteur de cinematique non porte.
 
 ## Références
 

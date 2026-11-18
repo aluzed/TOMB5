@@ -2842,6 +2842,12 @@ void Emulator_DoPollEvent()
 						PortSave_RequestLoad();
 						break;
 					}
+					if (nKey == SDL_SCANCODE_F9)
+					{
+						extern int port_teleport_request;
+						port_teleport_request = 1;
+						break;
+					}
 				}
 
 				// lshift/right shift
