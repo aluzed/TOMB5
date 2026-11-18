@@ -1257,3 +1257,28 @@ de l'état du fondu, pas d'un `#if`.
 Prochaine étape : tracer `S_SetScreenFade` / `dScreenFade` au chargement
 du niveau dans les deux builds pour trouver pourquoi le fondu n'est pas
 lancé en 64 bits.
+
+## 41. Vulkan devient le backend par défaut du build 64 bits
+
+Le rendu Vulkan étant octet pour octet identique à OpenGL 64 bits sur la
+scène de référence (et vérifié sur le niveau 4), il devient le backend
+**par défaut** en 64 bits :
+
+- `MAIN` sans variable d’environnement → Vulkan ;
+- `TOMB5_RENDERER=gl` (ou `opengl`, ou `0`) → chemin OpenGL historique,
+  conservé pour les comparaisons ;
+- pas de repli silencieux : si l’initialisation Vulkan échoue, le
+  programme s’arrête avec un message explicite (un backend ne doit pas
+  être remplacé sans le dire).
+
+Vérifications après bascule :
+
+| scénario | résultat |
+| --- | --- |
+| `MAIN` seul (écran-titre) | `[VK] backend ready: 640x480, 4 images`, logo et menu rendus |
+| niveau 3, 300 frames, GL explicite | sha256 `d05c8394…` = capture GL précédente (aucune régression) |
+| niveau 3, 1800 frames, Vulkan | sha256 `5dbbb251…` = référence GL (`cmp` identique) |
+| niveau 4 (Colosseum), 600 frames, Vulkan | scène rendue, aucune erreur de validation |
+
+Le build 32 bits reste sur OpenGL. Le retrait effectif du code
+OpenGL/GLEW du build 64 bits est la dernière étape de RMIG-012.

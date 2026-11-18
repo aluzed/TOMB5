@@ -837,8 +837,22 @@ static int Emulator_InitialiseSDL(char* windowName, int width, int height)
 
 #if defined(__LP64__)
 	{
+		/*
+		 * En 64 bits, Vulkan est le backend par defaut (RMIG-012). Le chemin
+		 * OpenGL reste disponible pour comparer les deux rendus :
+		 *   TOMB5_RENDERER=gl
+		 */
 		const char* want = getenv("TOMB5_RENDERER");
-		if (want != NULL && strcmp(want, "vulkan") == 0)
+		int useVulkan = 1;
+
+		if (want != NULL &&
+		    (strcmp(want, "gl") == 0 || strcmp(want, "opengl") == 0 ||
+		     strcmp(want, "0") == 0))
+		{
+			useVulkan = 0;
+		}
+
+		if (useVulkan)
 		{
 			unsigned int flags = SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE;
 			g_window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_UNDEFINED,
@@ -846,10 +860,13 @@ static int Emulator_InitialiseSDL(char* windowName, int width, int height)
 			                            windowWidth, windowHeight, flags);
 			if (g_window == NULL || !RendererVK_Select(g_window))
 			{
+				/* Pas de repli silencieux : un backend absent doit etre
+				 * visible dans les journaux, pas remplace sans le dire. */
 				eprinterr("Failed to initialise Vulkan backend!\n");
 				return FALSE;
 			}
 			g_vulkanMode = 1;
+			eprintf("Renderer: Vulkan (defaut 64 bits, TOMB5_RENDERER=gl pour OpenGL)\n");
 			return TRUE;
 		}
 	}

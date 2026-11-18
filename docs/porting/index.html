@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Vulkan devient le backend par défaut du build 64 bits (TOMB5_RENDERER=gl conserve l’ancien chemin, pas de repli silencieux). Vérifié : écran-titre Vulkan, niveau 3 1800 frames Vulkan identique à la référence GL (sha256 5dbbb251…), niveau 3 GL explicite identique à la capture précédente (d05c8394…), niveau 4 Colosseum 600 frames Vulkan sans erreur de validation. Le build 32 bits reste OpenGL. Reste : retrait d’OpenGL/GLEW du build 64 bits, écart 32/64 (primitives d’effet 0x34/0x62/0xE1, ScreenFading).
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Écart 32/64 analysé : le pipeline de couleur n’est pas en cause (le backend Vulkan égale OpenGL au pixel près). Le dump des vertices montre 977 ordering tables identiques (chargement/intro) puis 300 OTs de jeu divergents : le build 32 bits émet un split de texture et ~99 vertices de plus par frame (6 en blend soustractif), et son journal [DRAW] affiche un fondu actif (fade=239/0 fading=1) absent en 64 bits avec persp 306 vs 256. C’est une divergence d’état/effets LP64, suivie dans RMIG-012 ; piste : histogramme des codes de primitives par OT.
 
 Détails : [scène et parcours runtime](runtime-level.md).

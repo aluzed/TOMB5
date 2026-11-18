@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Backend Vulkan pixel-identique à OpenGL 64 bits (référence 5dbbb251…). L’écart 32 ↔ 64 bits a été analysé (dump des vertices) : les 977 premiers ordering tables sont identiques, puis chaque frame de jeu diffère — le 32 bits émet un split de texture et ~99 vertices de plus par frame (dont 6 en blend soustractif) et son journal [DRAW] montre un fondu actif (`fade=239/0 fading=1`) absent en 64 bits, avec des valeurs `persp` différentes. Ce n’est donc pas un problème de couleur mais une divergence d’état/effets LP64, à instruire côté portage 64 bits. Reste aussi le retrait effectif du chemin OpenGL du build 64 bits.
+Avancement : Backend Vulkan pixel-identique à OpenGL 64 bits et désormais **backend par défaut** en 64 bits (TOMB5_RENDERER=gl pour l’ancien chemin). L’écart 32 ↔ 64 bits est analysé et localisé (primitives d’effet émises seulement en 32 bits, codes 0x34/0x62/0xE1, corrélé à ScreenFading) : c’est un sujet LP64 distinct du rendu. Reste : retrait effectif d’OpenGL/GLEW du build 64 bits.
 
 ## Objectif
 
@@ -51,6 +51,7 @@ Rapport de comparaison d'images + ldd + revue des dépendances CMake.
 - 2026-11-18 : Backend Vulkan pixel-identique à OpenGL 64 bits sur la scène de référence (sha256 5dbbb251…, cmp identique). L’écart restant est celui du rendu 32 bits vs 64 bits, indépendant du backend ; à instruire côté conversion couleur/format.
 - 2026-11-18 : Analyse 32/64 par dump TOMB5_DUMP_VERTS (300 frames, niveau 3) : 977 enregistrements identiques (chargement/intro) puis 300 enregistrements divergents (jeu) ; comptage : 32 bits 1 058 577 vertices / 64 bits 1 062 531 au total, avec 32>64 sur 225 OTs et 64>32 sur 75 OTs dans la partie jeu. Journal [DRAW] : 32 bits fade=239/0 fading=1 vs 64 bits fade=0/0 fading=0, persp 306 vs 256. Conclusion : divergence d’état de jeu LP64, pas de pipeline couleur.
 - 2026-11-18 : Harnais TOMB5_PRIMHIST (histogramme des codes de primitive par OT). Différence 32/64 au premier OT de jeu : 32 bits [PH] nv=2706 34=434 3C=221 50=11 60=1 62=1 E1=1 vs 64 bits nv=2607 34=403 3C=221 50=11 60=1. Soit 31 triangles gouraud semi-transparents (0x34), 1 sprite semi-transparent (0x62) et 1 image-load (0xE1) émis seulement en 32 bits, les autres primitives étant identiques (pas d’abandon de chaîne). Corrélé à ScreenFading=1 (32) vs 0 (64) au premier [DRAW] : effet d’écran/fondu. PC_VERSION n’est pas défini dans SPEC_PSXPC_N, donc Fade() s’exécute dans les deux builds.
+- 2026-11-18 : Vulkan par défaut en 64 bits : écran-titre rendu ([VK] backend ready 640x480, 4 images), niveau 3 300 frames avec TOMB5_RENDERER=gl → sha256 d05c8394… identique à la capture GL précédente (aucune régression du chemin GL), niveau 3 1800 frames Vulkan → sha256 5dbbb251… identique à la référence, niveau 4 (Colosseum) 600 frames Vulkan sans erreur de validation. Échec d’initialisation Vulkan = arrêt explicite, pas de repli silencieux.
 
 ## Références
 

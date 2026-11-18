@@ -25,7 +25,9 @@ TOMB5_SAVE_PATH=...      # sauvegarde propre au binaire
 
 ## Commandes
 
-Build 64 bits :
+Build 64 bits (Vulkan par défaut depuis RMIG-012 ; ajouter
+`TOMB5_RENDERER=gl` pour capturer avec OpenGL — les deux rendus donnent
+le même BMP) :
 
 ```
 cd build/porting/data-ntsc
