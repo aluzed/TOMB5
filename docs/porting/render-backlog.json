@@ -504,7 +504,7 @@
           "note": "blit_shader"
         }
       ],
-      "progress": "Shaders SPIR-V 4/8/16 bits + blit + CLUT + dither compilés hors ligne et embarqués. La scène de référence (niveau 3, 1800 frames) rendue par Vulkan est octet pour octet identique à la capture OpenGL 64 bits (cmp sans différence). Le format 8 bits n’est pas exercé par cette scène (4 et 16 bits seulement) : il reste à couvrir par une scène dédiée avant de clore le ticket.",
+      "progress": "Shaders SPIR-V 4/8/16 bits + blit + CLUT + dither compilés hors ligne. La scène de référence (4 et 16 bits) est rendue au pixel près, identique à OpenGL. Le 8 bits, absent des scènes jouées, est validé par un harnais de format forcé (TOMB5_FORCE_TEXFMT=8) : 99,82 % des pixels à ±8 et écart moyen 0,14/255, le reste étant des égalités de sampling nearest sur des frontières de texel. Reste à confirmer sur une scène du jeu utilisant réellement l’8 bits.",
       "evidence": [
         {
           "date": "2026-11-18",
@@ -521,6 +521,14 @@
         {
           "date": "2026-11-18",
           "note": "Parité pixel : TOMB5_RENDERER=vulkan TOMB5_START_LEVEL=3 TOMB5_FRAMES=1800 TOMB5_CAPTURE=/tmp/vk.bmp, comparé à la référence GL 64 bits : sha256 identiques 5dbbb25184d54d96c95aed1c96494ade0e390956e7c0de1da262180779e269a8, 307200 pixels identiques, validation layers propres. Preuve structurelle : dump TOMB5_DUMP_VERTS identique octet par octet (1277 enregistrements vertices+splits) entre GL et VK sur 300 frames. Correctifs nécessaires : dither retourné verticalement (gl_FragCoord Vulkan part du haut → pc.Screen.y - y), ids de texture logiques distincts, read_vram/copy_vram sur vram."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Comparaison en mode forcé (TOMB5_FORCE_TEXFMT=8, niveau 3, 300 frames) : GL sha256 45210c96… vs VK ba7c0ef7…, mean_abs_diff=0.142, 99.82% de pixels à ±8. Le format 8 bits n’est pas utilisé par les scènes jouées (répartition mesurée sur la scène de référence : 4 bits 588 groupes, 16 bits 977 groupes, 0 groupe 8 bits)."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Emulator_StoreFrameBuffer porté sur Vulkan (copie de l’image présentée vers un buffer hôte à chaque frame, puis conversion 16 bits identique au chemin GL, appelée une fois par chargement de niveau avec x=0 y=240 w=512 h=240). La référence 4 bits reste bit-identique après ce portage (sha256 5dbbb251…)."
         }
       ]
     },
@@ -562,7 +570,7 @@
           "note": "sélection OGL"
         }
       ],
-      "progress": "Débloqué : les shaders SPIR-V sont en place et le backend Vulkan reproduit la référence OpenGL 64 bits au pixel près. Reste (a) l’écart 32 bits ↔ 64 bits (64 bits plus sombre, HUD compris : mean_abs_diff=18.730, 26.12% à ±8) et (b) le retrait effectif du chemin OpenGL du build 64 bits.",
+      "progress": "Débloqué : les shaders SPIR-V sont en place et le backend Vulkan reproduit la référence OpenGL 64 bits au pixel près (y compris après portage de Emulator_StoreFrameBuffer). Reste (a) l’écart 32 bits ↔ 64 bits (64 bits plus sombre, HUD compris : mean_abs_diff=18.730, 26.12% à ±8) et (b) le retrait effectif du chemin OpenGL du build 64 bits.",
       "evidence": [
         {
           "date": "2026-11-18",
@@ -1031,6 +1039,51 @@
           "note": "Niveau 4 : LaraDrawType=6 (module LARA6 non porte) -> Lara invisible (aucun case dans le switch). Repli temporaire type 6 -> DrawLaraL1 + masquage des meshes optionnels pendant le draw (0x80000000) pour supprimer un polygone noir etire du a une skin non geree. Avec TOMB5_START_LEVEL=4 TOMB5_SKIP_CUTSCENE=1, salle 99 chargee, Lara visible et controlable (35328,-4096,29596 -> 33893,-4096,30019). Outils F10 (/tmp/tomb5_laradraw) et F11 (/tmp/tomb5_meshbits). Reste : porter LARA6 et le lecteur de cinematique (intro niveau 4 en ecran noir sans SKIP_CUTSCENE)."
         }
       ]
+    },
+    {
+      "id": "RMIG-022",
+      "title": "Anomalie d'ordre des canaux dans Emulator_StoreFrameBuffer",
+      "status": "Todo",
+      "priority": "P2",
+      "goal": "Rendre la conversion framebuffer -> VRAM (16 bits) conforme au format PSX et identique entre backends.",
+      "facts": "Emulator_StoreFrameBuffer lit le framebuffer en RGBA puis extrait le bleu PSX des 5 bits hauts du rouge, le vert des 5 bits hauts du bleu et le rouge des 5 bits hauts de l'alpha (code hérité d'un chemin D3D BGRA). L'effet mono/sepia (CreateMonoScreen, GPU_SyncBothScreens) utilise cette image. Le backend Vulkan reproduit volontairement ce comportement pour rester identique à OpenGL.",
+      "scope": "Analyse de l'effet visible de l'ordre des canaux (mono screen, transitions de niveau), correction éventuelle dans les deux backends, mise à jour des captures de référence si l'image change.",
+      "exclusions": "Réécriture du pipeline de transition de niveau.",
+      "tasks": [
+        "Comparer l'image stockée en VRAM avec la vraie trame affichée (canal par canal) sur un niveau utilisant l'effet mono.",
+        "Décider du comportement correct (PSX : RGB555 depuis la trame) et l'appliquer aux deux backends.",
+        "Régénérer les captures de référence et vérifier la parité 32/64 et GL/Vulkan."
+      ],
+      "acceptance": [
+        "La conversion framebuffer -> VRAM utilise les canaux attendus (rouge<->rouge, vert<->vert, bleu<->bleu).",
+        "L'effet mono/sepia reste visuellement correct et les captures GL/Vulkan restent identiques."
+      ],
+      "validation": "Capture de la frame de transition + inspection de la VRAM stockée (TOMB5_DUMP_VRAM).",
+      "unknowns": "L'effet mono peut masquer l'erreur (moyenne des canaux) ; l'impact visuel réel reste à mesurer.",
+      "estimate": "0,5 à 1 jour-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-011"
+      ],
+      "references": [
+        {
+          "path": "EMULATOR/EMULATOR.C",
+          "line": 2593,
+          "note": "Emulator_StoreFrameBuffer (chemin GL, extraction des canaux)"
+        },
+        {
+          "path": "EMULATOR/RENDERER_VK.C",
+          "line": 1048,
+          "note": "RendererVK_StoreFrameBuffer (portage Vulkan)"
+        },
+        {
+          "path": "SPEC_PSXPC_N/3D_OBJ.C",
+          "line": 20,
+          "note": "CreateMonoScreen / GPU_SyncBothScreens"
+        }
+      ],
+      "progress": "Constat documenté pendant le portage Vulkan ; comportement identique conservé entre GL et VK en attendant l'analyse.",
+      "evidence": []
     }
   ]
 }

@@ -115,6 +115,7 @@ extern int RendererVK_Select(SDL_Window* window);
 extern void RendererVK_Shutdown(void);
 extern int RendererVK_IsActive(void);
 extern void RendererVK_RequestCapture(const char* path);
+extern void RendererVK_StoreFrameBuffer(int x, int y, int w, int h);
 char* pVirtualMemory = NULL;
 SysCounter counters[3] = { 0 };
 #if !defined(__ANDROID__)
@@ -1851,7 +1852,7 @@ const char* gte_shader_8 =
 	"		vec2 comp = VRAM(uv);\n"
 	"\n"
 	"		vec2 clut_pos = v_page_clut.zw;\n"
-	"		int index = int(mod(v_texcoord.x, 2.0));\n"
+	"		int index = int(mod(v_texcoord.x + 0.0001, 2.0));\n"
 	"		if(index == 0) { \n"
 	"			clut_pos.x += comp[0] * 255.0 / 1024.0;\n"
 	"		} else {	\n"
@@ -2599,6 +2600,24 @@ void Emulator_SaveVRAM(const char* outputFileName, int x, int y, int width, int 
 
 void Emulator_StoreFrameBuffer(int x, int y, int w, int h)
 {
+	/* Harnais de diagnostic (RMIG-011/012) : permet de mesurer l'impact de la
+	 * copie framebuffer -> VRAM sans modifier le reste du rendu. */
+	if (getenv("TOMB5_NO_STOREFB") != NULL)
+	{
+		return;
+	}
+
+#if defined(__LP64__)
+	if (g_vulkanMode)
+	{
+		/* Le backend Vulkan garde une copie host de la derniere image
+		 * presentee ; la conversion 32 -> 16 bits et l'ecriture VRAM sont
+		 * faites cote backend. */
+		RendererVK_StoreFrameBuffer(x, y, w, h);
+		return;
+	}
+#endif
+
 	short *fb = (short*)malloc(windowWidth * windowHeight * sizeof(short));
 
 #if defined(OGL) || defined(OGLES)

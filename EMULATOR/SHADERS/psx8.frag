@@ -20,7 +20,7 @@ void main()
     vec2 comp = VRAM(uv);
 
     vec2 clut_pos = v_page_clut.zw;
-    int index = int(mod(v_texcoord.x, 2.0));
+    int index = int(mod(v_texcoord.x + 0.0001, 2.0));
     if (index == 0)
         clut_pos.x += comp[0] * 255.0 / 1024.0;
     else

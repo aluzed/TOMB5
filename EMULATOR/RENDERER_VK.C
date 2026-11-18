@@ -80,6 +80,10 @@ struct VKState
     VkDeviceMemory blitMemory = VK_NULL_HANDLE;
     void* blitMapped = nullptr;
 
+    VkBuffer frameBufferImage = VK_NULL_HANDLE;
+    VkDeviceMemory frameBufferMemory = VK_NULL_HANDLE;
+    void* frameBufferMapped = nullptr;
+
     VkBuffer captureBuffer = VK_NULL_HANDLE;
     VkDeviceMemory captureMemory = VK_NULL_HANDLE;
     void* captureMapped = nullptr;
@@ -397,6 +401,10 @@ static int vk_create_psx_resources()
     if (!vk_create_buffer((VkDeviceSize)vk.extent.width * vk.extent.height * 4,
                           VK_BUFFER_USAGE_TRANSFER_DST_BIT,
                           &vk.captureBuffer, &vk.captureMemory, &vk.captureMapped))
+        return 0;
+    if (!vk_create_buffer((VkDeviceSize)vk.extent.width * vk.extent.height * 4,
+                          VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+                          &vk.frameBufferImage, &vk.frameBufferMemory, &vk.frameBufferMapped))
         return 0;
 
     VkDescriptorSetLayoutBinding bind{};
@@ -800,6 +808,8 @@ void RendererVK_Shutdown()
     vkDestroyPipelineLayout(vk.device, vk.pipelineLayout, nullptr);
     vkDestroyDescriptorPool(vk.device, vk.descriptorPool, nullptr);
     vkDestroyDescriptorSetLayout(vk.device, vk.descriptorLayout, nullptr);
+    vkDestroyBuffer(vk.device, vk.frameBufferImage, nullptr);
+    vkFreeMemory(vk.device, vk.frameBufferMemory, nullptr);
     vkDestroyBuffer(vk.device, vk.captureBuffer, nullptr);
     vkFreeMemory(vk.device, vk.captureMemory, nullptr);
     vkDestroyBuffer(vk.device, vk.blitBuffer, nullptr);
@@ -1035,6 +1045,51 @@ static void RendererVK_BeginFrame()
     }
 }
 
+void RendererVK_StoreFrameBuffer(int x, int y, int w, int h)
+{
+    if (!vk_inited || vk.frameBufferMapped == nullptr || w <= 0 || h <= 0)
+        return;
+
+    const int fw = (int)vk.extent.width;
+    const int fh = (int)vk.extent.height;
+    const unsigned int* src = (unsigned int*)vk.frameBufferMapped;
+    if (fw <= 0 || fh <= 0 || w > 1024 || h > 512)
+        return;
+
+    /*
+     * Reproduction fidele de Emulator_StoreFrameBuffer (chemin OpenGL) : le
+     * framebuffer est echantillonne avec un facteur windowWidth/w et
+     * windowHeight/h, puis converti en 16 bits. L'extraction des canaux suit
+     * l'ordre utilise par le chemin GL (le rouge PSX vient de l'alpha, le vert
+     * du bleu et le bleu du rouge) : c'est un comportement existant qu'il faut
+     * conserver pour garder la meme image, il est note comme anomalie.
+     */
+    for (int fy = 0; fy < h; fy++)
+    {
+        int sy = (fy * fh) / h;
+        if (sy < 0) sy = 0;
+        if (sy >= fh) sy = fh - 1;
+
+        unsigned short* dst = vram + x + (y + fy) * 1024;
+
+        for (int fx = 0; fx < w; fx++)
+        {
+            int sx = (fx * fw) / w;
+            if (sx < 0) sx = 0;
+            if (sx >= fw) sx = fw - 1;
+
+            unsigned int c = src[sy * fw + sx];
+            unsigned int R = (c >> 16) & 0xFF;
+            unsigned int B = c & 0xFF;
+            unsigned int A = (c >> 24) & 0xFF;
+
+            dst[fx] = (unsigned short)((A >> 3) | ((B >> 3) << 5) | ((R >> 3) << 10) | 0x8000);
+        }
+    }
+
+    vram_need_update = TRUE;
+}
+
 void RendererVK_RequestCapture(const char* path)
 {
     if (!vk_inited)
@@ -1100,7 +1155,14 @@ static void RendererVK_EndFrame()
         vk.renderPassActive = 0;
     }
 
-    if (vk.captureRequested)
+    /*
+     * Copie de l'image presentee vers la memoire hote : elle sert a la fois a
+     * la capture BMP (TOMB5_CAPTURE) et a Emulator_StoreFrameBuffer, qui
+     * alimente la VRAM depuis le framebuffer (effet mono/sepia PSX). La copie
+     * est faite pour toutes les frames : le jeu peut demander la derniere
+     * image a n'importe quel moment de la frame suivante.
+     */
+    if (vk.captureRequested || vk.frameBufferImage != VK_NULL_HANDLE)
     {
         vk_image_barrier(cb, vk.images[vk.imageIndex],
                          VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
@@ -1109,13 +1171,25 @@ static void RendererVK_EndFrame()
                          VK_PIPELINE_STAGE_TRANSFER_BIT,
                          VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
                          VK_ACCESS_TRANSFER_READ_BIT);
+
         VkBufferImageCopy copy{};
         copy.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
         copy.imageSubresource.layerCount = 1;
         copy.imageExtent = {vk.extent.width, vk.extent.height, 1};
+
+        VkBuffer dst = vk.captureRequested ? vk.captureBuffer : vk.frameBufferImage;
         vkCmdCopyImageToBuffer(cb, vk.images[vk.imageIndex],
                                VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                               vk.captureBuffer, 1, &copy);
+                               dst, 1, &copy);
+
+        if (vk.captureRequested && vk.frameBufferImage != VK_NULL_HANDLE)
+        {
+            copy.bufferOffset = 0;
+            vkCmdCopyImageToBuffer(cb, vk.images[vk.imageIndex],
+                                   VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                                   vk.frameBufferImage, 1, &copy);
+        }
+
         vk_image_barrier(cb, vk.images[vk.imageIndex],
                          VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
                          VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
@@ -1421,5 +1495,6 @@ void RendererVK_Shutdown() {}
 int RendererVK_Select(SDL_Window* window) { (void)window; return 0; }
 int RendererVK_IsActive() { return 0; }
 void RendererVK_RequestCapture(const char* path) { (void)path; }
+void RendererVK_StoreFrameBuffer(int x, int y, int w, int h) { (void)x; (void)y; (void)w; (void)h; }
 
 #endif

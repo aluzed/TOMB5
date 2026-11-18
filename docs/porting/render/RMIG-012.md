@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Débloqué : les shaders SPIR-V sont en place et le backend Vulkan reproduit la référence OpenGL 64 bits au pixel près. Reste (a) l’écart 32 bits ↔ 64 bits (64 bits plus sombre, HUD compris : mean_abs_diff=18.730, 26.12% à ±8) et (b) le retrait effectif du chemin OpenGL du build 64 bits.
+Avancement : Débloqué : les shaders SPIR-V sont en place et le backend Vulkan reproduit la référence OpenGL 64 bits au pixel près (y compris après portage de Emulator_StoreFrameBuffer). Reste (a) l’écart 32 bits ↔ 64 bits (64 bits plus sombre, HUD compris : mean_abs_diff=18.730, 26.12% à ±8) et (b) le retrait effectif du chemin OpenGL du build 64 bits.
 
 ## Objectif
 

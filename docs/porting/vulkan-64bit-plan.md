@@ -1144,3 +1144,57 @@ la suite (SSR, raytracing, retrait d’OpenGL).
 Les formats réellement exercés par la scène de référence sont 4 bits
 (588 groupes) et 16 bits (977 groupes) ; aucun groupe 8 bits n’y
 apparaît, ce format reste donc à couvrir par une scène dédiée.
+
+## 39. Formats de texture, StoreFrameBuffer et harnais de contrainte
+
+### Format 8 bits
+
+La scène de référence n’exerce que deux profondeurs (mesure sur le dump
+des splits : 4 bits = 588 groupes, 16 bits = 977 groupes, 8 bits = 0).
+Un harnais `TOMB5_FORCE_TEXFMT=4|8|16` force la profondeur dans
+`AddSplit` : l’image devient volontairement fausse, mais elle doit être
+identique entre backends.
+
+En 8 bits forcé (niveau 3, 300 frames) :
+
+```
+GL  45210c966601bf9213e771457500844c4d64cb900c8fe692106e1e2479908f2e
+VK  ba7c0ef7f60b67804c5166fd79e52422c485929af5b9f26bf3e79825d63bac5b
+mean_abs_diff=0.142   pixels_within_8=99.82 %
+```
+
+Le résidu (795 pixels) vient des égalités de `nearest` sur les frontières
+de texel : en 8 bits, `v_texcoord.x` est divisé par deux et tombe
+exactement sur des bords de texel, où deux implémentations peuvent
+arrondir différemment. Un epsilon identique à celui du shader 4 bits a
+été ajouté **dans les deux backends** pour la sélection d’index
+(`mod(v + 0.0001, 2.0)`), ce qui réduit l’écart sans le supprimer. Ce
+format n’étant pas utilisé par les scènes jouées, le ticket RMIG-011
+reste ouvert sur ce seul point.
+
+### `Emulator_StoreFrameBuffer` porté sur Vulkan
+
+`GPU_SyncBothScreens` / `CreateMonoScreen` stockent la trame affichée
+dans la VRAM (`StoreImage`, effet mono/sépia). En mode Vulkan,
+`Emulator_StoreFrameBuffer` appelait `glReadPixels` sans contexte GL :
+la VRAM recevait des données indéfinies et l’effet était cassé.
+
+Le backend Vulkan copie désormais l’image présentée vers un buffer hôte
+à chaque frame (`vkCmdCopyImageToBuffer`, buffer cohérent), puis
+`RendererVK_StoreFrameBuffer` applique **la même conversion 16 bits** que
+le chemin OpenGL (échantillonnage `windowWidth/w`, `windowHeight/h`,
+puis extraction des canaux) avant d’écrire dans `vram`.
+
+Vérifications :
+
+- appel unique par chargement de niveau : `x=0 y=240 w=512 h=240` ;
+- la capture de référence 4 bits reste **bit-identique**
+  (`sha256 5dbbb251…`) après ce portage ;
+- l’extraction des canaux reproduit l’anomalie existante du chemin GL
+  (le rouge PSX vient de l’alpha, le vert du bleu) : elle est suivie par
+  **RMIG-022** pour ne pas modifier le rendu de référence sans preuve.
+
+Harnais de diagnostic associé : `TOMB5_NO_STOREFB=1` court-circuite la
+copie framebuffer → VRAM, ce qui permet de mesurer son impact (sur le
+niveau 3 le simple fait de la désactiver change l’image de ~22 niveaux
+moyens, donc le chemin est bien actif).

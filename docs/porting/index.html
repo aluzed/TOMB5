@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Formats de texture et copie framebuffer→VRAM : harnais TOMB5_FORCE_TEXFMT (4/8/16) ajouté ; la scène de référence n’exerce que 4 et 16 bits (pixel-identique), le 8 bits forcé donne 99,82% de pixels à ±8 (résidu = égalités de sampling nearest sur frontières de texel, epsilon aligné dans les deux backends). Emulator_StoreFrameBuffer porté sur Vulkan (copie de l’image présentée vers un buffer hôte par frame + conversion 16 bits identique au chemin GL), ce qui répare l’effet mono/sépia en Vulkan ; la référence reste bit-identique (sha256 5dbbb251…). Anomalie d’ordre des canaux de cette conversion suivie par un nouveau ticket RMIG-022. Builds 32/64 verts.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Parité visuelle atteinte : le backend Vulkan (TOMB5_RENDERER=vulkan) rend la scène de référence niveau 3 (1800 frames) avec une capture octet pour octet identique à OpenGL 64 bits (sha256 5dbbb251…, 307200 pixels, cmp sans différence). Cause de l’écart « bleu vs orangé » identifiée : la capture OpenGL inversait rouge et bleu (glReadPixels RGBA sauvegardé avec les masques SDL BGRA par défaut) ; masques corrigés côté GL et déduits du format de swapchain + alpha opaque côté Vulkan. Autres correctifs : projection en push constant avec conventions Vulkan (y vers le bas, z dans [0,1]), dither retourné verticalement, ids de texture logiques distincts (PORT_TEXTURE_WHITE/VRAM), read_vram/copy_vram sur la VRAM CPU, barrière de layout à la première utilisation des images de swapchain. Nouvelles références déterministes 32/64 : 51d3a1c7… / 5dbbb251…. Reste : format 8 bits non exercé par la scène, écart 32↔64 bits (plus sombre en 64), retrait d’OpenGL. Builds 32/64 verts, 4188 tests PASS.
 
 Détails : [scène et parcours runtime](runtime-level.md).

@@ -454,6 +454,26 @@ void AddSplit(bool semiTrans, int page, TextureID textureId)
 	BlendMode blendMode = semiTrans ? GET_TPAGE_BLEND(page) : BM_NONE;
 	TexFormat texFormat = GET_TPAGE_FORMAT(page);
 
+	/*
+	 * Harnais de validation (RMIG-011) : force la profondeur de texture pour
+	 * exercer un shader que la scene courante n'utilise pas. L'image obtenue
+	 * est volontairement fausse, mais doit etre identique entre backends.
+	 */
+	{
+		static int force_texfmt = -2;
+		if (force_texfmt == -2)
+		{
+			const char* env = getenv("TOMB5_FORCE_TEXFMT");
+			force_texfmt = (env != NULL) ? atoi(env) : -1;
+		}
+		if (force_texfmt == 4)
+			texFormat = TF_4_BIT;
+		else if (force_texfmt == 8)
+			texFormat = TF_8_BIT;
+		else if (force_texfmt == 16)
+			texFormat = TF_16_BIT;
+	}
+
 	if (curSplit.blendMode == blendMode && curSplit.texFormat == texFormat && curSplit.textureId == textureId)
 	{
 		return;
