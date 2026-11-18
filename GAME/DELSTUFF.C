@@ -156,6 +156,13 @@ void CalcLaraMatrices(int flag)//2C1DC, 2C504
 	if (lara.hit_direction < 0)
 	{
 		frac = GetFrames(item, &frmptr[0], &rate);
+#if defined(__LP64__)
+		/* Diagnostic : forcer la pose cle (pas d'interpolation). */
+		if (getenv("TOMB5_NO_LARA_INTERP") != NULL)
+		{
+			frac = 0;
+		}
+#endif
 		if (frac != 0)
 		{
 			GLaraShadowframe = GetBoundsAccurate(item);

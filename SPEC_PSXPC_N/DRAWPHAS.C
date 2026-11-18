@@ -1,5 +1,15 @@
 #include "DRAWPHAS.H"
 int port_in_lara_draw = 0;
+/* Plage memoire des primitives Lara de la frame courante, pour compter
+ * combien d'entre elles sont effectivement parsees par l'emulateur GPU. */
+uintptr_t port_lara_prim_lo = 0;
+uintptr_t port_lara_prim_hi = 0;
+int port_lara_prims_parsed = 0;
+int port_lara_verts_generated = 0;
+int port_lara_minx = 32767;
+int port_lara_maxx = -32768;
+int port_lara_miny = 32767;
+int port_lara_maxy = -32768;
 #include <stdlib.h>
 
 #include "3D_GEN.H"
@@ -72,6 +82,12 @@ long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 		GLOBAL_playing_cutseq = 0;
 		cutseq_num = 0;
 		cutseq_trig = 0;
+		ScreenFade = 0;
+		dScreenFade = 0;
+		ScreenFading = 0;
+		ScreenFadedOut = 0;
+		FadeScreenHeight = 0;
+		DestFadeScreenHeight = 0;
 	}
 
 	if (getenv("TOMB5_START_POS") != NULL)
@@ -455,6 +471,19 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 			}
 		}
 
+		if (getenv("TOMB5_LARAFRAME") != NULL && (lara_item->mesh_bits == 0 || SCNoDrawLara != 0))
+		{
+			static int port_lara_skip_n = 0;
+			if (port_lara_skip_n < 400)
+			{
+				fprintf(stderr, "[LF] SKIP %d play=%d nodraw=%d bits=%08x lara=(%d,%d,%d) room=%d anim=%d frame=%d\n",
+				        port_lara_skip_n++, GLOBAL_playing_cutseq, SCNoDrawLara,
+				        (unsigned)lara_item->mesh_bits,
+				        lara_item->pos.x_pos, lara_item->pos.y_pos, lara_item->pos.z_pos,
+				        lara_item->room_number, lara_item->anim_number, lara_item->frame_number);
+			}
+		}
+
 		if (lara_item->mesh_bits != 0 && SCNoDrawLara == 0)
 		{
 #if DEBUG_VERSION
@@ -463,6 +492,7 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 
 			{
 				char* port_poly_before = db.polyptr;
+				port_lara_prim_lo = (uintptr_t)db.polyptr;
 				port_in_lara_draw = 1;
 				int port_lara_dbg2 = 0;
 				static int port_lara_dbg2_n = 0;
@@ -489,7 +519,24 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 #endif
 
 			port_in_lara_draw = 0;
+			port_lara_prim_hi = (uintptr_t)db.polyptr;
 			port_lara_dbg2 = (int)(db.polyptr - port_poly_before);
+			if (getenv("TOMB5_LARAFRAME") != NULL)
+			{
+				static int port_lara_frame_n = 0;
+				if (port_lara_frame_n < 400)
+				{
+					fprintf(stderr, "[LF] %d play=%d camtype=%d camp=(%d,%d,%d) cp=(%d,%d,%d) lara=(%d,%d,%d) room=%d anim=%d frame=%d delta=%d bits=%08x m=%d,%d,%d t=%d,%d,%d\n",
+					        port_lara_frame_n++, GLOBAL_playing_cutseq, camera.type,
+					        camera.pos.x, camera.pos.y, camera.pos.z,
+					        camera.target.x, camera.target.y, camera.target.z,
+					        lara_item->pos.x_pos, lara_item->pos.y_pos, lara_item->pos.z_pos,
+					        lara_item->room_number, lara_item->anim_number, lara_item->frame_number,
+					        port_lara_dbg2, (unsigned)lara_item->mesh_bits,
+					        lara_matrices[0].m00, lara_matrices[0].m11, lara_matrices[0].m22,
+					        lara_matrices[0].tx, lara_matrices[0].ty, lara_matrices[0].tz);
+				}
+			}
 			if (getenv("TOMB5_DRAWDBG") != NULL && (port_lara_dbg2_n++ % 120) == 0)
 			{
 				fprintf(stderr, "[LARA2] delta=%d m=%d,%d,%d %d,%d,%d %d,%d,%d t=%d,%d,%d\n",

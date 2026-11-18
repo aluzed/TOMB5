@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Colosseum 64 bits : clignotement/etirement de Lara corrige. Diagnostic : primitives generees et parsees chaque frame mais bbox ecran alternee ; TOMB5_NO_LARA_INTERP=1 stabilise le modele. Cause racine dans DEL_CalcLaraMatrices_Interpolated_ASM : (1) s0 ecrase par lara_matrices avant la lecture de la translation de frame ; (2) indexation du squelette en short* sur le tableau hote bones (long 8 octets). Correction : m0 separe pour les matrices + b1 long* avec index en mots. Validation : bbox pleine chaque frame, translation stable (-8,155,1295), captures stables, build 32 bits inchange. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Colosseum : outils de saut de cinematique ajoutes (TOMB5_SKIP_CUTSCENE force GLOBAL_playing_cutseq/cutseq_num/cutseq_trig a 0 chaque frame ; TOMB5_START_POS_HOLD=n force START_POS pendant n frames). Avec hold=600, Lara reste en room12 mais le niveau reste en ScreenFade=239/fading=1 sans progression : le start trigger/cinematique garde la main. Les reprises directes en rooms 15/90/102 restent la voie fiable pour tester le rendu. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

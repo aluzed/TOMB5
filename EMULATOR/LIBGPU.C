@@ -602,7 +602,47 @@ void DrawOTag(unsigned long* p)
 		Emulator_BlitVRAM();
 	}
 
+#if defined(__LP64__)
+	{
+		extern int port_lara_prims_parsed;
+		extern int port_lara_verts_generated;
+		extern int port_lara_minx;
+		extern int port_lara_maxx;
+		extern int port_lara_miny;
+		extern int port_lara_maxy;
+		port_lara_prims_parsed = 0;
+		port_lara_verts_generated = 0;
+		port_lara_minx = 32767;
+		port_lara_maxx = -32768;
+		port_lara_miny = 32767;
+		port_lara_maxy = -32768;
+	}
+#endif
+
 	AggregatePTAGsToSplits(p, FALSE);
+
+#if defined(__LP64__)
+	{
+		extern int port_lara_prims_parsed;
+		extern int port_lara_verts_generated;
+		extern int port_lara_minx;
+		extern int port_lara_maxx;
+		extern int port_lara_miny;
+		extern int port_lara_maxy;
+
+		if (getenv("TOMB5_LARAFRAME") != NULL && g_vertexIndex > 1000)
+		{
+			static int port_otf_n = 0;
+			if (port_otf_n < 400)
+			{
+				fprintf(stderr, "[OTF] %d verts=%d splits=%d laraPrims=%d laraVerts=%d lbb=(%d,%d)-(%d,%d)\n",
+				        port_otf_n++, g_vertexIndex, g_splitIndex,
+				        port_lara_prims_parsed, port_lara_verts_generated,
+				        port_lara_minx, port_lara_miny, port_lara_maxx, port_lara_maxy);
+			}
+		}
+	}
+#endif
 
 	{
 		static int port_otdbg = 0;
@@ -809,6 +849,15 @@ int ParsePrimitive(uintptr_t primPtr)
 	P_TAG* pTag = (P_TAG*)primPtr;
 	port_cur_prim_code = pTag->code;
 	port_cur_prim_ptr = primPtr;
+
+#if defined(__LP64__)
+	extern uintptr_t port_lara_prim_lo;
+	extern uintptr_t port_lara_prim_hi;
+	extern int port_lara_prims_parsed;
+	extern int port_lara_verts_generated;
+	bool port_is_lara_prim = primPtr >= port_lara_prim_lo && primPtr < port_lara_prim_hi;
+	int port_prim_v0 = g_vertexIndex;
+#endif
 
 	int textured = (pTag->code & 0x4) != 0;
 
@@ -1263,6 +1312,27 @@ int ParsePrimitive(uintptr_t primPtr)
 			break;
 		}
 	}
+
+#if defined(__LP64__)
+	if (port_is_lara_prim)
+	{
+		extern int port_lara_minx;
+		extern int port_lara_maxx;
+		extern int port_lara_miny;
+		extern int port_lara_maxy;
+
+		port_lara_prims_parsed++;
+		port_lara_verts_generated += g_vertexIndex - port_prim_v0;
+
+		for (int vi = port_prim_v0; vi < g_vertexIndex; vi++)
+		{
+			if (g_vertexBuffer[vi].x < port_lara_minx) port_lara_minx = g_vertexBuffer[vi].x;
+			if (g_vertexBuffer[vi].x > port_lara_maxx) port_lara_maxx = g_vertexBuffer[vi].x;
+			if (g_vertexBuffer[vi].y < port_lara_miny) port_lara_miny = g_vertexBuffer[vi].y;
+			if (g_vertexBuffer[vi].y > port_lara_maxy) port_lara_maxy = g_vertexBuffer[vi].y;
+		}
+	}
+#endif
 
 	return primitive_size;
 }

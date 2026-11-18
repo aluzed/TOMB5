@@ -749,3 +749,45 @@ Avec `hold=600`, Lara reste bien en room 12, mais le niveau reste en
 `ScreenFade=239 / fading=1` et ne progresse pas : le start trigger/la
 cinématique reprend la main. Les reprises directes dans les rooms
 15/90/102 restent la méthode fiable pour tester le rendu en 64 bits.
+
+## 27. Colosseum : clignotement de Lara corrigé (interpolation LP64)
+
+Symptôme observé en 64 bits : Lara était visible une frame sur quatre environ,
+et apparaissait étirée sur certaines frames. Le symptôme est absent en 32 bits.
+
+Diagnostic (17-18 novembre 2026) :
+
+- `DrawLaraL1` produit bien ses primitives à chaque frame
+  (`[LF] delta=13..19 Ko`) et l'émulateur GPU les parse bien
+  (`[OTF] laraPrims=286..418, laraVerts=1098..1584`) ;
+- en revanche la bbox écran des vertices de Lara alterne entre le corps
+  complet `(223,81)-(284,206)` et un sous-ensemble `(247,90)-(273,153)` ;
+- forcer la pose clé (`TOMB5_NO_LARA_INTERP=1`, donc
+  `DEL_CalcLaraMatrices_Normal_ASM` au lieu de la version interpolée) rend
+  Lara stable et complète : le défaut est dans
+  `DEL_CalcLaraMatrices_Interpolated_ASM` ;
+- la translation de `lara_matrices[0]` oscillait sur 4 frames
+  (`t=3420`, `2359`, `1296`, `4482`) au lieu de rester autour de `(-8,155,1295)`.
+
+Cause racine (LP64) :
+
+1. L’adaptation LP64 affectait `s0 = lara_matrices` **avant**
+   `mTranslateXYZ_CL(s0[6], s0[7], s0[8])`. `s0` devait encore pointer sur
+   les données de frame (`frame1`) à cet endroit : la translation de la
+   frame était donc lue dans les rotations de la matrice. Correction :
+   garder `s0` sur la frame et utiliser un pointeur séparé `m0` pour
+   `lara_matrices`/`lara_joint_matrices`.
+2. L’arithmétique du squelette utilisait `short*` (`s1[2]`, `s1 += 8`,
+   `s1[50]`, …) alors que le tableau hôte `bones` est un tableau de `long`
+   (8 octets par mot en LP64). Correction : pointeur `long* b1` avec les
+   index en mots (`b1[1]`, `b1 += 4`, `b1[25]`, `b1[53]`, `b1[29]`,
+   `b1[33]`, `b1[37]`, `b1[41]`, `b1[45]`, `b1[49]`, `b1[26]`), ce qui est
+   équivalent au code 32 bits.
+
+Validation :
+
+- bbox de Lara désormais pleine à chaque frame, translation stable ;
+- captures successives stables (plus de clignotement, plus d’étirement) ;
+- build 32 bits reconstruit et rendu inchangé ;
+- outils de diagnostic ajoutés : `TOMB5_LARAFRAME=1` (`[LF]`, `[OTF]`) et
+  `TOMB5_NO_LARA_INTERP=1` (force la pose clé).
