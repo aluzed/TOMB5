@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Vulkan : blit VRAM activé. L’écran-titre (TOMB RAIDER CHRONICLES + menu) et la scène 3D niveau 3 sont rendus sans OpenGL. RMIG-010 Done, RMIG-011 In progress (4 bits + blit validés, 8/16 à vérifier). Projection 512x240 codée dans psx.vert ; capture/readback VK à implémenter.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 RMIG-010 terminé : pipeline PSX Vulkan (VRAM RG8, vertex buffer, ordering tables/splits, blends, render pass par OT) rend la scène 3D du niveau 3 room 20 avec Lara et le HUD, sans OpenGL. Sampler REPEAT obligatoire pour éviter les bandes. Capture GL de référence inchangée (675e2c8d…). RMIG-011 en cours : shaders SPIR-V 4/8/16 bits/CLUT/dither validés en 4 bits ; restent blit VRAM et perspective. Limites : projection 512x240 codée en dur, capture VK non implémentée, warping des grands polygones pré-existant. Builds 32/64 verts, 4188 tests PASS.
 
 Détails : [scène et parcours runtime](runtime-level.md).

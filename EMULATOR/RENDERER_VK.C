@@ -1043,10 +1043,10 @@ static void RendererVK_UpdateVRAM()
 
 static void RendererVK_BlitVRAM()
 {
-    /* Le blit VRAM sera porte apres le pipeline 3D. */
-    if (!vk.active)
+    if (!vk.active || vk.renderPassActive)
         return;
-    return;
+    if (getenv("TOMB5_VK_CLEAR") != NULL)
+        return;
 
     u_char l = activeDispEnv.disp.x / 8;
     u_char t = activeDispEnv.disp.y / 8;
@@ -1065,21 +1065,22 @@ static void RendererVK_BlitVRAM()
     memcpy(vk.blitMapped, blit, sizeof(blit));
 
     VkCommandBuffer cb = vk.commandBuffers[vk.imageIndex];
-    {
-        VkMemoryBarrier mb{};
-        mb.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
-        mb.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
-        mb.dstAccessMask = VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT;
-        vkCmdPipelineBarrier(cb, VK_PIPELINE_STAGE_HOST_BIT,
-                             VK_PIPELINE_STAGE_VERTEX_INPUT_BIT, 0,
-                             1, &mb, 0, nullptr, 0, nullptr);
-    }
+    VkMemoryBarrier mb{};
+    mb.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
+    mb.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
+    mb.dstAccessMask = VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT;
+    vkCmdPipelineBarrier(cb, VK_PIPELINE_STAGE_HOST_BIT,
+                         VK_PIPELINE_STAGE_VERTEX_INPUT_BIT, 0,
+                         1, &mb, 0, nullptr, 0, nullptr);
+
+    vk_begin_render_pass(cb);
+
     VkPipeline pipe = vk.pipelines[0][0];
     if (pipe)
     {
         vkCmdBindPipeline(cb, VK_PIPELINE_BIND_POINT_GRAPHICS, pipe);
-        VkDeviceSize offset = 0;
-        vkCmdBindVertexBuffers(cb, 0, 1, &vk.blitBuffer, &offset);
+        VkDeviceSize off = 0;
+        vkCmdBindVertexBuffers(cb, 0, 1, &vk.blitBuffer, &off);
         vkCmdDraw(cb, 6, 1, 0, 0);
     }
     vk.boundPipeline = VK_NULL_HANDLE;

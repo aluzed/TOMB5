@@ -1003,3 +1003,17 @@ La capture GL de référence reste **identique**
 
 Restent : blit VRAM (titres/menus), perspective PGXP, capture/readback
 Vulkan, et le warping pré-existant des grands polygones.
+
+## 36. Blit VRAM : écran-titre rendu en Vulkan
+
+`RendererVK_BlitVRAM` utilise le pipeline `pipelines[0]` (blit.vert /
+blit.frag, SPIR-V) pour dessiner le framebuffer PSX 1024×512 avant la
+scène 3D. Le sampler est en `REPEAT` et le vertex buffer de blit est
+alimenté par `memcpy` + barrière avant le render pass.
+
+Validation : l’écran-titre complet (**TOMB RAIDER CHRONICLES**, menu
+New Game / Special Features / F6 CONTINUE) s’affiche en Vulkan, sans
+OpenGL. La scène 3D niveau 3 reste correcte avec le blit activé.
+
+RMIG-011 reste en cours pour la vérification des formats 8/16 bits, la
+perspective PGXP et le readback/capture Vulkan.
