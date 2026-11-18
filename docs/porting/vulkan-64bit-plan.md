@@ -910,3 +910,24 @@ L’écart n’est donc pas seulement l’éclairage 3D ; il est reporté dans
 RMIG-012 pour la parité Vulkan.
 
 RMIG-007 est terminé ; RMIG-008 (abstraction du renderer) est débloqué.
+
+## 32. Début de l’abstraction renderer (RMIG-008)
+
+`EMULATOR/RENDERER.H` définit `RendererBackend`, l’interface consommée par
+l’émulation GPU PSX (`LIBGPU.C`) : begin/end de scène, blit VRAM, upload
+VRAM, clear, texture, blending, vertex buffer et draw.
+
+`EMULATOR/RENDERER_GL.C` branche l’implémentation OpenGL historique
+(`Emulator_*`) derrière cette interface ; `g_renderer` pointe dessus par
+défaut. `LIBGPU.C` appelle désormais `g_renderer->...` pour le chemin de
+rendu.
+
+Validation : la capture déterministe RMIG-007 (niveau 3, 1800 frames)
+reste **exactement identique** après refactor :
+`sha256 675e2c8da064bfefb4dcb4347f7629d5e114026bb0082c78b584ede61a9b651b`.
+Builds 32/64 verts, 4188 tests PASS.
+
+Reste pour terminer RMIG-008 : déplacer les appels GL hors de
+`EMULATOR.C` dans le backend, puis ajouter la sélection d’un backend
+Vulkan. Les fonctions `Emulator_CopyVRAM` restent directes pour préserver
+le harnais de test PSX existant.

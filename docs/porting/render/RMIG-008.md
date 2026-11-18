@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Débloqué par la cible 64 bits et le harnais RMIG-007 : l’interface renderer_* peut maintenant être introduite et validée par capture déterministe.
+Avancement : Interface RendererBackend introduite (EMULATOR/RENDERER.H) et adaptateur OpenGL (EMULATOR/RENDERER_GL.C). LIBGPU.C utilise g_renderer pour le chemin de draw (begin/end, blit, textures, blending, vertex buffer, triangles). Le capture déterministe RMIG-007 est resté identique après refactor : sha256 675e2c8d…. Reste : isoler le code GL hors de EMULATOR.C et ajouter la sélection Vulkan.
 
 ## Objectif
 
@@ -48,7 +48,7 @@ Fuites d'état GL (blend, scissor) entre passes.
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-18 : Interface RendererBackend + backend GL adaptateur. LIBGPU.C passe par g_renderer pour le chemin de rendu. Vérification : capture déterministe niveau 3/1800 frames après refactor = sha256 675e2c8da064bfefb4dcb4347f7629d5e114026bb0082c78b584ede61a9b651b, identique à la référence pré-refactor. Builds 32/64 verts, 4188 tests PASS. Les fonctions VRAM (CopyVRAM) restent appelées directement pour préserver le harnais de test existant.
 
 ## Références
 

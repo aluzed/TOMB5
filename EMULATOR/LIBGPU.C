@@ -1,4 +1,5 @@
 #include "LIBGPU.H"
+#include "RENDERER.H"
 
 #include "EMULATOR.H"
 #include "EMULATOR_GLOBALS.H"
@@ -139,13 +140,13 @@ void* off_3348[] =
 
 int ClearImage(RECT16* rect, u_char r, u_char g, u_char b)
 {
-	Emulator_Clear(rect->x, rect->y, rect->w, rect->h, r, g, b);
+	g_renderer->clear(rect->x, rect->y, rect->w, rect->h, r, g, b);
 	return 0;
 }
 
 int ClearImage2(RECT16* rect, u_char r, u_char g, u_char b)
 {
-	Emulator_Clear(rect->x, rect->y, rect->w, rect->h, r, g, b);
+	g_renderer->clear(rect->x, rect->y, rect->w, rect->h, r, g, b);
 	return 0;
 }
 
@@ -154,7 +155,7 @@ void DrawAggregatedSplits();
 int DrawSync(int mode)
 {
 	// Update VRAM seems needed to be here
-	//Emulator_UpdateVRAM();
+	//g_renderer->update_vram();
 
 	if (drawsync_callback != NULL)
 	{
@@ -164,7 +165,7 @@ int DrawSync(int mode)
 	if (g_splitIndex > 0) // don't do flips if nothing to draw.
 	{
 		DrawAggregatedSplits();
-		Emulator_EndScene();
+		g_renderer->end_scene();
 	}
 
 	return 0;
@@ -229,7 +230,7 @@ int SetGraphDebug(int level)
 
 int StoreImage(RECT16* rect, unsigned long* p)
 {
-	Emulator_ReadVRAM((unsigned short*)p, rect->x, rect->y, rect->w, rect->h);
+	g_renderer->read_vram((unsigned short*)p, rect->x, rect->y, rect->w, rect->h);
 	return 0;
 }
 
@@ -478,9 +479,9 @@ void MakeTriangle()
 
 void DrawSplit(const VertexBufferSplit& split)
 {
-	Emulator_SetTexture(split.textureId, split.texFormat);
-	Emulator_SetBlendMode(split.blendMode);
-	Emulator_DrawTriangles(split.vIndex, split.vCount / 3);
+	g_renderer->set_texture(split.textureId, split.texFormat);
+	g_renderer->set_blend_mode(split.blendMode);
+	g_renderer->draw_triangles(split.vIndex, split.vCount / 3);
 }
 
 void DrawAggregatedSplits()
@@ -506,7 +507,7 @@ void DrawAggregatedSplits()
 	}
 
 	// next code ideally should be called before EndScene
-	Emulator_UpdateVertexBuffer(g_vertexBuffer, g_vertexIndex);
+	g_renderer->update_vertex_buffer(g_vertexBuffer, g_vertexIndex);
 
 	for (int i = 1; i <= g_splitIndex; i++)
 		DrawSplit(g_splits[i]);
@@ -583,7 +584,7 @@ void DrawOTagEnv(unsigned long* p, DRAWENV* env)
 
 void DrawOTag(unsigned long* p)
 {
-	if (Emulator_BeginScene())
+	if (g_renderer->begin_scene())
 	{
 		ClearVBO();
 		ResetPolyState();
@@ -599,7 +600,7 @@ void DrawOTag(unsigned long* p)
 	}
 	else
 	{
-		Emulator_BlitVRAM();
+		g_renderer->blit_vram();
 	}
 
 #if defined(__LP64__)
@@ -672,7 +673,7 @@ void DrawOTag(unsigned long* p)
 	}
 
 	DrawAggregatedSplits();
-	Emulator_EndScene();
+	g_renderer->end_scene();
 
 #if defined(PGXP)
 	/* Reset the ztable */
@@ -685,7 +686,7 @@ void DrawOTag(unsigned long* p)
 
 void DrawPrim(void* p)
 {
-	if (Emulator_BeginScene())
+	if (g_renderer->begin_scene())
 	{
 		ClearVBO();
 		ResetPolyState();
@@ -695,7 +696,7 @@ void DrawPrim(void* p)
 			ClearImage(&activeDrawEnv.clip, activeDrawEnv.r0, activeDrawEnv.g0, activeDrawEnv.b0);
 		}
 		else {
-			Emulator_BlitVRAM();
+			g_renderer->blit_vram();
 		}
 	}
 

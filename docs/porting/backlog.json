@@ -2557,6 +2557,15 @@
       ],
       "status": "In progress",
       "summary": "RMIG-007 : harnais déterministe 32/64 opérationnel (TOMB5_FRAMES/TOMB5_CAPTURE, capture puis sortie). Deux runs du même binaire donnent des BMP identiques : 32 bits sha256 083d24a0…, 64 bits sha256 675e2c8d…. État de jeu identique à la capture (Lara pos=(90642,4608,52736) room=20 rot=-16384 anim=103 frame=1611). Écart image 32/64 mesuré : mean_abs_diff=18.730, gain 0.965, 26.12% de pixels à +/-8 ; le 64 bits est globalement plus sombre, HUD compris. Captures et rapport dans docs/porting/replay/. RMIG-007 Done ; RMIG-008 débloqué. Aucun Done global."
+    },
+    {
+      "date": "2026-11-18",
+      "authorization_until": "2026-11-18T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "RMIG-008 démarré : interface RendererBackend (RENDERER.H) + adaptateur OpenGL (RENDERER_GL.C). LIBGPU.C utilise g_renderer pour le chemin de rendu (begin/end, blit, texture, blend, vertex buffer, triangles). Capture déterministe après refactor identique à la référence pré-refactor (sha256 675e2c8d…). Builds 32/64 verts, 4188 tests PASS. Reste : déplacer le code GL hors de EMULATOR.C et brancher Vulkan."
     }
   ]
 }
