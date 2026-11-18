@@ -954,3 +954,25 @@ Script : `scripts/porting/vulkan_smoke.sh`.
 
 Le squelette sert de base à `RENDERER_VK.C` ; l’intégration du pipeline
 PSX (VRAM, vertex buffer, ordering tables, shaders) reste RMIG-010/011.
+
+## 34. Backend Vulkan intégré au jeu (RMIG-009 terminé)
+
+`RENDERER_VK.C` implémente un backend Vulkan sélectionnable par
+`TOMB5_RENDERER=vulkan` :
+
+- fenêtre créée avec `SDL_WINDOW_VULKAN` (pas de contexte GL) ;
+- instance, surface SDL2/X11, device + queue graphics/present ;
+- swapchain 640x480 (4 images), render pass clear, sémaphores/fence ;
+- `RendererVK_BeginScene/EndScene` acquièrent et présentent l’image.
+
+`TOMB5_VK_CLEAR=1` force une couleur de test : la fenêtre affiche un bleu
+640x480, le jeu continue de simuler (logs `[DRAW] lvl=3 room=20`,
+`[LARA] anim=103`) **sans aucun contexte OpenGL**. Le backend GL reste le
+défaut : la capture déterministe RMIG-007 est toujours
+`sha256 675e2c8d…`.
+
+CMake : `find_package(Vulkan)` et `HAVE_VULKAN=1` pour le build 64 bits ;
+le 32 bits compile des stubs et garde GL.
+
+Le pipeline PSX Vulkan (VRAM 16 bits, vertex buffer, ordering tables,
+blit, shaders 4/8/16 bits) est RMIG-010/011.

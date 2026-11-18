@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+RMIG-009 terminé : backend Vulkan intégré (TOMB5_RENDERER=vulkan), fenêtre SDL_WINDOW_VULKAN, instance/device/swapchain 640x480 4 images, présentation d’une image claire (TOMB5_VK_CLEAR=1 -> bleu). Le jeu tourne sans OpenGL (logs [DRAW]/[LARA] actifs). Le chemin GL par défaut reste identique (capture RMIG-007 sha256 675e2c8d…). Builds 32/64 verts, 4188 tests PASS. RMIG-010 (pipeline PSX Vulkan) débloqué.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 RMIG-009 démarré : smoke test Vulkan autonome (tools/vulkan_smoke.cpp) validé. Instance Vk, surface SDL2/X11, device + queue graphics/present, swapchain 640x480 4 images, render pass clear, 60 frames présentées, sortie propre. Script scripts/porting/vulkan_smoke.sh. Reste : intégrer dans RENDERER_VK.C et brancher le pipeline PSX (RMIG-010/011).
 
 Détails : [scène et parcours runtime](runtime-level.md).

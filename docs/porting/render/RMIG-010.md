@@ -1,8 +1,8 @@
 # RMIG-010 — Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables)
 
-Status: **Blocked** — priorité P1 — confiance Medium
+Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Bloqué par le backend Vulkan de base.
+Avancement : Débloqué par RMIG-009 : le backend Vulkan est sélectionnable et présente. Reste le pipeline PSX complet (texture VRAM 16 bits, vertex buffer, ordering tables, blends, blit).
 
 ## Objectif
 

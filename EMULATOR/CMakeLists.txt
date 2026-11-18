@@ -31,6 +31,16 @@ ${EMULATOR_SPECIFIC_SRCS}
 )
 endif()
 
+# Vulkan backend (64 bits uniquement pour l'instant ; le 32 bits garde le
+# backend GL de reference).
+if(NOT ANDROID AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+    find_package(Vulkan QUIET)
+    if(Vulkan_FOUND)
+        target_link_libraries(${PROJECT_NAME} PUBLIC Vulkan::Vulkan)
+        target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_VULKAN=1)
+    endif()
+endif()
+
 #Include all platform specific cmake files.
 include("PLATFORM/Windows.cmake")
 include("PLATFORM/Mingw.cmake")

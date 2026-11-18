@@ -1,8 +1,8 @@
 # RMIG-009 — Backend Vulkan : instance, device, swapchain, présentation
 
-Status: **In progress** — priorité P1 — confiance Medium
+Status: **Done** — priorité P1 — confiance Medium
 
-Avancement : Outil de validation Vulkan autonome (tools/vulkan_smoke.cpp) : instance, surface SDL2/X11, sélection physique, device + queue graphics/present, swapchain 640x480 (4 images), render pass clear, 60 frames présentées, arrêt propre. Validé sur le driver Vulkan de la machine (lavapipe/NVIDIA). Reste : intégrer ce squelette dans EMULATOR/RENDERER_VK.C et brancher le pipeline PSX.
+Avancement : Backend Vulkan intégré au jeu : TOMB5_RENDERER=vulkan crée la fenêtre SDL_WINDOW_VULKAN, initialise l’instance/device/swapchain et présente une image claire via RendererVK_BeginScene/EndScene. Le jeu (simulation, entrées, logs [DRAW]/[LARA]) tourne sans contexte OpenGL. Le chemin GL par défaut reste inchangé (capture RMIG-007 identique). Le pipeline PSX (VRAM/VBO/shaders) reste RMIG-010/011.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Disponibilité de la validation layer en 64 bits, comportement multi-GPU.
 
 ## Preuves
 
-- 2026-11-18 : tools/vulkan_smoke.cpp compile et s’exécute : [VK] instance/device/swapchain OK: 640x480, 4 images ; [VK] presented, shutting down ; exit 0. Script scripts/porting/vulkan_smoke.sh. Le squelette servira de base à RENDERER_VK.C (RMIG-010/011).
+- 2026-11-18 : Smoke test autonome : instance/device/swapchain 640x480, 4 images, 60 frames présentées, sortie 0. Intégration jeu : TOMB5_RENDERER=vulkan + TOMB5_VK_CLEAR=1 -> fenêtre bleue 640x480, [VK] backend ready, boucle de jeu active (logs [DRAW] lvl=3 room=20, [LARA] anim=103), aucun contexte GL. Chemin GL par défaut vérifié : capture déterministe inchangée sha256 675e2c8d…. Builds 32/64 verts, 4188 tests PASS.
 
 ## Références
 

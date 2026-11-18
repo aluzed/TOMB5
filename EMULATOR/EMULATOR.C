@@ -108,6 +108,11 @@ TextureID whiteTexture;
 
 int windowWidth = 0;
 int windowHeight = 0;
+int g_vulkanMode = 0;
+
+extern int RendererVK_Select(SDL_Window* window);
+extern void RendererVK_Shutdown(void);
+extern int RendererVK_IsActive(void);
 char* pVirtualMemory = NULL;
 SysCounter counters[3] = { 0 };
 #if !defined(__ANDROID__)
@@ -129,6 +134,11 @@ int vram_need_update = TRUE;
 
 void Emulator_ResetDevice()
 {
+	if (g_vulkanMode)
+	{
+		return;
+	}
+
 #if defined(OGL)
 	SDL_GL_SetSwapInterval(g_swapInterval);
 #elif defined(EGL) || defined(OGLES)///@TODO &&
@@ -822,6 +832,26 @@ static int Emulator_InitialiseSDL(char* windowName, int width, int height)
 	}
 #endif
 
+#if defined(__LP64__)
+	{
+		const char* want = getenv("TOMB5_RENDERER");
+		if (want != NULL && strcmp(want, "vulkan") == 0)
+		{
+			unsigned int flags = SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE;
+			g_window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_UNDEFINED,
+			                            SDL_WINDOWPOS_UNDEFINED,
+			                            windowWidth, windowHeight, flags);
+			if (g_window == NULL || !RendererVK_Select(g_window))
+			{
+				eprinterr("Failed to initialise Vulkan backend!\n");
+				return FALSE;
+			}
+			g_vulkanMode = 1;
+			return TRUE;
+		}
+	}
+#endif
+
 #if defined(OGL)
 	if (Emulator_InitialiseGLContext(windowName) == FALSE)
 	{
@@ -890,7 +920,7 @@ void Emulator_Initialise(char* windowName, int width, int height)
 	}
 
 #if defined(GLEW)
-	if (Emulator_InitialiseGLEW() == FALSE)
+	if (!g_vulkanMode && Emulator_InitialiseGLEW() == FALSE)
 	{
 		eprinterr("Failed to Intialise GLEW\n");
 		Emulator_ShutDown();
@@ -2255,6 +2285,14 @@ void Emulator_GenerateCommonTextures()
 int Emulator_Initialise()
 {
 	memset(vram, 0, VRAM_WIDTH * VRAM_HEIGHT * sizeof(unsigned short));
+
+	if (g_vulkanMode)
+	{
+		/* Le backend Vulkan possede ses propres ressources. Les shaders,
+		 * textures et buffers GL ne doivent pas etre crees. */
+		return TRUE;
+	}
+
 	Emulator_GenerateCommonTextures();
 	Emulator_CreateGlobalShaders();
 
@@ -2970,6 +3008,11 @@ void Emulator_SetScreenshotPath(const char* path)
 
 void Emulator_TakeScreenshot()
 {
+	if (g_vulkanMode)
+	{
+		fprintf(stderr, "[VK] screenshot not implemented yet\n");
+		return;
+	}
 	unsigned char* pixels = new unsigned char[windowWidth * windowHeight * 4];
 #if defined(OGL) || defined(OGLES)
 #define GL_BGRA GL_RGBA
@@ -3155,6 +3198,12 @@ unsigned int Emulator_GetFPS()
 
 void Emulator_SwapWindow()
 {
+	if (g_vulkanMode)
+	{
+		/* La presentation est faite par RendererVK_EndScene(). */
+		return;
+	}
+
 	Emulator_WaitForTimestep(1);
 
 #if defined(RO_DOUBLE_BUFFERED)
@@ -3255,6 +3304,14 @@ void Emulator_EndScene()
 
 void Emulator_ShutDown()
 {
+	if (g_vulkanMode)
+	{
+		RendererVK_Shutdown();
+		SDL_DestroyWindow(g_window);
+		SDL_Quit();
+		exit(0);
+	}
+
 #if defined(OGL) || defined(OGLES)
 	Emulator_DestroyTexture(vramTexture);
 	Emulator_DestroyTexture(whiteTexture);
