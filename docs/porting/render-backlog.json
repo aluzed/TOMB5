@@ -1,6 +1,6 @@
 {
   "kind": "render-migration",
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "intro": "Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'OpenGL par Vulkan, overlay ImGui (F12), puis reflets SSR et raytracing matériel. Distinct du lot initial figé du 13 septembre (`backlog.json`) : ici les statuts évoluent et chaque ticket doit porter une preuve avant d'être déclaré Done.",
   "tickets": [
     {
@@ -320,6 +320,10 @@
         {
           "date": "2026-11-18",
           "note": "Scène : TOMB5_START_LEVEL=3, 1800 frames de contrôle, capture à la frame 1799. Deux runs 32 bits : sha256 083d24a01588e14023b5f2ddb654dcaee278a58d9ce9e4a7fa443a6d7f7750b6 (identiques). Deux runs 64 bits : sha256 675e2c8da064bfefb4dcb4347f7629d5e114026bb0082c78b584ede61a9b651b (identiques). État identique 32/64 : Lara pos=(90642,4608,52736) room=20 rot=-16384 anim=103 frame=1611. Écart image 32/64 : mean_abs_diff=18.730, gain global 0.965, 26.12% de pixels à +/-8 après gain ; le 64 bits est plus sombre, y compris le HUD, donc l’écart n’est pas seulement l’éclairage 3D. Captures/README dans docs/porting/replay/ et script scripts/porting/capture_compare.py."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Correction de la capture : le BMP OpenGL était enregistré avec les masques SDL par défaut (BGRA) alors que glReadPixels(GL_RGBA) fournit RGBA, d’où un échange rouge/bleu dans toutes les références. Masques explicites côté GL, masques déduits du format de swapchain + alpha forcé à 255 côté Vulkan. Nouvelles références déterministes : 32 bits sha256 51d3a1c72377b4656b47c10adff1eb2f045941a04345c2de46374ef4492c3d27 (2 runs identiques), 64 bits sha256 5dbbb25184d54d96c95aed1c96494ade0e390956e7c0de1da262180779e269a8 (2 runs identiques). L’écart 32/64 mesuré reste mean_abs_diff=18.730, gain 0.965, 26.12% à ±8 (les deux images étaient inversées de la même façon, la métrique est inchangée)."
         }
       ]
     },
@@ -456,6 +460,10 @@
         {
           "date": "2026-11-18",
           "note": "TOMB5_RENDERER=vulkan : niveau 3 room 20 rendu (Lara, HUD, textures 4 bits, ~3500 vertices/1170 triangles par frame), aucun contexte GL. Sampler REPEAT (comme GL) nécessaire pour supprimer des bandes de texture. La capture GL de référence reste inchangée (sha256 675e2c8d…). Builds 32/64 verts, 4188 tests PASS. Limites : projection 512x240 codée dans psx.vert (push constant non fiable), blit VRAM désactivé, capture VK non implémentée."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Finitions : la projection n’est plus codée en dur dans psx.vert. Elle est passée en push constant (mat4 Projection + vec2 Screen) et calculée dans les conventions Vulkan (y vers le bas, z dans [0,1]) : l’ancienne matrice GL donnait un écran noir car z=-1 était écrêté par le plan proche. Le push constant n’était pas appliqué car émis avant tout vkCmdBindPipeline. Capture/readback désormais disponibles."
         }
       ]
     },
@@ -496,7 +504,7 @@
           "note": "blit_shader"
         }
       ],
-      "progress": "Capture Vulkan (readback swapchain -> BMP) opérationnelle. La parité 32/GL vs VK sur la scène de référence n’est pas encore acquise : au même état de jeu (Lara pos/anim/frame 1611), l’image GL est bleutée (probable fondu/overlay de cinématique) alors que VK montre la scène de base orangée. Écart mesuré : mean_abs_diff=50.4, gain 0.63, 4.08% de pixels à ±8. Prochaines étapes : rendre les prims non texturées / fondus 2D et aligner le timing de cinématique.",
+      "progress": "Shaders SPIR-V 4/8/16 bits + blit + CLUT + dither compilés hors ligne et embarqués. La scène de référence (niveau 3, 1800 frames) rendue par Vulkan est octet pour octet identique à la capture OpenGL 64 bits (cmp sans différence). Le format 8 bits n’est pas exercé par cette scène (4 et 16 bits seulement) : il reste à couvrir par une scène dédiée avant de clore le ticket.",
       "evidence": [
         {
           "date": "2026-11-18",
@@ -509,13 +517,17 @@
         {
           "date": "2026-11-18",
           "note": "Readback VK : capture 640x480 BMP via copie swapchain -> buffer host + SDL_SaveBMP, déclenchée par Emulator_RequestScreenshot (TOMB5_CAPTURE). Fichier produit et lisible. Comparaison avec la référence GL au même état (pos/anim/frame identiques) : mean_abs_diff=50.4, gain global 0.63, 4.08% à ±8 ; différence de couleur/ambiance (GL bleuté vs VK orangé) à expliquer (fondu/overlay 2D ou timing de cinématique)."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Parité pixel : TOMB5_RENDERER=vulkan TOMB5_START_LEVEL=3 TOMB5_FRAMES=1800 TOMB5_CAPTURE=/tmp/vk.bmp, comparé à la référence GL 64 bits : sha256 identiques 5dbbb25184d54d96c95aed1c96494ade0e390956e7c0de1da262180779e269a8, 307200 pixels identiques, validation layers propres. Preuve structurelle : dump TOMB5_DUMP_VERTS identique octet par octet (1277 enregistrements vertices+splits) entre GL et VK sur 300 frames. Correctifs nécessaires : dither retourné verticalement (gl_FragCoord Vulkan part du haut → pc.Screen.y - y), ids de texture logiques distincts, read_vram/copy_vram sur vram."
         }
       ]
     },
     {
       "id": "RMIG-012",
       "title": "Parité visuelle et retrait du chemin OpenGL",
-      "status": "Blocked",
+      "status": "In progress",
       "priority": "P1",
       "goal": "Valider Vulkan sur des scènes réelles puis supprimer OpenGL du build 64 bits.",
       "facts": "Le remplacement est décidé : aucun backend GL ne doit rester dans la cible 64 bits. La référence de comparaison est produite par RMIG-007. Le harnais RMIG-007 a mesuré un écart 32/64 : mean_abs_diff=18.730, 26.12% de pixels à +/-8 après gain global ; le 64 bits est plus sombre, HUD compris. Cet écart devra être expliqué ou accepté dans la parité Vulkan.",
@@ -550,8 +562,13 @@
           "note": "sélection OGL"
         }
       ],
-      "progress": "Bloqué par les shaders.",
-      "evidence": []
+      "progress": "Débloqué : les shaders SPIR-V sont en place et le backend Vulkan reproduit la référence OpenGL 64 bits au pixel près. Reste (a) l’écart 32 bits ↔ 64 bits (64 bits plus sombre, HUD compris : mean_abs_diff=18.730, 26.12% à ±8) et (b) le retrait effectif du chemin OpenGL du build 64 bits.",
+      "evidence": [
+        {
+          "date": "2026-11-18",
+          "note": "Backend Vulkan pixel-identique à OpenGL 64 bits sur la scène de référence (sha256 5dbbb251…, cmp identique). L’écart restant est celui du rendu 32 bits vs 64 bits, indépendant du backend ; à instruire côté conversion couleur/format."
+        }
+      ]
     },
     {
       "id": "RMIG-013",

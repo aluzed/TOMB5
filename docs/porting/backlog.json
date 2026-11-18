@@ -2611,6 +2611,15 @@
       ],
       "status": "In progress",
       "summary": "Vulkan : readback/capture 640x480 BMP opérationnel (Emulator_RequestScreenshot + copie swapchain). La parité avec la référence GL au même état de jeu n’est pas encore acquise : mean_abs_diff=50.4, gain 0.63, 4.08% à ±8, avec une différence d’ambiance (GL bleuté vs VK orangé) à expliquer (fondu/overlay 2D, timing de cinématique ou CLUT). Aucun Done global."
+    },
+    {
+      "date": "2026-11-18",
+      "authorization_until": "2026-11-18T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Parité visuelle atteinte : le backend Vulkan (TOMB5_RENDERER=vulkan) rend la scène de référence niveau 3 (1800 frames) avec une capture octet pour octet identique à OpenGL 64 bits (sha256 5dbbb251…, 307200 pixels, cmp sans différence). Cause de l’écart « bleu vs orangé » identifiée : la capture OpenGL inversait rouge et bleu (glReadPixels RGBA sauvegardé avec les masques SDL BGRA par défaut) ; masques corrigés côté GL et déduits du format de swapchain + alpha opaque côté Vulkan. Autres correctifs : projection en push constant avec conventions Vulkan (y vers le bas, z dans [0,1]), dither retourné verticalement, ids de texture logiques distincts (PORT_TEXTURE_WHITE/VRAM), read_vram/copy_vram sur la VRAM CPU, barrière de layout à la première utilisation des images de swapchain. Nouvelles références déterministes 32/64 : 51d3a1c7… / 5dbbb251…. Reste : format 8 bits non exercé par la scène, écart 32↔64 bits (plus sombre en 64), retrait d’OpenGL. Builds 32/64 verts, 4188 tests PASS."
     }
   ]
 }

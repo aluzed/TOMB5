@@ -28,6 +28,15 @@ typedef struct RendererBackend
 	void (*draw_triangles)(int start_vertex, int triangles);
 } RendererBackend;
 
+/*
+ * Identifiants de texture logiques utilises par LIBGPU pour separer les
+ * groupes de primitives (texture VRAM et texture blanche).  Le backend GL
+ * fournit ses propres noms de texture ; le backend Vulkan n'en a pas besoin
+ * mais doit garder des valeurs distinctes et stables.
+ */
+#define PORT_TEXTURE_WHITE 1u
+#define PORT_TEXTURE_VRAM  2u
+
 extern const RendererBackend* g_renderer;
 
 /* Selectionne le backend OpenGL existant (defaut). */

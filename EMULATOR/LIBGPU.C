@@ -506,6 +506,29 @@ void DrawAggregatedSplits()
 		Emulator_UpdateInput();
 	}
 
+	{
+		/* Diagnostic de parite GL/VK : trace brute des donnees envoyees au
+		 * backend (memes octets pour tous les backends). */
+		static FILE* port_vert_dump = NULL;
+		static int port_vert_dump_init = 0;
+		if (!port_vert_dump_init)
+		{
+			port_vert_dump_init = 1;
+			const char* path = getenv("TOMB5_DUMP_VERTS");
+			if (path != NULL)
+				port_vert_dump = fopen(path, "wb");
+		}
+		if (port_vert_dump != NULL)
+		{
+			int hdr[2];
+			hdr[0] = g_splitIndex;
+			hdr[1] = g_vertexIndex;
+			fwrite(hdr, sizeof(int), 2, port_vert_dump);
+			fwrite(g_vertexBuffer, sizeof(struct Vertex), g_vertexIndex, port_vert_dump);
+			fwrite(g_splits, sizeof(VertexBufferSplit), g_splitIndex + 1, port_vert_dump);
+		}
+	}
+
 	// next code ideally should be called before EndScene
 	g_renderer->update_vertex_buffer(g_vertexBuffer, g_vertexIndex);
 

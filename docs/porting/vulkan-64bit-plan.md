@@ -1041,3 +1041,106 @@ cinématique) alors que VK montre la scène de base **orangée**. L’écart
 n’est donc pas encore une simple différence de filtrage : il faut rendre
 les primitives non texturées / fondus 2D et aligner le timing de
 cinématique avant de conclure sur la parité des textures.
+
+## 38. Parité visuelle Vulkan / OpenGL : pixel-identique (RMIG-011)
+
+Le §37 concluait à un écart « bleu contre orangé » entre les deux
+backends. La cause n’était **pas** le rendu : les deux captures étaient
+correctes géométriquement, mais **la capture OpenGL inversait rouge et
+bleu**.
+
+### Cause racine
+
+`Emulator_TakeScreenshot` lisait le framebuffer avec
+`glReadPixels(..., GL_RGBA, ...)` (octets R,G,B,A) puis créait la surface
+SDL avec des masques **nuls** :
+
+```c
+SDL_CreateRGBSurfaceFrom(pixels, w, h, 32, w*4, 0, 0, 0, 0);
+```
+
+SDL applique alors ses masques par défaut (`R=0x00FF0000`), qui décrivent
+un tampon **BGRA** : le canal rouge lu était écrit comme bleu. Toutes les
+captures de référence RMIG-007 (dont `ref32.png` / `ref64.png`) étaient
+donc R/B inversées. La fenêtre, elle, était correcte — d’où l’impression
+que seul Vulkan « changeait » les couleurs.
+
+Le backend Vulkan avait le même type de bug : les masques du BMP étaient
+codés en dur pour du BGRA alors que la swapchain choisie est
+`VK_FORMAT_B8G8R8A8_UNORM`… avec un traitement incohérent, et l’alpha de
+la swapchain (déclarée `OPAQUE`, donc non défini) finissait dans le BMP.
+
+Corrections :
+
+- masques SDL explicites côté GL (`R=0x000000FF`, `G=0x0000FF00`,
+  `B=0x00FF0000`) ;
+- masques déduits du format réel de la swapchain côté Vulkan ;
+- alpha forcé à 255 dans la capture Vulkan (swapchain `OPAQUE`).
+
+### Autres écarts corrigés au passage
+
+1. **Projection par push constant** : `vkCmdPushConstants` était appelé
+   avant tout `vkCmdBindPipeline`, donc ignoré. Une fois l’ordre corrigé,
+   l’image restait noire pour une autre raison : la matrice copiée était
+   celle d’OpenGL. En Vulkan le NDC `y` pointe vers le bas et `z` doit
+   rester dans `[0, 1]` ; avec `z = -1` tout le décor était écrêté par le
+   plan proche. La projection est maintenant calculée dans les
+   conventions Vulkan (`b = +2/h`, `c = -1`, `z = 0`) et passée par push
+   constant : plus de `512×240` codé en dur dans `psx.vert`.
+2. **Dithering** : `gl_FragCoord.y` part du bas en OpenGL et du haut en
+   Vulkan. La matrice 4×4 était donc appliquée en miroir vertical
+   (±3/±5 par pixel sur toute l’image). Les shaders utilisent désormais
+   `pc.Screen.y - gl_FragCoord.y`, ce qui reproduit exactement la
+   position du dither OpenGL.
+3. **Identifiants de texture** : en mode Vulkan, `Emulator_Initialise`
+   ne crée pas les textures GL, donc `whiteTexture` et `vramTexture`
+   valaient tous deux 0. `AddSplit` fusionnait alors des groupes de
+   primitives que OpenGL séparait (`texture VRAM` vs `texture blanche`).
+   Deux identifiants logiques distincts (`PORT_TEXTURE_WHITE`,
+   `PORT_TEXTURE_VRAM`) rétablissent un découpage identique.
+4. **`read_vram` / `copy_vram`** : ils étaient vides côté Vulkan alors
+   que la VRAM PSX reste une image CPU (`vram`). `StoreImage` (utilisé
+   par `GPU_SyncBothScreens`) renvoyait donc des données non
+   initialisées et la logique du jeu divergeait. Ils opèrent maintenant
+   sur `vram`, comme le backend GL.
+5. **Validation Vulkan** : `loadOp = LOAD` exige une `initialLayout`
+   définie. La render pass utilise `PRESENT_SRC_KHR`, avec une barrière
+   `UNDEFINED → PRESENT_SRC` à la première utilisation de chaque image de
+   swapchain. Plus aucune erreur de validation (hors avertissements de
+   performance sur les attributs inutilisés du pipeline de blit).
+
+### Preuves
+
+Instrumentation ajoutée (harnais temporaires, activés par variable
+d’environnement) :
+
+- `TOMB5_DUMP_VERTS=<fichier>` : trace binaire des données réellement
+  envoyées au backend (en-tête `splitIndex`, `vertexIndex`, puis
+  `Vertex` et `VertexBufferSplit`) à chaque ordering table ;
+- `TOMB5_DUMP_VRAM=<fichier>` : dump de la VRAM PSX à la frame de
+  capture.
+
+Résultats (niveau 3, 300 frames, `TOMB5_SKIP_CUTSCENE=1`) :
+
+- dump des vertices : **1277 enregistrements identiques octet par octet**
+  entre GL et Vulkan (aucune différence de position, couleur, texture,
+  blend ou format) ;
+- captures 640×480 : `mean_abs_diff = 0.000`, `global_gain = 1.000`.
+
+Résultats sur la scène de référence RMIG-007 (niveau 3, 1800 frames,
+`TOMB5_CAPTURE`) :
+
+```
+GL 64 bits : 5dbbb25184d54d96c95aed1c96494ade0e390956e7c0de1da262180779e269a8
+Vulkan     : 5dbbb25184d54d96c95aed1c96494ade0e390956e7c0de1da262180779e269a8
+cmp        : identiques
+```
+
+La capture Vulkan est **octet pour octet identique** à la capture
+OpenGL 64 bits de la scène de référence (307 200 pixels, zéro pixel
+différent). Le pipeline PSX Vulkan peut donc servir de base fiable pour
+la suite (SSR, raytracing, retrait d’OpenGL).
+
+Les formats réellement exercés par la scène de référence sont 4 bits
+(588 groupes) et 16 bits (977 groupes) ; aucun groupe 8 bits n’y
+apparaît, ce format reste donc à couvrir par une scène dédiée.

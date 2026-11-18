@@ -1,6 +1,12 @@
 #version 450
 layout(set = 0, binding = 0) uniform sampler2D s_texture;
 
+layout(push_constant) uniform Push
+{
+    mat4 Projection;
+    vec2 Screen;
+} pc;
+
 layout(location = 0) in vec4 v_texcoord;
 layout(location = 1) in vec4 v_color;
 layout(location = 2) in vec4 v_page_clut;
@@ -33,6 +39,9 @@ void main()
 
     fragColor = PSX_DECODE(color_16);
     fragColor *= v_color;
-    ivec2 dc = ivec2(fract(gl_FragCoord.xy / 4.0) * 4.0);
+    /* Vulkan a l'origine des fragments en haut : on repasse en coordonnees
+     * ecran PSX (origine en bas) pour retrouver exactement la matrice de
+     * dithering du backend OpenGL. */
+    ivec2 dc = ivec2(fract(vec2(gl_FragCoord.x, pc.Screen.y - gl_FragCoord.y) / 4.0) * 4.0);
     fragColor.xyz += PSX_DITHER(dc) * v_texcoord.w;
 }

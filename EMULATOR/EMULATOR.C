@@ -8,6 +8,7 @@
 #include "EMULATOR_PLATFORM_SETUP.H"
 
 #include "LIBGPU.H"
+#include "RENDERER.H"
 #include "LIBETC.H"
 #include "LIBPAD.H"
 #include "INPUTUI.H"
@@ -2290,7 +2291,13 @@ int Emulator_Initialise()
 	if (g_vulkanMode)
 	{
 		/* Le backend Vulkan possede ses propres ressources. Les shaders,
-		 * textures et buffers GL ne doivent pas etre crees. */
+		 * textures et buffers GL ne doivent pas etre crees. Il faut en
+		 * revanche des identifiants de texture *distincts* : LIBGPU s'en
+		 * sert pour separer les groupes de primitives (texture VRAM vs
+		 * texture blanche). Deux ids nuls fusionneraient les splits et
+		 * changeraient le shader/blend applique a chaque groupe. */
+		whiteTexture = (TextureID)PORT_TEXTURE_WHITE;
+		vramTexture  = (TextureID)PORT_TEXTURE_VRAM;
 		return TRUE;
 	}
 
@@ -3029,7 +3036,11 @@ void Emulator_TakeScreenshot()
 #endif
 
 #if defined(SDL2)
-	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, windowWidth, windowHeight, 8 * 4, windowWidth * 4, 0, 0, 0, 0);
+	/* glReadPixels(GL_RGBA) produit des octets R,G,B,A : les masques SDL
+	 * doivent decrire cet ordre, sinon le BMP sauvegarde a rouge et bleu
+	 * inverses (bug historique de la capture de reference RMIG-007). */
+	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, windowWidth, windowHeight, 8 * 4, windowWidth * 4,
+	                                                0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 	SDL_SaveBMP(surface, g_screenshotPath);
 	fprintf(stderr, "[CAPTURE] saved %s (%dx%d)\n", g_screenshotPath, windowWidth, windowHeight);
 	SDL_FreeSurface(surface);

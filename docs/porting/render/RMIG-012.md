@@ -1,8 +1,8 @@
 # RMIG-012 — Parité visuelle et retrait du chemin OpenGL
 
-Status: **Blocked** — priorité P1 — confiance Medium
+Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Bloqué par les shaders.
+Avancement : Débloqué : les shaders SPIR-V sont en place et le backend Vulkan reproduit la référence OpenGL 64 bits au pixel près. Reste (a) l’écart 32 bits ↔ 64 bits (64 bits plus sombre, HUD compris : mean_abs_diff=18.730, 26.12% à ±8) et (b) le retrait effectif du chemin OpenGL du build 64 bits.
 
 ## Objectif
 
@@ -48,7 +48,7 @@ Rapport de comparaison d'images + ldd + revue des dépendances CMake.
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-18 : Backend Vulkan pixel-identique à OpenGL 64 bits sur la scène de référence (sha256 5dbbb251…, cmp identique). L’écart restant est celui du rendu 32 bits vs 64 bits, indépendant du backend ; à instruire côté conversion couleur/format.
 
 ## Références
 

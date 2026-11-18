@@ -1583,6 +1583,21 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 		if (port_replay_active && port_replay_frame == port_replay_frames - 1)
 		{
 			Emulator_RequestScreenshot();
+
+			{
+				const char* dump = getenv("TOMB5_DUMP_VRAM");
+				if (dump != NULL)
+				{
+					extern unsigned short vram[1024 * 512];
+					FILE* f = fopen(dump, "wb");
+					if (f != NULL)
+					{
+						fwrite(vram, 2, 1024 * 512, f);
+						fclose(f);
+						fprintf(stderr, "[VRAM] dumped %s\n", dump);
+					}
+				}
+			}
 		}
 		nframes = DrawPhaseGame();
 

@@ -48,6 +48,7 @@ Gestion du dithering et des coordonnées 16 bits dans le format de vertex.
 ## Preuves
 
 - 2026-11-18 : TOMB5_RENDERER=vulkan : niveau 3 room 20 rendu (Lara, HUD, textures 4 bits, ~3500 vertices/1170 triangles par frame), aucun contexte GL. Sampler REPEAT (comme GL) nécessaire pour supprimer des bandes de texture. La capture GL de référence reste inchangée (sha256 675e2c8d…). Builds 32/64 verts, 4188 tests PASS. Limites : projection 512x240 codée dans psx.vert (push constant non fiable), blit VRAM désactivé, capture VK non implémentée.
+- 2026-11-18 : Finitions : la projection n’est plus codée en dur dans psx.vert. Elle est passée en push constant (mat4 Projection + vec2 Screen) et calculée dans les conventions Vulkan (y vers le bas, z dans [0,1]) : l’ancienne matrice GL donnait un écran noir car z=-1 était écrêté par le plan proche. Le push constant n’était pas appliqué car émis avant tout vkCmdBindPipeline. Capture/readback désormais disponibles.
 
 ## Références
 

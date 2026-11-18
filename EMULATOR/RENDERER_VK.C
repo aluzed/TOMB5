@@ -48,6 +48,7 @@ struct VKState
     std::vector<VkImage> images;
     std::vector<VkImageView> views;
     std::vector<VkFramebuffer> framebuffers;
+    std::vector<int> imageInitialized;
     VkRenderPass renderPass = VK_NULL_HANDLE;
     VkCommandPool commandPool = VK_NULL_HANDLE;
     std::vector<VkCommandBuffer> commandBuffers;
@@ -102,7 +103,7 @@ struct VKState
     VkPipeline boundPipeline = VK_NULL_HANDLE;
     VkBuffer boundVertexBuffer = VK_NULL_HANDLE;
 
-    float projection[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+    float projection[18] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 640, 480};
 };
 
 static VKState vk;
@@ -440,9 +441,9 @@ static int vk_create_psx_resources()
     vkUpdateDescriptorSets(vk.device, 1, &wds, 0, nullptr);
 
     VkPushConstantRange pcr{};
-    pcr.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+    pcr.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
     pcr.offset = 0;
-    pcr.size = 64;
+    pcr.size = 72;   /* mat4 Projection + vec2 Screen */
     VkPipelineLayoutCreateInfo pl{};
     pl.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pl.setLayoutCount = 1;
@@ -675,6 +676,7 @@ int RendererVK_Init(SDL_Window* window)
     vkGetSwapchainImagesKHR(vk.device, vk.swapchain, &actual, nullptr);
     vk.images.resize(actual);
     vkGetSwapchainImagesKHR(vk.device, vk.swapchain, &actual, vk.images.data());
+    vk.imageInitialized.assign(actual, 0);
 
     for (VkImage image : vk.images)
     {
@@ -698,7 +700,10 @@ int RendererVK_Init(SDL_Window* window)
     color.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
     color.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     color.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    color.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    /* loadOp = LOAD : la disposition initiale doit etre definie. Les images
+     * de swapchain reviennent en PRESENT_SRC ; le premier OT de la frame
+     * efface explicitement le contenu (y compris a la toute premiere frame). */
+    color.initialLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
     color.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
     VkAttachmentReference colorRef{0, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL};
@@ -936,15 +941,22 @@ static void vk_begin_render_pass(VkCommandBuffer cb)
     vkCmdBindDescriptorSets(cb, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipelineLayout,
                             0, 1, &vk.descriptorSet, 0, nullptr);
 
+    /*
+     * Projection ortho equivalente a Emulator_Ortho2D(0, w, h, 0, 0, 1)
+     * mais exprimee dans les conventions Vulkan :
+     *   - NDC y pointe vers le bas (donc b = +2/h et decalage -1) ;
+     *   - la profondeur NDC doit rester dans [0, 1] (z = 0 pour z_view = 0),
+     *     sinon le plan proche ecrete toute la geometrie et l'ecran est noir.
+     */
     float w = (float)activeDispEnv.disp.w;
     float h = (float)activeDispEnv.disp.h;
     float a = 2.0f / w;
-    float b = -2.0f / h;
-    float c = -2.0f;
+    float b = 2.0f / h;
+    float c = -1.0f;
     float x = -1.0f;
-    float y = 1.0f;
-    float z = -1.0f;
-    float proj[16] = {a, 0, 0, 0, 0, b, 0, 0, 0, 0, c, 0, x, y, z, 1};
+    float y = -1.0f;
+    float z = 0.0f;
+    float proj[18] = {a, 0, 0, 0, 0, b, 0, 0, 0, 0, c, 0, x, y, z, 1, w, h};
     memcpy(vk.projection, proj, sizeof(proj));
 
     /* Un pipeline doit etre lie avant vkCmdPushConstants (meme layout). */
@@ -956,7 +968,9 @@ static void vk_begin_render_pass(VkCommandBuffer cb)
         vkCmdBindPipeline(cb, VK_PIPELINE_BIND_POINT_GRAPHICS, initial);
         vk.boundPipeline = initial;
     }
-    vkCmdPushConstants(cb, vk.pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, 64, vk.projection);
+    vkCmdPushConstants(cb, vk.pipelineLayout,
+                       VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+                       0, sizeof(vk.projection), vk.projection);
 
     vk.boundVertexBuffer = VK_NULL_HANDLE;
 
@@ -994,6 +1008,19 @@ static void RendererVK_BeginFrame()
     VkCommandBufferBeginInfo bi{};
     bi.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     vkBeginCommandBuffer(cb, &bi);
+
+    if (vk.imageIndex < vk.imageInitialized.size() && !vk.imageInitialized[vk.imageIndex])
+    {
+        /* Premiere utilisation de cette image de swapchain : la declarer en
+         * PRESENT_SRC pour que les render pass en LOAD soient valides. Le
+         * contenu est de toute facon efface au premier ordering table. */
+        vk_image_barrier(cb, vk.images[vk.imageIndex], VK_IMAGE_LAYOUT_UNDEFINED,
+                         VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+                         VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+                         VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT, 0,
+                         VK_ACCESS_COLOR_ATTACHMENT_READ_BIT);
+        vk.imageInitialized[vk.imageIndex] = 1;
+    }
 
     vk_upload_vram(cb);
 
@@ -1033,15 +1060,31 @@ static void vk_write_capture()
     for (int y = 0; y < h; y++)
         memcpy(flipped + (size_t)(h - 1 - y) * w * 4, src + (size_t)y * w * 4, (size_t)w * 4);
 
+    /* La swapchain est declaree OPAQUE : le contenu de l'alpha est indefini.
+     * On le force a 255 pour que les captures soient comparables octet par
+     * octet avec celles du backend OpenGL. */
+    for (size_t i = 0; i < (size_t)w * h; i++)
+        flipped[i * 4 + 3] = 255;
+
+    /* Les masques SDL décrivent l'entier 32 bits little-endian, donc l'ordre
+     * des octets en mémoire. Ne pas les inverser : une erreur ici produit un
+     * échange rouge/bleu dans le BMP (et fausse toute mesure de parité). */
+    Uint32 rmask = 0x000000FF, gmask = 0x0000FF00, bmask = 0x00FF0000;
+    if (vk.format == VK_FORMAT_B8G8R8A8_UNORM || vk.format == VK_FORMAT_B8G8R8A8_SRGB)
+    {
+        rmask = 0x00FF0000;
+        bmask = 0x000000FF;
+    }
+
     SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(flipped, w, h, 32, w * 4,
-                                                    0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+                                                    rmask, gmask, bmask, 0xFF000000);
     if (surface)
     {
         SDL_SaveBMP(surface, vk.capturePath);
         SDL_FreeSurface(surface);
     }
     free(flipped);
-    std::fprintf(stderr, "[VK] capture saved %s (%dx%d)\n", vk.capturePath, w, h);
+    std::fprintf(stderr, "[VK] capture saved %s (%dx%d) format=%d\n", vk.capturePath, w, h, (int)vk.format);
     vk.captureRequested = 0;
 }
 
@@ -1175,8 +1218,45 @@ static void RendererVK_Clear(int x, int y, int w, int h, unsigned char r, unsign
     vk.clearB = b / 255.0f;
 }
 
-static void RendererVK_CopyVRAM(unsigned short* src, int x, int y, int w, int h, int dst_x, int dst_y) {}
-static void RendererVK_ReadVRAM(unsigned short* dst, int x, int y, int dst_w, int dst_h) {}
+/*
+ * La VRAM PSX reste une image CPU (`vram`) : le transfert vers la texture
+ * Vulkan est fait a chaque frame. Ces deux operations doivent donc modifier
+ * ou lire ce tableau exactement comme le backend GL, sinon la logique du jeu
+ * (StoreImage -> buffers de fondu, copies VRAM->VRAM) diverge du rendu.
+ */
+static void RendererVK_CopyVRAM(unsigned short* src, int x, int y, int w, int h, int dst_x, int dst_y)
+{
+    vram_need_update = TRUE;
+
+    int stride = w;
+    if (src == NULL)
+    {
+        src = vram;
+        stride = 1024;
+    }
+
+    src += x + y * stride;
+    unsigned short* dst = vram + dst_x + dst_y * 1024;
+
+    for (int i = 0; i < h; i++)
+    {
+        memcpy(dst, src, (size_t)w * sizeof(unsigned short));
+        dst += 1024;
+        src += stride;
+    }
+}
+
+static void RendererVK_ReadVRAM(unsigned short* dst, int x, int y, int dst_w, int dst_h)
+{
+    unsigned short* src = vram + x + 1024 * y;
+
+    for (int i = 0; i < dst_h; i++)
+    {
+        memcpy(dst, src, (size_t)dst_w * sizeof(unsigned short));
+        dst += dst_w;
+        src += 1024;
+    }
+}
 
 static void RendererVK_SetTexture(TextureID texture, TexFormat texFormat)
 {

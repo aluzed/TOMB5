@@ -6,6 +6,7 @@ layout(location = 2) in vec4 a_color;
 layout(push_constant) uniform Push
 {
     mat4 Projection;
+    vec2 Screen;   /* largeur/hauteur du framebuffer, pour le dithering */
 } pc;
 
 layout(location = 0) out vec4 v_texcoord;
@@ -26,5 +27,5 @@ void main()
     v_page_clut.z = fract(pw / 64.0);
     v_page_clut.w = floor(pw / 64.0) / 512.0;
 
-    gl_Position = vec4(vec2(a_position.xy) / vec2(512.0, 240.0) * 2.0 - 1.0, 0.0, 1.0);
+    gl_Position = pc.Projection * vec4(vec2(a_position.xy), 0.0, 1.0);
 }
