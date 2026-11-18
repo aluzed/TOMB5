@@ -13,6 +13,8 @@
  */
 typedef struct RendererBackend
 {
+	void (*begin_frame)(void);
+	void (*end_frame)(void);
 	int  (*begin_scene)(void);
 	void (*end_scene)(void);
 	void (*blit_vram)(void);

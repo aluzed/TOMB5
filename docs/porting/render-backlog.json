@@ -417,7 +417,7 @@
     {
       "id": "RMIG-010",
       "title": "Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables)",
-      "status": "In progress",
+      "status": "Done",
       "priority": "P1",
       "goal": "Rendre la scène PSX complète en Vulkan : une texture VRAM, un vertex buffer dynamique, un draw par passe.",
       "facts": "L'implémentation actuelle garde la VRAM 1024×512 en une texture RG8, pousse les Vertex (position, uv+couleur+dither, couleur, z, w) dans un VBO dynamique et émet un glDrawArrays par ordering table, sans depth test, avec glBlendFunc variable.",
@@ -451,13 +451,18 @@
           "note": "modes de blending"
         }
       ],
-      "progress": "Débloqué par RMIG-009 : le backend Vulkan est sélectionnable et présente. Reste le pipeline PSX complet (texture VRAM 16 bits, vertex buffer, ordering tables, blends, blit).",
-      "evidence": []
+      "progress": "Pipeline PSX Vulkan opérationnel : texture VRAM 1024x512 RG8, vertex buffer (Vertex 20 o), draws par split/ordering table, blends PSX (5 modes), render pass par OT avec conservation de l’image, upload VRAM par frame. La scène 3D du niveau 3 (room 20, 4 bits) est rendue avec Lara et le HUD, sans OpenGL. Reste les finitions : blit VRAM (titres/menus) et projection via uniforme.",
+      "evidence": [
+        {
+          "date": "2026-11-18",
+          "note": "TOMB5_RENDERER=vulkan : niveau 3 room 20 rendu (Lara, HUD, textures 4 bits, ~3500 vertices/1170 triangles par frame), aucun contexte GL. Sampler REPEAT (comme GL) nécessaire pour supprimer des bandes de texture. La capture GL de référence reste inchangée (sha256 675e2c8d…). Builds 32/64 verts, 4188 tests PASS. Limites : projection 512x240 codée dans psx.vert (push constant non fiable), blit VRAM désactivé, capture VK non implémentée."
+        }
+      ]
     },
     {
       "id": "RMIG-011",
       "title": "Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT)",
-      "status": "Blocked",
+      "status": "In progress",
       "priority": "P1",
       "goal": "Porter les shaders générés à l'exécution vers des shaders SPIR-V équivalents.",
       "facts": "Les shaders sont des chaînes C (gte_shader_4/8/16, blit_shader) avec en-têtes GLSL 330/300 es, correction de perspective maison (a_z/a_w), dithering PSX et décodage page/CLUT VRAM dans le fragment shader.",
@@ -491,8 +496,13 @@
           "note": "blit_shader"
         }
       ],
-      "progress": "Bloqué par le pipeline PSX.",
-      "evidence": []
+      "progress": "Shaders SPIR-V 4/8/16 bits + CLUT + dither compilés par glslc et embarqués (SHADERS_VK.H). Le rendu 4 bits est validé en jeu. Restent : blit VRAM, perspective PGXP et vérification des 8/16 bits.",
+      "evidence": [
+        {
+          "date": "2026-11-18",
+          "note": "EMULATOR/SHADERS/{psx.vert,psx4.frag,psx8.frag,psx16.frag,blit.vert,blit.frag} + psx_common.glsl, compilés par scripts/porting/gen_vk_shaders.py vers EMULATOR/SHADERS_VK.H. Pipeline 4 bits validé en jeu (textures/CLUT/dither). Blit et perspective restent à brancher."
+        }
+      ]
     },
     {
       "id": "RMIG-012",

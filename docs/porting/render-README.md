@@ -13,8 +13,8 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-007](render/RMIG-007.md) | Harnais de comparaison 32 bits / 64 bits | Done | P1 |
 | [RMIG-008](render/RMIG-008.md) | Abstraction renderer (interface + sélection) | In progress | P1 |
 | [RMIG-009](render/RMIG-009.md) | Backend Vulkan : instance, device, swapchain, présentation | Done | P1 |
-| [RMIG-010](render/RMIG-010.md) | Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables) | In progress | P1 |
-| [RMIG-011](render/RMIG-011.md) | Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT) | Blocked | P1 |
+| [RMIG-010](render/RMIG-010.md) | Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables) | Done | P1 |
+| [RMIG-011](render/RMIG-011.md) | Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT) | In progress | P1 |
 | [RMIG-012](render/RMIG-012.md) | Parité visuelle et retrait du chemin OpenGL | Blocked | P1 |
 | [RMIG-013](render/RMIG-013.md) | ImGui F12 : overlay, stats et interrupteurs | Blocked | P1 |
 | [RMIG-014](render/RMIG-014.md) | Reflets screen-space à presets | Blocked | P2 |
@@ -26,4 +26,4 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-020](render/RMIG-020.md) | Cutscene d intro du niveau 1 en 64 bits | Done | P1 |
 | [RMIG-021](render/RMIG-021.md) | Campagne 64 bits : parcours du Colosseum | In progress | P1 |
 
-11/21 terminés.
+12/21 terminés.

@@ -5,8 +5,13 @@
  * Adaptateur OpenGL : le code GL/D3D historique reste dans EMULATOR.C.
  * LIBGPU.C ne voit plus que cette interface.
  */
+static void RendererGL_BeginFrame(void) {}
+static void RendererGL_EndFrame(void) {}
+
 static const RendererBackend gl_backend =
 {
+	RendererGL_BeginFrame,
+	RendererGL_EndFrame,
 	Emulator_BeginScene,
 	Emulator_EndScene,
 	Emulator_BlitVRAM,

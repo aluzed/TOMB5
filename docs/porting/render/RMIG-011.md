@@ -1,8 +1,8 @@
 # RMIG-011 — Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT)
 
-Status: **Blocked** — priorité P1 — confiance Medium
+Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Bloqué par le pipeline PSX.
+Avancement : Shaders SPIR-V 4/8/16 bits + CLUT + dither compilés par glslc et embarqués (SHADERS_VK.H). Le rendu 4 bits est validé en jeu. Restent : blit VRAM, perspective PGXP et vérification des 8/16 bits.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Précision de l'interpolation de perspective et du dithering en SPIR-V.
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-18 : EMULATOR/SHADERS/{psx.vert,psx4.frag,psx8.frag,psx16.frag,blit.vert,blit.frag} + psx_common.glsl, compilés par scripts/porting/gen_vk_shaders.py vers EMULATOR/SHADERS_VK.H. Pipeline 4 bits validé en jeu (textures/CLUT/dither). Blit et perspective restent à brancher.
 
 ## Références
 

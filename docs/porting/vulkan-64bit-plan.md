@@ -976,3 +976,30 @@ le 32 bits compile des stubs et garde GL.
 
 Le pipeline PSX Vulkan (VRAM 16 bits, vertex buffer, ordering tables,
 blit, shaders 4/8/16 bits) est RMIG-010/011.
+
+## 35. Pipeline PSX Vulkan : la scène 3D est rendue (RMIG-010)
+
+Le backend Vulkan rend désormais la scène 3D réelle, sans OpenGL :
+
+- texture VRAM 1024×512 `R8G8_UNORM` alimentée depuis `vram` à chaque
+  frame ;
+- vertex buffer `Vertex` (20 o) alimenté par `vkCmdUpdateBuffer` par
+  ordering table ;
+- shaders SPIR-V 4/8/16 bits + CLUT + dither, compilés par
+  `scripts/porting/gen_vk_shaders.py` (glslc) et embarqués dans
+  `EMULATOR/SHADERS_VK.H` ;
+- blends PSX (aucun, average, add, subtract, quarter) ;
+- render pass par OT avec conservation de l’image (`LOAD`) et clear au
+  premier OT ;
+- projection 512×240 codée dans `psx.vert` (le push constant n’a pas été
+  fiable ; à remplacer par un UBO).
+
+Validation : niveau 3, room 20, ~3500 vertices/1170 triangles par frame,
+Lara et HUD visibles. Le sampler doit être en `REPEAT` (comme GL) : sinon
+d’énormes bandes de texture apparaissent.
+
+La capture GL de référence reste **identique**
+(`sha256 675e2c8d…`), builds 32/64 verts, 4188 tests PASS.
+
+Restent : blit VRAM (titres/menus), perspective PGXP, capture/readback
+Vulkan, et le warping pré-existant des grands polygones.

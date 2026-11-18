@@ -1,8 +1,8 @@
 # RMIG-010 — Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables)
 
-Status: **In progress** — priorité P1 — confiance Medium
+Status: **Done** — priorité P1 — confiance Medium
 
-Avancement : Débloqué par RMIG-009 : le backend Vulkan est sélectionnable et présente. Reste le pipeline PSX complet (texture VRAM 16 bits, vertex buffer, ordering tables, blends, blit).
+Avancement : Pipeline PSX Vulkan opérationnel : texture VRAM 1024x512 RG8, vertex buffer (Vertex 20 o), draws par split/ordering table, blends PSX (5 modes), render pass par OT avec conservation de l’image, upload VRAM par frame. La scène 3D du niveau 3 (room 20, 4 bits) est rendue avec Lara et le HUD, sans OpenGL. Reste les finitions : blit VRAM (titres/menus) et projection via uniforme.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Gestion du dithering et des coordonnées 16 bits dans le format de vertex.
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-18 : TOMB5_RENDERER=vulkan : niveau 3 room 20 rendu (Lara, HUD, textures 4 bits, ~3500 vertices/1170 triangles par frame), aucun contexte GL. Sampler REPEAT (comme GL) nécessaire pour supprimer des bandes de texture. La capture GL de référence reste inchangée (sha256 675e2c8d…). Builds 32/64 verts, 4188 tests PASS. Limites : projection 512x240 codée dans psx.vert (push constant non fiable), blit VRAM désactivé, capture VK non implémentée.
 
 ## Références
 

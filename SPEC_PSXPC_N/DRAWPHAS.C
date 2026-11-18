@@ -1,4 +1,5 @@
 #include "DRAWPHAS.H"
+#include "RENDERER.H"
 int port_in_lara_draw = 0;
 /* Plage memoire des primitives Lara de la frame courante, pour compter
  * combien d'entre elles sont effectivement parsees par l'emulateur GPU. */
@@ -79,6 +80,7 @@ short MonitorOff2;
 
 long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 {
+	g_renderer->begin_frame();
 #if defined(__LP64__)
 	if (port_teleport_request)
 	{
@@ -309,6 +311,8 @@ long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 	}
 
 #endif
+
+	g_renderer->end_frame();
 
 	return camera.number_frames;
 }
