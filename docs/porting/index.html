@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Écart 32/64 analysé : le pipeline de couleur n’est pas en cause (le backend Vulkan égale OpenGL au pixel près). Le dump des vertices montre 977 ordering tables identiques (chargement/intro) puis 300 OTs de jeu divergents : le build 32 bits émet un split de texture et ~99 vertices de plus par frame (6 en blend soustractif), et son journal [DRAW] affiche un fondu actif (fade=239/0 fading=1) absent en 64 bits avec persp 306 vs 256. C’est une divergence d’état/effets LP64, suivie dans RMIG-012 ; piste : histogramme des codes de primitives par OT.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Formats de texture et copie framebuffer→VRAM : harnais TOMB5_FORCE_TEXFMT (4/8/16) ajouté ; la scène de référence n’exerce que 4 et 16 bits (pixel-identique), le 8 bits forcé donne 99,82% de pixels à ±8 (résidu = égalités de sampling nearest sur frontières de texel, epsilon aligné dans les deux backends). Emulator_StoreFrameBuffer porté sur Vulkan (copie de l’image présentée vers un buffer hôte par frame + conversion 16 bits identique au chemin GL), ce qui répare l’effet mono/sépia en Vulkan ; la référence reste bit-identique (sha256 5dbbb251…). Anomalie d’ordre des canaux de cette conversion suivie par un nouveau ticket RMIG-022. Builds 32/64 verts.
 
 Détails : [scène et parcours runtime](runtime-level.md).

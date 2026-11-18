@@ -1198,3 +1198,33 @@ Harnais de diagnostic associé : `TOMB5_NO_STOREFB=1` court-circuite la
 copie framebuffer → VRAM, ce qui permet de mesurer son impact (sur le
 niveau 3 le simple fait de la désactiver change l’image de ~22 niveaux
 moyens, donc le chemin est bien actif).
+
+## 40. D'où vient réellement l'écart 32 bits / 64 bits
+
+Le §38 a montré que l'écart « bleu contre orangé » était un artefact de
+capture. Restait l'écart 32/64 (`mean_abs_diff=18.730`, 26 % de pixels à
+±8, 64 bits plus sombre HUD compris). Mesure faite avec le dump des
+vertices (300 frames, même scène) :
+
+- les **977 premiers ordering tables** (chargement, intro, écrans de
+  transition) sont **identiques octet par octet** entre 32 et 64 bits ;
+- les **300 ordering tables suivantes** (les frames de jeu) diffèrent
+  toutes : la version 32 bits émet un groupe de texture supplémentaire
+  (3 splits au lieu de 2) et ~99 vertices de plus par frame, dont 6
+  vertices en blend soustractif ;
+- en comparant les journaux `[DRAW]`, l'état de jeu diverge dès le début :
+  le build 32 bits affiche `fade=239/0 fading=1` là où le 64 bits est à
+  `fade=0/0 fading=0`, et les valeurs `persp` diffèrent (306 contre 256).
+
+Conclusion : l'écart 32/64 n'est **pas** un écart de pipeline de couleur
+(les vertices identiques donnent des pixels identiques ; le backend
+Vulkan reproduit OpenGL au pixel près). C'est une **divergence d'état de
+jeu / d'effets** entre les deux largeurs de pointeur : fondu d'intro,
+nombre de primitives d'effet par frame, valeur de perspective. Cela
+relève du portage 64 bits, pas de la migration Vulkan, et est suivi dans
+RMIG-012 avec cette analyse comme point de départ.
+
+Prochaine étape pour ce point : instrumenter le type de primitive
+(histogramme des codes de prim par ordering table) pour identifier les
+primitives d'effet émises seulement en 32 bits, puis corriger la cause
+LP64 correspondante sans toucher au rendu commun.

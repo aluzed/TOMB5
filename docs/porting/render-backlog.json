@@ -570,11 +570,15 @@
           "note": "sélection OGL"
         }
       ],
-      "progress": "Débloqué : les shaders SPIR-V sont en place et le backend Vulkan reproduit la référence OpenGL 64 bits au pixel près (y compris après portage de Emulator_StoreFrameBuffer). Reste (a) l’écart 32 bits ↔ 64 bits (64 bits plus sombre, HUD compris : mean_abs_diff=18.730, 26.12% à ±8) et (b) le retrait effectif du chemin OpenGL du build 64 bits.",
+      "progress": "Backend Vulkan pixel-identique à OpenGL 64 bits (référence 5dbbb251…). L’écart 32 ↔ 64 bits a été analysé (dump des vertices) : les 977 premiers ordering tables sont identiques, puis chaque frame de jeu diffère — le 32 bits émet un split de texture et ~99 vertices de plus par frame (dont 6 en blend soustractif) et son journal [DRAW] montre un fondu actif (`fade=239/0 fading=1`) absent en 64 bits, avec des valeurs `persp` différentes. Ce n’est donc pas un problème de couleur mais une divergence d’état/effets LP64, à instruire côté portage 64 bits. Reste aussi le retrait effectif du chemin OpenGL du build 64 bits.",
       "evidence": [
         {
           "date": "2026-11-18",
           "note": "Backend Vulkan pixel-identique à OpenGL 64 bits sur la scène de référence (sha256 5dbbb251…, cmp identique). L’écart restant est celui du rendu 32 bits vs 64 bits, indépendant du backend ; à instruire côté conversion couleur/format."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Analyse 32/64 par dump TOMB5_DUMP_VERTS (300 frames, niveau 3) : 977 enregistrements identiques (chargement/intro) puis 300 enregistrements divergents (jeu) ; comptage : 32 bits 1 058 577 vertices / 64 bits 1 062 531 au total, avec 32>64 sur 225 OTs et 64>32 sur 75 OTs dans la partie jeu. Journal [DRAW] : 32 bits fade=239/0 fading=1 vs 64 bits fade=0/0 fading=0, persp 306 vs 256. Conclusion : divergence d’état de jeu LP64, pas de pipeline couleur."
         }
       ]
     },
