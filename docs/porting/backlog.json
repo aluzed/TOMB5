@@ -2665,6 +2665,15 @@
       ],
       "status": "In progress",
       "summary": "RMIG-012 terminé : le build 64 bits n’embarque plus OpenGL (ni GLEW, ni libGL, ni symbole gl*), seul le backend Vulkan reste (PORT_VULKAN_ONLY, échappatoire PORT_ALLOW_GL pour diagnostic). TOMB5_RENDERER=gl affiche un message explicite et continue en Vulkan. Rendu inchangé après retrait (capture 300 frames 63b778f1…). Le build 32 bits conserve OpenGL comme référence. La divergence d’état 32/64 bits (primitives d’effet 0x34/0x62/0xE1, fondu d’écran) est extraite dans un nouveau ticket RMIG-023 avec l’analyse déjà faite."
+    },
+    {
+      "date": "2026-11-18",
+      "authorization_until": "2026-11-18T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "RMIG-014 : la scène Vulkan est rendue dans une cible hors-écran couleur + profondeur (D32) puis copiée à l’écran par un triangle plein écran (texelFetch). La profondeur par vertex vient des buckets d’ordering table (0=loin, 1=près). Quatre presets de reflets écran dans l’overlay F12 (aucun/faible/moyen/fort) ; le preset « aucun » redonne l’image de référence à l’octet près (5dbbb251… à 1800 frames). Coût négligeable (60 FPS, ~16,5 ms avec le preset fort). Limite documentée : sans normales ni profondeur view-space dans le flux PSX, le SSR physique et le raytracing matériel (RMIG-015, désormais Blocked pour cette raison) ne sont pas réalisables. Builds 32/64 verts, 4188 tests PASS."
     }
   ]
 }

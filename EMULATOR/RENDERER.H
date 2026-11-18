@@ -24,7 +24,10 @@ typedef struct RendererBackend
 	void (*read_vram)(unsigned short* dst, int x, int y, int dst_w, int dst_h);
 	void (*set_texture)(TextureID texture, TexFormat texFormat);
 	void (*set_blend_mode)(BlendMode blendMode);
-	void (*update_vertex_buffer)(const Vertex* vertices, int count);
+	/* `depths` (optionnel, peut etre NULL) donne une profondeur par vertex
+	 * derivee du bucket d'ordering table ; seuls les backends qui en ont
+	 * besoin l'utilisent (post-traitement / reflets). */
+	void (*update_vertex_buffer)(const Vertex* vertices, const float* depths, int count);
 	void (*draw_triangles)(int start_vertex, int triangles);
 } RendererBackend;
 

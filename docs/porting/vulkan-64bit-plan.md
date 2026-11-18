@@ -1381,3 +1381,63 @@ VRAM stockée était donc retournée verticalement en Vulkan. Corrigé
 La capture de référence reste identique (`sha256 5dbbb251…`), ce qui
 confirme que la zone stockée n'est pas visible dans cette scène ; le
 correctif compte pour l'effet mono/sépia (`CreateMonoScreen`).
+
+## 45. Cible hors-écran, profondeur et reflets à presets (RMIG-014)
+
+### Infrastructure
+
+La scène n'est plus rendue directement dans l'image de swapchain :
+
+1. **Cible hors-écran** `sceneImage` (format de la swapchain) + `depthImage`
+   (`D32_SFLOAT`), avec sa propre render pass (couleur + profondeur, `LOAD`,
+   contenu conservé entre les ordering tables) ;
+2. la profondeur est écrite par les pipelines PSX avec
+   `depthCompareOp = ALWAYS` et `depthWriteEnable = TRUE` : l'ordre de
+   l'ordering table (peintre) est conservé, mais chaque fragment laisse une
+   profondeur exploitable ;
+3. **profondeur par vertex** : `g_vertexDepth` dans `LIBGPU.C` reçoit, pour
+   chaque primitive, la position de son bucket d'ordering table normalisée
+   (`0` = le plus éloigné, `1` = le plus proche). Elle est envoyée au backend
+   via un second vertex buffer (attribut 3, `R32_SFLOAT`) et écrite dans
+   `gl_Position.z` ;
+4. **passe finale** : un triangle plein écran lit la couleur par
+   `texelFetch` (aucun filtrage) et écrit l'image de swapchain. L'overlay
+   ImGui est dessiné dans la même passe, au-dessus.
+
+Le passage par une cible intermédiaire devait rester **exact** : c'est
+vérifié, les captures sont identiques à l'octet près
+(`63b778f1…` à 300 frames, `5dbbb251…` à 1800 frames, c'est-à-dire la
+référence RMIG-007).
+
+### Reflets
+
+`post.frag` applique un reflet écran : miroir vertical de l'image avec
+distorsion horizontale proportionnelle à la profondeur, masqué par
+`1 - smoothstep(0.10, 0.90, depth)` (les surfaces proches ne réfléchissent
+pas) et atténué en haut de l'écran. Quatre presets dans l'overlay F12 :
+`aucun`, `faible` (0,35), `moyen` (0,60), `fort` (0,85), poussés au shader
+par push constant (`vec4 Params`). Le preset `aucun` remet l'intensité à 0,
+donc l'image de référence exacte.
+
+Mesures (niveau 3, captures à ~2 s d'intervalle, zone de scène hors
+overlay) — les presets changent bien l'image :
+
+```
+faible : écart moyen 1,36 niveau  vs aucun
+moyen  : écart moyen 0,96 niveau  vs aucun
+fort   : écart moyen 1,72 niveau  vs aucun
+```
+
+Le coût est négligeable (60 FPS stables, ~16,5 ms par frame avec le preset
+`fort`, comme sans reflets).
+
+### Limite honnête
+
+Ce n'est **pas** un SSR physique : le flux de vertices PSX ne contient que
+des coordonnées **écran** (x, y), sans position monde ni normale, et la
+profondeur n'est qu'un indice de bucket (pas une distance view-space). Un
+vrai SSR (raymarch dans le depth buffer avec normales) et a fortiori le
+raytracing matériel (RMIG-015, qui exige une BVH en espace monde) ne sont
+pas réalisables avec ces données. L'effet livré est donc un reflet écran
+stylisé, réglable et sans risque pour le rendu d'origine ; RMIG-015 reste
+bloqué pour cette raison, documentée dans le ticket.

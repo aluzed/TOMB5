@@ -40,6 +40,10 @@ static int polygon_count = 0;
 #endif
 
 struct Vertex g_vertexBuffer[MAX_NUM_POLY_BUFFER_VERTICES];
+/* Profondeur par vertex, derivee du bucket d'ordering table (0 = loin,
+ * 1 = pres). Utilisee par le post-traitement Vulkan (reflets). */
+float g_vertexDepth[MAX_NUM_POLY_BUFFER_VERTICES];
+static float port_current_ot_depth = 1.0f;
 struct VertexBufferSplit g_splits[MAX_NUM_INDEX_BUFFERS];
 int g_vertexIndex;
 int port_cur_prim_code = -1;
@@ -577,7 +581,7 @@ void DrawAggregatedSplits()
 	}
 
 	// next code ideally should be called before EndScene
-	g_renderer->update_vertex_buffer(g_vertexBuffer, g_vertexIndex);
+	g_renderer->update_vertex_buffer(g_vertexBuffer, g_vertexDepth, g_vertexIndex);
 
 	for (int i = 1; i <= g_splitIndex; i++)
 		DrawSplit(g_splits[i]);
@@ -618,6 +622,17 @@ void AggregatePTAGsToSplits(unsigned long* p, bool singlePrimitive)
 #endif
 			if (pTag->len > 0)
 			{
+				/* Le bucket d'ordering table donne une profondeur grossiere
+				 * (0 = le plus eloigne, 1 = le plus proche) : la table est
+				 * parcourue du fond vers l'avant, un tag tous les
+				 * sizeof(PSX_ULONG) octets. */
+				{
+					long bucket = (long)(((uintptr_t)p - (uintptr_t)pTag) / sizeof(PSX_ULONG));
+					if (bucket < 0) bucket = 0;
+					if (bucket > 1023) bucket = 1023;
+					port_current_ot_depth = (float)bucket / 1023.0f;
+				}
+
 				int lastSize = ParseLinkedPrimitiveList((uintptr_t)pTag, (uintptr_t)pTag + (uintptr_t)(pTag->len * 4) + 4 + LEN_OFFSET);
 				if (lastSize == -1)
 					break; // safe bailout
@@ -933,6 +948,9 @@ int ParsePrimitive(uintptr_t primPtr)
 #endif
 
 	int textured = (pTag->code & 0x4) != 0;
+
+	/* Profondeur des vertices generes par cette primitive (bucket OT). */
+	const int port_depth_v0 = g_vertexIndex;
 
 	int blend_mode = 0;
 
@@ -1384,6 +1402,11 @@ int ParsePrimitive(uintptr_t primPtr)
 			eprinterr("Unhandled primitive type: %02X type2:%02X\n", pTag->code, pTag->code & ~3);
 			break;
 		}
+	}
+
+	for (int vi = port_depth_v0; vi < g_vertexIndex; vi++)
+	{
+		g_vertexDepth[vi] = port_current_ot_depth;
 	}
 
 #if defined(__LP64__)

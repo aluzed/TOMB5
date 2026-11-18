@@ -2,6 +2,7 @@
 layout(location = 0) in ivec4 a_position;
 layout(location = 1) in uvec4 a_texcoord;
 layout(location = 2) in vec4 a_color;
+layout(location = 3) in float a_depth;
 
 layout(push_constant) uniform Push
 {
@@ -28,5 +29,8 @@ void main()
     v_page_clut.z = fract(pw / 64.0);
     v_page_clut.w = floor(pw / 64.0) / 512.0;
 
+    /* Profondeur issue du bucket d'ordering table (0 = loin, 1 = pres),
+     * ecrite dans le tampon de profondeur pour le post-traitement. */
     gl_Position = pc.Projection * vec4(vec2(a_position.xy), 0.0, 1.0);
+    gl_Position.z = a_depth * gl_Position.w;
 }

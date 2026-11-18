@@ -20,6 +20,12 @@ void Renderer_SelectGL(void)
 
 #else
 
+static void RendererGL_UpdateVertexBuffer(const Vertex* vertices, const float* depths, int count)
+{
+	(void)depths;
+	Emulator_UpdateVertexBuffer(vertices, count);
+}
+
 static void RendererGL_BeginFrame(void) {}
 static void RendererGL_EndFrame(void) {}
 
@@ -36,7 +42,7 @@ static const RendererBackend gl_backend =
 	Emulator_ReadVRAM,
 	Emulator_SetTexture,
 	Emulator_SetBlendMode,
-	Emulator_UpdateVertexBuffer,
+	RendererGL_UpdateVertexBuffer,
 	Emulator_DrawTriangles,
 };
 

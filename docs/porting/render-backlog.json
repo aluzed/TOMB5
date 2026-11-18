@@ -642,7 +642,7 @@
     {
       "id": "RMIG-014",
       "title": "Reflets screen-space à presets",
-      "status": "Todo",
+      "status": "Done",
       "priority": "P2",
       "goal": "Ajouter des reflets réglables (off / bas / moyen / haut) avant de dépendre du RT matériel.",
       "facts": "Le rendu n'a pas de depth buffer hôte (ordre PSX) ; une SSR a besoin d'une profondeur et d'une normale, qu'il faudra produire (passes additionnelles ou reconstruction depuis le z PSX).",
@@ -677,8 +677,13 @@
           "note": "étape G"
         }
       ],
-      "progress": "Bloqué par Vulkan et l'overlay.",
-      "evidence": []
+      "progress": "Terminé : cible hors-écran couleur + profondeur (D32), profondeur par vertex issue des buckets d’ordering table, passe finale plein écran en texelFetch (image identique à l’octet près, preset « aucun »), et quatre presets de reflets écran (aucun/faible/moyen/fort) pilotés depuis l’overlay F12. Le SSR physique n’est pas possible faute de normales et de profondeur view-space dans le flux PSX ; l’effet livré est un reflet écran stylisé atténué par la profondeur.",
+      "evidence": [
+        {
+          "date": "2026-11-18",
+          "note": "Infrastructure : scène rendue dans une cible hors-écran (couleur + D32) puis passée à l’écran par un triangle plein écran (texelFetch). Preset « aucun » : captures identiques à l’octet près à la référence (63b778f1… à 300 frames, 5dbbb251… à 1800 frames, cmp identique). Presets faible/moyen/fort : écarts moyens 1,36 / 0,96 / 1,72 niveau vs « aucun » (zone de scène), 60 FPS stables (~16,5 ms) avec « fort ». Validation layers : aucune erreur. Fichiers : EMULATOR/RENDERER_VK.C, EMULATOR/SHADERS/post.{vert,frag}, EMULATOR/DEBUGUI.C, EMULATOR/LIBGPU.C (g_vertexDepth). Capture : docs/porting/render/reflets-f12.png."
+        }
+      ]
     },
     {
       "id": "RMIG-015",
@@ -717,8 +722,13 @@
           "note": "flux de triangles à alimenter"
         }
       ],
-      "progress": "Bloqué par la SSR.",
-      "evidence": []
+      "progress": "Bloqué par une limite de données, pas par Vulkan : le pipeline PSX ne conserve que des coordonnées écran (x, y) et un indice de profondeur par bucket d’ordering table. Il n’y a ni position monde, ni normale, ni BVH exploitable, donc ni SSR physique ni ray_query. Déblocage possible seulement si l’on conserve la géométrie monde/GTE (gros changement du portage) ; l’overlay expose déjà les presets de reflets écran (RMIG-014).",
+      "evidence": [
+        {
+          "date": "2026-11-18",
+          "note": "Constat documenté : vertex PSX = écran (x,y) + page/clut/uv/couleur ; profondeur = bucket OT (0..1) sans distance view-space ni normale. Une BVH en espace monde et des normales seraient nécessaires pour ray_query ; ce n’est pas une limitation de Vulkan (extensions disponibles) mais du flux de données émulé."
+        }
+      ]
     },
     {
       "id": "RMIG-016",

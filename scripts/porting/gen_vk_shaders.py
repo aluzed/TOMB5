@@ -20,6 +20,8 @@ SOURCES = [
     ("psx16_frag", "psx16.frag", "frag"),
     ("blit_vert", "blit.vert", "vert"),
     ("blit_frag", "blit.frag", "frag"),
+    ("post_vert", "post.vert", "vert"),
+    ("post_frag", "post.frag", "frag"),
 ]
 
 

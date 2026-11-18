@@ -13,6 +13,7 @@
 DebugUIStats g_debugui_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 int g_debugui_dither = 1;
+int g_debugui_reflections = 0;
 /* g_port_force_texfmt est defini dans LIBGPU.C (voir DEBUGUI.H). */
 
 #if defined(HAVE_IMGUI) && defined(HAVE_VULKAN)
@@ -73,6 +74,25 @@ static void DebugUI_BuildWindow(void)
 		g_debugui_dither = g_debugui_dither ? 0 : 1;
 		if (getenv("TOMB5_IMGUI_DEBUG") != NULL)
 			std::fprintf(stderr, "[IMGUI] dither=%d\n", g_debugui_dither);
+	}
+
+	ImGui::TextDisabled("Reflets ecran (stylises)");
+	const char* reflLabels[4] = { "aucun", "faible", "moyen", "fort" };
+	for (int i = 0; i < 4; i++)
+	{
+		if (i > 0)
+			ImGui::SameLine();
+		bool active = (g_debugui_reflections == i);
+		if (active)
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.59f, 0.98f, 0.75f));
+		if (ImGui::Button(reflLabels[i], ImVec2(51, 0)))
+		{
+			g_debugui_reflections = i;
+			if (getenv("TOMB5_IMGUI_DEBUG") != NULL)
+				std::fprintf(stderr, "[IMGUI] reflets=%d\n", i);
+		}
+		if (active)
+			ImGui::PopStyleColor();
 	}
 
 	ImGui::TextDisabled("Profondeur de texture");

@@ -2,7 +2,7 @@
 
 Status: **Blocked** — priorité P2 — confiance Low
 
-Avancement : Bloqué par la SSR.
+Avancement : Bloqué par une limite de données, pas par Vulkan : le pipeline PSX ne conserve que des coordonnées écran (x, y) et un indice de profondeur par bucket d’ordering table. Il n’y a ni position monde, ni normale, ni BVH exploitable, donc ni SSR physique ni ray_query. Déblocage possible seulement si l’on conserve la géométrie monde/GTE (gros changement du portage) ; l’overlay expose déjà les presets de reflets écran (RMIG-014).
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Coût de reconstruction des accélération structures pour une scène PSX très 
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-18 : Constat documenté : vertex PSX = écran (x,y) + page/clut/uv/couleur ; profondeur = bucket OT (0..1) sans distance view-space ni normale. Une BVH en espace monde et des normales seraient nécessaires pour ray_query ; ce n’est pas une limitation de Vulkan (extensions disponibles) mais du flux de données émulé.
 
 ## Références
 

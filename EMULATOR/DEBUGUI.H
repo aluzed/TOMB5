@@ -31,6 +31,7 @@ extern DebugUIStats g_debugui_stats;
 /* Interrupteurs de debug (agissent immediatement sur le backend Vulkan). */
 extern int g_debugui_dither;        /* 1 = dithering PSX, 0 = desactive */
 extern int g_port_force_texfmt;     /* -1 = normal, sinon 4 / 8 / 16 bits */
+extern int g_debugui_reflections;   /* 0 = aucun, 1..3 = intensite des reflets */
 
 #if defined(HAVE_IMGUI) && defined(HAVE_VULKAN)
 
