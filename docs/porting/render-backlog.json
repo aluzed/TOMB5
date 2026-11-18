@@ -954,6 +954,10 @@
         {
           "date": "2026-11-18",
           "note": "Salles validees en 64 bits via TOMB5_START_LEVEL=3 + TOMB5_START_POS : room15 (48640,1024,58880) rendue avec bannieres/colonnes ; room90 (48640,512,70144) rendue avec arene/arches/ciel, Lara visible ; room102 (49664,512,62976) rendue avec porte/serrure. Aucun SIGSEGV, processus stable. Coordonnees de room : R15 x=45056 z=53248, R90 x=46080 z=65536, R102 x=48128 z=60416 ; items : gladiateur probable obj59 room15, Roman God obj61 item79 room90 (48154,512,69120), keyhole2 obj259 room102, pickup final obj220 room70 (55808,7936,70144)."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Tentative de reprise en room 12 (40448,1023,51712) avec TOMB5_SKIP_CUTSCENE : Lara est placee en room 12 mais est immediate repoussee en room 14 (y=6144, anim 25) par le demarrage/cinematique du niveau. Les reprises directes en rooms 15/90/102 restent valides. Le parcours depuis la corniche doit donc se faire en jeu (ou via une sauvegarde 64 bits native) ; la compatibilite des sauvegardes 32 bits reste un point ouvert."
         }
       ]
     }

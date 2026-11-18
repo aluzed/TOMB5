@@ -725,3 +725,17 @@ item 79) est en `48154,512,69120`, le pickup final (obj 220) en
 
 Le parcours/puzzle complet reste à dérouler ; le rendu de certains grands
 polygones/sable reste déformé, y compris en 32 bits.
+
+### 26.1 Reprise en room 12 : cinématique de niveau
+
+`TOMB5_START_POS=40448,1023,51712,12,-16384` (position valide de la
+corniche) place bien Lara en room 12, mais le démarrage du niveau la
+repositionne immédiatement en room 14 (`y=6144`, anim 25). Même avec
+`TOMB5_SKIP_CUTSCENE=1` (qui force `GLOBAL_playing_cutseq=0`,
+`cutseq_num=0`, `cutseq_trig=0`), la cinématique/le start trigger reprend
+la main.
+
+Les reprises **directes** dans les rooms 15/90/102 restent valides et ont
+servi à valider le rendu. Pour rejouer le parcours depuis la corniche, il
+faut soit jouer en 64 bits, soit restaurer une sauvegarde 64 bits native ;
+la compatibilité des sauvegardes 32 bits reste un point ouvert.

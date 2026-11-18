@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Colosseum : tentative de reprise en room 12 via TOMB5_START_POS=40448,1023,51712,12,-16384. Lara est bien placee en room12 mais le demarrage/cinematique du niveau la repousse en room14 (y=6144, anim25), meme avec TOMB5_SKIP_CUTSCENE=1 (GLOBAL_playing_cutseq=0, cutseq_num=0, cutseq_trig=0). Les reprises directes en rooms 15/90/102 restent valides et rendues. Pour rejouer le parcours depuis la corniche il faut jouer en 64 bits ou restaurer une sauvegarde 64 bits native ; la compatibilite des sauvegardes 32 bits reste ouverte. Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Colosseum : salles cles validees en 64 bits via TOMB5_START_LEVEL=3 + TOMB5_START_POS. Room15 (48640,1024,58880) rendue avec bannieres/colonnes et gladiateur ; room90 (48640,512,70144) rendue avec arene/arches/ciel et Lara visible ; room102 (49664,512,62976) rendue avec porte/serrure. Aucun SIGSEGV, processus stable. Coordonnees extraites du niveau : R15 x=45056 z=53248, R90 x=46080 z=65536, R102 x=48128 z=60416 ; Roman God obj61 item79 room90 (48154,512,69120), pickup final obj220 room70 (55808,7936,70144). Reste parcours/puzzle complet et rendu deforme pre-existant. Aucun Done global.
 
 Détails : [scène et parcours runtime](runtime-level.md).

@@ -1297,6 +1297,14 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 
 #if defined(__LP64__)
 	{
+		if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
+		{
+			GLOBAL_playing_cutseq = 0;
+			cutseq_num = 0;
+			cutseq_trig = 0;
+			lara.gun_status = 0;
+		}
+
 		const char* start_pos = getenv("TOMB5_START_POS");
 		if (start_pos != NULL)
 		{
