@@ -1242,9 +1242,10 @@ l'histogramme des codes de primitive et le nombre de vertices. Comparaison
 
 Les 977 premiers OT sont identiques ; à partir du premier OT de jeu, le
 build 32 bits ajoute **31 triangles gouraud semi-transparents (`0x34`)**,
-**un sprite semi-transparent (`0x62`)** et **une image-load dans l'OT
-(`0xE1`)**, toutes les autres primitives (`0x3C`, `0x50`, `0x60`) étant
-identiques. Il n'y a donc pas d'abandon de chaîne : c'est un jeu de
+**un sprite semi-transparent (`0x62`)** et **un DR_TPAGE (`0xE1`,
+changement de page de texture)**, toutes les autres primitives (`0x3C`,
+`0x50`, `0x60`) étant identiques. C'est donc un effet rendu avec sa propre
+page de texture qui n'est pas émis en 64 bits. Il n'y a donc pas d'abandon de chaîne : c'est un jeu de
 primitives d'effet qui n'est pas émis en 64 bits.
 
 Piste : ces trois codes ensemble correspondent à l'effet d'écran
@@ -1368,3 +1369,15 @@ Vérifications :
 | rendu | capture 300 frames `63b778f1…` identique à avant le retrait |
 | `TOMB5_RENDERER=gl` | message explicite puis Vulkan |
 | build 32 bits | compile et tourne toujours avec OpenGL (référence conservée) |
+
+## 44. Correctif : retournement vertical de `StoreFrameBuffer` en Vulkan
+
+`RendererVK_StoreFrameBuffer` (porté au §39) échantillonnait la trame
+avec `sy = fy` alors que le chemin OpenGL applique `FLIP_Y = h - fy - 1`
+(conséquence de `glReadPixels`, qui renvoie les lignes bas-en-haut). La
+VRAM stockée était donc retournée verticalement en Vulkan. Corrigé
+(`sy = ((h - fy - 1) * fh) / h`).
+
+La capture de référence reste identique (`sha256 5dbbb251…`), ce qui
+confirme que la zone stockée n'est pas visible dans cette scène ; le
+correctif compte pour l'effet mono/sépia (`CreateMonoScreen`).

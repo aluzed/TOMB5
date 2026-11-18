@@ -2,7 +2,7 @@
 
 Status: **Todo** — priorité P1 — confiance Medium
 
-Avancement : Analysé et localisé (voir plan §40) : primitives d'effet 0x34/0x62/0xE1 et état de fondu divergents. Correction à faire.
+Avancement : Localisé : un effet (31 triangles gouraud semi-transparents + 1 sprite semi-transparent + 1 DR_TPAGE par frame) est émis seulement en 32 bits, et l'état de fondu diffère au démarrage. Reste à identifier la fonction qui construit cet effet (piste : adresse des primitives dans les buffers db.poly_buffer[] et comparaison des fonctions de contrôle) puis corriger la cause LP64.
 
 ## Objectif
 
@@ -10,7 +10,7 @@ Rendre au build 64 bits les primitives d'effet émises par le build 32 bits (et 
 
 ## Faits établis
 
-Sur la scène de référence (niveau 3, 300 frames), les 977 premiers ordering tables sont identiques entre 32 et 64 bits ; à partir du premier OT de jeu le 32 bits émet 31 triangles gouraud semi-transparents (0x34), 1 sprite semi-transparent (0x62) et 1 image-load (0xE1) de plus par frame, toutes les autres primitives (0x3C, 0x50, 0x60) étant identiques. Le journal [DRAW] montre en 32 bits fade=239/0 fading=1 contre fade=0/0 fading=0 en 64 bits, et persp 306 contre 256. PC_VERSION n'est pas défini dans SPEC_PSXPC_N, donc Fade() s'exécute dans les deux builds. Ce n'est pas un écart de pipeline couleur : à vertices identiques, les pixels sont identiques (Vulkan == GL 64 bits au pixel près).
+Sur la scène de référence (niveau 3, 300 frames), les 977 premiers ordering tables sont identiques entre 32 et 64 bits ; à partir du premier OT de jeu, le 32 bits émet 31 triangles gouraud semi-transparents (0x34), 1 sprite semi-transparent (0x62) et 1 DR_TPAGE (0xE1, changement de page de texture) de plus par frame, toutes les autres primitives (0x3C, 0x50, 0x60) étant identiques. Autrement dit : un effet rendu avec sa propre page de texture n'est pas émis en 64 bits. Le journal [DRAW] montre en 32 bits fade=239/0 fading=1 contre fade=0/0 fading=0 en 64 bits, et persp 306 contre 256 au démarrage. PC_VERSION n'est pas défini dans SPEC_PSXPC_N, donc Fade() s'exécute dans les deux builds. Ce n'est pas un écart de pipeline couleur : à vertices identiques, les pixels sont identiques (Vulkan == GL 64 bits au pixel près).
 
 ## Périmètre
 
