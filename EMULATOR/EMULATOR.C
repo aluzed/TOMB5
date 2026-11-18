@@ -113,6 +113,7 @@ int g_vulkanMode = 0;
 extern int RendererVK_Select(SDL_Window* window);
 extern void RendererVK_Shutdown(void);
 extern int RendererVK_IsActive(void);
+extern void RendererVK_RequestCapture(const char* path);
 char* pVirtualMemory = NULL;
 SysCounter counters[3] = { 0 };
 #if !defined(__ANDROID__)
@@ -3006,11 +3007,19 @@ void Emulator_SetScreenshotPath(const char* path)
 	g_screenshotPath = path;
 }
 
+void Emulator_RequestScreenshot(void)
+{
+	if (g_vulkanMode)
+	{
+		RendererVK_RequestCapture(g_screenshotPath);
+	}
+}
+
 void Emulator_TakeScreenshot()
 {
 	if (g_vulkanMode)
 	{
-		fprintf(stderr, "[VK] screenshot not implemented yet\n");
+		RendererVK_RequestCapture(g_screenshotPath);
 		return;
 	}
 	unsigned char* pixels = new unsigned char[windowWidth * windowHeight * 4];

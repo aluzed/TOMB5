@@ -79,6 +79,12 @@ struct VKState
     VkDeviceMemory blitMemory = VK_NULL_HANDLE;
     void* blitMapped = nullptr;
 
+    VkBuffer captureBuffer = VK_NULL_HANDLE;
+    VkDeviceMemory captureMemory = VK_NULL_HANDLE;
+    void* captureMapped = nullptr;
+    int captureRequested = 0;
+    char capturePath[1024] = {0};
+
     VkDescriptorSetLayout descriptorLayout = VK_NULL_HANDLE;
     VkDescriptorPool descriptorPool = VK_NULL_HANDLE;
     VkDescriptorSet descriptorSet = VK_NULL_HANDLE;
@@ -387,6 +393,10 @@ static int vk_create_psx_resources()
     if (!vk_create_buffer(sizeof(Vertex) * 6, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
                           &vk.blitBuffer, &vk.blitMemory, &vk.blitMapped))
         return 0;
+    if (!vk_create_buffer((VkDeviceSize)vk.extent.width * vk.extent.height * 4,
+                          VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+                          &vk.captureBuffer, &vk.captureMemory, &vk.captureMapped))
+        return 0;
 
     VkDescriptorSetLayoutBinding bind{};
     bind.binding = 0;
@@ -649,7 +659,7 @@ int RendererVK_Init(SDL_Window* window)
     sci.imageColorSpace = surfaceFormat.colorSpace;
     sci.imageExtent = vk.extent;
     sci.imageArrayLayers = 1;
-    sci.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    sci.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
     sci.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
     sci.preTransform = caps.currentTransform;
     sci.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
@@ -785,6 +795,8 @@ void RendererVK_Shutdown()
     vkDestroyPipelineLayout(vk.device, vk.pipelineLayout, nullptr);
     vkDestroyDescriptorPool(vk.device, vk.descriptorPool, nullptr);
     vkDestroyDescriptorSetLayout(vk.device, vk.descriptorLayout, nullptr);
+    vkDestroyBuffer(vk.device, vk.captureBuffer, nullptr);
+    vkFreeMemory(vk.device, vk.captureMemory, nullptr);
     vkDestroyBuffer(vk.device, vk.blitBuffer, nullptr);
     vkFreeMemory(vk.device, vk.blitMemory, nullptr);
     vkDestroyBuffer(vk.device, vk.vertexBuffer, nullptr);
@@ -995,6 +1007,44 @@ static void RendererVK_BeginFrame()
             std::fprintf(stderr, "[VK] frame %d extent=%ux%u\n", dbg_frames, vk.extent.width, vk.extent.height);
     }
 }
+
+void RendererVK_RequestCapture(const char* path)
+{
+    if (!vk_inited)
+        return;
+    if (path)
+    {
+        snprintf(vk.capturePath, sizeof(vk.capturePath), "%s", path);
+        vk.captureRequested = 1;
+    }
+}
+
+static void vk_write_capture()
+{
+    if (vk.capturePath[0] == 0 || vk.captureMapped == nullptr)
+        return;
+
+    const int w = (int)vk.extent.width;
+    const int h = (int)vk.extent.height;
+    unsigned char* src = (unsigned char*)vk.captureMapped;
+    unsigned char* flipped = (unsigned char*)malloc((size_t)w * h * 4);
+    if (!flipped)
+        return;
+    for (int y = 0; y < h; y++)
+        memcpy(flipped + (size_t)(h - 1 - y) * w * 4, src + (size_t)y * w * 4, (size_t)w * 4);
+
+    SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(flipped, w, h, 32, w * 4,
+                                                    0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    if (surface)
+    {
+        SDL_SaveBMP(surface, vk.capturePath);
+        SDL_FreeSurface(surface);
+    }
+    free(flipped);
+    std::fprintf(stderr, "[VK] capture saved %s (%dx%d)\n", vk.capturePath, w, h);
+    vk.captureRequested = 0;
+}
+
 static void RendererVK_EndFrame()
 {
     if (!vk_inited || !vk.active)
@@ -1006,6 +1056,31 @@ static void RendererVK_EndFrame()
         vkCmdEndRenderPass(cb);
         vk.renderPassActive = 0;
     }
+
+    if (vk.captureRequested)
+    {
+        vk_image_barrier(cb, vk.images[vk.imageIndex],
+                         VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+                         VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                         VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                         VK_PIPELINE_STAGE_TRANSFER_BIT,
+                         VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+                         VK_ACCESS_TRANSFER_READ_BIT);
+        VkBufferImageCopy copy{};
+        copy.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        copy.imageSubresource.layerCount = 1;
+        copy.imageExtent = {vk.extent.width, vk.extent.height, 1};
+        vkCmdCopyImageToBuffer(cb, vk.images[vk.imageIndex],
+                               VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                               vk.captureBuffer, 1, &copy);
+        vk_image_barrier(cb, vk.images[vk.imageIndex],
+                         VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                         VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+                         VK_PIPELINE_STAGE_TRANSFER_BIT,
+                         VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+                         VK_ACCESS_TRANSFER_READ_BIT, 0);
+    }
+
     vkEndCommandBuffer(cb);
 
     VkPipelineStageFlags waitStage = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
@@ -1021,6 +1096,12 @@ static void RendererVK_EndFrame()
     VkResult submit = vkQueueSubmit(vk.queue, 1, &si, vk.inFlight);
     if (submit != VK_SUCCESS)
         std::fprintf(stderr, "[VK] vkQueueSubmit failed: %d\n", (int)submit);
+
+    if (vk.captureRequested)
+    {
+        vkWaitForFences(vk.device, 1, &vk.inFlight, VK_TRUE, UINT64_MAX);
+        vk_write_capture();
+    }
 
     VkPresentInfoKHR pi{};
     pi.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -1259,5 +1340,6 @@ int RendererVK_Init(SDL_Window* window) { (void)window; return 0; }
 void RendererVK_Shutdown() {}
 int RendererVK_Select(SDL_Window* window) { (void)window; return 0; }
 int RendererVK_IsActive() { return 0; }
+void RendererVK_RequestCapture(const char* path) { (void)path; }
 
 #endif

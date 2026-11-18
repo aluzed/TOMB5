@@ -27,6 +27,7 @@ static int port_replay_nkeys = 0;
 
 extern void Emulator_SetScreenshotPath(const char* path);
 extern void Emulator_TakeScreenshot(void);
+extern void Emulator_RequestScreenshot(void);
 
 static void PortReplay_Init(void)
 {
@@ -1579,6 +1580,10 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 		}
 
 		//loc_10DC4
+		if (port_replay_active && port_replay_frame == port_replay_frames - 1)
+		{
+			Emulator_RequestScreenshot();
+		}
 		nframes = DrawPhaseGame();
 
 		if (port_replay_active && port_replay_frame == port_replay_frames - 1)

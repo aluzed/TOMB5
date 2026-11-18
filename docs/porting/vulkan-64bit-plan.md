@@ -1017,3 +1017,27 @@ OpenGL. La scène 3D niveau 3 reste correcte avec le blit activé.
 
 RMIG-011 reste en cours pour la vérification des formats 8/16 bits, la
 perspective PGXP et le readback/capture Vulkan.
+
+## 37. Capture Vulkan et première mesure de parité
+
+`RendererVK_RequestCapture` / `Emulator_RequestScreenshot` permettent de
+capturer la swapchain en BMP : copie image→buffer host, flip vertical,
+`SDL_SaveBMP`. Le harnais RMIG-007 (`TOMB5_CAPTURE`) fonctionne donc
+aussi en mode Vulkan.
+
+Première comparaison avec la référence GL au même état de jeu
+(`pos=(90642,4608,52736) room=20 anim=103 frame=1611`) :
+
+```
+sha256 GL 675e2c8d…
+sha256 VK c305201f…
+mean_abs_diff=50.406
+global_gain=0.630455
+pixels_within_8_after_gain=4.08%
+```
+
+L’image GL de cette frame est **bleutée** (probable fondu/overlay de
+cinématique) alors que VK montre la scène de base **orangée**. L’écart
+n’est donc pas encore une simple différence de filtrage : il faut rendre
+les primitives non texturées / fondus 2D et aligner le timing de
+cinématique avant de conclure sur la parité des textures.

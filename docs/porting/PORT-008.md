@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+Vulkan : readback/capture 640x480 BMP opérationnel (Emulator_RequestScreenshot + copie swapchain). La parité avec la référence GL au même état de jeu n’est pas encore acquise : mean_abs_diff=50.4, gain 0.63, 4.08% à ±8, avec une différence d’ambiance (GL bleuté vs VK orangé) à expliquer (fondu/overlay 2D, timing de cinématique ou CLUT). Aucun Done global.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Vulkan : blit VRAM activé. L’écran-titre (TOMB RAIDER CHRONICLES + menu) et la scène 3D niveau 3 sont rendus sans OpenGL. RMIG-010 Done, RMIG-011 In progress (4 bits + blit validés, 8/16 à vérifier). Projection 512x240 codée dans psx.vert ; capture/readback VK à implémenter.
 
 Détails : [scène et parcours runtime](runtime-level.md).
