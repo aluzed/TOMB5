@@ -1084,7 +1084,10 @@ void RendererVK_StoreFrameBuffer(int x, int y, int w, int h)
      */
     for (int fy = 0; fy < h; fy++)
     {
-        int sy = (fy * fh) / h;
+        /* Le chemin OpenGL lit le framebuffer par glReadPixels (lignes
+         * bas-en-haut) et applique FLIP_Y = h - fy - 1. On reproduit ce
+         * retournement pour ecrire exactement la meme VRAM. */
+        int sy = ((h - fy - 1) * fh) / h;
         if (sy < 0) sy = 0;
         if (sy >= fh) sy = fh - 1;
 
