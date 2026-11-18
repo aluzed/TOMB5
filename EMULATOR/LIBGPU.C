@@ -43,6 +43,11 @@ struct Vertex g_vertexBuffer[MAX_NUM_POLY_BUFFER_VERTICES];
 struct VertexBufferSplit g_splits[MAX_NUM_INDEX_BUFFERS];
 int g_vertexIndex;
 int port_cur_prim_code = -1;
+
+/* Diagnostic RMIG-012 : histogramme des codes de primitive par ordering
+ * table (actif seulement avec TOMB5_PRIMHIST). */
+int port_prim_hist[256];
+int port_prim_hist_used = 0;
 extern int port_in_lara_draw;
 uintptr_t port_cur_prim_ptr = 0;
 int g_splitIndex;
@@ -549,6 +554,20 @@ void DrawAggregatedSplits()
 		}
 	}
 
+	if (port_prim_hist_used && getenv("TOMB5_PRIMHIST") != NULL)
+	{
+		static int port_hist_n = 0;
+		fprintf(stderr, "[PH] ot=%d nv=%d", port_hist_n++, g_vertexIndex);
+		for (int i = 0; i < 256; i++)
+		{
+			if (port_prim_hist[i] != 0)
+				fprintf(stderr, " %02X=%d", i, port_prim_hist[i]);
+		}
+		fprintf(stderr, "\n");
+		memset(port_prim_hist, 0, sizeof(port_prim_hist));
+		port_prim_hist_used = 0;
+	}
+
 	// next code ideally should be called before EndScene
 	g_renderer->update_vertex_buffer(g_vertexBuffer, g_vertexIndex);
 
@@ -893,6 +912,8 @@ int ParsePrimitive(uintptr_t primPtr)
 	P_TAG* pTag = (P_TAG*)primPtr;
 	port_cur_prim_code = pTag->code;
 	port_cur_prim_ptr = primPtr;
+	port_prim_hist[(unsigned char)pTag->code]++;
+	port_prim_hist_used = 1;
 
 #if defined(__LP64__)
 	extern uintptr_t port_lara_prim_lo;

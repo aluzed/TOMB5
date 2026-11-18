@@ -1228,3 +1228,32 @@ Prochaine étape pour ce point : instrumenter le type de primitive
 (histogramme des codes de prim par ordering table) pour identifier les
 primitives d'effet émises seulement en 32 bits, puis corriger la cause
 LP64 correspondante sans toucher au rendu commun.
+
+### Histogramme des primitives (suite du §40)
+
+Un second harnais (`TOMB5_PRIMHIST=1`) imprime, par ordering table,
+l'histogramme des codes de primitive et le nombre de vertices. Comparaison
+32 / 64 bits sur 300 frames :
+
+```
+32 bits : [PH] ot=977 nv=2706 34=434 3C=221 50=11 60=1 62=1 E1=1
+64 bits : [PH] ot=977 nv=2607 34=403 3C=221 50=11 60=1
+```
+
+Les 977 premiers OT sont identiques ; à partir du premier OT de jeu, le
+build 32 bits ajoute **31 triangles gouraud semi-transparents (`0x34`)**,
+**un sprite semi-transparent (`0x62`)** et **une image-load dans l'OT
+(`0xE1`)**, toutes les autres primitives (`0x3C`, `0x50`, `0x60`) étant
+identiques. Il n'y a donc pas d'abandon de chaîne : c'est un jeu de
+primitives d'effet qui n'est pas émis en 64 bits.
+
+Piste : ces trois codes ensemble correspondent à l'effet d'écran
+(fondu / voile) piloté par `ScreenFading` / `dScreenFade`, dont l'état
+diverge déjà au premier `[DRAW]` (`fade=239/0 fading=1` en 32 bits contre
+`fade=0/0 fading=0` en 64 bits). `Fade()` n'est pas neutralisé ici
+(`PC_VERSION` n'est pas défini dans ce dossier), donc la divergence vient
+de l'état du fondu, pas d'un `#if`.
+
+Prochaine étape : tracer `S_SetScreenFade` / `dScreenFade` au chargement
+du niveau dans les deux builds pour trouver pourquoi le fondu n'est pas
+lancé en 64 bits.
