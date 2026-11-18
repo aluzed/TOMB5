@@ -177,6 +177,14 @@ void S_UpdateInput()//5F628(<), 6038C(<)
 	PadConnected = 1;
 	RawPad = (GPad1.data.pad ^ -1) & 0xFFFF;
 
+	if (getenv("TOMB5_INPUTDBG") != NULL)
+	{
+		static int dbg_n = 0;
+		if ((dbg_n++ % 60) == 0)
+			fprintf(stderr, "[INPUT] gp=%04X raw=%04lX busy=%ld\n",
+			        (unsigned)GPad1.data.pad, RawPad, (long)inputBusy);
+	}
+
 	if (SetDebounce != 0)
 	{
 		RawEdge = (RawEdge ^ RawPad) & RawPad;

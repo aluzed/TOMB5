@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+RMIG-013 terminé : overlay ImGui (v1.91.5 vendoré) actif par F12 sur le backend Vulkan 64 bits, avec FPS, niveau/salle, position de Lara, animation, vertices/triangles/draws/ordering tables, interrupteur dithering (push constant), sélecteur de profondeur de texture forcée et bouton de capture BMP. Les entrées du jeu sont bloquées quand l’overlay est ouvert (pad + keymap utilisateur) et reprennent à la fermeture ; le rendu reste identique overlay fermé (capture sha256 63b778f1…). Reste : RMIG-012 (retrait d’OpenGL) et RMIG-014/015 (SSR/RT).
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 Vulkan devient le backend par défaut du build 64 bits (TOMB5_RENDERER=gl conserve l’ancien chemin, pas de repli silencieux). Vérifié : écran-titre Vulkan, niveau 3 1800 frames Vulkan identique à la référence GL (sha256 5dbbb251…), niveau 3 GL explicite identique à la capture précédente (d05c8394…), niveau 4 Colosseum 600 frames Vulkan sans erreur de validation. Le build 32 bits reste OpenGL. Reste : retrait d’OpenGL/GLEW du build 64 bits, écart 32/64 (primitives d’effet 0x34/0x62/0xE1, ScreenFading).
 
 Détails : [scène et parcours runtime](runtime-level.md).

@@ -593,7 +593,7 @@
     {
       "id": "RMIG-013",
       "title": "ImGui F12 : overlay, stats et interrupteurs",
-      "status": "Blocked",
+      "status": "Done",
       "priority": "P1",
       "goal": "Disposer d'un menu debug Vulkan/ImGui toujours compilé, ouvert par F12, pour piloter la suite (reflets, RT, qualité).",
       "facts": "L'UI existante (InputUI) est dessinée dans le framebuffer PSX via les primitives GPU émulées : elle ne peut pas héberger un panneau moderne. ImGui + backend SDL2/Vulkan s'ajoute comme passe hôte après le blit.",
@@ -627,13 +627,18 @@
           "note": "cycle de vie de l'UI"
         }
       ],
-      "progress": "Bloqué par les shaders.",
-      "evidence": []
+      "progress": "ImGui v1.91.5 vendoré et branché sur le backend Vulkan 64 bits. Overlay F12 avec stats (FPS, niveau/salle, position de Lara, animation, vertices/triangles/draws/OT) et interrupteurs réels (dithering, profondeur de texture forcée) plus un bouton de capture BMP. Les entrées du jeu sont bloquées tant que l'overlay est visible et reprennent à la fermeture.",
+      "evidence": [
+        {
+          "date": "2026-11-18",
+          "note": "Overlay opérationnel : F12 ouvre/ferme ([IMGUI] overlay visible/masque). Le rendu du jeu est inchangé quand l'overlay est fermé (capture 300 frames identique, sha256 63b778f1…). Entrées bloquées : overlay ouvert + « Up » 3 s → pos Lara inchangée (90642,4608,52736) ; overlay fermé + « Up » 3 s → pos (81363,…). Interrupteur « Dithering » : OFF change immédiatement l'image (écart moyen 2,3 niveaux) via pc.Dither dans les shaders 4/8/16 bits. Bouton Capture : écrit /tmp/tomb5_capture.bmp 640x480. Fichiers : EMULATOR/DEBUGUI.{C,H}, external/imgui (v1.91.5), EMULATOR/RENDERER_VK.C, EMULATOR/LIBPAD.C, EMULATOR/CMakeLists.txt. Capture : docs/porting/render/imgui-f12.png."
+        }
+      ]
     },
     {
       "id": "RMIG-014",
       "title": "Reflets screen-space à presets",
-      "status": "Blocked",
+      "status": "Todo",
       "priority": "P2",
       "goal": "Ajouter des reflets réglables (off / bas / moyen / haut) avant de dépendre du RT matériel.",
       "facts": "Le rendu n'a pas de depth buffer hôte (ordre PSX) ; une SSR a besoin d'une profondeur et d'une normale, qu'il faudra produire (passes additionnelles ou reconstruction depuis le z PSX).",

@@ -1,5 +1,6 @@
 #include "DRAWPHAS.H"
 #include "RENDERER.H"
+#include "DEBUGUI.H"
 int port_in_lara_draw = 0;
 /* Plage memoire des primitives Lara de la frame courante, pour compter
  * combien d'entre elles sont effectivement parsees par l'emulateur GPU. */
@@ -335,6 +336,13 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 	r = &room[current_room];
 
 	{
+		extern DebugUIStats g_debugui_stats;
+		g_debugui_stats.level = gfCurrentLevel;
+		g_debugui_stats.room = current_room;
+		g_debugui_stats.rooms = number_rooms;
+	}
+
+	{
 		static int port_drawdbg = 0;
 
 		if (getenv("TOMB5_DRAWDBG") != NULL && (port_drawdbg++ % 120) == 0)
@@ -352,6 +360,15 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 			        r->data ? ((unsigned*)r->data)[3] : 0,
 			        number_draw_rooms > 0 ? draw_rooms[0] : -1);
 		}
+	}
+
+	{
+		extern DebugUIStats g_debugui_stats;
+		g_debugui_stats.posX = lara_item->pos.x_pos;
+		g_debugui_stats.posY = lara_item->pos.y_pos;
+		g_debugui_stats.posZ = lara_item->pos.z_pos;
+		g_debugui_stats.anim = lara_item->anim_number;
+		g_debugui_stats.frame = lara_item->frame_number;
 	}
 
 	r->test_left = 0;

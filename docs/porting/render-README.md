@@ -16,8 +16,8 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-010](render/RMIG-010.md) | Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables) | Done | P1 |
 | [RMIG-011](render/RMIG-011.md) | Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT) | In progress | P1 |
 | [RMIG-012](render/RMIG-012.md) | Parité visuelle et retrait du chemin OpenGL | In progress | P1 |
-| [RMIG-013](render/RMIG-013.md) | ImGui F12 : overlay, stats et interrupteurs | Blocked | P1 |
-| [RMIG-014](render/RMIG-014.md) | Reflets screen-space à presets | Blocked | P2 |
+| [RMIG-013](render/RMIG-013.md) | ImGui F12 : overlay, stats et interrupteurs | Done | P1 |
+| [RMIG-014](render/RMIG-014.md) | Reflets screen-space à presets | Todo | P2 |
 | [RMIG-015](render/RMIG-015.md) | Raytracing matériel (ray_query) avec repli SSR | Blocked | P2 |
 | [RMIG-016](render/RMIG-016.md) | Menu debug avancé et budget de performance | Blocked | P2 |
 | [RMIG-017](render/RMIG-017.md) | Relocalisation 64 bits des tableaux de pointeurs du fichier | Done | P0 |
@@ -27,4 +27,4 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-021](render/RMIG-021.md) | Campagne 64 bits : parcours du Colosseum | In progress | P1 |
 | [RMIG-022](render/RMIG-022.md) | Anomalie d'ordre des canaux dans Emulator_StoreFrameBuffer | Todo | P2 |
 
-12/22 terminés.
+13/22 terminés.

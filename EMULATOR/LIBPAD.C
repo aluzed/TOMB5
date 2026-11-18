@@ -3,6 +3,7 @@
 #include "LIBETC.H"
 #include "EMULATOR.H"
 #include "INPUTMAP.H"
+#include "DEBUGUI.H"
 
 #include <ctype.h>
 #include <stdio.h>
@@ -343,6 +344,13 @@ int InputMap_UsesControlOption(void)
 
 unsigned long InputMap_PollActions(void)
 {
+	/* Overlay de debug ouvert : la keymap utilisateur ne doit pas non plus
+	 * alimenter le jeu (elle court-circuite le pad PSX). */
+	if (DebugUI_IsVisible())
+	{
+		return 0;
+	}
+
 	InputMapSnapshot snapshot;
 	memset(&snapshot, 0, sizeof(snapshot));
 #if defined(SDL2)
@@ -673,6 +681,13 @@ unsigned short UpdateGameControllerInput(SDL_GameController* pad)
 
 unsigned short UpdateKeyboardInput()
 {
+	/* Overlay de debug ouvert : aucune touche n'est transmise au jeu. Les
+	 * masques PSX sont actifs au niveau bas (0xFFFF = rien). */
+	if (DebugUI_IsVisible())
+	{
+		return 0xFFFF;
+	}
+
 	InputMapSnapshot snapshot;
 	memset(&snapshot, 0, sizeof(snapshot));
 #if defined(SDL2)
@@ -684,6 +699,12 @@ unsigned short UpdateKeyboardInput()
 unsigned short UpdateKeyboardInputDebug()
 {
 	unsigned short ret = 0xFFFF;
+
+	/* PadRead() passe par ce chemin : l'overlay doit aussi le bloquer. */
+	if (DebugUI_IsVisible())
+	{
+		return ret;
+	}
 
 #if defined(SDL2)
 	//Not initialised yet

@@ -38,6 +38,31 @@ if(NOT ANDROID AND CMAKE_SIZEOF_VOID_P EQUAL 8)
     if(Vulkan_FOUND)
         target_link_libraries(${PROJECT_NAME} PUBLIC Vulkan::Vulkan)
         target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_VULKAN=1)
+
+        # Overlay de debug ImGui (RMIG-013), compile uniquement sur le chemin
+        # Vulkan et active par F12.
+        set(IMGUI_DIR ${ROOT_DIR}/external/imgui)
+        add_library(imgui_overlay STATIC
+            ${IMGUI_DIR}/imgui.cpp
+            ${IMGUI_DIR}/imgui_draw.cpp
+            ${IMGUI_DIR}/imgui_tables.cpp
+            ${IMGUI_DIR}/imgui_widgets.cpp
+            ${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp
+            ${IMGUI_DIR}/backends/imgui_impl_vulkan.cpp
+        )
+        target_include_directories(imgui_overlay PUBLIC
+            ${IMGUI_DIR}
+            ${IMGUI_DIR}/backends
+        )
+        target_link_libraries(imgui_overlay PUBLIC ${SDL2_LIBRARY} Vulkan::Vulkan)
+        target_compile_definitions(imgui_overlay PUBLIC HAVE_IMGUI=1)
+
+        target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_IMGUI=1)
+        target_include_directories(${PROJECT_NAME} PUBLIC
+            ${IMGUI_DIR}
+            ${IMGUI_DIR}/backends
+        )
+        target_link_libraries(${PROJECT_NAME} PUBLIC imgui_overlay)
     endif()
 endif()
 

@@ -9,6 +9,7 @@
 
 #include "LIBGPU.H"
 #include "RENDERER.H"
+#include "DEBUGUI.H"
 #include "LIBETC.H"
 #include "LIBPAD.H"
 #include "INPUTUI.H"
@@ -2870,6 +2871,12 @@ void Emulator_DoPollEvent()
 	while (SDL_PollEvent(&event))
 	{
 		if (InputUI_HandleEvent(&event))
+		{
+			continue;
+		}
+
+		/* Overlay de debug (F12) : il voit tous les evenements avant le jeu. */
+		if (DebugUI_ProcessEvent(&event))
 		{
 			continue;
 		}

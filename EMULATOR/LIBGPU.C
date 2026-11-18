@@ -44,6 +44,11 @@ struct VertexBufferSplit g_splits[MAX_NUM_INDEX_BUFFERS];
 int g_vertexIndex;
 int port_cur_prim_code = -1;
 
+/* Profondeur de texture forcee (harnais RMIG-011 / overlay F12).
+ * Defini ici pour que les harnais de test qui compilent LIBGPU.C seul
+ * puissent se lier sans embarquer l'overlay. */
+int g_port_force_texfmt = -1;
+
 /* Diagnostic RMIG-012 : histogramme des codes de primitive par ordering
  * table (actif seulement avec TOMB5_PRIMHIST). */
 int port_prim_hist[256];
@@ -465,17 +470,20 @@ void AddSplit(bool semiTrans, int page, TextureID textureId)
 	 * est volontairement fausse, mais doit etre identique entre backends.
 	 */
 	{
-		static int force_texfmt = -2;
-		if (force_texfmt == -2)
+		static int force_texfmt_init = 0;
+		if (!force_texfmt_init)
 		{
+			force_texfmt_init = 1;
 			const char* env = getenv("TOMB5_FORCE_TEXFMT");
-			force_texfmt = (env != NULL) ? atoi(env) : -1;
+			if (env != NULL)
+				g_port_force_texfmt = atoi(env);
 		}
-		if (force_texfmt == 4)
+
+		if (g_port_force_texfmt == 4)
 			texFormat = TF_4_BIT;
-		else if (force_texfmt == 8)
+		else if (g_port_force_texfmt == 8)
 			texFormat = TF_8_BIT;
-		else if (force_texfmt == 16)
+		else if (g_port_force_texfmt == 16)
 			texFormat = TF_16_BIT;
 	}
 

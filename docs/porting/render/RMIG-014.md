@@ -1,6 +1,6 @@
 # RMIG-014 — Reflets screen-space à presets
 
-Status: **Blocked** — priorité P2 — confiance Low
+Status: **Todo** — priorité P2 — confiance Low
 
 Avancement : Bloqué par Vulkan et l'overlay.
 

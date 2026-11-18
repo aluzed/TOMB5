@@ -17,6 +17,7 @@
 #include "EMULATOR_PRIVATE.H"
 #include "LIBGPU.H"
 #include "SHADERS_VK.H"
+#include "DEBUGUI.H"
 
 #include <cstdio>
 #include <cstdlib>
@@ -102,12 +103,17 @@ struct VKState
     VkShaderModule blitFrag = VK_NULL_HANDLE;
     VkPipeline pipelines[VK_FORMATS][VK_BLENDS] = {};
 
+    int statVerts = 0;
+    int statTris = 0;
+    int statDraws = 0;
+    int statSplits = 0;
+
     int currentFormat = 3;
     int currentBlend = 0;
     VkPipeline boundPipeline = VK_NULL_HANDLE;
     VkBuffer boundVertexBuffer = VK_NULL_HANDLE;
 
-    float projection[18] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 640, 480};
+    float projection[20] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 640, 480, 1, 0};
 };
 
 static VKState vk;
@@ -451,7 +457,7 @@ static int vk_create_psx_resources()
     VkPushConstantRange pcr{};
     pcr.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
     pcr.offset = 0;
-    pcr.size = 72;   /* mat4 Projection + vec2 Screen */
+    pcr.size = 80;   /* mat4 Projection + vec2 Screen + float Dither */
     VkPipelineLayoutCreateInfo pl{};
     pl.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pl.setLayoutCount = 1;
@@ -781,6 +787,9 @@ int RendererVK_Init(SDL_Window* window)
         return 0;
     }
 
+    DebugUI_Init(vk.window, vk.instance, vk.physical, vk.device, vk.queue,
+                 vk.queueFamily, vk.renderPass, actual);
+
     vk_inited = 1;
     vk.active = 0;
     std::fprintf(stderr, "[VK] backend ready: %ux%u, %u images\n",
@@ -793,6 +802,8 @@ void RendererVK_Shutdown()
     if (!vk_inited)
         return;
     vkDeviceWaitIdle(vk.device);
+
+    DebugUI_Shutdown();
 
     for (int f = 0; f < VK_FORMATS; f++)
         for (int b = 0; b < VK_BLENDS; b++)
@@ -966,7 +977,8 @@ static void vk_begin_render_pass(VkCommandBuffer cb)
     float x = -1.0f;
     float y = -1.0f;
     float z = 0.0f;
-    float proj[18] = {a, 0, 0, 0, 0, b, 0, 0, 0, 0, c, 0, x, y, z, 1, w, h};
+    float proj[20] = {a, 0, 0, 0, 0, b, 0, 0, 0, 0, c, 0, x, y, z, 1, w, h,
+                      (g_debugui_dither != 0) ? 1.0f : 0.0f, 0.0f};
     memcpy(vk.projection, proj, sizeof(proj));
 
     /* Un pipeline doit etre lie avant vkCmdPushConstants (meme layout). */
@@ -1036,7 +1048,13 @@ static void RendererVK_BeginFrame()
 
     vk.renderPassActive = 0;
     vk.frameFirstScene = 1;
+    vk.statVerts = 0;
+    vk.statTris = 0;
+    vk.statDraws = 0;
+    vk.statSplits = 0;
     vk.active = 1;
+
+    DebugUI_NewFrame();
 
     {
         static int dbg_frames = 0;
@@ -1149,6 +1167,22 @@ static void RendererVK_EndFrame()
         return;
 
     VkCommandBuffer cb = vk.commandBuffers[vk.imageIndex];
+
+    /* Statistiques de la frame pour l'overlay. */
+    g_debugui_stats.verts = vk.statVerts;
+    g_debugui_stats.tris = vk.statTris;
+    g_debugui_stats.draws = vk.statDraws;
+    g_debugui_stats.splits = vk.statSplits;
+
+    /* L'overlay doit etre dessine dans un render pass : le jeu ferme le sien
+     * a la fin de chaque ordering table, on en ouvre donc un dernier en LOAD
+     * (contenu conserve) uniquement quand l'overlay est visible. ImGui doit
+     * dans tous les cas terminer sa frame. */
+    if (DebugUI_IsVisible() && !vk.renderPassActive)
+        vk_begin_render_pass(cb);
+
+    DebugUI_Render(vk.renderPassActive ? cb : VK_NULL_HANDLE);
+
     if (vk.renderPassActive)
     {
         vkCmdEndRenderPass(cb);
@@ -1360,6 +1394,9 @@ static void RendererVK_UpdateVertexBuffer(const Vertex* vertices, int count)
     if (bytes > sizeof(Vertex) * MAX_NUM_POLY_BUFFER_VERTICES)
         bytes = sizeof(Vertex) * MAX_NUM_POLY_BUFFER_VERTICES;
 
+    vk.statVerts += count;
+    vk.statSplits += 1;   /* un vertex buffer = un ordering table */
+
     VkCommandBuffer cb = vk.commandBuffers[vk.imageIndex];
     const char* src = (const char*)vertices;
     size_t off = 0;
@@ -1425,6 +1462,9 @@ static void RendererVK_DrawTriangles(int start_vertex, int triangles)
         vk.boundVertexBuffer = vk.vertexBuffer;
     }
     vkCmdDraw(cb, (uint32_t)(triangles * 3), 1, (uint32_t)start_vertex, 0);
+
+    vk.statTris += triangles;
+    vk.statDraws += 1;
 
     {
         static int dbg_draw = 0;

@@ -1282,3 +1282,53 @@ Vérifications après bascule :
 
 Le build 32 bits reste sur OpenGL. Le retrait effectif du code
 OpenGL/GLEW du build 64 bits est la dernière étape de RMIG-012.
+
+## 42. Overlay de debug ImGui (F12, RMIG-013)
+
+Dear ImGui `v1.91.5` est vendoré dans `external/imgui` (voir
+`external/imgui/README-VENDORED.md`) et compilé uniquement pour le chemin
+Vulkan 64 bits (`imgui_overlay`, lié à `Emulator_`). Le 32 bits garde son
+chemin OpenGL sans ImGui.
+
+Intégration :
+
+- `EMULATOR/DEBUGUI.C/.H` : contexte ImGui, backends SDL2 + Vulkan,
+  panneau, statistiques et interrupteurs ;
+- `RendererVK_Init` initialise l'overlay après la render pass ; `F12`
+  (traité dans `Emulator_DoPollEvent`) l'ouvre et le ferme ;
+- `RendererVK_EndFrame` dessine l'overlay dans un render pass `LOAD`
+  ouvert pour l'occasion (le jeu ferme le sien à chaque ordering table),
+  et `ImGui::Render()` est appelé même quand rien n'est dessiné ;
+- `SPEC_PSXPC_N/DRAWPHAS.C` alimente les statistiques de jeu (niveau,
+  salle, position de Lara, animation), le backend fournit vertices,
+  triangles, draws et ordering tables.
+
+Contenu du panneau :
+
+- renderer, FPS lissé et temps de frame ;
+- niveau / salle / nombre de salles, position de Lara, animation ;
+- compteurs de rendu de la frame ;
+- interrupteur **Dithering PSX** (push constant `pc.Dither`, appliqué
+  immédiatement dans les shaders 4/8/16 bits) ;
+- sélecteur de **profondeur de texture forcée** (normal / 4 / 8 / 16 bits,
+  même mécanisme que le harnais `TOMB5_FORCE_TEXFMT`) ;
+- champ + bouton **Capture BMP** (appelle `Emulator_RequestScreenshot`) ;
+- rappel des tickets SSR/RT (RMIG-014/015).
+
+Blocage des entrées : quand l'overlay est visible, le jeu ne reçoit plus
+rien — `UpdateKeyboardInput*` renvoie le masque « aucune touche »
+(0xFFFF) et `InputMap_PollActions` renvoie 0 (la keymap utilisateur
+court-circuite le pad PSX, il fallait bloquer les deux chemins).
+
+Vérifications :
+
+| test | résultat |
+| --- | --- |
+| F12 | `[IMGUI] overlay visible` / `[IMGUI] overlay masque` |
+| rendu inchangé | capture 300 frames identique avant/après intégration (`sha256 63b778f1…`) |
+| entrées bloquées | overlay ouvert + « Up » maintenu 3 s : `pos=(90642, 4608, 52736)` inchangée |
+| entrées rendues | overlay fermé + « Up » 3 s : `pos=(81363, …)` (Lara avance) |
+| interrupteur | « Dithering : OFF » → libellé et image changent immédiatement (écart moyen 2,3 niveaux sur la scène) |
+| bouton capture | écrit `/tmp/tomb5_capture.bmp` (640×480) |
+
+Capture de référence de l'overlay : `docs/porting/render/imgui-f12.png`.

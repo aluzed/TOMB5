@@ -7,6 +7,7 @@ layout(push_constant) uniform Push
 {
     mat4 Projection;
     vec2 Screen;   /* largeur/hauteur du framebuffer, pour le dithering */
+    float Dither;  /* 1 = dithering PSX, 0 = desactive (overlay F12) */
 } pc;
 
 layout(location = 0) out vec4 v_texcoord;

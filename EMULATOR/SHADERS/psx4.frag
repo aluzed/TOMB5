@@ -5,6 +5,7 @@ layout(push_constant) uniform Push
 {
     mat4 Projection;
     vec2 Screen;
+    float Dither;
 } pc;
 
 layout(location = 0) in vec4 v_texcoord;
@@ -43,5 +44,5 @@ void main()
      * ecran PSX (origine en bas) pour retrouver exactement la matrice de
      * dithering du backend OpenGL. */
     ivec2 dc = ivec2(fract(vec2(gl_FragCoord.x, pc.Screen.y - gl_FragCoord.y) / 4.0) * 4.0);
-    fragColor.xyz += PSX_DITHER(dc) * v_texcoord.w;
+    fragColor.xyz += PSX_DITHER(dc) * v_texcoord.w * pc.Dither;
 }
