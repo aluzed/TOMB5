@@ -1332,3 +1332,39 @@ Vérifications :
 | bouton capture | écrit `/tmp/tomb5_capture.bmp` (640×480) |
 
 Capture de référence de l'overlay : `docs/porting/render/imgui-f12.png`.
+
+## 43. Retrait d'OpenGL et de GLEW du build 64 bits (RMIG-012)
+
+Le build 64 bits ne contient plus **aucun** code OpenGL : ni GLEW, ni
+libGL dans les dépendances, ni symbole `gl*` dans le binaire.
+
+Mise en œuvre :
+
+- `EMULATOR_PLATFORM_SETUP.H` définit `PORT_VULKAN_ONLY` en 64 bits
+  (échappatoire `PORT_ALLOW_GL` pour reconstruire un binaire 64 bits avec
+  OpenGL), ce qui supprime la définition de `OGL`/`GLEW` ;
+- `EMULATOR.H` fournit des identifiants de texture « logiques »
+  (`unsigned int`) quand `PORT_VULKAN_ONLY` est défini ;
+- `EMULATOR.C` : les fonctions GL/D3D qui n'ont plus de sens
+  (`Emulator_CreateGlobalShaders`, `Emulator_Ortho2D`, `Emulator_SetShader`,
+  `Emulator_SetTexture`, `Emulator_DestroyTexture`, `Emulator_Clear`,
+  `Emulator_SetViewPort`, `Emulator_SetRenderTarget`,
+  `Emulator_UpdateVertexBuffer`, `Emulator_DrawTriangles`,
+  `Emulator_StoreFrameBuffer`…) compilent un chemin neutre ; `g_renderer`
+  est désormais défini par `RENDERER_VK.C` ;
+- `RENDERER_GL.C` se réduit à un message explicite ; `Renderer_SelectGL()`
+  ne sélectionne plus rien ;
+- `TOMB5_RENDERER=gl` sur le build 64 bits affiche
+  « OpenGL n'est pas compile dans ce build 64 bits ; utilisation de
+  Vulkan » et continue en Vulkan (pas de repli silencieux, pas de crash) ;
+- CMake : OpenGL/GLEW ne sont plus recherchés ni liés en 64 bits.
+
+Vérifications :
+
+| test | résultat |
+| --- | --- |
+| `ldd` du binaire 64 bits | aucune entrée `libGL`/`libGLEW` |
+| symboles `gl*` non résolus | 0 |
+| rendu | capture 300 frames `63b778f1…` identique à avant le retrait |
+| `TOMB5_RENDERER=gl` | message explicite puis Vulkan |
+| build 32 bits | compile et tourne toujours avec OpenGL (référence conservée) |

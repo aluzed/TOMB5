@@ -85,9 +85,13 @@ target_link_libraries(
 ${PROJECT_NAME}
 ${PSX_LIB}
 ${SDL2_LIBRARY}
-${OPENGL_gl_LIBRARY}
-${GLEW_LIBRARY}
 )
+
+# OpenGL/GLEW uniquement pour le build 32 bits (reference) ou si l'on
+# reconstruit explicitement un binaire 64 bits avec OpenGL.
+if(NOT (CMAKE_SIZEOF_VOID_P EQUAL 8) OR PORT_ALLOW_GL)
+    target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY} ${GLEW_LIBRARY})
+endif()
 
 set_target_properties(
 ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "MAIN"

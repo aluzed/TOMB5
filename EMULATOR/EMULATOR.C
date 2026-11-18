@@ -850,7 +850,13 @@ static int Emulator_InitialiseSDL(char* windowName, int width, int height)
 		    (strcmp(want, "gl") == 0 || strcmp(want, "opengl") == 0 ||
 		     strcmp(want, "0") == 0))
 		{
+#if defined(PORT_VULKAN_ONLY)
+			/* Ce binaire n'embarque pas OpenGL (RMIG-012). */
+			eprinterr("OpenGL n'est pas compile dans ce build 64 bits ; "
+			          "utilisation de Vulkan (PORT_ALLOW_GL pour un build GL).\n");
+#else
 			useVulkan = 0;
+#endif
 		}
 
 		if (useVulkan)
@@ -867,7 +873,11 @@ static int Emulator_InitialiseSDL(char* windowName, int width, int height)
 				return FALSE;
 			}
 			g_vulkanMode = 1;
-			eprintf("Renderer: Vulkan (defaut 64 bits, TOMB5_RENDERER=gl pour OpenGL)\n");
+#if defined(PORT_VULKAN_ONLY)
+			eprintf("Renderer: Vulkan (seul backend du build 64 bits)\n");
+#else
+			eprintf("Renderer: Vulkan (TOMB5_RENDERER=gl pour OpenGL)\n");
+#endif
 			return TRUE;
 		}
 	}
@@ -2208,11 +2218,15 @@ ShaderID Shader_Compile_Internal(const DWORD* vs_data, const DWORD* ps_data, con
 	return shader;
 }
 #else
-    #error
+    /* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 
 void Emulator_CreateGlobalShaders()
 {
+#if defined(PORT_VULKAN_ONLY)
+	/* Les shaders sont des modules SPIR-V du backend Vulkan (SHADERS_VK.H). */
+	return;
+#else
 #if defined(D3D12)
 	Emulator_CreateRasterState(FALSE);
 #endif
@@ -2224,6 +2238,7 @@ void Emulator_CreateGlobalShaders()
 
 #if defined(OGL) || defined(OGLES)
 	u_Projection = glGetUniformLocation(g_gte_shader_4, "Projection");
+#endif
 #endif
 }
 
@@ -2299,7 +2314,7 @@ void Emulator_GenerateCommonTextures()
 #elif defined(D3D12)
 	UNIMPLEMENTED();
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 }
 
@@ -2422,7 +2437,7 @@ int Emulator_Initialise()
 #elif defined(D3D12)
 	UNIMPLEMENTED();
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 
 	Emulator_ResetDevice();
@@ -2439,7 +2454,9 @@ void Emulator_Ortho2D(float left, float right, float bottom, float top, float zn
 	float x = (left + right) / (left - right);
 	float y = (bottom + top) / (bottom - top);
 
-#if defined(OGL) || defined(OGLES) // -1..1
+#if defined(PORT_VULKAN_ONLY)
+	float z = 0.0f;
+#elif defined(OGL) || defined(OGLES) // -1..1
 	float z = (znear + zfar) / (znear - zfar);
 #elif defined(D3D9) || defined (XED3D) || defined(D3D11) || defined(D3D12)// 0..1
 	float z = znear / (znear - zfar);
@@ -2463,7 +2480,7 @@ void Emulator_Ortho2D(float left, float right, float bottom, float top, float zn
 	///@D3D12
 	UNIMPLEMENTED();
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 }
 
@@ -2482,7 +2499,7 @@ void Emulator_SetShader(const ShaderID &shader)
 	///@D3D12
 	UNIMPLEMENTED();
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 
 	Emulator_Ortho2D(0.0f, activeDispEnv.disp.w, activeDispEnv.disp.h, 0.0f, 0.0f, 1.0f);
@@ -2522,7 +2539,7 @@ void Emulator_SetTexture(TextureID texture, TexFormat texFormat)
 	///@D3D12
 	UNIMPLEMENTED();
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 
 	g_lastBoundTexture = texture;
@@ -2538,7 +2555,7 @@ void Emulator_DestroyTexture(TextureID texture)
 	///@TODO D3D12
 	UNIMPLEMENTED();
 #else
-    #error
+    /* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 }
 
@@ -2559,7 +2576,7 @@ extern void Emulator_Clear(int x, int y, int w, int h, unsigned char r, unsigned
 	D3D12_CPU_DESCRIPTOR_HANDLE renderTargetHandle(renderTargetDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 	commandList->ClearRenderTargetView(renderTargetHandle, clearColor, 0, NULL);
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 }
 
@@ -2635,6 +2652,12 @@ void Emulator_StoreFrameBuffer(int x, int y, int w, int h)
 		return;
 	}
 #endif
+
+#if defined(PORT_VULKAN_ONLY)
+	/* Sans OpenGL, la copie framebuffer -> VRAM n'a plus de source : le
+	 * backend Vulkan est le seul chemin (voir ci-dessus). */
+	return;
+#else
 
 	short *fb = (short*)malloc(windowWidth * windowHeight * sizeof(short));
 
@@ -2748,6 +2771,7 @@ void Emulator_StoreFrameBuffer(int x, int y, int w, int h)
 	free(fb);
 
 	vram_need_update = TRUE;
+#endif
 }
 
 void Emulator_CopyVRAM(unsigned short *src, int x, int y, int w, int h, int dst_x, int dst_y)
@@ -3031,7 +3055,7 @@ int Emulator_BeginScene()
 #elif defined(D3D12)
 	
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 
 	Emulator_UpdateVRAM();
@@ -3284,7 +3308,7 @@ void Emulator_SwapWindow()
 		Emulator_ResetDevice();
 	}
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 #else
 	glFinish();
@@ -3595,7 +3619,7 @@ void Emulator_SetBlendMode(BlendMode blendMode)
 	///@D3D12
 	UNIMPLEMENTED();
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 
 	g_PreviousBlendMode = blendMode;
@@ -3650,7 +3674,7 @@ void Emulator_SetViewPort(int x, int y, int width, int height)
 	rect.bottom = height;
 	commandList->RSSetScissorRects(1, &rect);
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 }
 
@@ -3667,7 +3691,7 @@ void Emulator_SetRenderTarget(const RenderTargetID &frameBufferObject)
 	UNIMPLEMENTED();
 	assert(false);
 #else
-    #error
+    /* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 }
 
@@ -3722,7 +3746,7 @@ void Emulator_UpdateVertexBuffer(const Vertex *vertices, int num_vertices)
 	dynamic_vertex_buffer_view.StrideInBytes = sizeof(Vertex);
 	dynamic_vertex_buffer_view.SizeInBytes = num_vertices * sizeof(Vertex);
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 
 	vbo_was_dirty_flag = TRUE;
@@ -3740,7 +3764,7 @@ void Emulator_DrawTriangles(int start_vertex, int triangles)
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	commandList->DrawInstanced(triangles, 1, start_vertex, 0);
 #else
-	#error
+	/* PORT_VULKAN_ONLY : chemin OpenGL/D3D absent de ce build. */
 #endif
 }
 

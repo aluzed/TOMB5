@@ -4,7 +4,22 @@
 /*
  * Adaptateur OpenGL : le code GL/D3D historique reste dans EMULATOR.C.
  * LIBGPU.C ne voit plus que cette interface.
+ *
+ * Dans le build 64 bits (PORT_VULKAN_ONLY) OpenGL n'est pas compile : ce
+ * fichier ne fournit plus qu'un message explicite, aucun backend.
  */
+#if defined(PORT_VULKAN_ONLY)
+
+#include "RENDERER.H"
+#include <stdio.h>
+
+void Renderer_SelectGL(void)
+{
+	fprintf(stderr, "[RENDERER] OpenGL absent de ce build (Vulkan uniquement)\n");
+}
+
+#else
+
 static void RendererGL_BeginFrame(void) {}
 static void RendererGL_EndFrame(void) {}
 
@@ -31,3 +46,5 @@ void Renderer_SelectGL(void)
 {
 	g_renderer = &gl_backend;
 }
+
+#endif /* !PORT_VULKAN_ONLY */

@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
 
+RMIG-012 terminé : le build 64 bits n’embarque plus OpenGL (ni GLEW, ni libGL, ni symbole gl*), seul le backend Vulkan reste (PORT_VULKAN_ONLY, échappatoire PORT_ALLOW_GL pour diagnostic). TOMB5_RENDERER=gl affiche un message explicite et continue en Vulkan. Rendu inchangé après retrait (capture 300 frames 63b778f1…). Le build 32 bits conserve OpenGL comme référence. La divergence d’état 32/64 bits (primitives d’effet 0x34/0x62/0xE1, fondu d’écran) est extraite dans un nouveau ticket RMIG-023 avec l’analyse déjà faite.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-18
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
+
 RMIG-013 terminé : overlay ImGui (v1.91.5 vendoré) actif par F12 sur le backend Vulkan 64 bits, avec FPS, niveau/salle, position de Lara, animation, vertices/triangles/draws/ordering tables, interrupteur dithering (push constant), sélecteur de profondeur de texture forcée et bouton de capture BMP. Les entrées du jeu sont bloquées quand l’overlay est ouvert (pad + keymap utilisateur) et reprennent à la fermeture ; le rendu reste identique overlay fermé (capture sha256 63b778f1…). Reste : RMIG-012 (retrait d’OpenGL) et RMIG-014/015 (SSR/RT).
 
 Détails : [scène et parcours runtime](runtime-level.md).

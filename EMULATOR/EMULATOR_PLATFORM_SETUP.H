@@ -9,13 +9,24 @@
 /*
  * Platform specific emulator setup
  */
+/*
+ * Le build 64 bits n'embarque plus OpenGL : le backend Vulkan est le seul
+ * rendu (RMIG-012). Definir PORT_ALLOW_GL pour reconstruire un binaire 64
+ * bits avec le chemin OpenGL (comparaisons, diagnostic).
+ */
+#if defined(__LP64__) && !defined(PORT_ALLOW_GL) && !defined(PORT_VULKAN_ONLY)
+#define PORT_VULKAN_ONLY
+#endif
+
 #if (defined(_WINDOWS) || defined(__APPLE__) || defined(__linux__) || defined(__MINGW32__)) && !defined(__ANDROID__)
 //Open Graphics Library (Embedded Systems)
 //#define OGLES
 //#define OGLES_VERSION 3
 
+#if !defined(PORT_VULKAN_ONLY)
 //Open Graphics Library
 #define OGL
+#endif
 
 //Direct3D9
 //#define D3D9
@@ -26,7 +37,7 @@
 //Direct3D12
 //#define D3D12
 
-#if defined(OGL) || defined(D3D9) || defined(D3D11)
+#if defined(OGL) || defined(D3D9) || defined(D3D11) || defined(PORT_VULKAN_ONLY)
 #define SDL2
 #endif
 

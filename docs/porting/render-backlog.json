@@ -535,7 +535,7 @@
     {
       "id": "RMIG-012",
       "title": "Parité visuelle et retrait du chemin OpenGL",
-      "status": "In progress",
+      "status": "Done",
       "priority": "P1",
       "goal": "Valider Vulkan sur des scènes réelles puis supprimer OpenGL du build 64 bits.",
       "facts": "Le remplacement est décidé : aucun backend GL ne doit rester dans la cible 64 bits. La référence de comparaison est produite par RMIG-007. Le harnais RMIG-007 a mesuré un écart 32/64 : mean_abs_diff=18.730, 26.12% de pixels à +/-8 après gain global ; le 64 bits est plus sombre, HUD compris. Cet écart devra être expliqué ou accepté dans la parité Vulkan.",
@@ -570,7 +570,7 @@
           "note": "sélection OGL"
         }
       ],
-      "progress": "Backend Vulkan pixel-identique à OpenGL 64 bits et désormais **backend par défaut** en 64 bits (TOMB5_RENDERER=gl pour l’ancien chemin). L’écart 32 ↔ 64 bits est analysé et localisé (primitives d’effet émises seulement en 32 bits, codes 0x34/0x62/0xE1, corrélé à ScreenFading) : c’est un sujet LP64 distinct du rendu. Reste : retrait effectif d’OpenGL/GLEW du build 64 bits.",
+      "progress": "Terminé : le backend Vulkan reproduit OpenGL 64 bits au pixel près (référence sha256 5dbbb251…, cmp identique) et OpenGL/GLEW ont été retirés du build 64 bits (PORT_VULKAN_ONLY). Le binaire 64 bits ne linke plus libGL/libGLEW et ne contient aucun symbole gl* ; TOMB5_RENDERER=gl y affiche un message explicite et continue en Vulkan. Le build 32 bits conserve OpenGL comme référence. La divergence d’état 32 ↔ 64 bits (primitives d’effet) est sortie de ce ticket et suivie par RMIG-023.",
       "evidence": [
         {
           "date": "2026-11-18",
@@ -587,6 +587,10 @@
         {
           "date": "2026-11-18",
           "note": "Vulkan par défaut en 64 bits : écran-titre rendu ([VK] backend ready 640x480, 4 images), niveau 3 300 frames avec TOMB5_RENDERER=gl → sha256 d05c8394… identique à la capture GL précédente (aucune régression du chemin GL), niveau 3 1800 frames Vulkan → sha256 5dbbb251… identique à la référence, niveau 4 (Colosseum) 600 frames Vulkan sans erreur de validation. Échec d’initialisation Vulkan = arrêt explicite, pas de repli silencieux."
+        },
+        {
+          "date": "2026-11-18",
+          "note": "Retrait effectif d’OpenGL : ldd du binaire 64 bits sans libGL/libGLEW, 0 symbole gl* non résolu, capture 300 frames identique (sha256 63b778f1…) après retrait, TOMB5_RENDERER=gl → message « OpenGL n'est pas compile dans ce build 64 bits ; utilisation de Vulkan », build 32 bits recompilé et fonctionnel (OpenGL conservé). PORT_ALLOW_GL permet de reconstruire un binaire 64 bits avec OpenGL pour diagnostic."
         }
       ]
     },
@@ -1100,6 +1104,56 @@
         }
       ],
       "progress": "Constat documenté pendant le portage Vulkan ; comportement identique conservé entre GL et VK en attendant l'analyse.",
+      "evidence": []
+    },
+    {
+      "id": "RMIG-023",
+      "title": "Écart 32 bits / 64 bits : primitives d'effet et fondu d'écran",
+      "status": "Todo",
+      "priority": "P1",
+      "goal": "Rendre au build 64 bits les primitives d'effet émises par le build 32 bits (et l'état de fondu) pour que les deux builds affichent la même scène.",
+      "facts": "Sur la scène de référence (niveau 3, 300 frames), les 977 premiers ordering tables sont identiques entre 32 et 64 bits ; à partir du premier OT de jeu le 32 bits émet 31 triangles gouraud semi-transparents (0x34), 1 sprite semi-transparent (0x62) et 1 image-load (0xE1) de plus par frame, toutes les autres primitives (0x3C, 0x50, 0x60) étant identiques. Le journal [DRAW] montre en 32 bits fade=239/0 fading=1 contre fade=0/0 fading=0 en 64 bits, et persp 306 contre 256. PC_VERSION n'est pas défini dans SPEC_PSXPC_N, donc Fade() s'exécute dans les deux builds. Ce n'est pas un écart de pipeline couleur : à vertices identiques, les pixels sont identiques (Vulkan == GL 64 bits au pixel près).",
+      "scope": "Trouver pourquoi l'état de fondu (ScreenFade/dScreenFade/ScreenFading) et les primitives d'effet associées diffèrent au chargement du niveau, puis corriger la cause LP64 sans modifier le rendu commun.",
+      "exclusions": "Différences de couleur dues au rendu (déjà traitées par RMIG-011/012).",
+      "tasks": [
+        "Tracer SetScreenFadeIn/SetScreenFadeOut, ScreenFade et dScreenFade au chargement du niveau dans les deux builds.",
+        "Identifier le code qui émet les primitives 0x34/0x62/0xE1 et pourquoi il est inactif en 64 bits.",
+        "Corriger la cause (arithmétique LP64, pointeur tronqué, état non initialisé) et revérifier l'égalité des dumps TOMB5_DUMP_VERTS / TOMB5_PRIMHIST."
+      ],
+      "acceptance": [
+        "Les dumps de vertices et les histogrammes de primitives sont identiques entre 32 et 64 bits sur la scène de référence.",
+        "La capture 32 bits et la capture 64 bits (Vulkan) ne diffèrent plus que par les écarts de couleur déjà connus, ou plus du tout."
+      ],
+      "validation": "TOMB5_DUMP_VERTS + TOMB5_PRIMHIST + capture_compare.py sur la scène niveau 3 / 1800 frames.",
+      "unknowns": "L'effet peut être déclenché par un compteur de frames ou une temporisation, auquel cas la différence peut être un simple décalage temporel plutôt qu'un bug.",
+      "estimate": "1 à 2 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-012"
+      ],
+      "references": [
+        {
+          "path": "GAME/TOMB4FX.C",
+          "line": 950,
+          "note": "Fade() et l'état ScreenFade/dScreenFade"
+        },
+        {
+          "path": "GAME/TOMB4FX.C",
+          "line": 137,
+          "note": "SetScreenFadeOut / SetScreenFadeIn"
+        },
+        {
+          "path": "EMULATOR/LIBGPU.C",
+          "line": 894,
+          "note": "ParsePrimitive / histogramme des codes"
+        },
+        {
+          "path": "SPEC_PSXPC_N/DRAWPHAS.C",
+          "line": 332,
+          "note": "journal [DRAW] (fade, persp)"
+        }
+      ],
+      "progress": "Analysé et localisé (voir plan §40) : primitives d'effet 0x34/0x62/0xE1 et état de fondu divergents. Correction à faire.",
       "evidence": []
     }
   ]

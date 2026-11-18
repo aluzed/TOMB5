@@ -1511,7 +1511,12 @@ static const RendererBackend vk_backend =
     RendererVK_DrawTriangles,
 };
 
+#if defined(PORT_VULKAN_ONLY)
+/* Build 64 bits Vulkan-only : c'est ici que vit le backend courant. */
+const RendererBackend* g_renderer = nullptr;
+#else
 extern const RendererBackend* g_renderer;
+#endif
 
 int RendererVK_Select(SDL_Window* window)
 {

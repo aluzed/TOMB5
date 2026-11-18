@@ -178,7 +178,13 @@ enum TexFormat
 #define MAX_NUM_POLY_BUFFER_VERTICES (12040)
 #define MAX_NUM_INDEX_BUFFERS        (4096)
 
-#if defined(OGLES) || defined(OGL)
+#if defined(PORT_VULKAN_ONLY)
+/* Backend Vulkan : pas d'objet graphique OpenGL, seulement des identifiants
+ * logiques (LIBGPU s'en sert pour separer les groupes de primitives). */
+typedef unsigned int TextureID;
+typedef unsigned int ShaderID;
+typedef unsigned int RenderTargetID;
+#elif defined(OGLES) || defined(OGL)
 typedef GLuint TextureID;
 typedef GLuint ShaderID;
 typedef GLuint RenderTargetID;

@@ -1,8 +1,8 @@
 # RMIG-012 — Parité visuelle et retrait du chemin OpenGL
 
-Status: **In progress** — priorité P1 — confiance Medium
+Status: **Done** — priorité P1 — confiance Medium
 
-Avancement : Backend Vulkan pixel-identique à OpenGL 64 bits et désormais **backend par défaut** en 64 bits (TOMB5_RENDERER=gl pour l’ancien chemin). L’écart 32 ↔ 64 bits est analysé et localisé (primitives d’effet émises seulement en 32 bits, codes 0x34/0x62/0xE1, corrélé à ScreenFading) : c’est un sujet LP64 distinct du rendu. Reste : retrait effectif d’OpenGL/GLEW du build 64 bits.
+Avancement : Terminé : le backend Vulkan reproduit OpenGL 64 bits au pixel près (référence sha256 5dbbb251…, cmp identique) et OpenGL/GLEW ont été retirés du build 64 bits (PORT_VULKAN_ONLY). Le binaire 64 bits ne linke plus libGL/libGLEW et ne contient aucun symbole gl* ; TOMB5_RENDERER=gl y affiche un message explicite et continue en Vulkan. Le build 32 bits conserve OpenGL comme référence. La divergence d’état 32 ↔ 64 bits (primitives d’effet) est sortie de ce ticket et suivie par RMIG-023.
 
 ## Objectif
 
@@ -52,6 +52,7 @@ Rapport de comparaison d'images + ldd + revue des dépendances CMake.
 - 2026-11-18 : Analyse 32/64 par dump TOMB5_DUMP_VERTS (300 frames, niveau 3) : 977 enregistrements identiques (chargement/intro) puis 300 enregistrements divergents (jeu) ; comptage : 32 bits 1 058 577 vertices / 64 bits 1 062 531 au total, avec 32>64 sur 225 OTs et 64>32 sur 75 OTs dans la partie jeu. Journal [DRAW] : 32 bits fade=239/0 fading=1 vs 64 bits fade=0/0 fading=0, persp 306 vs 256. Conclusion : divergence d’état de jeu LP64, pas de pipeline couleur.
 - 2026-11-18 : Harnais TOMB5_PRIMHIST (histogramme des codes de primitive par OT). Différence 32/64 au premier OT de jeu : 32 bits [PH] nv=2706 34=434 3C=221 50=11 60=1 62=1 E1=1 vs 64 bits nv=2607 34=403 3C=221 50=11 60=1. Soit 31 triangles gouraud semi-transparents (0x34), 1 sprite semi-transparent (0x62) et 1 image-load (0xE1) émis seulement en 32 bits, les autres primitives étant identiques (pas d’abandon de chaîne). Corrélé à ScreenFading=1 (32) vs 0 (64) au premier [DRAW] : effet d’écran/fondu. PC_VERSION n’est pas défini dans SPEC_PSXPC_N, donc Fade() s’exécute dans les deux builds.
 - 2026-11-18 : Vulkan par défaut en 64 bits : écran-titre rendu ([VK] backend ready 640x480, 4 images), niveau 3 300 frames avec TOMB5_RENDERER=gl → sha256 d05c8394… identique à la capture GL précédente (aucune régression du chemin GL), niveau 3 1800 frames Vulkan → sha256 5dbbb251… identique à la référence, niveau 4 (Colosseum) 600 frames Vulkan sans erreur de validation. Échec d’initialisation Vulkan = arrêt explicite, pas de repli silencieux.
+- 2026-11-18 : Retrait effectif d’OpenGL : ldd du binaire 64 bits sans libGL/libGLEW, 0 symbole gl* non résolu, capture 300 frames identique (sha256 63b778f1…) après retrait, TOMB5_RENDERER=gl → message « OpenGL n'est pas compile dans ce build 64 bits ; utilisation de Vulkan », build 32 bits recompilé et fonctionnel (OpenGL conservé). PORT_ALLOW_GL permet de reconstruire un binaire 64 bits avec OpenGL pour diagnostic.
 
 ## Références
 
