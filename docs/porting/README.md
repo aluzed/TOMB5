@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
 
+Lecteur de cinématique diagnostiqué : le niveau 4 se rend sans écran noir, mais l’intro ne joue pas. handle_cutseq_triggering s’exécute (arme le fondu), Load_and_Init_Cutseq n’atteint jamais init_resident_cutseq et le repli PCopen(\CUTSEQ.JIZ) échoue ; l’image TOMB5.BIN ne contient aucune chaîne CUTSEQ/.JIZ. C’est un blocage de données (source des cinématiques absente du dépôt), pas un manque de code. Reste pour la campagne : module LARA6 et cette source de données. 4188 tests PASS, builds 32/64 verts.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-19
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
+
 Vérifications complémentaires : le niveau 5 se charge et se rend en 64 bits/Vulkan (lvl=5, 195 salles, LaraDrawType=6 avec repli L1) — la campagne dépasse donc le Colosseum. Test 8 bits forcé (TOMB5_FORCE_TEXFMT=8) : 99.79 % de pixels identiques entre 32 et 64 bits (résidu de 0.159 niveau, égalités de sampling nearest). Reste pour la campagne : module LARA6 et lecteur de cinématique.
 
 Détails : [scène et parcours runtime](runtime-level.md).

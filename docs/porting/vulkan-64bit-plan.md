@@ -1682,3 +1682,25 @@ ce qui confirme que la scène de référence n'affiche pas l'écran mono. La
 preuve visuelle de l'effet demanderait une scène qui l'affiche (inventaire) ;
 la correction est vérifiée par construction (mapping RGB555 documenté) et par
 la conservation de la parité 32/64.
+
+## 52. Lecteur de cinématique : point de blocage identifié
+
+Diagnostic (niveau 4, sans `TOMB5_SKIP_CUTSCENE`) :
+
+- la scène se rend correctement — l'intro n'affiche plus un écran noir, elle
+  **ne joue simplement pas** ;
+- `handle_cutseq_triggering` est appelé à chaque frame (trace
+  « Handle cutseq triggering name: 4 »), arme `cutseq_trig` puis lance un
+  fondu (`SetScreenFadeOut`) ;
+- `Load_and_Init_Cutseq` n'aboutit pas : `init_resident_cutseq` n'est jamais
+  atteint, et le repli `PCopen("\\CUTSEQ.JIZ")` échoue (fichier absent).
+
+Vérification sur l'image disque fournie (`TOMB5.BIN`, 622 Mo) : les chaînes
+`CUTSEQ`, `CUTSEQ.JIZ` et `.JIZ` sont **absentes** du binaire. Les
+cinématiques ne sont donc pas dans cette image sous cette forme : le
+lecteur ne peut pas être activé sans la source de données correspondante
+(disque PC ou fichier extrait), qui n'est pas dans le dépôt.
+
+Conclusion : le lecteur de cinématique n'est pas « à moitié porté », il lui
+manque **sa source de données**. Le jeu reste jouable en le sautant
+(`TOMB5_SKIP_CUTSCENE=1`) ; l'état est consigné dans RMIG-021.

@@ -3089,6 +3089,14 @@ void init_resident_cutseq(int num)//2DB8C(<), 2DE1C(<) (F)
 
 	GLOBAL_cutme = (struct NEW_CUTSCENE*)packed;
 
+	if (getenv("TOMB5_CUTDBG") != NULL)
+	{
+		fprintf(stderr, "[CUTI] num=%d packed=%p numframes=%d numactors=%d\n",
+		        num, (void*)packed,
+		        packed ? (int)GLOBAL_cutme->numframes : -1,
+		        packed ? (int)GLOBAL_cutme->numactors : -1);
+	}
+
 	if (cutseq_num <= 4)
 	{
 		GLOBAL_cutme->orgx = (lara_item->pos.x_pos & 0xFFFFFC00) + 512;
@@ -3721,6 +3729,15 @@ void do_new_cutscene_camera()//2CA68(<), 2CD88 (F)
 	}
 	//loc_2CE0C
 	++GLOBAL_cutseq_frame;//$v1
+
+	if (getenv("TOMB5_CUTDBG") != NULL)
+	{
+		static int port_cut_n = 0;
+		if ((port_cut_n++ % 30) == 0)
+			fprintf(stderr, "[CUTF] frame=%d numframes=%d playing=%d trig=%d\n",
+			        GLOBAL_cutseq_frame, GLOBAL_numcutseq_frames,
+			        GLOBAL_playing_cutseq, cutseq_trig);
+	}
 
 	if (GLOBAL_numcutseq_frames - 8 < GLOBAL_cutseq_frame)
 	{
