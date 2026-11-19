@@ -1653,3 +1653,32 @@ dumps de vertices ne diffèrent plus que sur 87 des 2777 enregistrements
 
 Écart 32/64 : `mean_abs_diff` **18.730 → 0.000**, pixels à ±8 : 26.12 % →
 **100 %**.
+
+## 51. RMIG-022 : ordre des canaux de `StoreFrameBuffer` corrigé
+
+`Emulator_StoreFrameBuffer` recopie l'image affichée dans la VRAM PSX (effet
+mono/sépia de `CreateMonoScreen`). La conversion 32 bits → RGB555 inversait
+rouge et bleu : `glReadPixels(GL_RGBA)` donne les octets R,G,B,A, dont on
+tirait `r5 = R`, `g5 = G`, `b5 = B`, puis on écrivait
+`b5 | (g5 << 5) | (r5 << 10)` — soit **B dans les bits 0-4 et R dans les
+bits 10-14**, à l'envers du format PSX (R en 0-4, G en 5-9, B en 10-14).
+
+Le portage Vulkan avait reproduit l'anomalie (en utilisant en plus l'alpha
+pour le rouge, puisque la lecture hôte est en B,G,R,A).
+
+Correction dans les deux chemins :
+
+```c
+/* GL  : c = R | G<<8 | B<<16 | A<<24 */
+*data_dst++ = (r5) | (g5 << 5) | (b5 << 10) | 0x8000;
+
+/* Vulkan : memoire B,G,R,A */
+dst[fx] = (R >> 3) | ((G >> 3) << 5) | ((B >> 3) << 10) | 0x8000;
+```
+
+Vérifications : les captures de référence des deux builds restent
+**identiques octet pour octet** (`sha256 63041e5c…`, `mean_abs_diff=0.000`),
+ce qui confirme que la scène de référence n'affiche pas l'écran mono. La
+preuve visuelle de l'effet demanderait une scène qui l'affiche (inventaire) ;
+la correction est vérifiée par construction (mapping RGB555 documenté) et par
+la conservation de la parité 32/64.

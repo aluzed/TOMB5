@@ -1,8 +1,8 @@
 # RMIG-022 — Anomalie d'ordre des canaux dans Emulator_StoreFrameBuffer
 
-Status: **Todo** — priorité P2 — confiance Medium
+Status: **Done** — priorité P2 — confiance Medium
 
-Avancement : Constat documenté pendant le portage Vulkan ; comportement identique conservé entre GL et VK en attendant l'analyse.
+Avancement : Terminé : la conversion framebuffer → VRAM écrit désormais un mot RGB555 conforme au format PSX (R en bits 0-4, G en 5-9, B en 10-14) dans les deux backends (OpenGL 32 bits et Vulkan 64 bits). L’ancien code inversait rouge et bleu, et la version Vulkan utilisait en plus l’alpha pour le rouge. Les captures de référence des deux builds restent identiques octet pour octet après le correctif.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ L'effet mono peut masquer l'erreur (moyenne des canaux) ; l'impact visuel réel 
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-19 : GL : c=R|G<<8|B<<16|A<<24, écriture corrigée en r5|(g5<<5)|(b5<<10)|0x8000 (avant : b5|(g5<<5)|(r5<<10)). Vulkan : lecture B,G,R,A puis (R>>3)|((G>>3)<<5)|((B>>3)<<10)|0x8000 (avant : alpha→rouge, B→vert, R→bleu). Vérification : captures 32 et 64 bits identiques octet pour octet (sha256 63041e5c…, mean_abs_diff=0.000). L’effet mono/sépia lui-même n’apparaît pas dans la scène de référence (preuve visuelle non couverte par le harnais).
 
 ## Références
 

@@ -2736,10 +2736,14 @@ void Emulator_StoreFrameBuffer(int x, int y, int w, int h)
 	for (int i = 0; i < windowHeight; i++) {
 		for (int j = 0; j < windowWidth; j++) {
 			unsigned int  c = *data_src++;
-			unsigned char b = ((c >>  3) & 0x1F);
-			unsigned char g = ((c >> 11) & 0x1F);
-			unsigned char r = ((c >> 19) & 0x1F);
-			*data_dst++ = r | (g << 5) | (b << 10) | 0x8000;
+			/* glReadPixels(GL_RGBA) : octets R,G,B,A (little-endian).
+			 * Le mot PSX est RGB555 : R dans les bits 0-4, G en 5-9,
+			 * B en 10-14. L'ancien code placait R et B a l'envers
+			 * (RMIG-022). */
+			unsigned char r5 = (unsigned char)((c >>  3) & 0x1F);
+			unsigned char g5 = (unsigned char)((c >> 11) & 0x1F);
+			unsigned char b5 = (unsigned char)((c >> 19) & 0x1F);
+			*data_dst++ = (unsigned short)(r5 | (g5 << 5) | (b5 << 10) | 0x8000);
 		}
 	}
 

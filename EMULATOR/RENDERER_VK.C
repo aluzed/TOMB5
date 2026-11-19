@@ -1527,12 +1527,13 @@ void RendererVK_StoreFrameBuffer(int x, int y, int w, int h)
             if (sx < 0) sx = 0;
             if (sx >= fw) sx = fw - 1;
 
-            unsigned int c = src[sy * fw + sx];
-            unsigned int R = (c >> 16) & 0xFF;
+            unsigned int c = src[sy * fw + sx];   /* memoire B,G,R,A */
             unsigned int B = c & 0xFF;
-            unsigned int A = (c >> 24) & 0xFF;
+            unsigned int G = (c >> 8) & 0xFF;
+            unsigned int R = (c >> 16) & 0xFF;
 
-            dst[fx] = (unsigned short)((A >> 3) | ((B >> 3) << 5) | ((R >> 3) << 10) | 0x8000);
+            /* Mot PSX RGB555 : R en bits 0-4, G en 5-9, B en 10-14 (RMIG-022). */
+            dst[fx] = (unsigned short)((R >> 3) | ((G >> 3) << 5) | ((B >> 3) << 10) | 0x8000);
         }
     }
 

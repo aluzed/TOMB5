@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
 
+RMIG-022 terminé : la copie framebuffer → VRAM (effet mono/sépia) écrit désormais un mot RGB555 conforme au PSX (R bits 0-4, G 5-9, B 10-14) dans les deux backends. Avant, le chemin OpenGL inversait rouge et bleu et le chemin Vulkan utilisait l’alpha pour le rouge. Les captures de référence 32 et 64 bits restent identiques octet pour octet (sha256 63041e5c…, mean_abs_diff=0.000). Backlog rendu : 19 Done, restent RMIG-005 (portage), RMIG-011 (couverture 8 bits), RMIG-015 (RT bloqué, pas de géométrie monde), RMIG-021 (campagne).
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-19
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
+
 RMIG-023 TERMINÉ : la parité 32/64 bits est atteinte sur la scène de référence. Quatre bugs LP64 corrigés : MULFP non tronquée à 32 bits (caméras flyby en positions absurdes), natte et holsters indexés en octets sur `short** meshes[]` (8 octets par pointeur en LP64), et mesh des joints de peau décalé (28 triangles manquants). Résultat : les builds 32 bits (OpenGL) et 64 bits (Vulkan) produisent le MÊME BMP octet pour octet (sha256 63041e5c…, mean_abs_diff=0.000, 307200/307200 pixels identiques) et l’histogramme de primitives de la frame de référence est identique. Écart historique : 18.730 → 0.000. 4188 tests PASS, builds 32/64 verts.
 
 Détails : [scène et parcours runtime](runtime-level.md).
