@@ -90,6 +90,12 @@ tableau de pointeurs est faux en LP64** ; il faut raisonner en entrées.
   de texture (bande à droite de l'image, chemin 2D/blit).
 - **Sauvegardes 32 ↔ 64** : incompatibles (checksum), chaque binaire crée
   la sienne.
+- **Comparaison 32/64 limitée au niveau 3** : sur le niveau 5 (195 salles),
+  le build **32 bits rend un écran noir** (fenêtre et capture noires, alors
+  que `[DRAW]` montre `lvl=5 room=23 nrooms=195 rdt=2`), tandis que le build
+  64 bits rend la scène correctement. Le 32 bits n'est donc une référence
+  fiable que sur les scènes qu'il sait rendre ; la parité mesurée porte sur
+  le niveau 3.
 - Quelques éléments de gameplay non portés (télépodes, lasers, poissons,
   `DrawScaledSpike`, `DrawWeaponMissile`, cordes, `UpdateGunShells`) —
   sans effet sur le parcours validé.

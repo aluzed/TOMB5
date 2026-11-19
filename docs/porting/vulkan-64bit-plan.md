@@ -1746,3 +1746,17 @@ avant/après), puis retirées. Le résidu n'est donc pas une égalité de
 
 RMIG-011 reste ouvert pour cette bande de 662 pixels, à instruire côté
 primitives 2D/blit (et non côté shaders de texture).
+
+## 55. Le build 32 bits ne rend pas le niveau 5
+
+En étendant la comparaison 32/64 au niveau 5 (195 salles, costume 6), la
+capture 32 bits est **entièrement noire** (vérifié aussi en capturant la
+fenêtre avec `import`, donc ce n'est pas un artefact de `glReadPixels`),
+alors que `[DRAW]` indique `lvl=5 room=23 nrooms=195 rdt=2` et que le build
+64 bits rend la scène normalement.
+
+Le build 32 bits n'est donc pas une référence fiable sur cette scène (il a
+probablement une limite de buffers/mémoire sur un niveau de cette taille).
+Conséquence pratique : la parité 32/64 se mesure sur le **niveau 3**, où
+elle est exacte ; sur les niveaux 4/5 la référence est le rendu Vulkan
+64 bits lui-même.
