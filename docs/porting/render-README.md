@@ -11,7 +11,7 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-005](render/RMIG-005.md) | Code manipulant les champs convertis | In progress | P1 |
 | [RMIG-006](render/RMIG-006.md) | Pointeur↔entier et fichiers en erreur en -m64 | Done | P0 |
 | [RMIG-007](render/RMIG-007.md) | Harnais de comparaison 32 bits / 64 bits | Done | P1 |
-| [RMIG-008](render/RMIG-008.md) | Abstraction renderer (interface + sélection) | In progress | P1 |
+| [RMIG-008](render/RMIG-008.md) | Abstraction renderer (interface + sélection) | Done | P1 |
 | [RMIG-009](render/RMIG-009.md) | Backend Vulkan : instance, device, swapchain, présentation | Done | P1 |
 | [RMIG-010](render/RMIG-010.md) | Backend Vulkan : pipeline PSX (VRAM, VBO, ordering tables) | Done | P1 |
 | [RMIG-011](render/RMIG-011.md) | Shaders GLSL → SPIR-V (4/8/16 bits, blit, perspective, dither, CLUT) | In progress | P1 |
@@ -28,4 +28,4 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-022](render/RMIG-022.md) | Anomalie d'ordre des canaux dans Emulator_StoreFrameBuffer | Todo | P2 |
 | [RMIG-023](render/RMIG-023.md) | Écart 32 bits / 64 bits : primitives d'effet et fondu d'écran | Todo | P1 |
 
-16/23 terminés.
+17/23 terminés.

@@ -1,8 +1,8 @@
 # RMIG-008 — Abstraction renderer (interface + sélection)
 
-Status: **In progress** — priorité P1 — confiance Medium
+Status: **Done** — priorité P1 — confiance Medium
 
-Avancement : Interface RendererBackend introduite (EMULATOR/RENDERER.H) et adaptateur OpenGL (EMULATOR/RENDERER_GL.C). LIBGPU.C utilise g_renderer pour le chemin de draw (begin/end, blit, textures, blending, vertex buffer, triangles). Le capture déterministe RMIG-007 est resté identique après refactor : sha256 675e2c8d…. Reste : isoler le code GL hors de EMULATOR.C et ajouter la sélection Vulkan.
+Avancement : Terminé : l’interface `RendererBackend` (RENDERER.H) est la seule dépendance de LIBGPU.C ; le backend OpenGL (RENDERER_GL.C) n’existe plus que dans le build 32 bits, le build 64 bits est Vulkan uniquement et le sélectionne par défaut. Les appels GL ont disparu du build 64 bits (RMIG-012).
 
 ## Objectif
 
@@ -48,7 +48,7 @@ Fuites d'état GL (blend, scissor) entre passes.
 
 ## Preuves
 
-- 2026-11-18 : Interface RendererBackend + backend GL adaptateur. LIBGPU.C passe par g_renderer pour le chemin de rendu. Vérification : capture déterministe niveau 3/1800 frames après refactor = sha256 675e2c8da064bfefb4dcb4347f7629d5e114026bb0082c78b584ede61a9b651b, identique à la référence pré-refactor. Builds 32/64 verts, 4188 tests PASS. Les fonctions VRAM (CopyVRAM) restent appelées directement pour préserver le harnais de test existant.
+- 2026-11-19 : Interface RendererBackend consommée par LIBGPU.C (begin/end frame et scene, blit, update_vram, clear, copy/read vram, set_texture, set_blend, update_vertex_buffer, draw_triangles). Build 64 bits : backend Vulkan par défaut, aucun symbole gl* ni libGL/GLEW (vérifié par nm/ldd). Build 32 bits : adaptateur OpenGL conservé comme référence (capture 51d3a1c7… inchangée). Sélection : TOMB5_RENDERER=gl explicitement refusé en 64 bits avec message, pas de repli silencieux.
 
 ## Références
 
