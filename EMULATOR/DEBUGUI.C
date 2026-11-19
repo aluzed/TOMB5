@@ -10,7 +10,7 @@
 #include "DEBUGUI.H"
 
 /* Definition commune aux deux builds : DRAWPHAS ecrit toujours dedans. */
-DebugUIStats g_debugui_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+DebugUIStats g_debugui_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0f, 0.0f, 0.0f};
 
 int g_debugui_dither = 1;
 int g_debugui_reflections = 0;
@@ -39,6 +39,11 @@ static struct
 	unsigned int frameCount;
 	unsigned int lastTicks;
 	float        fps;
+	float        budgetMs;
+	int          frameActive;   /* 1 si une frame ImGui est ouverte */
+	int          wasVisible;
+	unsigned long long vramTexture;
+	int          showVram;
 	char         capturePath[512];
 	char         status[128];
 	int          statusFrames;
@@ -63,7 +68,22 @@ static void DebugUI_BuildWindow(void)
 
 	ImGui::Text("Vertices %d", g_debugui_stats.verts);
 	ImGui::Text("Triangles %d", g_debugui_stats.tris);
-	ImGui::Text("Draws %d  splits %d", g_debugui_stats.draws, g_debugui_stats.splits);
+	ImGui::Text("Draws %d  OT %d", g_debugui_stats.draws, g_debugui_stats.splits);
+	ImGui::Separator();
+
+	/* Budget de frame (RMIG-016) : le GPU est mesure par requetes de
+	 * timestamp, le CPU par la boucle de jeu. */
+	ImGui::Text("GPU scene %.2f ms", g_debugui_stats.gpuSceneMs);
+	ImGui::Text("GPU post  %.2f ms", g_debugui_stats.gpuPostMs);
+	ImGui::Text("CPU frame %.2f ms", g_debugui_stats.cpuFrameMs);
+	{
+		float total = g_debugui_stats.gpuSceneMs + g_debugui_stats.gpuPostMs;
+		ImVec4 color = (total > ui.budgetMs) ? ImVec4(1.0f, 0.45f, 0.35f, 1.0f)
+		                                    : ImVec4(0.45f, 0.85f, 0.45f, 1.0f);
+		ImGui::TextColored(color, "GPU total %.2f ms (budget %.2f)", total, ui.budgetMs);
+		ImGui::SetNextItemWidth(-60);
+		ImGui::SliderFloat("##budget", &ui.budgetMs, 4.0f, 33.0f, "%.1f ms");
+	}
 	ImGui::Separator();
 	ImGui::Text("Reglages");
 
@@ -127,6 +147,13 @@ static void DebugUI_BuildWindow(void)
 		             dbgio.MousePos.x, dbgio.MousePos.y, (int)dbgio.MouseDown[0],
 		             (int)ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows));
 	}
+
+	ImGui::Separator();
+
+	if (ImGui::Button(ui.showVram ? "VRAM : ON" : "VRAM : OFF", ImVec2(-1, 0)))
+		ui.showVram = !ui.showVram;
+	if (ui.showVram && ui.vramTexture != 0)
+		ImGui::Image((ImTextureID)ui.vramTexture, ImVec2(288, 144));
 
 	ImGui::Separator();
 
@@ -222,6 +249,7 @@ int DebugUI_Init(SDL_Window* window, VkInstance instance, VkPhysicalDevice physi
 	ui.initialized = 1;
 	ui.visible = 0;
 	ui.lastTicks = SDL_GetTicks();
+	ui.budgetMs = 16.6f;
 	ui.statusFrames = 0;
 	std::snprintf(ui.capturePath, sizeof(ui.capturePath), "/tmp/tomb5_capture.bmp");
 
@@ -262,24 +290,38 @@ void DebugUI_NewFrame(void)
 	{
 		float instant = 1000.0f / (float)delta;
 		ui.fps = (ui.fps <= 0.0f) ? instant : (ui.fps * 0.9f + instant * 0.1f);
+		g_debugui_stats.cpuFrameMs = (float)delta;
+	}
+
+	/* Cout nul quand l'overlay est ferme : aucune frame ImGui n'est
+	 * construite tant qu'il n'a pas ete ouvert. */
+	if (!ui.visible && !ui.wasVisible)
+	{
+		ui.frameActive = 0;
+		return;
 	}
 
 	ImGui_ImplVulkan_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
+	ui.frameActive = 1;
 
 	if (ui.visible)
 		DebugUI_BuildWindow();
+
+	ui.wasVisible = ui.visible;
 }
 
 void DebugUI_Render(VkCommandBuffer commandBuffer)
 {
-	if (!ui.initialized)
+	if (!ui.initialized || !ui.frameActive)
 		return;
 
-	/* ImGui::Render() doit etre appele a chaque frame, meme si aucun render
-	 * pass n'est ouvert (sinon l'assertion de sanity check se declenche). */
+	/* ImGui::Render() doit etre appele a chaque frame ouverte, meme si aucun
+	 * render pass n'est ouvert (sinon l'assertion de sanity check se
+	 * declenche). */
 	ImGui::Render();
+	ui.frameActive = 0;
 
 	if (commandBuffer == VK_NULL_HANDLE)
 		return;
@@ -312,6 +354,16 @@ int DebugUI_ProcessEvent(const union SDL_Event* event)
 	}
 
 	return 0;
+}
+
+void DebugUI_RegisterVRAM(signed char* sampler, signed char* imageView)
+{
+	VkSampler s = (VkSampler)sampler;
+	VkImageView v = (VkImageView)imageView;
+	if (!ui.initialized || s == VK_NULL_HANDLE || v == VK_NULL_HANDLE)
+		return;
+	ui.vramTexture = (unsigned long long)ImGui_ImplVulkan_AddTexture(
+	    s, v, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 }
 
 void DebugUI_Toggle(void)

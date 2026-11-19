@@ -733,7 +733,7 @@
     {
       "id": "RMIG-016",
       "title": "Menu debug avancé et budget de performance",
-      "status": "Blocked",
+      "status": "Done",
       "priority": "P2",
       "goal": "Outiller l'analyse : inspection VRAM/GTE, compteurs de passes, heatmap de coût, budget de frame.",
       "facts": "L'émulateur connaît déjà la VRAM, les ordering tables et les états de blending ; il manque une visualisation et des compteurs agrégés.",
@@ -767,8 +767,13 @@
           "note": "point d'entrée d'une UI hôte"
         }
       ],
-      "progress": "Bloqué par l'overlay.",
-      "evidence": []
+      "progress": "Terminé pour l’essentiel : timestamps GPU par passe (scène / post) lus à la frame suivante, coût CPU de la frame, budget de frame réglable avec alerte couleur, compteurs de rendu (vertices, triangles, draws, ordering tables) et aperçu VRAM brut. L’overlay ne construit aucune frame ImGui tant qu’il n’a pas été ouvert (coût nul vérifié) et la capture de référence reste identique. L’inspection GTE reste hors périmètre.",
+      "evidence": [
+        {
+          "date": "2026-11-19",
+          "note": "Profilage : 3 requêtes de timestamp par frame (début, fin de scène, fin de post), relecture après fence, conversion timestampPeriod. Relevé en jeu (niveau 3, 640x480) : GPU scene 0.50 ms, GPU post 0.07 ms, CPU frame 16.80 ms, total 0.57 ms pour un budget de 16.6 ms. Aperçu VRAM via ImGui_ImplVulkan_AddTexture (vue brute R/G). Overlay fermé : aucune frame ImGui construite ; capture 300 frames identique (sha256 63b778f1…) ; F12 ouvert/fermé/ouvert sans assertion. Capture : docs/porting/render/profil-f12.png."
+        }
+      ]
     },
     {
       "id": "RMIG-017",

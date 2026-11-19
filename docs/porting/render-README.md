@@ -19,7 +19,7 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-013](render/RMIG-013.md) | ImGui F12 : overlay, stats et interrupteurs | Done | P1 |
 | [RMIG-014](render/RMIG-014.md) | Reflets screen-space à presets | Done | P2 |
 | [RMIG-015](render/RMIG-015.md) | Raytracing matériel (ray_query) avec repli SSR | Blocked | P2 |
-| [RMIG-016](render/RMIG-016.md) | Menu debug avancé et budget de performance | Blocked | P2 |
+| [RMIG-016](render/RMIG-016.md) | Menu debug avancé et budget de performance | Done | P2 |
 | [RMIG-017](render/RMIG-017.md) | Relocalisation 64 bits des tableaux de pointeurs du fichier | Done | P0 |
 | [RMIG-018](render/RMIG-018.md) | Rendu 64 bits : mots PSX 32 bits et buffers bas | Done | P0 |
 | [RMIG-019](render/RMIG-019.md) | Zero primitive PSX non geree en 64 bits | Done | P1 |
@@ -28,4 +28,4 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-022](render/RMIG-022.md) | Anomalie d'ordre des canaux dans Emulator_StoreFrameBuffer | Todo | P2 |
 | [RMIG-023](render/RMIG-023.md) | Écart 32 bits / 64 bits : primitives d'effet et fondu d'écran | Todo | P1 |
 
-15/23 terminés.
+16/23 terminés.

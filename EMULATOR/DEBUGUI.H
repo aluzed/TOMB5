@@ -24,6 +24,9 @@ struct DebugUIStats
 	int tris;
 	int draws;
 	int splits;
+	float gpuSceneMs;   /* duree GPU de la passe de scene */
+	float gpuPostMs;    /* duree GPU de la passe finale (post + overlay) */
+	float cpuFrameMs;   /* duree CPU de la frame complete */
 };
 
 extern DebugUIStats g_debugui_stats;
@@ -65,6 +68,9 @@ void DebugUI_Render(VkCommandBuffer commandBuffer);
 int  DebugUI_ProcessEvent(const union SDL_Event* event);
 
 void DebugUI_Toggle(void);
+
+/* Enregistre l'image VRAM comme texture ImGui (apercu dans l'overlay). */
+void DebugUI_RegisterVRAM(signed char* sampler, signed char* imageView);
 int  DebugUI_IsVisible(void);
 
 #else

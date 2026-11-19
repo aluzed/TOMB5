@@ -122,6 +122,13 @@ struct VKState
     VkPipeline postPipeline = VK_NULL_HANDLE;
 
     int sceneInitialized = 0;
+
+    /* Profilage GPU (RMIG-016) : deux timestamps par frame (fin de scene,
+     * fin de post). Lus a la frame suivante, apres l'attente du fence. */
+    VkQueryPool timestampPool = VK_NULL_HANDLE;
+    float timestampPeriod = 1.0f;
+    int timestampsPending = 0;
+    uint64_t timestamps[2] = {0, 0};
     VkBuffer depthBuffer = VK_NULL_HANDLE;
     VkDeviceMemory depthBufferMemory = VK_NULL_HANDLE;
     void* depthBufferMapped = nullptr;
@@ -1119,6 +1126,21 @@ int RendererVK_Init(SDL_Window* window)
     VK_CHECK(vkCreateSemaphore(vk.device, &semci, nullptr, &vk.renderFinished));
     VK_CHECK(vkCreateFence(vk.device, &fci, nullptr, &vk.inFlight));
 
+    {
+        VkPhysicalDeviceProperties props{};
+        vkGetPhysicalDeviceProperties(vk.physical, &props);
+        vk.timestampPeriod = props.limits.timestampPeriod;
+        if (vk.timestampPeriod <= 0.0f)
+            vk.timestampPeriod = 1.0f;
+
+        VkQueryPoolCreateInfo qp{};
+        qp.sType = VK_STRUCTURE_TYPE_QUERY_POOL_CREATE_INFO;
+        qp.queryType = VK_QUERY_TYPE_TIMESTAMP;
+        qp.queryCount = 3;
+        if (vkCreateQueryPool(vk.device, &qp, nullptr, &vk.timestampPool) != VK_SUCCESS)
+            vk.timestampPool = VK_NULL_HANDLE;
+    }
+
     if (!vk_create_scene_targets())
     {
         std::fprintf(stderr, "[VK] scene targets failed\n");
@@ -1133,6 +1155,7 @@ int RendererVK_Init(SDL_Window* window)
 
     DebugUI_Init(vk.window, vk.instance, vk.physical, vk.device, vk.queue,
                  vk.queueFamily, vk.renderPass, actual);
+    DebugUI_RegisterVRAM((signed char*)vk.vramSampler, (signed char*)vk.vramView);
 
     vk_inited = 1;
     vk.active = 0;
@@ -1367,6 +1390,23 @@ static void RendererVK_BeginFrame()
     vkWaitForFences(vk.device, 1, &vk.inFlight, VK_TRUE, UINT64_MAX);
     vkResetFences(vk.device, 1, &vk.inFlight);
 
+    if (vk.timestampsPending && vk.timestampPool != VK_NULL_HANDLE)
+    {
+        uint64_t values[3] = {0, 0, 0};
+        if (vkGetQueryPoolResults(vk.device, vk.timestampPool, 0, 3,
+                                  sizeof(values), values, sizeof(uint64_t),
+                                  VK_QUERY_RESULT_64_BIT) == VK_SUCCESS)
+        {
+            /* query 0 = debut de frame, query 1 = fin de la passe de scene,
+             * donc scene = q1 - q0 ; le post est mesure par difference avec
+             * la fin de frame (query 1 de la frame suivante). */
+            float periodMs = vk.timestampPeriod / 1000000.0f;
+            g_debugui_stats.gpuSceneMs = (float)(values[1] - values[0]) * periodMs;
+            g_debugui_stats.gpuPostMs  = (float)(values[2] - values[1]) * periodMs;
+        }
+        vk.timestampsPending = 0;
+    }
+
     VkResult acquire = vkAcquireNextImageKHR(vk.device, vk.swapchain, UINT64_MAX,
                                              vk.imageAvailable, VK_NULL_HANDLE, &vk.imageIndex);
     if (acquire == VK_ERROR_OUT_OF_DATE_KHR)
@@ -1415,6 +1455,12 @@ static void RendererVK_BeginFrame()
     }
 
     vk_upload_vram(cb);
+
+    if (vk.timestampPool != VK_NULL_HANDLE)
+    {
+        vkCmdResetQueryPool(cb, vk.timestampPool, 0, 3);
+        vkCmdWriteTimestamp(cb, VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, vk.timestampPool, 0);
+    }
 
     vk.renderPassActive = 0;
     vk.frameFirstScene = 1;
@@ -1566,6 +1612,9 @@ static void RendererVK_EndFrame()
         vk.renderPassActive = 0;
     }
 
+    if (vk.timestampPool != VK_NULL_HANDLE)
+        vkCmdWriteTimestamp(cb, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, vk.timestampPool, 1);
+
     /*
      * Passe finale : la scene hors-ecran est copiee (ou reflechie) vers
      * l'image de swapchain. Le shader de post lit la couleur par texelFetch
@@ -1623,6 +1672,9 @@ static void RendererVK_EndFrame()
         vk.boundVertexBuffer = VK_NULL_HANDLE;
     }
 
+    if (vk.timestampPool != VK_NULL_HANDLE)
+        vkCmdWriteTimestamp(cb, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, vk.timestampPool, 2);
+
     /*
      * Copie de l'image presentee vers la memoire hote : elle sert a la fois a
      * la capture BMP (TOMB5_CAPTURE) et a Emulator_StoreFrameBuffer, qui
@@ -1678,6 +1730,8 @@ static void RendererVK_EndFrame()
     si.pCommandBuffers = &cb;
     si.signalSemaphoreCount = 1;
     si.pSignalSemaphores = &vk.renderFinished;
+    vk.timestampsPending = (vk.timestampPool != VK_NULL_HANDLE) ? 1 : 0;
+
     VkResult submit = vkQueueSubmit(vk.queue, 1, &si, vk.inFlight);
     if (submit != VK_SUCCESS)
         std::fprintf(stderr, "[VK] vkQueueSubmit failed: %d\n", (int)submit);

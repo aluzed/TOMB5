@@ -1441,3 +1441,40 @@ raytracing matériel (RMIG-015, qui exige une BVH en espace monde) ne sont
 pas réalisables avec ces données. L'effet livré est donc un reflet écran
 stylisé, réglable et sans risque pour le rendu d'origine ; RMIG-015 reste
 bloqué pour cette raison, documentée dans le ticket.
+
+## 46. Profilage par passe et budget de frame (RMIG-016)
+
+L'overlay F12 expose maintenant le coût réel de chaque passe :
+
+- **GPU** : trois requêtes de timestamp par frame (`VK_QUERY_TYPE_TIMESTAMP`,
+  pool de 3) — début de frame, fin de la passe de scène, fin de la passe
+  finale. Les résultats sont relus à la frame suivante, après l'attente du
+  fence, et convertis avec `timestampPeriod`.
+- **CPU** : durée de la frame complète (horloge SDL), à côté du FPS lissé.
+- **Budget** : curseur 4–33 ms ; le total GPU passe en vert sous le budget,
+  en rouge au-dessus.
+
+Relevé en jeu (niveau 3, salle 20, 640×480) :
+
+```
+GPU scene 0.50 ms
+GPU post  0.07 ms
+CPU frame 16.80 ms
+GPU total 0.57 ms (budget 16.6)
+```
+
+La passe de scène domine largement (tout le pipeline PSX) ; la passe finale
+est marginale. C'est exactement l'information demandée par le ticket
+(« identifier la passe la plus coûteuse sans profiler externe »).
+
+**Coût nul overlay fermé** : tant que l'overlay n'a jamais été ouvert,
+`DebugUI_NewFrame` ne construit aucune frame ImGui (`frameActive = 0`) et
+`DebugUI_Render` ne fait rien — pas de `ImGui::NewFrame`/`Render`, pas de
+draw data. Vérifié : la capture de référence reste identique
+(`sha256 63b778f1…` à 300 frames) et l'ouverture/fermeture répétée de F12 ne
+déclenche plus l'assertion de sanity check d'ImGui.
+
+**Inspection VRAM** : le bouton `VRAM : ON` affiche la VRAM 1024×512 dans le
+panneau via `ImGui_ImplVulkan_AddTexture` (vue brute des canaux R/G, la
+VRAM étant en `R8G8_UNORM` : l'octet bas du mot PSX apparaît en rouge,
+l'octet haut en vert). L'inspection GTE n'est pas couverte par ce ticket.

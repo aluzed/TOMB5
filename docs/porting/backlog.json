@@ -2674,6 +2674,15 @@
       ],
       "status": "In progress",
       "summary": "RMIG-014 : la scène Vulkan est rendue dans une cible hors-écran couleur + profondeur (D32) puis copiée à l’écran par un triangle plein écran (texelFetch). La profondeur par vertex vient des buckets d’ordering table (0=loin, 1=près). Quatre presets de reflets écran dans l’overlay F12 (aucun/faible/moyen/fort) ; le preset « aucun » redonne l’image de référence à l’octet près (5dbbb251… à 1800 frames). Coût négligeable (60 FPS, ~16,5 ms avec le preset fort). Limite documentée : sans normales ni profondeur view-space dans le flux PSX, le SSR physique et le raytracing matériel (RMIG-015, désormais Blocked pour cette raison) ne sont pas réalisables. Builds 32/64 verts, 4188 tests PASS."
+    },
+    {
+      "date": "2026-11-19",
+      "authorization_until": "2026-11-19T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "RMIG-016 : overlay F12 enrichi avec le profilage par passe (3 timestamps GPU par frame : début, fin de scène, fin de post, relus après fence) et le coût CPU de la frame, plus un budget réglable avec alerte couleur. Relevé en jeu : GPU scène 0.50 ms, GPU post 0.07 ms, CPU 16.80 ms (budget 16.6). Compteurs de rendu et aperçu VRAM brut ajoutés. L’overlay ne construit aucune frame ImGui tant qu’il n’a pas été ouvert (capture de référence inchangée, sha256 63b778f1…). RMIG-023 (effet 0x34/0x62/DR_TPAGE émis seulement en 32 bits) reste ouvert : analyse faite (VRAM textures identiques, seul le contenu rendu diffère)."
     }
   ]
 }

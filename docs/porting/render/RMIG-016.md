@@ -1,8 +1,8 @@
 # RMIG-016 — Menu debug avancé et budget de performance
 
-Status: **Blocked** — priorité P2 — confiance Low
+Status: **Done** — priorité P2 — confiance Low
 
-Avancement : Bloqué par l'overlay.
+Avancement : Terminé pour l’essentiel : timestamps GPU par passe (scène / post) lus à la frame suivante, coût CPU de la frame, budget de frame réglable avec alerte couleur, compteurs de rendu (vertices, triangles, draws, ordering tables) et aperçu VRAM brut. L’overlay ne construit aucune frame ImGui tant qu’il n’a pas été ouvert (coût nul vérifié) et la capture de référence reste identique. L’inspection GTE reste hors périmètre.
 
 ## Objectif
 
@@ -47,7 +47,7 @@ Impact mémoire des visualisations sur une cible 64 bits.
 
 ## Preuves
 
-- à produire (aucune mesure pour l’instant)
+- 2026-11-19 : Profilage : 3 requêtes de timestamp par frame (début, fin de scène, fin de post), relecture après fence, conversion timestampPeriod. Relevé en jeu (niveau 3, 640x480) : GPU scene 0.50 ms, GPU post 0.07 ms, CPU frame 16.80 ms, total 0.57 ms pour un budget de 16.6 ms. Aperçu VRAM via ImGui_ImplVulkan_AddTexture (vue brute R/G). Overlay fermé : aucune frame ImGui construite ; capture 300 frames identique (sha256 63b778f1…) ; F12 ouvert/fermé/ouvert sans assertion. Capture : docs/porting/render/profil-f12.png.
 
 ## Références
 

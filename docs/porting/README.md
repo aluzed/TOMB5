@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-11-19
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
+
+RMIG-016 : overlay F12 enrichi avec le profilage par passe (3 timestamps GPU par frame : début, fin de scène, fin de post, relus après fence) et le coût CPU de la frame, plus un budget réglable avec alerte couleur. Relevé en jeu : GPU scène 0.50 ms, GPU post 0.07 ms, CPU 16.80 ms (budget 16.6). Compteurs de rendu et aperçu VRAM brut ajoutés. L’overlay ne construit aucune frame ImGui tant qu’il n’a pas été ouvert (capture de référence inchangée, sha256 63b778f1…). RMIG-023 (effet 0x34/0x62/DR_TPAGE émis seulement en 32 bits) reste ouvert : analyse faite (VRAM textures identiques, seul le contenu rendu diffère).
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-11-18
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-18T23:59:00+01:00. Linux32 provisoire.
