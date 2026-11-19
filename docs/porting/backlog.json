@@ -2791,6 +2791,15 @@
       ],
       "status": "In progress",
       "summary": "Ajout de scripts/porting/check_parity.sh : lance les builds 64 bits (Vulkan) et 32 bits (OpenGL) sur la scène de référence, compare les BMP et sort en erreur si l’image diffère. Vérifié : 1800 frames → PARITE OK, captures identiques octet pour octet (sha256 63041e5c…, mean_abs_diff=0.000, 307200/307200) ; à 300 frames, un pixel de bord isolé est toléré et signalé. Documenté dans ETAT-64BITS.md et plan §56."
+    },
+    {
+      "date": "2026-11-19",
+      "authorization_until": "2026-11-19T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Cause du noir 32 bits au niveau 5 identifiée : le build 32 bits émet trois fois plus de quads que le 64 bits ([PH] 3C=1008 vs 335, nv=7251 vs 3102) alors que les primitives Lara sont identiques — défaut du chemin roomlet 32 bits pour RoomDrawType=2, pas une régression du portage. Le 64 bits rend la scène correctement. La parité 32/64 reste donc mesurée sur le niveau 3 (où elle est byte-identique), et le script check_parity.sh automatise ce contrôle."
     }
   ]
 }

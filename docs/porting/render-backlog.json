@@ -1089,6 +1089,10 @@
         {
           "date": "2026-11-19",
           "note": "Costume 6 : le masquage de meshes du repli L1 (mesh_bits=0x80000000) est retiré — le polygone noir qui le justifiait venait des bugs de pointeurs LP64 corrigés en RMIG-023. Modèle complet vérifié niveaux 4 et 5 (capture docs/porting/render/lara-costume6-complet.png) ; capture de référence niveau 3 inchangée (sha256 63041e5c…). Le module LARA6 dédié reste absent mais le rendu n’est plus amputé."
+        },
+        {
+          "date": "2026-11-19",
+          "note": "Niveau 5 : le build 32 bits rend noir parce qu’il émet 3× plus de quads que le 64 bits ([PH] 3C=1008 vs 335, nv=7251 vs 3102) ; les primitives Lara sont identiques, le défaut est dans le chemin roomlet 32 bits (RoomDrawType=2, ROOMLET2.C). Le build 64 bits rend la scène correctement — ce n’est pas une régression du portage."
         }
       ]
     },

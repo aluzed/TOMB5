@@ -1776,3 +1776,27 @@ référence, puis compare les deux BMP.
 Vérifié : `./scripts/porting/check_parity.sh` →
 `63041e5c…` dans les deux builds, `mean_abs_diff=0.000`,
 307 200/307 200 pixels identiques.
+
+## 57. Pourquoi le build 32 bits rend noir au niveau 5
+
+Comparaison des compteurs de primitives sur le niveau 5 (195 salles,
+`RoomDrawType=2`) :
+
+```
+32 bits : [PH] nv=7251  34=371(L298)  3C=1008(L70)  2E=6  3E=8  62=1  E1=1
+64 bits : [PH] nv=3102  34=348(L298)  3C=335(L70)   3E=8
+```
+
+Le build 32 bits émet **trois fois plus de quads** (`3C` : 1008 contre 335)
+pour le même niveau, avec un total de vertices 2,3× supérieur — donc des
+primitives en trop, qui recouvrent l'écran (rendu noir) alors que le 64 bits
+émet le jeu correct.
+
+Les primitives Lara sont équivalentes (`34(L298)` et `3C(L70)` identiques),
+donc le problème est dans le **chemin roomlet** du 32 bits pour
+`RoomDrawType=2` (`ROOMLET2.C`), pas dans le rendu ni dans le jeu commun.
+
+Conséquence : le build 32 bits n'est pas une référence fiable sur ce
+niveau ; ce n'est **pas** une régression introduite par le portage 64 bits
+(le 64 bits rend la scène correctement). À instruire seulement si l'on veut
+que le binaire 32 bits de référence couvre tous les niveaux.
