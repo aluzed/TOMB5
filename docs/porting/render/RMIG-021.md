@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Colosseum terminé et **transition de niveau re-validée** avec le build actuel (pickup final salle 70 → lvl=4, 169 salles, rendu correct). Niveaux 4 et 5 chargés et rendus. Blocages restants : module `LARA6` (modèle L1 gris à partir du niveau 4) et lecteur de cinématique (source de données CUTSEQ absente du dépôt).
+Avancement : Colosseum terminé, transition de niveau re-validée (pickup salle 70 → lvl=4), niveaux 4 et 5 rendus en 64 bits/Vulkan. Le costume 6 (repli L1) est désormais dessiné **en entier** (masquage retiré, artefact expliqué par les bugs LP64). Reste : module LARA6 dédié (portage exact du costume, nécessite la fonction d’origine) et source de données des cinématiques (CUTSEQ absente de l’image fournie).
 
 ## Objectif
 
@@ -60,6 +60,7 @@ Le rendu deforme du sable peut venir de la sous-division (SubDiv/div3tab/div4tab
 - 2026-11-19 : Niveau 5 chargé et rendu en 64 bits/Vulkan (TOMB5_START_LEVEL=5, 300 frames) : lvl=5 room=23, 195 salles, LaraDrawType=6 (repli L1 documenté), scène industrielle rendue correctement, aucun incident. La campagne dépasse donc le Colosseum ; restent le module LARA6 (modèle gris) et le lecteur de cinématique pour les intros.
 - 2026-11-19 : Niveau 4 sans TOMB5_SKIP_CUTSCENE : la scène se rend correctement (plus d’écran noir), mais l’intro ne joue pas. Diagnostic : handle_cutseq_triggering s’exécute chaque frame (arme cutseq_trig + fondu), Load_and_Init_Cutseq n’atteint jamais init_resident_cutseq, et le repli PCopen("\\CUTSEQ.JIZ") échoue. L’image disque TOMB5.BIN ne contient aucune chaîne CUTSEQ/.JIZ : la source de données des cinématiques est absente du dépôt. Blocage de données, pas de code.
 - 2026-11-19 : Re-validation de la transition de niveau avec le build Vulkan-only actuel (après les correctifs LP64 MULFP/pointeurs) : départ niveau 3 (Colosseum, 125 salles), téléport F9 sur le pickup final de la salle 70 (55808,7936,70144), pickup déclenché → le jeu charge le niveau suivant (lvl=4, 169 salles, Lara en salle 99), rendu correct, aucun incident. Capture : docs/porting/render/colosseum-vers-niveau4.png.
+- 2026-11-19 : Costume 6 : le masquage de meshes du repli L1 (mesh_bits=0x80000000) est retiré — le polygone noir qui le justifiait venait des bugs de pointeurs LP64 corrigés en RMIG-023. Modèle complet vérifié niveaux 4 et 5 (capture docs/porting/render/lara-costume6-complet.png) ; capture de référence niveau 3 inchangée (sha256 63041e5c…). Le module LARA6 dédié reste absent mais le rendu n’est plus amputé.
 
 ## Références
 

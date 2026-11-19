@@ -2773,6 +2773,15 @@
       ],
       "status": "In progress",
       "summary": "Campagne re-validée avec le build Vulkan-only après les correctifs LP64 : niveau 3 (Colosseum) → téléport F9 sur le pickup final (salle 70) → pickup déclenché → chargement du niveau 4 (169 salles, Lara en salle 99), rendu correct, aucun incident. Capture docs/porting/render/colosseum-vers-niveau4.png. Restent pour la campagne le module LARA6 et la source de données des cinématiques."
+    },
+    {
+      "date": "2026-11-19",
+      "authorization_until": "2026-11-19T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Costume 6 (Lara des niveaux 4+) : le masquage de meshes du repli L1 est retiré. Le « polygone noir étiré » qui l’avait motivé provenait des bugs de pointeurs LP64 corrigés en RMIG-023. Le modèle complet est vérifié sur les niveaux 4 et 5 (aucun artefact) et la capture de référence du niveau 3 reste identique (63041e5c…). L’override F11 prime désormais sur ce masque pour les diagnostics. Le module LARA6 dédié reste à porter (fonction d’origine requise), et les cinématiques restent bloquées par l’absence de la source de données CUTSEQ."
     }
   ]
 }

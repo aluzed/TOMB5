@@ -1704,3 +1704,25 @@ lecteur ne peut pas être activé sans la source de données correspondante
 Conclusion : le lecteur de cinématique n'est pas « à moitié porté », il lui
 manque **sa source de données**. Le jeu reste jouable en le sautant
 (`TOMB5_SKIP_CUTSCENE=1`) ; l'état est consigné dans RMIG-021.
+
+## 53. Costume 6 (LARA6) : le repli L1 n'a plus besoin de masquer des meshes
+
+Le repli `LaraDrawType=6 → DrawLaraL1` masquait les meshes optionnels
+(`mesh_bits = 0x80000000`) parce qu'une pièce « étirait un polygone noir sur
+l'écran ». Ce symptôme a disparu avec les correctifs LP64 de RMIG-023
+(pointeurs de la natte, des holsters et des joints de peau) : le même pièce
+était lue au mauvais endroit et produisait un polygone aberrant.
+
+Vérifications faites avec `TOMB5_LARAMESH`/F11 (override `ffffffff`, qui
+prime désormais sur le masque) puis sans masque du tout :
+
+- niveau 4 (The Great Wall) : modèle complet, aucune pièce aberrante ;
+- niveau 5 : modèle complet, rendu correct ;
+- scène de référence (niveau 3, costume 1) : **capture inchangée**
+  (`sha256 63041e5c…`), le masque ne concernait que le type 6.
+
+Le masquage est donc retiré : le costume 6 est dessiné en entier via le
+chemin L1. Le module `LARA6` dédié reste absent (le portage exact du costume
+demanderait la fonction d'origine), mais le rendu n'est plus amputé.
+
+Capture : `docs/porting/render/lara-costume6-complet.png`.

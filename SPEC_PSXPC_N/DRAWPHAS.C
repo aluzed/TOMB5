@@ -614,12 +614,18 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 			unsigned int port_meshbits_saved = (unsigned int)lara_item->mesh_bits;
 			if (port_draw_type == 6)
 			{
-				/* Costume 6 (module LARA6 non porte) : le jeu de meshes
-				 * contient une piece dont la skin n'est pas geree par le
-				 * repli L1 et qui etire un polygone noir sur l'ecran.
-				 * On masque les meshes optionnels pour garder le corps
-				 * visible en attendant le module dedie. */
-				lara_item->mesh_bits = 0x80000000u;
+				/* Le module LARA6 n'est pas porte : on dessine le costume 6
+				 * avec le chemin L1. Le masquage de meshes qui etirait un
+				 * polygone noir n'est plus necessaire depuis les correctifs
+				 * LP64 de RMIG-023 (pointeurs de la natte, des holsters et
+				 * des joints de peau) : le modele complet est rendu
+				 * correctement (verifie niveaux 4 et 5). */
+				static int port_lara6_warned = 0;
+				if (!port_lara6_warned && getenv("TOMB5_LARADBG") != NULL)
+				{
+					fprintf(stderr, "[LARA] costume 6 : repli L1 complet (module LARA6 absent)\n");
+					port_lara6_warned = 1;
+				}
 			}
 			switch (port_draw_type)
 			{
