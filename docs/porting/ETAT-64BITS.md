@@ -50,6 +50,19 @@ Overlay F12 : `Reflets`, `Dithering`, profondeur de texture forcée, aperçu
 VRAM, bouton de capture. Les entrées du jeu sont bloquées quand il est
 ouvert.
 
+## Vérifier la parité en une commande
+
+```bash
+./scripts/porting/check_parity.sh          # 1800 frames (référence officielle)
+./scripts/porting/check_parity.sh 300      # contrôle rapide
+```
+
+Le script lance le build 64 bits (Vulkan) puis le 32 bits (OpenGL) sur la
+scène de référence, compare les deux BMP et sort en erreur si l'image
+diffère. Sur la scène de référence il affiche
+`PARITE OK : captures identiques octet pour octet` ; sur des durées plus
+courtes il tolère le pixel de bord isolé (en le signalant).
+
 ## Scène de référence
 
 Niveau 3, 1800 frames, aucune entrée (`TOMB5_START_LEVEL=3`,

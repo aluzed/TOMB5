@@ -1760,3 +1760,19 @@ probablement une limite de buffers/mémoire sur un niveau de cette taille).
 Conséquence pratique : la parité 32/64 se mesure sur le **niveau 3**, où
 elle est exacte ; sur les niveaux 4/5 la référence est le rendu Vulkan
 64 bits lui-même.
+
+## 56. Script de vérification de parité
+
+`scripts/porting/check_parity.sh [frames]` automatise le contrôle : il lance
+le build 64 bits (Vulkan) et le build 32 bits (OpenGL) sur la scène de
+référence, puis compare les deux BMP.
+
+- sans argument : 1800 frames (scène officielle) → attendu
+  `PARITE OK : captures identiques octet pour octet` ;
+- avec un nombre de frames plus court : tolère un pixel de bord isolé, en le
+  signalant (`PARITE OK (a 1 pixel pres)`), car seul le run complet de la
+  référence est garanti identique à l'octet.
+
+Vérifié : `./scripts/porting/check_parity.sh` →
+`63041e5c…` dans les deux builds, `mean_abs_diff=0.000`,
+307 200/307 200 pixels identiques.
