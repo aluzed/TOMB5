@@ -1386,16 +1386,20 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 
 	S_LoadLevelFile(Name);
 
+	/* Le saut de cinematique est un outil de debug commun aux deux
+	 * largeurs de pointeur : le lecteur de cinematique n'est pas porte non
+	 * plus en 32 bits, et un traitement different faussait la comparaison
+	 * des captures 32/64 (RMIG-023). */
+	if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
+	{
+		GLOBAL_playing_cutseq = 0;
+		cutseq_num = 0;
+		cutseq_trig = 0;
+		lara.gun_status = 0;
+	}
+
 #if defined(__LP64__)
 	{
-		if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
-		{
-			GLOBAL_playing_cutseq = 0;
-			cutseq_num = 0;
-			cutseq_trig = 0;
-			lara.gun_status = 0;
-		}
-
 		const char* start_pos = getenv("TOMB5_START_POS");
 		if (start_pos != NULL)
 		{
@@ -1516,16 +1520,16 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 		ScreenFadedOut = 1;
 	}
 	//loc_10CD8
-	#if defined(__LP64__)
+	if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
 	{
-		if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
-		{
-			GLOBAL_playing_cutseq = 0;
-			cutseq_num = 0;
-			cutseq_trig = 0;
-			lara.gun_status = 0;
-		}
+		GLOBAL_playing_cutseq = 0;
+		cutseq_num = 0;
+		cutseq_trig = 0;
+		lara.gun_status = 0;
+	}
 
+#if defined(__LP64__)
+	{
 		const char* start_pos = getenv("TOMB5_START_POS");
 		if (start_pos != NULL)
 		{

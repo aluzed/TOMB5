@@ -156,6 +156,13 @@ void CalcLaraMatrices(int flag)//2C1DC, 2C504
 	if (lara.hit_direction < 0)
 	{
 		frac = GetFrames(item, &frmptr[0], &rate);
+		if (getenv("TOMB5_LARASTATE") != NULL)
+		{
+			static int port_frac_n = 0;
+			if (port_frac_n++ >= 0)
+				fprintf(stderr, "[LS2] n=%d frac=%d rate=%d frame=%d\n",
+				        port_frac_n - 1, frac, rate, (int)item->frame_number);
+		}
 #if defined(__LP64__)
 		/* Diagnostic : forcer la pose cle (pas d'interpolation). */
 		if (getenv("TOMB5_NO_LARA_INTERP") != NULL)

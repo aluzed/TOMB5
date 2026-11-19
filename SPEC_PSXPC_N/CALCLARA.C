@@ -900,6 +900,33 @@ void DEL_CalcLaraMatrices_Normal_ASM(short* frame, long* bone, int flag)
 	frame += 9;
 	GLaraShadowframe = t9;
 	t8[9] = (int)frame;
+	if (getenv("TOMB5_LARASTATE") != NULL)
+	{
+		static int port_ptr_n = 0;
+		if ((port_ptr_n++ % 1) == 0)
+		{
+			unsigned int fh = 2166136261u, bh = 2166136261u;
+			const short* fw = (const short*)frame;
+			const int* bw = (const int*)bone;
+			for (int k = 0; k < 96; k++)
+			{
+				fh ^= (unsigned short)fw[k];
+				fh *= 16777619u;
+			}
+			for (int k = 0; k < 32; k++)
+			{
+				bh ^= (unsigned)bw[k];
+				bh *= 16777619u;
+			}
+			if (getenv("TOMB5_LARABONES") != NULL)
+			{
+				fprintf(stderr, "[MB]");
+				for (int k = 0; k < 32; k++)
+					fprintf(stderr, " %08x", (unsigned)bw[k]);
+				fprintf(stderr, "\n");
+			}
+		}
+	}
 	snaff_current_gte_matrix_V1(&t8[38]);
 
 	if ((flag & 0x1))

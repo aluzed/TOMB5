@@ -563,6 +563,40 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 				static int port_lara_dbg2_n = 0;
 
 #if !AUG_VERSION && !JULY_VERSION
+			if (getenv("TOMB5_LARASTATE") != NULL)
+			{
+				/* Etat exact de Lara au moment du draw (RMIG-023) : permet de
+				 * distinguer un decalage de frame d'une difference numerique. */
+				static int port_ls_n = 0;
+				extern struct MATRIX3D lara_matrices[15];
+				unsigned int port_ls_hash = 2166136261u;
+				for (int mi = 0; mi < 15; mi++)
+				{
+					const int* mw = (const int*)&lara_matrices[mi];
+					for (int mj = 0; mj < 8; mj++)
+					{
+						port_ls_hash ^= (unsigned int)mw[mj];
+						port_ls_hash *= 16777619u;
+					}
+				}
+				if (port_ls_n == 299)
+				{
+					const int* m0 = (const int*)&lara_matrices[0];
+					const int* m7 = (const int*)&lara_matrices[7];
+					fprintf(stderr, "[MJ] j0=%08x %08x %08x %08x %08x %08x %08x %08x\n",
+					        (unsigned)m0[0], (unsigned)m0[1], (unsigned)m0[2], (unsigned)m0[3],
+					        (unsigned)m0[4], (unsigned)m0[5], (unsigned)m0[6], (unsigned)m0[7]);
+					fprintf(stderr, "[MJ] j7=%08x %08x %08x %08x %08x %08x %08x %08x\n",
+					        (unsigned)m7[0], (unsigned)m7[1], (unsigned)m7[2], (unsigned)m7[3],
+					        (unsigned)m7[4], (unsigned)m7[5], (unsigned)m7[6], (unsigned)m7[7]);
+				}
+				fprintf(stderr, "[LS] n=%d anim=%d frame=%d mhash=%08x pos=(%d,%d,%d) rot=%d bits=%08x\n",
+				        port_ls_n++, (int)lara_item->anim_number,
+				        (int)lara_item->frame_number, port_ls_hash,
+				        lara_item->pos.x_pos, lara_item->pos.y_pos, lara_item->pos.z_pos,
+				        (int)lara_item->pos.y_rot, (unsigned)lara_item->mesh_bits);
+			}
+
 			int port_draw_type = port_lara_draw_type != 0 ? port_lara_draw_type : LaraDrawType;
 			unsigned int port_meshbits_saved = (unsigned int)lara_item->mesh_bits;
 			if (port_draw_type == 6)

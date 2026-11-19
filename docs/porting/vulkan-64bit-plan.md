@@ -1478,3 +1478,49 @@ déclenche plus l'assertion de sanity check d'ImGui.
 panneau via `ImGui_ImplVulkan_AddTexture` (vue brute des canaux R/G, la
 VRAM étant en `R8G8_UNORM` : l'octet bas du mot PSX apparaît en rouge,
 l'octet haut en vert). L'inspection GTE n'est pas couverte par ce ticket.
+
+## 47. RMIG-023 : la divergence 32/64 vient du squelette de Lara
+
+Chaîne d'investigation (niveau 3, `TOMB5_SKIP_CUTSCENE=1`, 300 frames) :
+
+1. **VRAM** : les textures sont identiques entre les deux builds ; seules
+   les zones framebuffer diffèrent (conséquence du rendu). Ce n'est donc
+   pas un contenu de texture.
+2. **Histogramme des primitives** (avec marquage des primitives Lara via
+   `port_lara_prim_lo/hi`) : le 32 bits émet 31 triangles gouraud
+   semi-transparents (`0x34`) de plus, dont 28 dans la plage Lara, plus un
+   sprite (`0x62`) et un `DR_TPAGE` (`0xE1`) hors plage Lara.
+3. **État de Lara** (harnais `TOMB5_LARASTATE`) : `anim=103`, `frame`
+   identiques à chaque frame, `frac`/`rate` identiques (`frac=0`, donc pas
+   d'interpolation), position/rotation/mesh_bits identiques.
+4. **Données d'animation** : le hash des 96 premiers shorts de la frame
+   d'animation est **identique** (`7b26e60b`).
+5. **Table `bones`** : le hash diffère (`af81e4cb` en 64 bits contre
+   `a7f7b6f6` en 32 bits) — et le dump mot à mot montre que la table est
+   décalée/altérée à partir du 5e élément.
+6. **Matrices de joints** : elles diffèrent sensiblement (rotation ~1,7°,
+   translation ~0xA3), ce qui change les tests d'écrêtage de
+   `sub_658L1` et donc le nombre de triangles émis.
+
+Conclusion : la divergence n'est ni dans le rendu, ni dans les données du
+niveau, mais dans **l'état du squelette** (`bones`), qui est un tableau
+d'`long` hôtes (8 octets) converti depuis les mots 32 bits du fichier. Un
+code qui lit ou écrit ce tableau avec des hypothèses 32 bits
+(`((int*)bone)[n]`, `bone += 4`, pointeur stocké dans un `int`) décale les
+rotations de joint, d'où des poses légèrement différentes et un nombre de
+triangles écrêtés différent.
+
+Piste de correction (prochaine session) : auditer les lecteurs/écrivains de
+`bones` (CALCLARA.C, DELSTUFF.C, HAIR.C, SETUP.C) et les aligner sur le
+type hôte, puis revérifier l'égalité des dumps `TOMB5_DUMP_VERTS` et des
+hashes de matrices.
+
+Harnais ajoutés (tous activés par variable d'environnement, coût nul sinon) :
+`TOMB5_LARASTATE` (`[LS]`, `[MP]`, `[MB]`), `TOMB5_LARAMESH` (`[LM]`,
+octets par mesh), `TOMB5_LARABONES` (dump de la table `bones`).
+
+Correctif annexe : `TOMB5_SKIP_CUTSCENE` était appliqué dans GAMEFLOW
+uniquement sous `#if defined(__LP64__)` alors que DRAWPHAS l'appliquait
+toujours — les deux builds ne sautaient donc pas la cinématique de la même
+façon. Le bloc est maintenant commun (le lecteur de cinématique n'étant pas
+porté non plus en 32 bits).

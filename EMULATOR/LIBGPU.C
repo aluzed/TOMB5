@@ -56,6 +56,7 @@ int g_port_force_texfmt = -1;
 /* Diagnostic RMIG-012 : histogramme des codes de primitive par ordering
  * table (actif seulement avec TOMB5_PRIMHIST). */
 int port_prim_hist[256];
+int port_prim_hist_lara[256];   /* dont primitives dans la plage Lara */
 int port_prim_hist_used = 0;
 extern int port_in_lara_draw;
 uintptr_t port_cur_prim_ptr = 0;
@@ -573,10 +574,15 @@ void DrawAggregatedSplits()
 		for (int i = 0; i < 256; i++)
 		{
 			if (port_prim_hist[i] != 0)
+			{
 				fprintf(stderr, " %02X=%d", i, port_prim_hist[i]);
+				if (port_prim_hist_lara[i] != 0)
+					fprintf(stderr, "(L%d)", port_prim_hist_lara[i]);
+			}
 		}
 		fprintf(stderr, "\n");
 		memset(port_prim_hist, 0, sizeof(port_prim_hist));
+		memset(port_prim_hist_lara, 0, sizeof(port_prim_hist_lara));
 		port_prim_hist_used = 0;
 	}
 
@@ -936,6 +942,12 @@ int ParsePrimitive(uintptr_t primPtr)
 	port_cur_prim_code = pTag->code;
 	port_cur_prim_ptr = primPtr;
 	port_prim_hist[(unsigned char)pTag->code]++;
+	{
+		extern uintptr_t port_lara_prim_lo;
+		extern uintptr_t port_lara_prim_hi;
+		if (primPtr >= port_lara_prim_lo && primPtr < port_lara_prim_hi)
+			port_prim_hist_lara[(unsigned char)pTag->code]++;
+	}
 	port_prim_hist_used = 1;
 
 #if defined(__LP64__)

@@ -1454,11 +1454,19 @@ void sub_2CL1(struct ITEM_INFO* item)
 
         if ((lara_item->mesh_bits >> 16)& (1 << 0xF))
         {
+            char* port_mesh_before = db.polyptr;
 #if defined(USE_32_BIT_ADDR)
             db.polyptr = (char*)sub_658L1(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #else
             db.polyptr = (char*)sub_658L1(lara.mesh_ptrs[lara_mesh_sweetness_table[i]], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #endif
+            if (getenv("TOMB5_LARAMESH") != NULL)
+            {
+                fprintf(stderr, "[LM] i=%d node=%d mesh=%d bytes=%d\n",
+                        i, (int)lara_mesh_sweetness_table[i],
+                        (int)lara_mesh_sweetness_table[i],
+                        (int)(db.polyptr - port_mesh_before));
+            }
         }//loc_1FC
 
         //s2--;
