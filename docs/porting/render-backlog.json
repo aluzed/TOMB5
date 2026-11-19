@@ -504,7 +504,7 @@
           "note": "blit_shader"
         }
       ],
-      "progress": "Shaders SPIR-V 4/8/16 bits + blit + CLUT + dither compilés hors ligne. La scène de référence (4 et 16 bits) est rendue au pixel près, identique à OpenGL. Le 8 bits, absent des scènes jouées, est validé par un harnais de format forcé (TOMB5_FORCE_TEXFMT=8) : 99,82 % des pixels à ±8 et écart moyen 0,14/255, le reste étant des égalités de sampling nearest sur des frontières de texel. Reste à confirmer sur une scène du jeu utilisant réellement l’8 bits.",
+      "progress": "Shaders SPIR-V 4/8/16 bits + blit + CLUT + dither compilés hors ligne. La scène de référence (4 et 16 bits) est rendue au pixel près, identique à OpenGL. Le 8 bits (absent des niveaux scannés) est validé par format forcé : 99,79 % de pixels à ±8, et l’analyse fine montre que **seuls 662 pixels** divergent, tous dans une bande à droite de l’image (x 511-608) — donc pas dans les texels 8 bits : le shader est exact. Deux biais d’échantillonnage testés (uv et CLUT, 1/1000 de texel) n’ont rien changé et ont été retirés. Reste à instruire cette bande (primitives 2D/blit), pas le shader de texture.",
       "evidence": [
         {
           "date": "2026-11-18",

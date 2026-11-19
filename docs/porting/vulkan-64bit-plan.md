@@ -1726,3 +1726,23 @@ chemin L1. Le module `LARA6` dédié reste absent (le portage exact du costume
 demanderait la fonction d'origine), mais le rendu n'est plus amputé.
 
 Capture : `docs/porting/render/lara-costume6-complet.png`.
+
+## 54. RMIG-011 : le résidu 8 bits n'est pas dans le shader
+
+Mesure fine du mode forcé `TOMB5_FORCE_TEXFMT=8` (niveau 3, 300 frames) :
+`mean_abs_diff=0.159`, 99,79 % de pixels à ±8, et surtout **662 pixels
+seulement** diffèrent, tous situés dans la zone `x ∈ [511, 608]`,
+`y ∈ [47, 479]` (bord droit de l'image), avec un écart maximal de 166.
+
+Autrement dit le shader 8 bits (décodage de l'index, CLUT, dither) est
+**exact** : les pixels qui divergent ne sont pas des texels 8 bits mais une
+bande à droite de l'image (élément 2D/blit rendu par un autre chemin).
+
+Deux tentatives pour rendre l'échantillonnage 8 bits totalement déterministe
+(biais d'un millième de texel sur `uv` et sur la position de CLUT, dans les
+deux backends) ont été mesurées : **sans effet** (0.159 et 662 pixels
+avant/après), puis retirées. Le résidu n'est donc pas une égalité de
+`nearest` sur un bord de texel.
+
+RMIG-011 reste ouvert pour cette bande de 662 pixels, à instruire côté
+primitives 2D/blit (et non côté shaders de texture).
