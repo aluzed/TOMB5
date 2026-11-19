@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
 
+RMIG-023 TERMINÉ : la parité 32/64 bits est atteinte sur la scène de référence. Quatre bugs LP64 corrigés : MULFP non tronquée à 32 bits (caméras flyby en positions absurdes), natte et holsters indexés en octets sur `short** meshes[]` (8 octets par pointeur en LP64), et mesh des joints de peau décalé (28 triangles manquants). Résultat : les builds 32 bits (OpenGL) et 64 bits (Vulkan) produisent le MÊME BMP octet pour octet (sha256 63041e5c…, mean_abs_diff=0.000, 307200/307200 pixels identiques) et l’histogramme de primitives de la frame de référence est identique. Écart historique : 18.730 → 0.000. 4188 tests PASS, builds 32/64 verts.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-19
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
+
 RMIG-023 : deuxième série de correctifs LP64. Après MULFP (caméras flyby), deux décalages de pointeurs sur `short** meshes[]` sont corrigés : la natte (s4 + 4 / s1 += 8 shorts valant 2/4 pointeurs sur PSX mais 1/2 en LP64) et les holsters (s0 += 8 sur int* = 32 octets). L’écart 32/64 sur la scène de référence passe de mean_abs_diff=18.730 (26.12 % de pixels à ±8) à **0.225 (99.63 %)** ; la référence 32 bits reste 51d3a1c7… et la 64 bits devient bcc8a642…. Reste 28 triangles 0x34 et 1 0x3C non émis en 64 bits (section armes/back_gun ou seconde boucle de peau). 4188 tests PASS, builds 32/64 verts.
 
 Détails : [scène et parcours runtime](runtime-level.md).

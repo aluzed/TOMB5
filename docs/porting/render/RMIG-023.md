@@ -1,8 +1,8 @@
 # RMIG-023 — Écart 32 bits / 64 bits : primitives d'effet et fondu d'écran
 
-Status: **Todo** — priorité P1 — confiance Medium
+Status: **Done** — priorité P1 — confiance Medium
 
-Avancement : Deux causes racines corrigées : `MULFP` non tronquée à 32 bits (caméras flyby) et deux décalages de pointeurs sur `short** meshes[]` (natte : +4 shorts/+8 shorts au lieu de +2/+4 pointeurs ; holsters : `s0 += 8` en `int*`). Écart 32/64 sur la scène de référence : mean_abs_diff 18.730 → **0.225**, pixels à ±8 : 26.12 % → **99.63 %**. Référence 32 bits inchangée (51d3a1c7…), référence 64 bits régénérée (bcc8a642…). Reste 28 triangles 0x34 (et 1 0x3C) non émis en 64 bits, hors des meshes déjà vérifiés identiques — probablement la section armes/back_gun ou la seconde boucle de peau.
+Avancement : Terminé : quatre bugs LP64 corrigés (MULFP non tronquée à 32 bits → caméras flyby ; natte et holsters indexés en octets sur `short** meshes[]` ; mesh des joints de peau décalé). Sur la scène de référence (niveau 3, 1800 frames), les builds 32 et 64 bits produisent désormais **le même BMP octet pour octet** (sha256 63041e5c…, 307200/307200 pixels identiques, mean_abs_diff=0.000), et l’histogramme de primitives de la frame de référence est identique. Les dumps de vertices ne diffèrent plus que sur 87 des 2777 enregistrements (phase d’introduction).
 
 ## Objectif
 
@@ -51,6 +51,7 @@ L'effet peut être déclenché par un compteur de frames ou une temporisation, a
 - 2026-11-19 : Comparaison frame par frame du harnais [LS] (caméra, hash MatrixStack, hash matrices, pos Lara) : identique de n=0 à n=32, première divergence à n=33 (caméra 64 bits à 88576,3200,52736 puis 96854,-867,52573 contre 86572,4076,52735 en 32 bits), retour à la position de n=31 en 64 bits mais décalage persistant. Table `bones` relue correctement (160 entrées, `long` hôte) : identique — l’hypothèse squelette du message précédent est infirmée.
 - 2026-11-19 : MULFP (SPEC_PSXPC_N/GETSTUFF.C) : `((result >> 32) << 16)` conservait des bits au-delà de 32 en LP64 ; troncature explicite en 32 bits signés. Preuve : [SC] spline=281474976713275 (64 bits) vs 2619 (32 bits) avant, identiques après ; captures 1800 frames : mean_abs_diff 18.730 → 0.314, 26.12 % → 99.41 % de pixels à ±8. La référence 32 bits ne change pas (51d3a1c7…), la 64 bits devient a1f3d3a6…
 - 2026-11-19 : Pointeurs de meshes : natte (s4 + 4 shorts = 2 pointeurs, s1 += 8 shorts = 4 pointeurs) et holsters (s0 = (int*)&meshes[i]; s0 += 8 = 32 octets) convertis en arithmétique d’entrées (short**). Captures 1800 frames : mean_abs_diff 0.314 → 0.225, 99.41 % → 99.63 % à ±8 ; histogramme : 35 → 28 triangles 0x34 manquants. La référence 32 bits ne change pas (51d3a1c7…).
+- 2026-11-19 : Dernier correctif : mesh LARA_SKIN_JOINTS indexé via `s1 += 4` sur un short* (2 pointeurs sur PSX, 1 en LP64) → 28 triangles manquants (14 nœuds × 2). Après correctif : histogramme identique (nv=3519 34=627(L229) 3C=273(L82)), captures 32 et 64 bits identiques octet pour octet (sha256 63041e5c…, mean_abs_diff=0.000, 100 % de pixels identiques). Série complète : MULFP (8c3263ba), natte+holsters (f57726cf), joints de peau (ce commit).
 
 ## Références
 

@@ -1124,7 +1124,7 @@
     {
       "id": "RMIG-023",
       "title": "Écart 32 bits / 64 bits : primitives d'effet et fondu d'écran",
-      "status": "Todo",
+      "status": "Done",
       "priority": "P1",
       "goal": "Rendre au build 64 bits les primitives d'effet émises par le build 32 bits (et l'état de fondu) pour que les deux builds affichent la même scène.",
       "facts": "Sur la scène de référence (niveau 3, 300 frames), les 977 premiers ordering tables sont identiques entre 32 et 64 bits ; à partir du premier OT de jeu, le 32 bits émet 31 triangles gouraud semi-transparents (0x34), 1 sprite semi-transparent (0x62) et 1 DR_TPAGE (0xE1, changement de page de texture) de plus par frame, toutes les autres primitives (0x3C, 0x50, 0x60) étant identiques. Autrement dit : un effet rendu avec sa propre page de texture n'est pas émis en 64 bits. Le journal [DRAW] montre en 32 bits fade=239/0 fading=1 contre fade=0/0 fading=0 en 64 bits, et persp 306 contre 256 au démarrage. PC_VERSION n'est pas défini dans SPEC_PSXPC_N, donc Fade() s'exécute dans les deux builds. Ce n'est pas un écart de pipeline couleur : à vertices identiques, les pixels sont identiques (Vulkan == GL 64 bits au pixel près).",
@@ -1168,7 +1168,7 @@
           "note": "journal [DRAW] (fade, persp)"
         }
       ],
-      "progress": "Deux causes racines corrigées : `MULFP` non tronquée à 32 bits (caméras flyby) et deux décalages de pointeurs sur `short** meshes[]` (natte : +4 shorts/+8 shorts au lieu de +2/+4 pointeurs ; holsters : `s0 += 8` en `int*`). Écart 32/64 sur la scène de référence : mean_abs_diff 18.730 → **0.225**, pixels à ±8 : 26.12 % → **99.63 %**. Référence 32 bits inchangée (51d3a1c7…), référence 64 bits régénérée (bcc8a642…). Reste 28 triangles 0x34 (et 1 0x3C) non émis en 64 bits, hors des meshes déjà vérifiés identiques — probablement la section armes/back_gun ou la seconde boucle de peau.",
+      "progress": "Terminé : quatre bugs LP64 corrigés (MULFP non tronquée à 32 bits → caméras flyby ; natte et holsters indexés en octets sur `short** meshes[]` ; mesh des joints de peau décalé). Sur la scène de référence (niveau 3, 1800 frames), les builds 32 et 64 bits produisent désormais **le même BMP octet pour octet** (sha256 63041e5c…, 307200/307200 pixels identiques, mean_abs_diff=0.000), et l’histogramme de primitives de la frame de référence est identique. Les dumps de vertices ne diffèrent plus que sur 87 des 2777 enregistrements (phase d’introduction).",
       "evidence": [
         {
           "date": "2026-11-19",
@@ -1185,6 +1185,10 @@
         {
           "date": "2026-11-19",
           "note": "Pointeurs de meshes : natte (s4 + 4 shorts = 2 pointeurs, s1 += 8 shorts = 4 pointeurs) et holsters (s0 = (int*)&meshes[i]; s0 += 8 = 32 octets) convertis en arithmétique d’entrées (short**). Captures 1800 frames : mean_abs_diff 0.314 → 0.225, 99.41 % → 99.63 % à ±8 ; histogramme : 35 → 28 triangles 0x34 manquants. La référence 32 bits ne change pas (51d3a1c7…)."
+        },
+        {
+          "date": "2026-11-19",
+          "note": "Dernier correctif : mesh LARA_SKIN_JOINTS indexé via `s1 += 4` sur un short* (2 pointeurs sur PSX, 1 en LP64) → 28 triangles manquants (14 nœuds × 2). Après correctif : histogramme identique (nv=3519 34=627(L229) 3C=273(L82)), captures 32 et 64 bits identiques octet pour octet (sha256 63041e5c…, mean_abs_diff=0.000, 100 % de pixels identiques). Série complète : MULFP (8c3263ba), natte+holsters (f57726cf), joints de peau (ce commit)."
         }
       ]
     }

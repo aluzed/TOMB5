@@ -1618,3 +1618,38 @@ Reste : 28 triangles `0x34` (et un `0x3C`) toujours absents en 64 bits. Les
 meshes de Lara sont désormais identiques mesh par mesh ; le reste vient
 d'une autre section de `DrawLaraL1` (armes/`back_gun` ou la seconde boucle
 de peau), à instrumenter de la même façon.
+
+## 50. RMIG-023 résolu : 32 et 64 bits au pixel près
+
+Troisième et dernier correctif de la série : le mesh des **joints de peau**
+(`LARA_SKIN_JOINTS`) était indexé avec `s1 += 4` sur un `short*`, soit 2
+pointeurs sur PSX mais un seul en LP64. Ce mesh est dessiné pour chaque nœud
+de peau (14 nœuds × 2 triangles = 28), d'où exactement les 28 triangles
+manquants. Corrigé en `short** s1j = &meshes[...] + 2`.
+
+Histogramme de primitives sur la frame de référence : **identique**
+(`nv=3519 34=627(L229) 3C=273(L82)` dans les deux builds).
+
+Captures 1800 frames :
+
+```
+32 bits : 63041e5cbf6dcbbd27377b78d6c63e9593743b17690b3c310fefa146e48e3a9b
+64 bits : 63041e5cbf6dcbbd27377b78d6c63e9593743b17690b3c310fefa146e48e3a9b
+mean_abs_diff=0.000   pixels identiques : 307200 / 307200 (100 %)
+```
+
+Les deux builds produisent désormais **le même BMP, octet pour octet**. Les
+dumps de vertices ne diffèrent plus que sur 87 des 2777 enregistrements
+(phase d'introduction), la frame de référence étant identique.
+
+### Récapitulatif de la série de bugs LP64 corrigés
+
+| bug | effet | commit |
+| --- | --- | --- |
+| `MULFP` non tronquée à 32 bits | caméras flyby dans des positions absurdes (`2^48 + 2619`) | `8c3263ba` |
+| natte : `s4 + 4` / `s1 += 8` sur `short*` | mauvais meshes de cheveux | `f57726cf` |
+| holsters : `s0 += 8` sur `int*` | meshes de holsters décalés | `f57726cf` |
+| joints de peau : `s1 += 4` sur `short*` | 28 triangles manquants | ce commit |
+
+Écart 32/64 : `mean_abs_diff` **18.730 → 0.000**, pixels à ±8 : 26.12 % →
+**100 %**.

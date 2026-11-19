@@ -26,6 +26,6 @@ Backlog vivant de la migration du rendu : passage en 64 bits, remplacement d'Ope
 | [RMIG-020](render/RMIG-020.md) | Cutscene d intro du niveau 1 en 64 bits | Done | P1 |
 | [RMIG-021](render/RMIG-021.md) | Campagne 64 bits : parcours du Colosseum | In progress | P1 |
 | [RMIG-022](render/RMIG-022.md) | Anomalie d'ordre des canaux dans Emulator_StoreFrameBuffer | Todo | P2 |
-| [RMIG-023](render/RMIG-023.md) | Écart 32 bits / 64 bits : primitives d'effet et fondu d'écran | Todo | P1 |
+| [RMIG-023](render/RMIG-023.md) | Écart 32 bits / 64 bits : primitives d'effet et fondu d'écran | Done | P1 |
 
-17/23 terminés.
+18/23 terminés.

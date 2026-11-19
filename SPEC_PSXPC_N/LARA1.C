@@ -1202,6 +1202,7 @@ void sub_E38L1()
 	short* s4 = NULL;
 	short** s4m = NULL;
 	short** s1m = NULL;
+	short** s1j = NULL;
 	int s2 = 0;
 	short* s1 = NULL;
 
@@ -1332,6 +1333,7 @@ void sub_2CL1(struct ITEM_INFO* item)
 	int t7 = 0;
 	int* v11 = NULL;
 	short* s1 = NULL;
+	short** s1j = NULL;
 	int a000 = 0;
 	long* bone = NULL;
 	int at = 0;
@@ -1500,8 +1502,10 @@ void sub_2CL1(struct ITEM_INFO* item)
     //s0 = &SkinUseMatrix[0][0];
     //v0 = objects[LARA_SKIN_JOINTS].mesh_index
     //v1 = meshes
-    s1 = (short*)&meshes[objects[LARA_SKIN_JOINTS].mesh_index];
-    s1 += 4;
+    /* Meme piege que la natte : `+ 4` shorts = 2 pointeurs sur PSX mais un
+     * seul en LP64. Ce mesh de joint est dessine pour chaque noeud de peau,
+     * d'ou 2 triangles manquants par noeud (28 au total). */
+    s1j = (short**)&meshes[objects[LARA_SKIN_JOINTS].mesh_index] + 2;
     //s3 = NodesToStashToScratch[0][0]
     i = 0xE;//s2
     //s4 = lara_item->mesh_bits
@@ -1607,9 +1611,9 @@ void sub_2CL1(struct ITEM_INFO* item)
             }//loc_408
 
 #if defined(USE_32_BIT_ADDR)
-            db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
+            db.polyptr = (char*)sub_658L1(s1j[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #else
-            db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
+            db.polyptr = (char*)sub_658L1(s1j[0], (int*)db.polyptr, (int)(uintptr_t)((PSX_ULONG*)db.ot + 0));
 #endif
         }
         //loc_410
