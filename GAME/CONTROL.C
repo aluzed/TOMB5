@@ -3720,6 +3720,12 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 		case KEY:
 			//loc_1EEBC
 			key = KeyTrigger((*data++) & 0x3FF);
+			if (getenv("TOMB5_KEYDBG") != NULL)
+			{
+				extern int port_replay_frame;
+				static int port_key_n = 0;
+				fprintf(stderr, "[KEY] f=%d n=%d key=%d\n", port_replay_frame, port_key_n++, key);
+			}
 			if (key == -1)
 			{
 				return;
@@ -4124,6 +4130,12 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 		{
 			//loc_1F430
 			trigger = *data++;
+			if (getenv("TOMB5_SPOTDBG") != NULL)
+			{
+				extern int port_replay_frame;
+				fprintf(stderr, "[SPOT] f=%d value=%d key=%d trigger=%d spot=%d\n",
+				        port_replay_frame, (int)value, (int)key, (int)trigger, (int)bUseSpotCam);
+			}
 
 			if (trigger != key)
 			{

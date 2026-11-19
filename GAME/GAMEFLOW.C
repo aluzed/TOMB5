@@ -17,7 +17,9 @@
  * TOMB5_CAPTURE=<bmp>    : capture l'image a la derniere frame puis quitte. */
 extern int port_replay_active;
 extern unsigned int port_replay_pad;
-static int port_replay_frame = 0;
+/* Non statique : les harnais de diagnostic ([LS], [CAM]) doivent pouvoir
+ * comparer les builds frame par frame (RMIG-023). */
+int port_replay_frame = 0;
 static int port_replay_frames = 0;
 static const char* port_replay_capture = NULL;
 

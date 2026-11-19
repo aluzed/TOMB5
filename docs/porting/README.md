@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
 
+RMIG-023 : cause racine corrigée. `MULFP` (multiplication fixe PSX, GETSTUFF.C) n’était pas tronquée à 32 bits en LP64 ; les bits hauts corrompaient la position de spline des caméras flyby (281474976713275 au lieu de 2619), d’où des caméras absurdes dès la frame 30. Après correctif : caméras identiques, meshes de Lara identiques mesh par mesh, écart 32/64 sur la scène de référence ramené de mean_abs_diff=18.730 (26.12 % de pixels à ±8) à 0.314 (99.41 %). La référence 32 bits reste 51d3a1c7…, la référence 64 bits est régénérée (a1f3d3a6…). Reste 35 triangles de la seconde boucle de DrawLaraL1 (peau/stash) non émis en 64 bits. 4188 tests PASS, builds 32/64 verts.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-19
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
+
 RMIG-023 : cause identifiée — la caméra diverge. Les frames 0..32 sont strictement identiques entre 32 et 64 bits (matrices, MatrixStack, caméra, Lara, table `bones` vérifiée sur 160 entrées) ; à la frame 33 le build 64 bits place la caméra ailleurs pendant deux frames puis revient, mais l’historique de lissage reste décalé, ce qui change la matrice de vue, les matrices de Lara et les triangles écrêtés. L’hypothèse « squelette » est infirmée. Prochaine étape : tracer camera.type / UseForcedFixedCamera / TriggerCamera / cutseq_trig autour de la frame 33. Builds 32/64 verts, 4188 tests PASS.
 
 Détails : [scène et parcours runtime](runtime-level.md).

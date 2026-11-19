@@ -3992,6 +3992,19 @@ void handle_cutseq_triggering(int name)//2C3C4(<), 2C6EC(<) (F)
 	int fuck; // $a0
 
 	printf("Handle cutseq triggering name: %d\n", name);
+
+	/* Le lecteur de cinematique n'est pas porte : quand la demande vient du
+	 * harness (TOMB5_SKIP_CUTSCENE), on ignore le declenchement au lieu de
+	 * lancer une sequence dont l'etat diverge selon la largeur de pointeur
+	 * (RMIG-023 : la camera partait en cinematique en 32 bits seulement). */
+	if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
+	{
+		cutseq_num = 0;
+		cutseq_trig = 0;
+		GLOBAL_playing_cutseq = 0;
+		return;
+	}
+
 	{
 		static int port_cutdbg = 0;
 

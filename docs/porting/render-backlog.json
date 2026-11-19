@@ -1168,7 +1168,7 @@
           "note": "journal [DRAW] (fade, persp)"
         }
       ],
-      "progress": "Cause localisée : la **caméra** diverge. Les frames 0..32 sont identiques (matrices, MatrixStack, caméra, Lara, bones) ; à la frame 33 le build 64 bits téléporte la caméra deux frames (88576,3200,52736 puis 96854,-867,52573) alors que le 32 bits continue en douceur (86572,4076,52735), puis revient à la position de la frame 31 — mais l’historique de lissage reste différent, donc la matrice de vue, les matrices de Lara et les triangles écrêtés diffèrent. Ce n’est ni le rendu, ni les textures, ni les données d’animation, ni `bones` (vérifié identique sur 160 entrées). Reste : instrumenter camera.type / UseForcedFixedCamera / TriggerCamera / cutseq_trig autour de la frame 33.",
+      "progress": "Cause racine trouvée et corrigée : `MULFP` (multiplication fixe PSX) n’était pas tronquée à 32 bits en LP64. Les bits hauts corrompaient la position de spline des caméras flyby (281474976713275 au lieu de 2619), d’où des positions de caméra absurdes dès la frame 30 et toute la divergence de rendu qui suivait. Après correctif : positions de caméra identiques, meshes de Lara identiques mesh par mesh, écart 32/64 ramené de mean_abs_diff=18.730 (26.12 % à ±8) à **0.314 (99.41 % à ±8)**. Référence 32 bits inchangée (51d3a1c7…), référence 64 bits régénérée (a1f3d3a6…). Reste : 35 triangles de la seconde boucle de DrawLaraL1 (peau/stash) non émis en 64 bits.",
       "evidence": [
         {
           "date": "2026-11-19",
@@ -1177,6 +1177,10 @@
         {
           "date": "2026-11-19",
           "note": "Comparaison frame par frame du harnais [LS] (caméra, hash MatrixStack, hash matrices, pos Lara) : identique de n=0 à n=32, première divergence à n=33 (caméra 64 bits à 88576,3200,52736 puis 96854,-867,52573 contre 86572,4076,52735 en 32 bits), retour à la position de n=31 en 64 bits mais décalage persistant. Table `bones` relue correctement (160 entrées, `long` hôte) : identique — l’hypothèse squelette du message précédent est infirmée."
+        },
+        {
+          "date": "2026-11-19",
+          "note": "MULFP (SPEC_PSXPC_N/GETSTUFF.C) : `((result >> 32) << 16)` conservait des bits au-delà de 32 en LP64 ; troncature explicite en 32 bits signés. Preuve : [SC] spline=281474976713275 (64 bits) vs 2619 (32 bits) avant, identiques après ; captures 1800 frames : mean_abs_diff 18.730 → 0.314, 26.12 % → 99.41 % de pixels à ±8. La référence 32 bits ne change pas (51d3a1c7…), la 64 bits devient a1f3d3a6…"
         }
       ]
     }

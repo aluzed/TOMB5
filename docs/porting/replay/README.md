@@ -53,9 +53,17 @@ Deux exécutions du **même** binaire donnent des BMP **identiques** :
 | --- | --- |
 | 32 bits, run 1 | `51d3a1c72377b4656b47c10adff1eb2f045941a04345c2de46374ef4492c3d27` |
 | 32 bits, run 2 | `51d3a1c72377b4656b47c10adff1eb2f045941a04345c2de46374ef4492c3d27` |
-| 64 bits, run 1 | `5dbbb25184d54d96c95aed1c96494ade0e390956e7c0de1da262180779e269a8` |
-| 64 bits, run 2 | `5dbbb25184d54d96c95aed1c96494ade0e390956e7c0de1da262180779e269a8` |
-| Vulkan 64 bits | `5dbbb25184d54d96c95aed1c96494ade0e390956e7c0de1da262180779e269a8` |
+| 64 bits (Vulkan) | `a1f3d3a69154861f4da52dbd6f7ae8493bacdebe6c5a45b7da5dbc617bce8cba` |
+
+> **19 novembre 2026** — la référence 64 bits a changé : le correctif `MULFP`
+> (multiplication fixe PSX tronquée à 32 bits) répare la position de spline
+> des caméras flyby, qui partait en valeurs absurdes en LP64. L'ancienne
+> référence `5dbbb251…` correspond à la révision précédente ; elle avait été
+> vérifiée identique entre Vulkan et OpenGL 64 bits. Le code du jeu étant
+> commun aux deux backends, le correctif modifie les deux de la même façon ;
+> re-vérifier la parité GL/Vulkan demanderait un build 64 bits `PORT_ALLOW_GL`.
+> La référence 32 bits, elle, ne change pas (`51d3a1c7…`) : en ILP32 `MULFP`
+> tronquait déjà naturellement.
 
 > **Correction du 18 novembre 2026** — les hashes publiés auparavant
 > (`083d24a0…` en 32 bits et `675e2c8d…` en 64 bits) provenaient d’une
@@ -69,14 +77,19 @@ L'état de jeu est identique à la capture : Lara
 `pos=(90642,4608,52736) room=20 rot=-16384 anim=103 frame=1611` dans les
 deux builds. La géométrie et la pose sont donc alignées.
 
-Écart 32/64 (script `scripts/porting/capture_compare.py`) :
+Écart 32/64 (script `scripts/porting/capture_compare.py`), après le
+correctif `MULFP` :
 
 ```
-mean_abs_diff=18.730
-global_gain=0.965212
-mean_abs_diff_after_gain=18.787
-pixels_within_8_after_gain=80234 (26.12%)
+mean_abs_diff=0.314
+global_gain=0.997241
+mean_abs_diff_after_gain=0.354
+pixels_within_8_after_gain=305378 (99.41%)
 ```
+
+Avant ce correctif l'écart était de `mean_abs_diff=18.730` avec seulement
+26,12 % de pixels à ±8 : la caméra flyby partait dans des positions
+absurdes en 64 bits.
 
 Le 64 bits est globalement plus sombre, y compris sur le HUD (icône des
 pistolets), donc l'écart n'est pas seulement dû à l'éclairage 3D. Il est

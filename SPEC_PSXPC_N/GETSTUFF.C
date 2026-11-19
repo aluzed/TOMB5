@@ -26,9 +26,22 @@ long DIVFP(long X, long Y)
 
 long MULFP(long X, long Y)
 {
-	unsigned long long result = (long long)((long long)(int)X * (long long)(int)Y);
+	/*
+	 * Multiplication fixe PSX (multo) : produit 64 bits, puis
+	 * (lo >> 16) | (hi << 16) **dans un registre 32 bits**.
+	 *
+	 * En LP64, `long` fait 64 bits : sans troncature explicite, les bits
+	 * hauts de (hi << 16) restaient presents et les appelants qui gardent
+	 * le resultat dans un `long` (position de spline des caméras flyby,
+	 * par exemple) accumulaient ces bits — la camera partait alors dans des
+	 * positions absurdes (RMIG-023).
+	 */
+	long long product = (long long)(int)X * (long long)(int)Y;
+	unsigned int hi = (unsigned int)((unsigned long long)product >> 32);
+	unsigned int lo = (unsigned int)product;
+	unsigned int value = (lo >> 16) | (hi << 16);
 
-	return ((result >> 32) << 16) | ((result & 0xFFFFFFFF) >> 16);
+	return (long)(int)value;   /* valeur 32 bits signee, comme sur PSX */
 }
 
 char GetDoor(struct FLOOR_INFO* floor)

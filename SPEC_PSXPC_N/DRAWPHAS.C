@@ -568,6 +568,7 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 			{
 				/* Etat exact de Lara au moment du draw (RMIG-023) : permet de
 				 * distinguer un decalage de frame d'une difference numerique. */
+				extern int port_replay_frame;
 				static int port_ls_n = 0;
 				extern struct MATRIX3D lara_matrices[15];
 				unsigned int port_ls_hash = 2166136261u;
@@ -600,10 +601,11 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 					mshash ^= (unsigned)msi[k];
 					mshash *= 16777619u;
 				}
-				fprintf(stderr, "[LS] n=%d anim=%d frame=%d mhash=%08x mstack=%08x cam=%d,%d,%d pos=(%d,%d,%d) rot=%d bits=%08x\n",
-				        port_ls_n++, (int)lara_item->anim_number,
+				fprintf(stderr, "[LS] f=%d n=%d anim=%d frame=%d mhash=%08x mstack=%08x cam=%d,%d,%d playing=%d cutnum=%d pos=(%d,%d,%d) rot=%d bits=%08x\n",
+				        port_replay_frame, port_ls_n++, (int)lara_item->anim_number,
 				        (int)lara_item->frame_number, port_ls_hash, mshash,
 				        camera.pos.x, camera.pos.y, camera.pos.z,
+				        (int)GLOBAL_playing_cutseq, (int)cutseq_num,
 				        lara_item->pos.x_pos, lara_item->pos.y_pos, lara_item->pos.z_pos,
 				        (int)lara_item->pos.y_rot, (unsigned)lara_item->mesh_bits);
 			}

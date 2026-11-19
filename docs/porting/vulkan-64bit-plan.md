@@ -1536,3 +1536,55 @@ uniquement sous `#if defined(__LP64__)` alors que DRAWPHAS l'appliquait
 toujours — les deux builds ne sautaient donc pas la cinématique de la même
 façon. Le bloc est maintenant commun (le lecteur de cinématique n'étant pas
 porté non plus en 32 bits).
+
+## 48. RMIG-023 : cause racine trouvée et corrigée (`MULFP`)
+
+La chaîne d'éliminations du §47 a fini par désigner la **caméra** : à partir
+de la frame 30 le build 32 bits passait en caméra *flyby* (`TO_FLYBY` →
+`bUseSpotCam`) et la caméra 64 bits partait dans des positions absurdes
+(`(96854, -867, 52573)` puis retour en arrière), avec une position de spline
+à `281474976713275` au lieu de `2619`.
+
+Cette valeur est `2^48 + 2619` : un défaut de troncature. `MULFP`, la
+multiplication fixe PSX, était implémentée ainsi :
+
+```c
+long MULFP(long X, long Y)
+{
+    unsigned long long result = (long long)(int)X * (long long)(int)Y;
+    return ((result >> 32) << 16) | ((result & 0xFFFFFFFF) >> 16);
+}
+```
+
+Sur PSX, `multo` renvoie un **registre 32 bits** : `(lo >> 16) | (hi << 16)`.
+En LP64 le `long` de retour fait 64 bits et `hi << 16` conserve des bits
+au-delà de la 32e : les appelants qui gardent le résultat dans un `long`
+(la position de spline, accumulée par `+= cspeed`) voient apparaître ces
+bits hauts. En ILP32 c'était naturellement tronqué, d'où un bug **invisible
+en 32 bits**.
+
+Correctif :
+
+```c
+long long product = (long long)(int)X * (long long)(int)Y;
+unsigned int hi = (unsigned int)((unsigned long long)product >> 32);
+unsigned int lo = (unsigned int)product;
+unsigned int value = (lo >> 16) | (hi << 16);
+return (long)(int)value;   /* 32 bits signé, comme sur PSX */
+```
+
+### Effet mesuré
+
+| métrique (niveau 3, 1800 frames) | avant | après |
+| --- | --- | --- |
+| positions de spline flyby | `281474976713275` (64 bits) vs `2619` | **identiques** |
+| écarts de vertices 32/64 | 300 enregistrements | **300** mais structure de splits identique, Lara identique mesh par mesh |
+| `mean_abs_diff` 32 vs 64 | 18.730 | **0.314** |
+| pixels dans ±8 | 26.12 % | **99.41 %** |
+
+La référence 32 bits est inchangée (`51d3a1c7…`) ; la référence 64 bits
+devient `a1f3d3a6…` (elle inclut le correctif).
+
+Reste : 35 triangles de la **seconde boucle de `DrawLaraL1`** (peau/stash,
+`lara_underwater_skin_sweetness_table`) ne sont toujours pas émis en 64 bits
+— c'est l'écart résiduel de 0,59 % de pixels.

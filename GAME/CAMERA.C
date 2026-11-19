@@ -1188,6 +1188,17 @@ void CalculateCamera()//27DA0(<), 27FAC(!)
 	SniperOverlay = 0;
 	SniperCamActive = 0;
 
+	if (getenv("TOMB5_CAMDBG") != NULL)
+	{
+		static int port_cam_n = 0;
+		extern int port_replay_frame;
+		fprintf(stderr, "[CAM] f=%d n=%d type=%d num=%d timer=%d pos=(%d,%d,%d) forced=%d cutseq=%d playing=%d item=%p\n",
+		        port_replay_frame, port_cam_n++, (int)camera.type, (int)camera.number, (int)camera.timer,
+		        camera.pos.x, camera.pos.y, camera.pos.z,
+		        (int)UseForcedFixedCamera, (int)cutseq_trig, (int)GLOBAL_playing_cutseq,
+		        (void*)camera.item);
+	}
+
 	CamOldPos.x = camera.pos.x;
 	CamOldPos.y = camera.pos.y;
 	CamOldPos.z = camera.pos.z;
@@ -1587,6 +1598,13 @@ void CalculateCamera()//27DA0(<), 27FAC(!)
 	camera.lara_node = -1;
 	camera.last_item = item;
 	camera.item = NULL;
+
+	if (getenv("TOMB5_CAMDBG") != NULL)
+	{
+		fprintf(stderr, "[CAM2] type=%d num=%d timer=%d pos=(%d,%d,%d) forced=%d\n",
+		        (int)camera.type, (int)camera.number, (int)camera.timer,
+		        camera.pos.x, camera.pos.y, camera.pos.z, (int)UseForcedFixedCamera);
+	}
 
 #else
 	UNIMPLEMENTED();

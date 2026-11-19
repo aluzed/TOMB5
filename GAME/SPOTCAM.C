@@ -660,6 +660,14 @@ void CalculateSpotCams()//37ED0(<), 383D0(?)
 		}
 	}
 	//loc_383B4
+	if (getenv("TOMB5_SPOTDBG") != NULL)
+	{
+		extern int port_replay_frame;
+		fprintf(stderr, "[SC] f=%d seq=%d cam=%d pos=(%ld,%ld,%ld) tgt=(%ld,%ld,%ld) spline=%.2f\n",
+		        port_replay_frame, (int)current_spline_camera, (int)current_spline_camera,
+		        (long)cpx, (long)cpy, (long)cpz, (long)ctx, (long)cty, (long)ctz,
+		        (double)current_spline_position);
+	}
 	camera.pos.x = cpx;
 	camera.pos.y = cpy;
 	camera.pos.z = cpz;
