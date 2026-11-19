@@ -1588,3 +1588,33 @@ devient `a1f3d3a6…` (elle inclut le correctif).
 Reste : 35 triangles de la **seconde boucle de `DrawLaraL1`** (peau/stash,
 `lara_underwater_skin_sweetness_table`) ne sont toujours pas émis en 64 bits
 — c'est l'écart résiduel de 0,59 % de pixels.
+
+## 49. RMIG-023 (suite) : pointeurs de meshes de Lara
+
+Deux décalages de pointeurs supposaient des pointeurs 32 bits dans un
+tableau `short**` :
+
+- **natte** (`DrawLaraL1`, section cheveux) : `s4 + 4` (shorts) puis
+  `s1 += 8` par segment valaient 2 puis 4 **pointeurs** sur PSX, mais 1 puis
+  2 en LP64 (8 octets par pointeur) — la natte dessinait de mauvais meshes ;
+- **holsters** : `s0 = (int*)&meshes[...]; s0 += 8;` avançait de 32 octets,
+  soit 4 pointeurs en LP64 au lieu de 8.
+
+Corrigés en raisonnant en **entrées** (`short**` + 2 / + 4 / + 8), ce qui
+donne le même résultat en 32 bits (vérifié : la référence 32 bits reste
+`51d3a1c7…`).
+
+Résultat sur la scène de référence (1800 frames) :
+
+| métrique | avant `MULFP` | après `MULFP` | après pointeurs |
+| --- | --- | --- | --- |
+| `mean_abs_diff` | 18.730 | 0.314 | **0.225** |
+| pixels dans ±8 | 26.12 % | 99.41 % | **99.63 %** |
+| triangles `0x34` en moins (64 bits) | 31 | 35 | **28** |
+
+Référence 64 bits régénérée : `bcc8a642…`.
+
+Reste : 28 triangles `0x34` (et un `0x3C`) toujours absents en 64 bits. Les
+meshes de Lara sont désormais identiques mesh par mesh ; le reste vient
+d'une autre section de `DrawLaraL1` (armes/`back_gun` ou la seconde boucle
+de peau), à instrumenter de la même façon.

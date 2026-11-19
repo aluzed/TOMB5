@@ -53,7 +53,7 @@ Deux exécutions du **même** binaire donnent des BMP **identiques** :
 | --- | --- |
 | 32 bits, run 1 | `51d3a1c72377b4656b47c10adff1eb2f045941a04345c2de46374ef4492c3d27` |
 | 32 bits, run 2 | `51d3a1c72377b4656b47c10adff1eb2f045941a04345c2de46374ef4492c3d27` |
-| 64 bits (Vulkan) | `a1f3d3a69154861f4da52dbd6f7ae8493bacdebe6c5a45b7da5dbc617bce8cba` |
+| 64 bits (Vulkan) | `bcc8a642ccfb96dcb67e331599f3419c2f62cb33b12fb0f7b32dc307c8704416` |
 
 > **19 novembre 2026** — la référence 64 bits a changé : le correctif `MULFP`
 > (multiplication fixe PSX tronquée à 32 bits) répare la position de spline
@@ -77,14 +77,14 @@ L'état de jeu est identique à la capture : Lara
 `pos=(90642,4608,52736) room=20 rot=-16384 anim=103 frame=1611` dans les
 deux builds. La géométrie et la pose sont donc alignées.
 
-Écart 32/64 (script `scripts/porting/capture_compare.py`), après le
-correctif `MULFP` :
+Écart 32/64 (script `scripts/porting/capture_compare.py`), après les
+correctifs `MULFP` puis pointeurs de meshes (natte + holsters) :
 
 ```
-mean_abs_diff=0.314
-global_gain=0.997241
-mean_abs_diff_after_gain=0.354
-pixels_within_8_after_gain=305378 (99.41%)
+mean_abs_diff=0.225
+global_gain=0.997165
+mean_abs_diff_after_gain=0.272
+pixels_within_8_after_gain=306072 (99.63%)
 ```
 
 Avant ce correctif l'écart était de `mean_abs_diff=18.730` avec seulement

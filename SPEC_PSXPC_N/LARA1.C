@@ -1200,6 +1200,8 @@ void sub_E38L1()
     int t7 = 0;
 	struct HAIR_STRUCT* h = NULL;
 	short* s4 = NULL;
+	short** s4m = NULL;
+	short** s1m = NULL;
 	int s2 = 0;
 	short* s1 = NULL;
 
@@ -1225,9 +1227,13 @@ void sub_E38L1()
     h = &hairs[0][1];//$s0
     //v0 = objects[HAIR].mesh_index
     //s4 = meshes
-    s4 = (short*)&meshes[objects[HAIR].mesh_index];
+    /* `meshes[]` contient des pointeurs hotes (8 octets en LP64) : les
+     * decalages d'origine (s4 + 4 shorts = 2 pointeurs, s1 += 8 shorts =
+     * 4 pointeurs) doivent se faire en entrees, pas en octets, sinon la
+     * natte de Lara pointe le mauvais mesh (RMIG-023). */
+    s4m = (short**)&meshes[objects[HAIR].mesh_index];
     s2 = 1;//Really hair index, see h
-    s1 = s4 + 4;
+    s1m = s4m + 2;
 
     //loc_EA4
     do
@@ -1237,9 +1243,9 @@ void sub_E38L1()
         sub_CBCL1(h->pos.x_rot);
         h += 2;
 #if defined(USE_32_BIT_ADDR)
-        db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)db.ot);
+        db.polyptr = (char*)sub_658L1(s1m[0], (int*)db.polyptr, (int)db.ot);
 #else
-        db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)db.ot);
+        db.polyptr = (char*)sub_658L1(s1m[0], (int*)db.polyptr, (int)db.ot);
 #endif
 
         //t0 = &tsv_buffer[0]
@@ -1280,12 +1286,12 @@ void sub_E38L1()
         TRX = t5;
         TRY = t6;
         TRZ = t7;
-        s1 += 8;
+        s1m += 4;
 
     } while (s2 < 6);
 
     s2 = 0;
-    s1 = s4;
+    s1m = s4m;
 
     do
     {
@@ -1295,13 +1301,13 @@ void sub_E38L1()
         sub_10DCL1(s2, s2 + 0x1D);
         sub_C6CL1(s2 + 0x1D);
 #if defined(USE_32_BIT_ADDR)
-        db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)db.ot);
+        db.polyptr = (char*)sub_658L1(s1m[0], (int*)db.polyptr, (int)db.ot);
 #else
-        db.polyptr = (char*)sub_658L1((short*)((int*)s1)[0], (int*)db.polyptr, (int)db.ot);
+        db.polyptr = (char*)sub_658L1(s1m[0], (int*)db.polyptr, (int)db.ot);
 #endif
 
         s2 += 2;
-        s1 += 8;
+        s1m += 4;
     } while (s2 < 6);
 }
 
@@ -1629,8 +1635,10 @@ void sub_2CL1(struct ITEM_INFO* item)
 
         //v0 = lara.hostler
         //v1 = objects
-        s0 = (int*)&meshes[objects[lara.holster].mesh_index];
-        s0 += 8;
+        /* `meshes[]` contient des pointeurs hotes : en LP64 ils font 8 octets.
+         * `s0 += 8` sur un int* avancait de 32 octets, soit 4 entrees au lieu
+         * de 8, et les holsters dessinaient le mauvais mesh (ou aucun). */
+        s0 = (int*)(((short**)&meshes[objects[lara.holster].mesh_index]) + 8);
         v11 = (int*)&lara_matrices[1];
         t0 = v11[0];
         t1 = v11[1];
@@ -1664,7 +1672,7 @@ void sub_2CL1(struct ITEM_INFO* item)
 #else
         db.polyptr = (char*)sub_658L1((short*)((int*)s0)[0], (int*)db.polyptr, (int)db.ot);
 #endif
-        s0 += 8;
+        s0 = (int*)(((short**)s0) + 8);
 
         v11 = (int*)&lara_matrices[4];
 

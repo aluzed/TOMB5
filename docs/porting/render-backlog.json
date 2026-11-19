@@ -1168,7 +1168,7 @@
           "note": "journal [DRAW] (fade, persp)"
         }
       ],
-      "progress": "Cause racine trouvée et corrigée : `MULFP` (multiplication fixe PSX) n’était pas tronquée à 32 bits en LP64. Les bits hauts corrompaient la position de spline des caméras flyby (281474976713275 au lieu de 2619), d’où des positions de caméra absurdes dès la frame 30 et toute la divergence de rendu qui suivait. Après correctif : positions de caméra identiques, meshes de Lara identiques mesh par mesh, écart 32/64 ramené de mean_abs_diff=18.730 (26.12 % à ±8) à **0.314 (99.41 % à ±8)**. Référence 32 bits inchangée (51d3a1c7…), référence 64 bits régénérée (a1f3d3a6…). Reste : 35 triangles de la seconde boucle de DrawLaraL1 (peau/stash) non émis en 64 bits.",
+      "progress": "Deux causes racines corrigées : `MULFP` non tronquée à 32 bits (caméras flyby) et deux décalages de pointeurs sur `short** meshes[]` (natte : +4 shorts/+8 shorts au lieu de +2/+4 pointeurs ; holsters : `s0 += 8` en `int*`). Écart 32/64 sur la scène de référence : mean_abs_diff 18.730 → **0.225**, pixels à ±8 : 26.12 % → **99.63 %**. Référence 32 bits inchangée (51d3a1c7…), référence 64 bits régénérée (bcc8a642…). Reste 28 triangles 0x34 (et 1 0x3C) non émis en 64 bits, hors des meshes déjà vérifiés identiques — probablement la section armes/back_gun ou la seconde boucle de peau.",
       "evidence": [
         {
           "date": "2026-11-19",
@@ -1181,6 +1181,10 @@
         {
           "date": "2026-11-19",
           "note": "MULFP (SPEC_PSXPC_N/GETSTUFF.C) : `((result >> 32) << 16)` conservait des bits au-delà de 32 en LP64 ; troncature explicite en 32 bits signés. Preuve : [SC] spline=281474976713275 (64 bits) vs 2619 (32 bits) avant, identiques après ; captures 1800 frames : mean_abs_diff 18.730 → 0.314, 26.12 % → 99.41 % de pixels à ±8. La référence 32 bits ne change pas (51d3a1c7…), la 64 bits devient a1f3d3a6…"
+        },
+        {
+          "date": "2026-11-19",
+          "note": "Pointeurs de meshes : natte (s4 + 4 shorts = 2 pointeurs, s1 += 8 shorts = 4 pointeurs) et holsters (s0 = (int*)&meshes[i]; s0 += 8 = 32 octets) convertis en arithmétique d’entrées (short**). Captures 1800 frames : mean_abs_diff 0.314 → 0.225, 99.41 % → 99.63 % à ±8 ; histogramme : 35 → 28 triangles 0x34 manquants. La référence 32 bits ne change pas (51d3a1c7…)."
         }
       ]
     }

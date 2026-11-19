@@ -2,7 +2,7 @@
 
 Status: **Todo** — priorité P1 — confiance Medium
 
-Avancement : Cause racine trouvée et corrigée : `MULFP` (multiplication fixe PSX) n’était pas tronquée à 32 bits en LP64. Les bits hauts corrompaient la position de spline des caméras flyby (281474976713275 au lieu de 2619), d’où des positions de caméra absurdes dès la frame 30 et toute la divergence de rendu qui suivait. Après correctif : positions de caméra identiques, meshes de Lara identiques mesh par mesh, écart 32/64 ramené de mean_abs_diff=18.730 (26.12 % à ±8) à **0.314 (99.41 % à ±8)**. Référence 32 bits inchangée (51d3a1c7…), référence 64 bits régénérée (a1f3d3a6…). Reste : 35 triangles de la seconde boucle de DrawLaraL1 (peau/stash) non émis en 64 bits.
+Avancement : Deux causes racines corrigées : `MULFP` non tronquée à 32 bits (caméras flyby) et deux décalages de pointeurs sur `short** meshes[]` (natte : +4 shorts/+8 shorts au lieu de +2/+4 pointeurs ; holsters : `s0 += 8` en `int*`). Écart 32/64 sur la scène de référence : mean_abs_diff 18.730 → **0.225**, pixels à ±8 : 26.12 % → **99.63 %**. Référence 32 bits inchangée (51d3a1c7…), référence 64 bits régénérée (bcc8a642…). Reste 28 triangles 0x34 (et 1 0x3C) non émis en 64 bits, hors des meshes déjà vérifiés identiques — probablement la section armes/back_gun ou la seconde boucle de peau.
 
 ## Objectif
 
@@ -50,6 +50,7 @@ L'effet peut être déclenché par un compteur de frames ou une temporisation, a
 - 2026-11-19 : Chaîne de preuves : VRAM textures identiques (différences uniquement framebuffer) ; histogramme de prims → 31 triangles 0x34 de plus en 32 bits dont 28 dans la plage Lara ; [LS] anim=103 frame identiques, frac=0 rate=4 identiques, pos/rot/mesh_bits identiques ; hash des données d’animation identique (7b26e60b) ; hash de `bones` différent (af81e4cb vs a7f7b6f6) avec décalage visible ; matrices de joints sensiblement différentes ([MJ] j0/j7). Correctif annexe : TOMB5_SKIP_CUTSCENE appliqué de façon identique dans les deux builds (le bloc GAMEFLOW était sous #if __LP64__).
 - 2026-11-19 : Comparaison frame par frame du harnais [LS] (caméra, hash MatrixStack, hash matrices, pos Lara) : identique de n=0 à n=32, première divergence à n=33 (caméra 64 bits à 88576,3200,52736 puis 96854,-867,52573 contre 86572,4076,52735 en 32 bits), retour à la position de n=31 en 64 bits mais décalage persistant. Table `bones` relue correctement (160 entrées, `long` hôte) : identique — l’hypothèse squelette du message précédent est infirmée.
 - 2026-11-19 : MULFP (SPEC_PSXPC_N/GETSTUFF.C) : `((result >> 32) << 16)` conservait des bits au-delà de 32 en LP64 ; troncature explicite en 32 bits signés. Preuve : [SC] spline=281474976713275 (64 bits) vs 2619 (32 bits) avant, identiques après ; captures 1800 frames : mean_abs_diff 18.730 → 0.314, 26.12 % → 99.41 % de pixels à ±8. La référence 32 bits ne change pas (51d3a1c7…), la 64 bits devient a1f3d3a6…
+- 2026-11-19 : Pointeurs de meshes : natte (s4 + 4 shorts = 2 pointeurs, s1 += 8 shorts = 4 pointeurs) et holsters (s0 = (int*)&meshes[i]; s0 += 8 = 32 octets) convertis en arithmétique d’entrées (short**). Captures 1800 frames : mean_abs_diff 0.314 → 0.225, 99.41 % → 99.63 % à ±8 ; histogramme : 35 → 28 triangles 0x34 manquants. La référence 32 bits ne change pas (51d3a1c7…).
 
 ## Références
 
