@@ -1502,18 +1502,30 @@ Chaîne d'investigation (niveau 3, `TOMB5_SKIP_CUTSCENE=1`, 300 frames) :
    translation ~0xA3), ce qui change les tests d'écrêtage de
    `sub_658L1` et donc le nombre de triangles émis.
 
-Conclusion : la divergence n'est ni dans le rendu, ni dans les données du
-niveau, mais dans **l'état du squelette** (`bones`), qui est un tableau
-d'`long` hôtes (8 octets) converti depuis les mots 32 bits du fichier. Un
-code qui lit ou écrit ce tableau avec des hypothèses 32 bits
-(`((int*)bone)[n]`, `bone += 4`, pointeur stocké dans un `int`) décale les
-rotations de joint, d'où des poses légèrement différentes et un nombre de
-triangles écrêtés différent.
+**Correction du diagnostic** (mesure suivante) : la table `bones` a été
+relue avec la bonne largeur (`long` hôte) sur 160 entrées — elle est
+**identique** entre les builds. L'ancien hash comparait des `int` sur un
+tableau d'`long`, ce qui n'avait pas de sens. Ce n'était donc pas le
+squelette.
 
-Piste de correction (prochaine session) : auditer les lecteurs/écrivains de
-`bones` (CALCLARA.C, DELSTUFF.C, HAIR.C, SETUP.C) et les aligner sur le
-type hôte, puis revérifier l'égalité des dumps `TOMB5_DUMP_VERTS` et des
-hashes de matrices.
+En revanche, le même harnais `[LS]` montre que **la caméra diverge** : les
+frames 0 à 32 sont strictement identiques (matrices, `MatrixStack`, caméra,
+Lara), puis à la frame 33 le build 64 bits place la caméra à
+`(88576, 3200, 52736)` et `(96854, -867, 52573)` pendant deux frames, alors
+que le 32 bits continue en douceur (`86572, 4076, 52735`). Le 64 bits
+revient ensuite à la position de la frame 31, mais l'historique de lissage
+est différent : la caméra reste décalée, donc la matrice de vue aussi, donc
+les matrices de Lara, les tests d'écrêtage et le nombre de triangles
+émis.
+
+Conclusion : l'écart 32/64 vient d'un **changement de caméra de deux frames
+au démarrage du niveau** (caméra fixe/scriptée ou bascule de `camera.type`)
+qui n'a lieu qu'en 64 bits. Tout le reste (textures, données d'animation,
+`bones`, état de Lara) est identique.
+
+Piste de correction : instrumenter `camera.type`, `UseForcedFixedCamera`,
+`TriggerCamera` et `cutseq_trig` autour de la frame 33 dans les deux builds
+pour identifier la bascule, puis corriger la cause LP64.
 
 Harnais ajoutés (tous activés par variable d'environnement, coût nul sinon) :
 `TOMB5_LARASTATE` (`[LS]`, `[MP]`, `[MB]`), `TOMB5_LARAMESH` (`[LM]`,

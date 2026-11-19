@@ -1,6 +1,7 @@
 #include "DRAWPHAS.H"
 #include "RENDERER.H"
 #include "DEBUGUI.H"
+#include "LOAD_LEV.H"
 int port_in_lara_draw = 0;
 /* Plage memoire des primitives Lara de la frame courante, pour compter
  * combien d'entre elles sont effectivement parsees par l'emulateur GPU. */
@@ -590,9 +591,19 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 					        (unsigned)m7[0], (unsigned)m7[1], (unsigned)m7[2], (unsigned)m7[3],
 					        (unsigned)m7[4], (unsigned)m7[5], (unsigned)m7[6], (unsigned)m7[7]);
 				}
-				fprintf(stderr, "[LS] n=%d anim=%d frame=%d mhash=%08x pos=(%d,%d,%d) rot=%d bits=%08x\n",
+				/* MatrixStack est un tableau de MATRIX3D (32 octets) ;
+				 * on lit les mots de translation via un int*. */
+				unsigned int mshash = 2166136261u;
+				const int* msi = (const int*)&MatrixStack[0];
+				for (int k = 0; k < 8; k++)
+				{
+					mshash ^= (unsigned)msi[k];
+					mshash *= 16777619u;
+				}
+				fprintf(stderr, "[LS] n=%d anim=%d frame=%d mhash=%08x mstack=%08x cam=%d,%d,%d pos=(%d,%d,%d) rot=%d bits=%08x\n",
 				        port_ls_n++, (int)lara_item->anim_number,
-				        (int)lara_item->frame_number, port_ls_hash,
+				        (int)lara_item->frame_number, port_ls_hash, mshash,
+				        camera.pos.x, camera.pos.y, camera.pos.z,
 				        lara_item->pos.x_pos, lara_item->pos.y_pos, lara_item->pos.z_pos,
 				        (int)lara_item->pos.y_rot, (unsigned)lara_item->mesh_bits);
 			}

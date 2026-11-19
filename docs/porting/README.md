@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
 
+RMIG-023 : cause identifiée — la caméra diverge. Les frames 0..32 sont strictement identiques entre 32 et 64 bits (matrices, MatrixStack, caméra, Lara, table `bones` vérifiée sur 160 entrées) ; à la frame 33 le build 64 bits place la caméra ailleurs pendant deux frames puis revient, mais l’historique de lissage reste décalé, ce qui change la matrice de vue, les matrices de Lara et les triangles écrêtés. L’hypothèse « squelette » est infirmée. Prochaine étape : tracer camera.type / UseForcedFixedCamera / TriggerCamera / cutseq_trig autour de la frame 33. Builds 32/64 verts, 4188 tests PASS.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-19
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
+
 RMIG-023 localisé : l’écart 32/64 n’est ni le rendu ni les textures (VRAM identique hors framebuffer) ni les données d’animation (hash identique) ; les inputs de Lara sont identiques (anim/frame/frac) mais la table `bones` diffère et les matrices de joints divergent (~1,7°), ce qui change le nombre de triangles écrêtés. Prochaine étape : auditer les accès à `bones` (tableau d’long hôtes converti depuis les mots 32 bits). Correctif annexe : TOMB5_SKIP_CUTSCENE traité de façon identique en 32 et 64 bits (le bloc GAMEFLOW était sous #if __LP64__). Harnais ajoutés : TOMB5_LARASTATE, TOMB5_LARAMESH, TOMB5_LARABONES. Builds 32/64 verts.
 
 Détails : [scène et parcours runtime](runtime-level.md).

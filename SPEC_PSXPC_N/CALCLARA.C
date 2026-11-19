@@ -907,6 +907,13 @@ void DEL_CalcLaraMatrices_Normal_ASM(short* frame, long* bone, int flag)
 		{
 			unsigned int fh = 2166136261u, bh = 2166136261u;
 			const short* fw = (const short*)frame;
+			/* hash semantique sur 160 longs (identique dans les deux builds) */
+			bh = 2166136261u;
+			for (int k = 0; k < 160; k++)
+			{
+				bh ^= (unsigned)(int)bone[k];
+				bh *= 16777619u;
+			}
 			const int* bw = (const int*)bone;
 			for (int k = 0; k < 96; k++)
 			{
@@ -920,9 +927,10 @@ void DEL_CalcLaraMatrices_Normal_ASM(short* frame, long* bone, int flag)
 			}
 			if (getenv("TOMB5_LARABONES") != NULL)
 			{
+				/* Valeurs semantiques (long hote dans les deux builds). */
 				fprintf(stderr, "[MB]");
-				for (int k = 0; k < 32; k++)
-					fprintf(stderr, " %08x", (unsigned)bw[k]);
+				for (int k = 0; k < 160; k++)
+					fprintf(stderr, " %d", (int)bone[k]);
 				fprintf(stderr, "\n");
 			}
 		}

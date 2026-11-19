@@ -2,7 +2,7 @@
 
 Status: **Todo** — priorité P1 — confiance Medium
 
-Avancement : Cause localisée : ni le rendu, ni les textures (VRAM identique hors framebuffer), ni les données d’animation (hash identique). Les inputs de Lara sont identiques (anim/frame/frac/pos/rot/mesh_bits) mais la table `bones` diffère (hash af81e4cb vs a7f7b6f6, décalage visible mot à mot) et les matrices de joints divergent (~1,7° de rotation, ~0xA3 de translation) : les tests d’écrêtage de sub_658L1 éliminent donc un nombre différent de triangles. Le tableau `bones` est converti en `long` hôtes (8 octets) depuis les mots 32 bits du fichier ; un code qui le lit/écrit avec des hypothèses 32 bits décale les rotations. Reste : auditer les accès à `bones` (CALCLARA.C, DELSTUFF.C, HAIR.C, SETUP.C) et revérifier l’égalité des dumps.
+Avancement : Cause localisée : la **caméra** diverge. Les frames 0..32 sont identiques (matrices, MatrixStack, caméra, Lara, bones) ; à la frame 33 le build 64 bits téléporte la caméra deux frames (88576,3200,52736 puis 96854,-867,52573) alors que le 32 bits continue en douceur (86572,4076,52735), puis revient à la position de la frame 31 — mais l’historique de lissage reste différent, donc la matrice de vue, les matrices de Lara et les triangles écrêtés diffèrent. Ce n’est ni le rendu, ni les textures, ni les données d’animation, ni `bones` (vérifié identique sur 160 entrées). Reste : instrumenter camera.type / UseForcedFixedCamera / TriggerCamera / cutseq_trig autour de la frame 33.
 
 ## Objectif
 
@@ -48,6 +48,7 @@ L'effet peut être déclenché par un compteur de frames ou une temporisation, a
 ## Preuves
 
 - 2026-11-19 : Chaîne de preuves : VRAM textures identiques (différences uniquement framebuffer) ; histogramme de prims → 31 triangles 0x34 de plus en 32 bits dont 28 dans la plage Lara ; [LS] anim=103 frame identiques, frac=0 rate=4 identiques, pos/rot/mesh_bits identiques ; hash des données d’animation identique (7b26e60b) ; hash de `bones` différent (af81e4cb vs a7f7b6f6) avec décalage visible ; matrices de joints sensiblement différentes ([MJ] j0/j7). Correctif annexe : TOMB5_SKIP_CUTSCENE appliqué de façon identique dans les deux builds (le bloc GAMEFLOW était sous #if __LP64__).
+- 2026-11-19 : Comparaison frame par frame du harnais [LS] (caméra, hash MatrixStack, hash matrices, pos Lara) : identique de n=0 à n=32, première divergence à n=33 (caméra 64 bits à 88576,3200,52736 puis 96854,-867,52573 contre 86572,4076,52735 en 32 bits), retour à la position de n=31 en 64 bits mais décalage persistant. Table `bones` relue correctement (160 entrées, `long` hôte) : identique — l’hypothèse squelette du message précédent est infirmée.
 
 ## Références
 
