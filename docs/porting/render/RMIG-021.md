@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Fin de The Colosseum atteinte en 64 bits : pickup final salle 70 -> chargement du niveau 4 (169 salles). Outil F9 de teleport runtime ajoute. Reste : cinematique d intro du niveau 4 (ecran noir) et parcours manuel complet.
+Avancement : Colosseum terminé (pickup final → niveau 4) et niveau 5 chargé/rendu en 64 bits/Vulkan (195 salles, rendu correct). Blocages restants pour la campagne complète : module `LARA6` non porté (Lara en modèle L1 gris à partir du niveau 4) et lecteur de cinématique non porté (intros en écran noir sans TOMB5_SKIP_CUTSCENE).
 
 ## Objectif
 
@@ -57,6 +57,7 @@ Le rendu deforme du sable peut venir de la sous-division (SubDiv/div3tab/div4tab
 - 2026-11-18 : Fin des disparitions du processus : le pool PORT_LowAlloc (16 Mio, MAP_32BIT) etait sature par des allocations par appel. Reproduit sous gdb : exit code 1 apres PORT_LowAlloc: pool exhausted (16777056 + 1024 > 16777216). Sites : ROOMLET1/2/3/4/B (scratchPad 1K + scratchPad2 2K par appel) et ANIMITEM CalcAllAnimatingItems_ASM (1K par frame). Le code de cache statique LP64 existait mais etait dans un #else inatteignable. Correction : allocation unique via pointeur statique local. Validation : reproduction gdb de plusieurs minutes (marche, rotations, animations) sans epuisement ; build 32 bits inchange.
 - 2026-11-18 : Fin de The Colosseum atteinte en 64 bits via F9 (teleport runtime depuis /tmp/tomb5_teleport). Salles 15/90/102 rendues et stables (captures), pickup final obj220 ocb66 salle 70 (55808,7936,70144) pris -> transition effective vers le niveau 4 : lvl=4 room=70 nrooms=169. Blocage suivant : intro du niveau 4 sur ecran noir (ndraw=1, camera 12288,2048,49152, action c sans effet), lecteur de cinematique non porte.
 - 2026-11-18 : Niveau 4 : LaraDrawType=6 (module LARA6 non porte) -> Lara invisible (aucun case dans le switch). Repli temporaire type 6 -> DrawLaraL1 + masquage des meshes optionnels pendant le draw (0x80000000) pour supprimer un polygone noir etire du a une skin non geree. Avec TOMB5_START_LEVEL=4 TOMB5_SKIP_CUTSCENE=1, salle 99 chargee, Lara visible et controlable (35328,-4096,29596 -> 33893,-4096,30019). Outils F10 (/tmp/tomb5_laradraw) et F11 (/tmp/tomb5_meshbits). Reste : porter LARA6 et le lecteur de cinematique (intro niveau 4 en ecran noir sans SKIP_CUTSCENE).
+- 2026-11-19 : Niveau 5 chargé et rendu en 64 bits/Vulkan (TOMB5_START_LEVEL=5, 300 frames) : lvl=5 room=23, 195 salles, LaraDrawType=6 (repli L1 documenté), scène industrielle rendue correctement, aucun incident. La campagne dépasse donc le Colosseum ; restent le module LARA6 (modèle gris) et le lecteur de cinématique pour les intros.
 
 ## Références
 

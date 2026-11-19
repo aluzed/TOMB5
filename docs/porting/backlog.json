@@ -2746,6 +2746,15 @@
       ],
       "status": "In progress",
       "summary": "RMIG-022 terminé : la copie framebuffer → VRAM (effet mono/sépia) écrit désormais un mot RGB555 conforme au PSX (R bits 0-4, G 5-9, B 10-14) dans les deux backends. Avant, le chemin OpenGL inversait rouge et bleu et le chemin Vulkan utilisait l’alpha pour le rouge. Les captures de référence 32 et 64 bits restent identiques octet pour octet (sha256 63041e5c…, mean_abs_diff=0.000). Backlog rendu : 19 Done, restent RMIG-005 (portage), RMIG-011 (couverture 8 bits), RMIG-015 (RT bloqué, pas de géométrie monde), RMIG-021 (campagne)."
+    },
+    {
+      "date": "2026-11-19",
+      "authorization_until": "2026-11-19T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Vérifications complémentaires : le niveau 5 se charge et se rend en 64 bits/Vulkan (lvl=5, 195 salles, LaraDrawType=6 avec repli L1) — la campagne dépasse donc le Colosseum. Test 8 bits forcé (TOMB5_FORCE_TEXFMT=8) : 99.79 % de pixels identiques entre 32 et 64 bits (résidu de 0.159 niveau, égalités de sampling nearest). Reste pour la campagne : module LARA6 et lecteur de cinématique."
     }
   ]
 }

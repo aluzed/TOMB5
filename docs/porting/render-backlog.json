@@ -1036,7 +1036,7 @@
           "note": "SubDiv/div tables"
         }
       ],
-      "progress": "Fin de The Colosseum atteinte en 64 bits : pickup final salle 70 -> chargement du niveau 4 (169 salles). Outil F9 de teleport runtime ajoute. Reste : cinematique d intro du niveau 4 (ecran noir) et parcours manuel complet.",
+      "progress": "Colosseum terminé (pickup final → niveau 4) et niveau 5 chargé/rendu en 64 bits/Vulkan (195 salles, rendu correct). Blocages restants pour la campagne complète : module `LARA6` non porté (Lara en modèle L1 gris à partir du niveau 4) et lecteur de cinématique non porté (intros en écran noir sans TOMB5_SKIP_CUTSCENE).",
       "evidence": [
         {
           "date": "2026-11-17",
@@ -1073,6 +1073,10 @@
         {
           "date": "2026-11-18",
           "note": "Niveau 4 : LaraDrawType=6 (module LARA6 non porte) -> Lara invisible (aucun case dans le switch). Repli temporaire type 6 -> DrawLaraL1 + masquage des meshes optionnels pendant le draw (0x80000000) pour supprimer un polygone noir etire du a une skin non geree. Avec TOMB5_START_LEVEL=4 TOMB5_SKIP_CUTSCENE=1, salle 99 chargee, Lara visible et controlable (35328,-4096,29596 -> 33893,-4096,30019). Outils F10 (/tmp/tomb5_laradraw) et F11 (/tmp/tomb5_meshbits). Reste : porter LARA6 et le lecteur de cinematique (intro niveau 4 en ecran noir sans SKIP_CUTSCENE)."
+        },
+        {
+          "date": "2026-11-19",
+          "note": "Niveau 5 chargé et rendu en 64 bits/Vulkan (TOMB5_START_LEVEL=5, 300 frames) : lvl=5 room=23, 195 salles, LaraDrawType=6 (repli L1 documenté), scène industrielle rendue correctement, aucun incident. La campagne dépasse donc le Colosseum ; restent le module LARA6 (modèle gris) et le lecteur de cinématique pour les intros."
         }
       ]
     },
