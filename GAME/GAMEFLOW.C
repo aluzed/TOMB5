@@ -1577,6 +1577,23 @@ void DoLevel(unsigned char Name, unsigned char Audio)//10ABC(<) 10A84(<) (F)
 	while (gfStatus == 0)
 	{
 		PortReplay_SetFrame(port_replay_frame);
+
+		{
+			/* Diagnostic : force la fin de niveau a une frame donnee
+			 * (TOMB5_LEVEL_COMPLETE_AT=n) pour tester la transition
+			 * gameflow sans resoudre l'enigme. */
+			static int port_level_complete_done = 0;
+			const char* lc = getenv("TOMB5_LEVEL_COMPLETE_AT");
+			if (lc != NULL && !port_level_complete_done && port_replay_frame == atoi(lc))
+			{
+				gfLevelComplete = (unsigned char)(gfCurrentLevel + 1);
+				port_level_complete_done = 1;
+				fprintf(stderr, "[LVLCOMP] f=%d from=%d to=%d\n",
+				        port_replay_frame, (int)gfCurrentLevel, (int)gfLevelComplete);
+				fflush(stderr);
+			}
+		}
+
 		GPU_BeginScene();
 
 		if (gfLegendTime != 0 && DestFadeScreenHeight == 0 && FadeScreenHeight == 0 && cutseq_num == 0)

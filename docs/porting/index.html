@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-20T23:59:00+01:00. Linux32 provisoire.
 
+Campagne : transition niveau 5 -&gt; 6 validee par forçage diagnostique (TOMB5_LEVEL_COMPLETE_AT=200). [LVLCOMP] 5-&gt;6, niveau 6 charge et rendu (lvl=6, 137 salles, capture non noire). La mecanique de transition du gameflow est operationnelle en 64 bits. La fin de niveau 5 doit encore etre jouee (enigmes airlock/puzzle, aucune cible FINISH dans floor_data).
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-20
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-20T23:59:00+01:00. Linux32 provisoire.
+
 Campagne : cinematique naturelle validee au niveau 5. Le chargement declenche un TO_CUTSCENE reel (sans FORCE_CUT) : [CUTL] num=18, 2281 frames, retour au jeu lvl=5 room=23. Le chemin trigger -&gt; Load_and_Init_Cutseq -&gt; controle -&gt; fin fonctionne avec les donnees du niveau. Harnais TOMB5_TELEPORT_AT ajoute. La sortie du niveau 5 reste a identifier : aucune cible FINISH dans les 1718 mots de floor_data ; triggers CUTSCENE 15/2 et actions OBJECT/CD/CAMERA/FLIPMAP seulement. Le teleport ne rejoue pas la cinematique d&#x27;intro (CheckCutPlayed).
 
 Détails : [scène et parcours runtime](runtime-level.md).

@@ -2137,3 +2137,30 @@ passe donc par un objet/une condition de gameplay (ou une cinématique dont
 la routine de fin appelle `gfLevelComplete`). Le contournement par
 téléport ne suffit pas : la cinématique d'intro déjà jouée est marquée
 comme vue (`CheckCutPlayed`) et n'est pas rejouée.
+
+## 67. Campagne : la transition niveau 5 → 6 fonctionne
+
+La sortie réelle du niveau 5 passe par des énigmes (airlocks, `PUZZLE_HOLE4`,
+`PUZZLE_ITEM1`, portes) : le `floor_data` ne contient aucune cible `FINISH`
+et le parcours demanderait un walkthrough. Pour isoler la **mécanique de
+transition**, un forçage de diagnostic a été ajouté :
+
+```
+TOMB5_LEVEL_COMPLETE_AT=<frame>   # gfLevelComplete = gfCurrentLevel + 1
+```
+
+Résultat avec le niveau 5, forçage à la frame 200 :
+
+```
+[LVLCOMP] f=200 from=5 to=6
+[DRAW] ... lvl=6 room=123 nrooms=137 rdt=1 ndraw=13
+```
+
+Le niveau 6 (JOBY4) est chargé, la caméra/les salles sont cohérentes
+(137 salles), et la capture montre la scène rendue (intérieur sombre,
+Lara + HUD). La chaîne `gfLevelComplete` → `gfStatus=3` → `DoLevel` →
+`DoGameflow` → chargement du niveau suivant est donc opérationnelle en
+64 bits pour 5 → 6.
+
+Ce n'est **pas** une validation de fin de niveau jouée : l'énigme du
+niveau 5 reste à résoudre pour une recette de campagne complète.
