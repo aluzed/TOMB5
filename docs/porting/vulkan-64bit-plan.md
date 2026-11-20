@@ -1839,3 +1839,40 @@ Le script `check_parity.sh` accepte maintenant un niveau en second argument :
 Résultat : `PARITE OK : captures identiques octet pour octet`. La parité
 couvre donc deux scènes et deux chemins de rendu de Lara (costume 1 et
 costume 6 via le repli L1).
+
+## 60. Cinématiques : la donnée existe dans GAMEWAD.OBJ
+
+Correction du §52 : `CUTSEQ.JIZ` **n'est pas absent du disque**, il est
+stocké dans `GAMEWAD.OBJ` (entrée 1 de l'archive), pas comme fichier
+ISO visible — d'où l'échec du `grep` sur l'image.
+
+Extraction (script ponctuel, hors dépôt) :
+
+```python
+# TOMB5.BIN = image MODE2/2352 ; GAMEWAD.OBJ = LBA 24, 55 355 392 octets
+# en-tête = 51 entrées { int32 offset; int32 size; }
+# entrée 1 (CUTSEQ) : offset 2048, taille 3 299 328
+```
+
+Le fichier extrait commence par la signature `(C) DEL!` suivie d'une table
+d'offsets/tailles, ce qui correspond à ce qu'attend
+`Load_and_Init_Cutseq` (`PCopen("\\CUTSEQ.JIZ")` → `headerbuf[0/1]`).
+
+État du chemin :
+
+- `handle_cutseq_triggering` est appelé à chaque frame mais avec
+  `cutseq_num == 0` (`[CUT] name=4 num=0 trig=0`) : la fonction sort
+  immédiatement. Elle ne déclenche une cinématique que lorsque
+  `NeatAndTidyTriggerCutscene` a armé `cutseq_num` via un trigger
+  `TO_CUTSCENE` du niveau ;
+- `Load_and_Init_Cutseq` n'est donc jamais atteint au démarrage du niveau 4
+  (vérifié par instrumentation `[CUTL]`/`[CUTP]`) ;
+- les intros de niveau de TR5 sont des **FMV** : le disque contient
+  `FMV0..FMV7.STR` (jusqu'à 62 Mo chacun). Le port n'a pas de lecteur
+  MPEG/STR, c'est **cette** fonctionnalité qui manque, pas seulement la
+  donnée.
+
+Conclusion : les cinématiques *in-engine* sont désormais data-ready (fichier
+extrait ; instrumentation `TOMB5_CUTDBG` en place : `[CUT]`, `[CUTL]`,
+`[CUTP]`, `[CUTI]`, `[CUTF]`), mais l'affichage des intros demande un lecteur
+FMV (STR/MPEG1 + audio XA), chantier à part entière.

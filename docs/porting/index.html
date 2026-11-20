@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-20T23:59:00+01:00. Linux32 provisoire.
 
+Cinématiques : correction du diagnostic précédent. CUTSEQ.JIZ n’est pas absent du disque, il est dans GAMEWAD.OBJ (entrée 1, offset 2048, 3 299 328 octets) et a été extrait avec succès (signature « (C) DEL! » + table offsets/tailles conforme au loader). Le chemin reste toutefois inactif au démarrage : [CUT] montre cutseq_num=0 chaque frame (aucun trigger TO_CUTSCENE) et [CUTL]/[CUTP] ne s’affichent pas. Surtout, les intros de niveau sont des FMV (FMV0..7.STR, jusqu’à 62 Mo) : il faut un lecteur STR/MPEG1 + XA, chantier distinct. Instrumentation TOMB5_CUTDBG en place.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-20
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-20T23:59:00+01:00. Linux32 provisoire.
+
 Parité 32/64 confirmée sur une SECONDE scène : niveau 4 (The Great Wall, 169 salles, LaraDrawType=6 donc chemin du repli L1) → captures identiques octet pour octet (sha256 5793e2e1…, cmp sans différence, 307200/307200 pixels). Le script check_parity.sh accepte désormais un numéro de niveau (ex. `check_parity.sh 300 4`). La parité couvre donc deux scènes et deux chemins de rendu de Lara (costume 1 et costume 6).
 
 Détails : [scène et parcours runtime](runtime-level.md).

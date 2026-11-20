@@ -3239,6 +3239,11 @@ void init_cutseq_actors(char* data, int resident)//2D944(<), 2DBD4 (F)
 
 int Load_and_Init_Cutseq(int num)//2D7D0, 2DAB8
 {
+	if (getenv("TOMB5_CUTDBG") != NULL)
+	{
+		fprintf(stderr, "[CUTL] num=%d resident=%p\n", num,
+		        (void*)cutseq_resident_addresses[num].packed_data);
+	}
 #if PC_VERSION
 	SetCutPlayed(num);
 	struct NEW_CUTSCENE* cut = FetchCutData(num);
@@ -3287,6 +3292,10 @@ int Load_and_Init_Cutseq(int num)//2D7D0, 2DAB8
 	DEL_CDFS_Read(packed, headerbuf[1]);
 #else
 	file = PCopen("\\CUTSEQ.JIZ", 0, 0);
+	if (getenv("TOMB5_CUTDBG") != NULL)
+	{
+		fprintf(stderr, "[CUTP] PCopen %s -> %p\n", "CUTSEQ.JIZ", (void*)file);
+	}
 	FILE_Read((char*)&tsv_buffer[0], 1, 0x800, file);
 	headerbuf = (long*)&tsv_buffer[num];
 	PClseek(file, headerbuf[0], 0);
