@@ -348,6 +348,7 @@ void DrawRooms(short current_room)//643FC(<), 64B1C(<) (F)
 
 		if (getenv("TOMB5_DRAWDBG") != NULL && (port_drawdbg++ % 120) == 0)
 		{
+
 			fprintf(stderr, "[DRAW] persp=%ld clip=(%ld,%ld,%ld,%ld) rdt=%d lvl=%d room=%d nrooms=%d rpos=(%d,%d,%d) floor=%d/%d pos=(%d,%d,%d) size=(%d,%d) ndraw=%d fade=%d/%d fading=%d height=%d/%d data=%08x %08x %08x %08x draw0=%d\n",
 			        phd_persp, phd_left, phd_right, phd_top, phd_bottom,
 			        RoomDrawType, gfCurrentLevel, current_room, number_rooms,
