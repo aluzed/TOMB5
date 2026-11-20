@@ -1935,3 +1935,69 @@ Colosseum → niveau 4), **aucun `S_PlayFMV` n'est appelé** — le déclencheur
 dans ces parcours. Le lecteur est donc prêt et testable (menu « Special
 Features » ou transition qui déclenche une FMV), mais je n'ai pas encore
 trouvé le point d'entrée qui les joue en jeu.
+
+## 63. FMV : déclencheur trouvé, lecture vérifiée
+
+Le §62 concluait qu'aucune FMV n'était déclenchée. C'était faux, pour deux
+raisons matérielles :
+
+1. l'option `PLAY_FMVS` ajoutée à `SPEC_PSXPC_N/CMakeLists.txt` n'avait pas
+   été appliquée au build (le `flags.make` ne contenait pas
+   `-DPLAY_FMVS=1`) : `DoGameflow` sautait donc les entrées `GF_FMV` et,
+   surtout, les deux appels d'intro ;
+2. `ffplay` retourne **0** quand le fichier demandé n'existe pas (vérifié :
+   `ffplay -autoexit -loglevel quiet /nonexistent.avi; echo $?` → `0`), donc
+   le `rc=0` du §62 ne prouvait rien. Le nom généré par jpsxdec est
+   `FMV0.STR[0].avi`, alors que le hook cherchait `FMV0.avi`.
+
+Correctifs :
+
+- `OPTIONAL_DEFINE(PLAY_FMVS … ON)` effectivement compilé (`-DPLAY_FMVS=1`
+  dans `flags.make`) ;
+- `S_PlayFMV` vérifie l'existence du fichier avant de lancer le lecteur et
+  accepte les deux noms (`FMV<n>.avi` et `FMV<n>.STR[0].avi`) ;
+- `TOMB5_FMV_SECONDS=n` borne la lecture (tests) ;
+- fenêtre `ffplay` mise à l'échelle 640×480 (`-x 640 -y 480`).
+
+Résultat au démarrage, sans aucune entrée :
+
+```
+[FMVREQ] seq=0 flag=0 triggered=00000000
+[FMV] lecture de FMV0 (/tmp/opencode/fmv/out/FMV0.avi)
+[FMV] fin de FMV0 (rc=0)
+[FMVREQ] seq=1 flag=0 triggered=00000001
+[FMV] lecture de FMV1 (/tmp/opencode/fmv/out/FMV1.avi)
+[FMV] fin de FMV1 (rc=0)
+[REPLAY] active frames=30
+```
+
+Ce sont les deux intros de `DoGameflow` (`FMV_COPYRIGHT_INTRO` puis
+`FMV_GAME_INTRO`), jouées avant l'écran-titre. Captures d'écran prises
+pendant la lecture : logo « P R E S E N T S » (FMV0) puis l'intro du jeu
+(FMV1). Après la fin des deux films, le jeu reprend la main, atteint le
+titre et se termine proprement sous le harnais (`TOMB5_FRAMES=30`).
+
+Le script `SCRIPT.DAT` du disque a par ailleurs été parsé (18 niveaux,
+18 noms, 1195 octets de bytecode) : il ne contient **aucune** commande
+`GF_FMV` (0x80). Les seules FMV du jeu sont donc ces deux intros ; il n'y a
+pas de film par niveau à déclencher.
+
+Outillage reproductible :
+
+```bash
+# extraction des 8 FMV*.STR + décodage jpsxdec (Java requis)
+python3 scripts/porting/prepare_fmvs.py \
+    --disc build/porting/data-ntsc/TOMB5.BIN \
+    --out build/porting/fmv \
+    --jpsxdec /chemin/vers/jpsxdec.jar
+TOMB5_FMV_DIR=build/porting/fmv ./MAIN
+```
+
+Le script reconnaît les images MODE2/2352 et ISO 2048, normalise les noms
+en `FMV<n>.avi`, et n'écrit jamais de donnée de jeu dans les fichiers
+suivis. Trois tests unitaires construisent une image ISO synthétique
+(`tests/porting/test_prepare_fmvs.py`).
+
+Limites : le lecteur reste un pont externe (`ffplay`), pas un décodeur MDEC
+natif ; les `FMV*.STR` sont vidéo seule (sous-en-tête CD-XA `0x48`, aucun
+canal audio), l'audio des films n'est donc pas couvert.

@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Colosseum terminé, transition → niveau 4 re-validée, niveaux 4 et 5 rendus, costume 6 complet. Le « module LARA6 » n’existe pas : reconnaissance du COD.EWAD embarqué (59 modules, 5 variantes Lara dans le slot 1, identifiées par leur densité d’instructions GTE) → la valeur laraDrawType=6 retombe sur la routine standard dans l’original aussi, comme le fait le port. Les cinématiques in-engine sont data-ready (CUTSEQ.JIZ extrait) mais les intros sont des FMV (FMV0..7.STR) que le port ne décode pas.
+Avancement : Colosseum terminé, transition → niveau 4 re-validée, niveaux 4 et 5 rendus, costume 6 conforme. FMV : chaîne complète vérifiée — les deux intros (FMV0 copyright, FMV1 jeu) sont déclenchées au démarrage et jouées via ffplay après décodage hors ligne (jpsxdec). Le script SCRIPT.DAT du disque ne contient aucune commande GF_FMV : il n’y a pas de film par niveau. Le « module LARA6 » n’existe pas côté PSX. Reste : cinématiques in-engine (data-ready, trigger à armer) et décodeur MDEC natif avec audio XA.
 
 ## Objectif
 
@@ -65,6 +65,7 @@ Le rendu deforme du sable peut venir de la sous-division (SubDiv/div3tab/div4tab
 - 2026-11-20 : Niveau 5, build 32 bits : la transmission du pointeur cdb par les registres GTE LG2/LG3 est correcte (a1 == cdb, a3/s0 dans les buffers bas) — piste écartée. Le surplus de quads (3C=1008 vs 335) reste à instruire côté construction de la liste de salles (number_draw_rooms / draw_rooms[]) ou boucle roomlet. Instrumentation : TOMB5_RL2DBG=1 → [RL2]. Sans impact sur le build 64 bits.
 - 2026-11-20 : CUTSEQ.JIZ extrait de GAMEWAD.OBJ (entrée 1 : offset 2048, taille 3299328 ; signature « (C) DEL! » + table offsets/tailles, conforme à ce qu’attend Load_and_Init_Cutseq). Placé dans le répertoire de données, le chargement n’est toutefois jamais déclenché : [CUT] name=4 num=0 trig=0 à chaque frame (aucun trigger TO_CUTSCENE armé) et [CUTL]/[CUTP] ne s’affichent pas. Par ailleurs le disque contient FMV0..FMV7.STR : les intros de niveau sont des FMV, non décodées par le port.
 - 2026-11-20 : Reconnaissance du code d’origine : GAMEWAD.OBJ → COD.EWAD embarqué (430108 octets) contient 96 enregistrements de 20 octets et 59 modules. Les 5 modules les plus denses en instructions COP2 (GTE) sont tous dans le slot 1 (178–268 ops GTE, 4432–6812 octets) : ce sont les 5 variantes de dessin de Lara. Aucun sixième module Lara : laraDrawType=6 n’a pas de routine dédiée et retombe sur la routine standard, comme dans le port. Conclusion : rien à porter côté LARA6 ; le rendu gris/cheveux manquants venait du masquage et des bugs de pointeurs LP64.
+- 2026-11-20 : FMV vérifiées de bout en bout : PLAY_FMVS réellement compilé (-DPLAY_FMVS=1), S_PlayFMV vérifie l’existence du fichier et accepte FMV<n>.avi comme FMV<n>.STR[0].avi. Au démarrage : [FMVREQ] seq=0 puis seq=1, [FMV] lecture/fin pour les deux, captures écran du logo Eidos et de l’intro du jeu, puis retour au titre et sortie propre. SCRIPT.DAT parsé (18 niveaux, 1195 octets) : aucune commande GF_FMV, donc pas de film par niveau. Outil reproductible scripts/porting/prepare_fmvs.py + 3 tests. Parité 32/64 toujours byte-identique (63041e5c…).
 
 ## Références
 

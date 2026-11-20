@@ -28,6 +28,10 @@ OPTIONAL_DEFINE(PSXPC_TEST "Enable/Disable PSXPC Test Code" ON)
 #Enable relocatable code
 OPTIONAL_DEFINE(RELOC "Enable/Disable Relocatable code modules" OFF)
 
+#Read the GF_FMV entries of the gameflow script (actual playback is gated by
+#TOMB5_FMV_DIR in S_PlayFMV).
+OPTIONAL_DEFINE(PLAY_FMVS "Enable/Disable FMV entries in the gameflow script" ON)
+
 #Enable 32-bit address for tag
 OPTIONAL_DEFINE(USE_32_BIT_ADDR "Enable/Disable 32-bit address for tag" ON)
 

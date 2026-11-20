@@ -280,7 +280,13 @@ void DoGameflow()//10F5C(<), 10FD8(<)
 		{
 		case GF_FMV:
 #if PLAY_FMVS
-			fmv_to_play[num_fmvs++] = *gf++;
+			fmv_to_play[num_fmvs++] = *gf;
+			if (getenv("TOMB5_FMVDBG") != NULL)
+			{
+				fprintf(stderr, "[GFMV] lvl=%d slot=%d fmv=%d flags=%04x\n",
+				        (int)gfCurrentLevel, (int)num_fmvs - 1, (int)*(gf), (unsigned)gfLevelFlags);
+			}
+			gf++;
 #else
 			gf++;
 #endif

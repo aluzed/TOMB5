@@ -5,12 +5,31 @@
 #include "CONTROL.H"
 #include <LIBETC.H>
 
+static int FMV_FileExists(const char* path)
+{
+	FILE* f = fopen(path, "rb");
+
+	if (f == NULL)
+	{
+		return 0;
+	}
+
+	fclose(f);
+	return 1;
+}
+
 int S_PlayFMV(int sequence, int flag)//*, (<)5E7A0
 {
 	DISPENV disp;//interp@var_50
 	//s1 = fmv_index
 	//s2 = a1; //maybe skippable?
 	//v0 = 7;
+
+	if (getenv("TOMB5_FMVDBG") != NULL)
+	{
+		fprintf(stderr, "[FMVREQ] seq=%d flag=%d triggered=%08x\n",
+		        sequence, flag, (unsigned)FmvSceneTriggered);
+	}
 
 	if (sequence != 7)
 	{
@@ -71,22 +90,52 @@ int S_PlayFMV(int sequence, int flag)//*, (<)5E7A0
 	 *  - par defaut : comportement historique (retourne -1, la cinematique
 	 *    n'est pas jouee et le jeu continue) ;
 	 *  - TOMB5_FMV_DIR=<repertoire> : les FMV ont ete converties hors ligne
-	 *    (jpsxdec) en FMV<n>.avi ; on les joue avec ffplay avant de rendre la
-	 *    main au jeu.
+	 *    (jpsxdec) en FMV<n>.avi (ou FMV<n>.STR[0].avi) ; on les joue avec
+	 *    ffplay avant de rendre la main au jeu.
 	 */
 	{
 		const char* dir = getenv("TOMB5_FMV_DIR");
 		if (dir != NULL)
 		{
-			char cmd[1024];
+			char path[1024];
+			char alt[1030];
+			char cmd[1280];
+			const char* maxSeconds;
 			int rc;
 
-			snprintf(cmd, sizeof(cmd),
-			         "ffplay -autoexit -loglevel quiet -window_title 'FMV %d' "
-			         "'%s/FMV%d.avi' >/dev/null 2>&1",
-			         sequence, dir, sequence);
+			snprintf(path, sizeof(path), "%s/FMV%d.avi", dir, sequence);
 
-			fprintf(stderr, "[FMV] lecture de FMV%d depuis %s\n", sequence, dir);
+			/* ffplay retourne 0 meme quand le fichier n'existe pas : on
+			 * verifie donc explicitement avant de lancer le lecteur. */
+			if (!FMV_FileExists(path))
+			{
+				snprintf(alt, sizeof(alt), "%s/FMV%d.STR[0].avi", dir, sequence);
+				if (!FMV_FileExists(alt))
+				{
+					fprintf(stderr,
+					        "[FMV] FMV%d introuvable dans %s, cinematique ignoree\n",
+					        sequence, dir);
+					fflush(stderr);
+					return -1;
+				}
+				snprintf(path, sizeof(path), "%s", alt);
+			}
+
+			maxSeconds = getenv("TOMB5_FMV_SECONDS");
+			if (maxSeconds != NULL && atoi(maxSeconds) > 0)
+			{
+				snprintf(cmd, sizeof(cmd),
+				         "ffplay -autoexit -loglevel quiet -x 640 -y 480 -t %d '%s'"
+				         " >/dev/null 2>&1", atoi(maxSeconds), path);
+			}
+			else
+			{
+				snprintf(cmd, sizeof(cmd),
+				         "ffplay -autoexit -loglevel quiet -x 640 -y 480 '%s'"
+				         " >/dev/null 2>&1", path);
+			}
+
+			fprintf(stderr, "[FMV] lecture de FMV%d (%s)\n", sequence, path);
 			fflush(stderr);
 			rc = system(cmd);
 			fprintf(stderr, "[FMV] fin de FMV%d (rc=%d)\n", sequence, rc);

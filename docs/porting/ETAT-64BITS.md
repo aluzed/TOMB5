@@ -20,7 +20,8 @@ Le jeu tourne en **64 bits**, rendu **exclusivement en Vulkan** (OpenGL a
 | Overlay debug F12 (ImGui) | stats, profilage GPU par passe, budget, dithering, formats, reflets, capture BMP, aperçu VRAM |
 | Reflets écran à presets | aucun / faible / moyen / fort, preset « aucun » = image de référence exacte |
 | Campagne | Streets of Rome → Colosseum terminés, transition vers le niveau 4 re-validée, niveaux 4 et 5 rendus |
-| Couverture tests | **4188 tests PASS** |
+| FMV (intros) | lecture vérifiée : extraction + décodage hors ligne, `TOMB5_FMV_DIR` → `ffplay` (vidéo seule) |
+| Couverture tests | **4191 tests PASS** |
 
 ## Comment lancer
 
@@ -38,7 +39,10 @@ Variables utiles :
 | variable | effet |
 | --- | --- |
 | `TOMB5_START_LEVEL=n` | sauter le menu, charger le niveau `n` |
-| `TOMB5_SKIP_CUTSCENE=1` | ne pas déclencher les cinématiques (lecteur sans données) |
+| `TOMB5_SKIP_CUTSCENE=1` | ne pas déclencher les cinématiques in-engine |
+| `TOMB5_FMV_DIR=<dir>` | joue les intros `FMV<n>.avi` avec `ffplay` (voir `scripts/porting/prepare_fmvs.py`) |
+| `TOMB5_FMV_SECONDS=n` | borne la lecture d'une FMV (tests) |
+| `TOMB5_FMVDBG=1` | trace `[FMVREQ]`, `[FMV]`, `[GFMV]` |
 | `TOMB5_FRAMES=n` + `TOMB5_CAPTURE=f.bmp` | harnais déterministe : n frames puis capture et sortie |
 | `TOMB5_DUMP_VERTS=f.bin` | dump des vertices/splits envoyés au backend |
 | `TOMB5_DUMP_VRAM=f.bin` | dump de la VRAM à la frame de capture |
@@ -92,11 +96,17 @@ tableau de pointeurs est faux en LP64** ; il faut raisonner en entrées.
 
 ## Limites connues
 
-- **Cinématiques** : le lecteur retombe sur `CUTSEQ.JIZ`, absent de l'image
-  fournie (aucune chaîne `CUTSEQ` ni `.JIZ` dans `TOMB5.BIN`). Blocage de
-  données. En attendant : `TOMB5_SKIP_CUTSCENE=1`.
-- **`LARA6`** : le module dédié n'est pas porté ; le costume 6 est dessiné
-  en entier via le chemin L1 (rendu correct, costume non exact).
+- **Cinématiques in-engine** : la donnée est disponible — `CUTSEQ.JIZ` est
+  l'entrée 1 de `GAMEWAD.OBJ` (extraite, signature `(C) DEL!`). Le chemin
+  `Load_and_Init_Cutseq` est instrumenté (`TOMB5_CUTDBG`), mais aucun trigger
+  `TO_CUTSCENE` n'est armé au spawn (`cutseq_num` reste à 0). En attendant :
+  `TOMB5_SKIP_CUTSCENE=1`.
+- **FMV** : les intros sont jouées via `ffplay` (dépendance externe), pas par
+  un décodeur MDEC natif ; les `FMV*.STR` sont **vidéo seule** (sous-en-tête
+  CD-XA `0x48`), l'audio éventuel vient des pistes XA et n'est pas couvert.
+- **`LARA6`** : le module n'existe pas dans le build PSX (5 variantes Lara
+  seulement, cf. §61 du plan) ; le costume 6 utilise le chemin L1, comportement
+  conforme à l'original.
 - **Raytracing matériel (RMIG-015)** : impossible sans géométrie monde ni
   normales — le flux PSX ne contient que des coordonnées écran. Les reflets
   livrés sont des reflets écran stylisés.
@@ -116,8 +126,9 @@ tableau de pointeurs est faux en LP64** ; il faut raisonner en entrées.
 
 ## Prochaines étapes utiles
 
-1. Fournir la source des cinématiques (`CUTSEQ.JIZ` ou disque d'origine)
-   pour activer les intros.
-2. Porter le module `LARA6` (nécessite la fonction d'origine).
+1. Armer les cinématiques in-engine (trigger `TO_CUTSCENE`) et vérifier
+   `Load_and_Init_Cutseq` avec `CUTSEQ.JIZ` en place.
+2. Remplacer le pont `ffplay` par un décodeur MDEC natif et couvrir l'audio
+   XA des FMV.
 3. Instruire la bande 2D du résidu 8 bits (RMIG-011).
 4. Poursuivre la campagne au-delà du niveau 5.

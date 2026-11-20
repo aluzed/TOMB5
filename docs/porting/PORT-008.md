@@ -2,6 +2,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-20T23:59:00+01:00. Linux32 provisoire.
 
+FMV : déclencheur trouvé et lecture vérifiée. PLAY_FMVS n’était pas réellement compilé et ffplay retourne 0 pour un fichier absent — d’où le faux négatif précédent. Après correction, les deux intros (FMV0 copyright, FMV1 jeu) sont demandées au démarrage, jouées via ffplay (vidéo seule) et le jeu reprend ensuite l’écran-titre. SCRIPT.DAT parsé : aucune commande GF_FMV, donc pas de film par niveau. Outillage reproductible : scripts/porting/prepare_fmvs.py (extraction ISO + décodage jpsxdec, noms normalisés) et 3 tests unitaires. Parité 32/64 byte-identique conservée.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+## Progression vérifiée du 2026-11-20
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-20T23:59:00+01:00. Linux32 provisoire.
+
 FMV : chaîne complète hors ligne mise en place. Les cinématiques du disque sont des STR (MDEC+XA, pas du MPEG1 ISO : ffmpeg ne les lit pas). Les 8 FMV*.STR ont été extraites de TOMB5.BIN puis converties avec jpsxdec v2.1 en AVI (339 Mo au total, 1,4 s pour FMV7). Hook ajouté dans S_PlayFMV : TOMB5_FMV_DIR=<dir> → lecture de <dir>/FMV<n>.avi via ffplay puis retour au jeu ; sinon comportement historique (-1, sautée). Option CMake PLAY_FMVS=1 ajoutée pour lire les entrées GF_FMV du script. Vérifié : parité 32/64 toujours byte-identique (63041e5c…). Limite : sur les scénarios testés (démarrage niveau 4, transition Colosseum), aucun S_PlayFMV n'est appelé — le déclencheur reste à trouver.
 
 Détails : [scène et parcours runtime](runtime-level.md).

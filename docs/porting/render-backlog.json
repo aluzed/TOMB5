@@ -1036,7 +1036,7 @@
           "note": "SubDiv/div tables"
         }
       ],
-      "progress": "Colosseum terminé, transition → niveau 4 re-validée, niveaux 4 et 5 rendus, costume 6 complet. Le « module LARA6 » n’existe pas : reconnaissance du COD.EWAD embarqué (59 modules, 5 variantes Lara dans le slot 1, identifiées par leur densité d’instructions GTE) → la valeur laraDrawType=6 retombe sur la routine standard dans l’original aussi, comme le fait le port. Les cinématiques in-engine sont data-ready (CUTSEQ.JIZ extrait) mais les intros sont des FMV (FMV0..7.STR) que le port ne décode pas.",
+      "progress": "Colosseum terminé, transition → niveau 4 re-validée, niveaux 4 et 5 rendus, costume 6 conforme. FMV : chaîne complète vérifiée — les deux intros (FMV0 copyright, FMV1 jeu) sont déclenchées au démarrage et jouées via ffplay après décodage hors ligne (jpsxdec). Le script SCRIPT.DAT du disque ne contient aucune commande GF_FMV : il n’y a pas de film par niveau. Le « module LARA6 » n’existe pas côté PSX. Reste : cinématiques in-engine (data-ready, trigger à armer) et décodeur MDEC natif avec audio XA.",
       "evidence": [
         {
           "date": "2026-11-17",
@@ -1105,6 +1105,10 @@
         {
           "date": "2026-11-20",
           "note": "Reconnaissance du code d’origine : GAMEWAD.OBJ → COD.EWAD embarqué (430108 octets) contient 96 enregistrements de 20 octets et 59 modules. Les 5 modules les plus denses en instructions COP2 (GTE) sont tous dans le slot 1 (178–268 ops GTE, 4432–6812 octets) : ce sont les 5 variantes de dessin de Lara. Aucun sixième module Lara : laraDrawType=6 n’a pas de routine dédiée et retombe sur la routine standard, comme dans le port. Conclusion : rien à porter côté LARA6 ; le rendu gris/cheveux manquants venait du masquage et des bugs de pointeurs LP64."
+        },
+        {
+          "date": "2026-11-20",
+          "note": "FMV vérifiées de bout en bout : PLAY_FMVS réellement compilé (-DPLAY_FMVS=1), S_PlayFMV vérifie l’existence du fichier et accepte FMV<n>.avi comme FMV<n>.STR[0].avi. Au démarrage : [FMVREQ] seq=0 puis seq=1, [FMV] lecture/fin pour les deux, captures écran du logo Eidos et de l’intro du jeu, puis retour au titre et sortie propre. SCRIPT.DAT parsé (18 niveaux, 1195 octets) : aucune commande GF_FMV, donc pas de film par niveau. Outil reproductible scripts/porting/prepare_fmvs.py + 3 tests. Parité 32/64 toujours byte-identique (63041e5c…)."
         }
       ]
     },
