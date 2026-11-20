@@ -1800,3 +1800,20 @@ Conséquence : le build 32 bits n'est pas une référence fiable sur ce
 niveau ; ce n'est **pas** une régression introduite par le portage 64 bits
 (le 64 bits rend la scène correctement). À instruire seulement si l'on veut
 que le binaire 32 bits de référence couvre tous les niveaux.
+
+## 58. Niveau 5 en 32 bits : piste écartée
+
+Le pointeur `cdb` transmis par les registres GTE `LG2`/`LG3` (technique PSX
+pour survivre à un `docop2`) a été vérifié : dans le build 32 bits,
+`a1 == (uintptr_t)cdb` (`ok=1`), et `a3` (polyptr) / `s0` (ordering table)
+tombent bien dans les buffers bas. Ce n'est donc pas là que le build 32 bits
+égare ses primitives.
+
+Le surplus de quads (`3C=1008` contre `335`) reste inexpliqué à ce stade ;
+la piste restante est la construction de la liste de salles dessinées
+(`number_draw_rooms` / `draw_rooms[]`) ou la boucle roomlet elle-même, qui
+pourrait parcourir deux fois la même liste. Instrumentation laissée en
+place : `TOMB5_RL2DBG=1` imprime `[RL2] cdb/a1/a3/s0`.
+
+Ce défaut n'affecte que le binaire 32 bits de référence ; le 64 bits rend le
+niveau correctement.

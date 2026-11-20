@@ -1093,6 +1093,10 @@
         {
           "date": "2026-11-19",
           "note": "Niveau 5 : le build 32 bits rend noir parce qu’il émet 3× plus de quads que le 64 bits ([PH] 3C=1008 vs 335, nv=7251 vs 3102) ; les primitives Lara sont identiques, le défaut est dans le chemin roomlet 32 bits (RoomDrawType=2, ROOMLET2.C). Le build 64 bits rend la scène correctement — ce n’est pas une régression du portage."
+        },
+        {
+          "date": "2026-11-20",
+          "note": "Niveau 5, build 32 bits : la transmission du pointeur cdb par les registres GTE LG2/LG3 est correcte (a1 == cdb, a3/s0 dans les buffers bas) — piste écartée. Le surplus de quads (3C=1008 vs 335) reste à instruire côté construction de la liste de salles (number_draw_rooms / draw_rooms[]) ou boucle roomlet. Instrumentation : TOMB5_RL2DBG=1 → [RL2]. Sans impact sur le build 64 bits."
         }
       ]
     },

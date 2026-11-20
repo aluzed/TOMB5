@@ -1,4 +1,6 @@
 #include "ROOMLET2.H"
+#include <stdio.h>
+#include <stdlib.h>
 #include "DRAW.H"
 #include "CAMERA.H"
 #include "EFFECT2.H"
@@ -1040,6 +1042,15 @@ char* DrawMeshRL2(int* sp, int* sp2, int mesh, struct DB_STRUCT* cdb)
     a22 = &RoomTextInfo[0];
     a3 = ((int*)a1)[2];
     s0 = (short*)((int*)a1)[1];
+
+    if (getenv("TOMB5_RL2DBG") != NULL)
+    {
+        static int port_rl2_n = 0;
+        if ((port_rl2_n++ % 120) == 0)
+            fprintf(stderr, "[RL2] cdb=%p a1=%08x ok=%d a3=%08x s0=%08x\n",
+                    (void*)cdb, (unsigned)a1, (int)((uintptr_t)cdb == (uintptr_t)(unsigned)a1),
+                    (unsigned)a3, (unsigned)(uintptr_t)s0);
+    }
 #endif
     s1 = (char*)&sp[0];
     v0 >>= 8;

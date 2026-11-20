@@ -2800,6 +2800,15 @@
       ],
       "status": "In progress",
       "summary": "Cause du noir 32 bits au niveau 5 identifiée : le build 32 bits émet trois fois plus de quads que le 64 bits ([PH] 3C=1008 vs 335, nv=7251 vs 3102) alors que les primitives Lara sont identiques — défaut du chemin roomlet 32 bits pour RoomDrawType=2, pas une régression du portage. Le 64 bits rend la scène correctement. La parité 32/64 reste donc mesurée sur le niveau 3 (où elle est byte-identique), et le script check_parity.sh automatise ce contrôle."
+    },
+    {
+      "date": "2026-11-20",
+      "authorization_until": "2026-11-20T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Niveau 5 en 32 bits : piste des registres GTE LG2/LG3 écartée (le pointeur cdb est reconstruit correctement, a3/s0 valides). Le surplus de quads du build 32 bits (3C=1008 vs 335) reste à instruire côté liste de salles (number_draw_rooms / draw_rooms[]) ; instrumentation TOMB5_RL2DBG=1 ajoutée. Aucun impact sur le build 64 bits, qui rend le niveau correctement. 4188 tests PASS, builds 32/64 verts."
     }
   ]
 }

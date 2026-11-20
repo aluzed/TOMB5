@@ -1,3 +1,13 @@
+## Progression vérifiée du 2026-11-20
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-20T23:59:00+01:00. Linux32 provisoire.
+
+Niveau 5 en 32 bits : piste des registres GTE LG2/LG3 écartée (le pointeur cdb est reconstruit correctement, a3/s0 valides). Le surplus de quads du build 32 bits (3C=1008 vs 335) reste à instruire côté liste de salles (number_draw_rooms / draw_rooms[]) ; instrumentation TOMB5_RL2DBG=1 ajoutée. Aucun impact sur le build 64 bits, qui rend le niveau correctement. 4188 tests PASS, builds 32/64 verts.
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
 ## Progression vérifiée du 2026-11-19
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-19T23:59:00+01:00. Linux32 provisoire.
