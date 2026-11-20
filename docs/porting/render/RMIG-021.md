@@ -2,7 +2,7 @@
 
 Status: **In progress** — priorité P1 — confiance Medium
 
-Avancement : Colosseum terminé, transition → niveau 4 re-validée, niveaux 4 et 5 rendus, costume 6 dessiné en entier. Pour les cinématiques : la donnée existe (`CUTSEQ.JIZ` = entrée 1 de `GAMEWAD.OBJ`, extraite avec succès, signature `(C) DEL!`) et le chemin de chargement `Load_and_Init_Cutseq` est prêt avec instrumentation (`TOMB5_CUTDBG`), mais (a) `cutseq_num` reste à 0 au démarrage (aucun trigger TO_CUTSCENE armé) et (b) les intros de niveau sont des FMV `FMV*.STR` que le port ne sait pas décoder. Le lecteur FMV est le vrai chantier restant.
+Avancement : Colosseum terminé, transition → niveau 4 re-validée, niveaux 4 et 5 rendus, costume 6 complet. Le « module LARA6 » n’existe pas : reconnaissance du COD.EWAD embarqué (59 modules, 5 variantes Lara dans le slot 1, identifiées par leur densité d’instructions GTE) → la valeur laraDrawType=6 retombe sur la routine standard dans l’original aussi, comme le fait le port. Les cinématiques in-engine sont data-ready (CUTSEQ.JIZ extrait) mais les intros sont des FMV (FMV0..7.STR) que le port ne décode pas.
 
 ## Objectif
 
@@ -64,6 +64,7 @@ Le rendu deforme du sable peut venir de la sous-division (SubDiv/div3tab/div4tab
 - 2026-11-19 : Niveau 5 : le build 32 bits rend noir parce qu’il émet 3× plus de quads que le 64 bits ([PH] 3C=1008 vs 335, nv=7251 vs 3102) ; les primitives Lara sont identiques, le défaut est dans le chemin roomlet 32 bits (RoomDrawType=2, ROOMLET2.C). Le build 64 bits rend la scène correctement — ce n’est pas une régression du portage.
 - 2026-11-20 : Niveau 5, build 32 bits : la transmission du pointeur cdb par les registres GTE LG2/LG3 est correcte (a1 == cdb, a3/s0 dans les buffers bas) — piste écartée. Le surplus de quads (3C=1008 vs 335) reste à instruire côté construction de la liste de salles (number_draw_rooms / draw_rooms[]) ou boucle roomlet. Instrumentation : TOMB5_RL2DBG=1 → [RL2]. Sans impact sur le build 64 bits.
 - 2026-11-20 : CUTSEQ.JIZ extrait de GAMEWAD.OBJ (entrée 1 : offset 2048, taille 3299328 ; signature « (C) DEL! » + table offsets/tailles, conforme à ce qu’attend Load_and_Init_Cutseq). Placé dans le répertoire de données, le chargement n’est toutefois jamais déclenché : [CUT] name=4 num=0 trig=0 à chaque frame (aucun trigger TO_CUTSCENE armé) et [CUTL]/[CUTP] ne s’affichent pas. Par ailleurs le disque contient FMV0..FMV7.STR : les intros de niveau sont des FMV, non décodées par le port.
+- 2026-11-20 : Reconnaissance du code d’origine : GAMEWAD.OBJ → COD.EWAD embarqué (430108 octets) contient 96 enregistrements de 20 octets et 59 modules. Les 5 modules les plus denses en instructions COP2 (GTE) sont tous dans le slot 1 (178–268 ops GTE, 4432–6812 octets) : ce sont les 5 variantes de dessin de Lara. Aucun sixième module Lara : laraDrawType=6 n’a pas de routine dédiée et retombe sur la routine standard, comme dans le port. Conclusion : rien à porter côté LARA6 ; le rendu gris/cheveux manquants venait du masquage et des bugs de pointeurs LP64.
 
 ## Références
 

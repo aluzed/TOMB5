@@ -2827,6 +2827,15 @@
       ],
       "status": "In progress",
       "summary": "Cinématiques : correction du diagnostic précédent. CUTSEQ.JIZ n’est pas absent du disque, il est dans GAMEWAD.OBJ (entrée 1, offset 2048, 3 299 328 octets) et a été extrait avec succès (signature « (C) DEL! » + table offsets/tailles conforme au loader). Le chemin reste toutefois inactif au démarrage : [CUT] montre cutseq_num=0 chaque frame (aucun trigger TO_CUTSCENE) et [CUTL]/[CUTP] ne s’affichent pas. Surtout, les intros de niveau sont des FMV (FMV0..7.STR, jusqu’à 62 Mo) : il faut un lecteur STR/MPEG1 + XA, chantier distinct. Instrumentation TOMB5_CUTDBG en place."
+    },
+    {
+      "date": "2026-11-20",
+      "authorization_until": "2026-11-20T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "LARA6 tranché par reconnaissance du code d’origine : le COD.EWAD embarqué dans GAMEWAD.OBJ contient 96 enregistrements et 59 modules ; les cinq modules les plus denses en instructions GTE sont tous dans le slot 1 (178–268 COP2, 4432–6812 octets) = les cinq variantes de dessin de Lara (L1..L5). Il n’existe pas de sixième module : laraDrawType=6 retombe sur la routine standard dans l’original comme dans le port. Le rendu « gris/cheveux manquants » venait du masquage (retiré) et des bugs de pointeurs LP64 (corrigés). Rien à porter. Cinématiques : CUTSEQ.JIZ extrait de GAMEWAD (entrée 1) ; les intros sont des FMV (FMV0..7.STR) non décodées."
     }
   ]
 }

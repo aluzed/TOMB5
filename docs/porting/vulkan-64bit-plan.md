@@ -1876,3 +1876,32 @@ Conclusion : les cinématiques *in-engine* sont désormais data-ready (fichier
 extrait ; instrumentation `TOMB5_CUTDBG` en place : `[CUT]`, `[CUTL]`,
 `[CUTP]`, `[CUTI]`, `[CUTF]`), mais l'affichage des intros demande un lecteur
 FMV (STR/MPEG1 + audio XA), chantier à part entière.
+
+## 61. LARA6 : le module n'existe pas dans le build PSX
+
+Reconnaissance du code d'origine (archive `GAMEWAD.OBJ` → `COD.EWAD`
+embarqué, identique pour tous les niveaux, 430 108 octets) :
+
+- en-tête : 96 enregistrements de 20 octets
+  `{codeOffset, codeSize, relocOffset, relocSize, slot}` ;
+- **59 modules** non vides répartis sur les slots 0..50 ;
+- tri par nombre d'instructions `COP2` (GTE) : les cinq modules les plus
+  denses sont **tous dans le slot 1** — 14432 à 6812 octets, 178 à 268
+  instructions GTE chacun. Ce sont les **cinq variantes de dessin de Lara**
+  (L1..L5), celles que le port a déjà portées ;
+- **il n'y a pas de sixième module Lara** dans le CODE.WAD du build NTSC
+  américain.
+
+Autrement dit : `laraDrawType` est un champ de 3 bits (0..7) et la valeur 6
+n'a pas de routine dédiée dans l'original — le jeu retombe sur la routine
+standard, exactement comme le fait le port. Le « module LARA6 » que le
+commentaire du port appelait de ses vœux **n'a jamais existé** côté PSX.
+
+Ce qui avait fait croire à un modèle cassé :
+
+1. le masquage `mesh_bits = 0x80000000` du repli (retiré, cf. §53) ;
+2. les bugs de pointeurs LP64 de la natte/holsters/joints de peau
+   (corrigés en RMIG-023), qui faisaient dessiner une pièce aberrante.
+
+Le costume 6 est donc rendu correctement par le repli L1, avec les meshes
+du niveau — c'est le comportement attendu. Rien à porter.
