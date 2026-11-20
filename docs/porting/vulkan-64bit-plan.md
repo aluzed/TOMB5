@@ -1905,3 +1905,33 @@ Ce qui avait fait croire à un modèle cassé :
 
 Le costume 6 est donc rendu correctement par le repli L1, avec les meshes
 du niveau — c'est le comportement attendu. Rien à porter.
+
+## 62. FMV : décodage hors ligne + lecteur branché
+
+Le port n'a pas de décodeur MDEC : `S_PlayFMV` était un stub `return -1`.
+Les cinématiques du disque sont bien des **STR (MDEC + XA)**, pas du MPEG1
+ISO — `ffmpeg`/`ffprobe` ne savent pas les lire (chaque secteur 2048 porte
+un sous-en-tête CD-XA `0x0160` suivi du flux MDEC).
+
+Chaîne mise en place (hors ligne) :
+
+1. extraction des 8 `FMV*.STR` de `TOMB5.BIN` (mode2/2352 → données 2048) ;
+2. conversion avec **jpsxdec v2.1** (`java -jar jpsxdec.jar -f FMVn.STR
+   -a video -quality high`) → `FMVn.STR[0].avi` (970 frames pour FMV7 en
+   1,4 s, ~339 Mo pour les huit) ;
+3. hook dans `S_PlayFMV` : si `TOMB5_FMV_DIR` est défini, le jeu lance
+   `ffplay -autoexit` sur `<dir>/FMV<n>.avi` et attend la fin ; sinon le
+   comportement historique (`-1`, cinématique sautée) est conservé ;
+4. `PLAY_FMVS=1` ajouté aux options CMake pour que les entrées `GF_FMV` du
+   script gameflow soient réellement lues (`fmv_to_play`).
+
+Vérifié : la parité 32/64 reste **byte-identique** sur la référence après
+l'ajout de `PLAY_FMVS` (`63041e5c…`, `PARITE OK`), donc l'analyse du script
+n'a rien changé au rendu.
+
+Limite constatée : sur les scénarios testés (démarrage niveau 4, transition
+Colosseum → niveau 4), **aucun `S_PlayFMV` n'est appelé** — le déclencheur
+(entrée `GF_FMV` du niveau, ou fin de cinématique in-engine) ne s'active pas
+dans ces parcours. Le lecteur est donc prêt et testable (menu « Special
+Features » ou transition qui déclenche une FMV), mais je n'ai pas encore
+trouvé le point d'entrée qui les joue en jeu.

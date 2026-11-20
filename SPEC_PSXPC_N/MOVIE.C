@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "MOVIE.H"
 
 #include "CONTROL.H"
@@ -64,7 +66,36 @@ int S_PlayFMV(int sequence, int flag)//*, (<)5E7A0
 		move	$v0, $zero
 #endif
 
-		return -1;//TODO
+	/*
+	 * Le lecteur MDEC/STR n'est pas porte. Deux modes :
+	 *  - par defaut : comportement historique (retourne -1, la cinematique
+	 *    n'est pas jouee et le jeu continue) ;
+	 *  - TOMB5_FMV_DIR=<repertoire> : les FMV ont ete converties hors ligne
+	 *    (jpsxdec) en FMV<n>.avi ; on les joue avec ffplay avant de rendre la
+	 *    main au jeu.
+	 */
+	{
+		const char* dir = getenv("TOMB5_FMV_DIR");
+		if (dir != NULL)
+		{
+			char cmd[1024];
+			int rc;
+
+			snprintf(cmd, sizeof(cmd),
+			         "ffplay -autoexit -loglevel quiet -window_title 'FMV %d' "
+			         "'%s/FMV%d.avi' >/dev/null 2>&1",
+			         sequence, dir, sequence);
+
+			fprintf(stderr, "[FMV] lecture de FMV%d depuis %s\n", sequence, dir);
+			fflush(stderr);
+			rc = system(cmd);
+			fprintf(stderr, "[FMV] fin de FMV%d (rc=%d)\n", sequence, rc);
+			fflush(stderr);
+			return 0;
+		}
+	}
+
+	return -1;//TODO
 }
 
 

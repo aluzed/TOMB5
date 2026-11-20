@@ -2836,6 +2836,15 @@
       ],
       "status": "In progress",
       "summary": "LARA6 tranché par reconnaissance du code d’origine : le COD.EWAD embarqué dans GAMEWAD.OBJ contient 96 enregistrements et 59 modules ; les cinq modules les plus denses en instructions GTE sont tous dans le slot 1 (178–268 COP2, 4432–6812 octets) = les cinq variantes de dessin de Lara (L1..L5). Il n’existe pas de sixième module : laraDrawType=6 retombe sur la routine standard dans l’original comme dans le port. Le rendu « gris/cheveux manquants » venait du masquage (retiré) et des bugs de pointeurs LP64 (corrigés). Rien à porter. Cinématiques : CUTSEQ.JIZ extrait de GAMEWAD (entrée 1) ; les intros sont des FMV (FMV0..7.STR) non décodées."
+    },
+    {
+      "date": "2026-11-20",
+      "authorization_until": "2026-11-20T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "FMV : chaîne complète hors ligne mise en place. Les cinématiques du disque sont des STR (MDEC+XA, pas du MPEG1 ISO : ffmpeg ne les lit pas). Les 8 FMV*.STR ont été extraites de TOMB5.BIN puis converties avec jpsxdec v2.1 en AVI (339 Mo au total, 1,4 s pour FMV7). Hook ajouté dans S_PlayFMV : TOMB5_FMV_DIR=<dir> → lecture de <dir>/FMV<n>.avi via ffplay puis retour au jeu ; sinon comportement historique (-1, sautée). Option CMake PLAY_FMVS=1 ajoutée pour lire les entrées GF_FMV du script. Vérifié : parité 32/64 toujours byte-identique (63041e5c…). Limite : sur les scénarios testés (démarrage niveau 4, transition Colosseum), aucun S_PlayFMV n'est appelé — le déclencheur reste à trouver."
     }
   ]
 }
