@@ -21,7 +21,7 @@ Le jeu tourne en **64 bits**, rendu **exclusivement en Vulkan** (OpenGL a
 | Reflets écran à presets | aucun / faible / moyen / fort, preset « aucun » = image de référence exacte |
 | Campagne | Streets of Rome → Colosseum terminés, transition vers le niveau 4 re-validée, niveaux 4 et 5 rendus |
 | FMV (intros) | lecture vérifiée : extraction + décodage hors ligne, `TOMB5_FMV_DIR` → `ffplay` (vidéo seule) |
-| Cinématiques in-engine | cut 8 joué en entier (1538 frames) puis retour au jeu ; caméra et image identiques 32/64 pendant la lecture |
+| Cinématiques in-engine | cut 8 joué en entier (1538 frames) ; cinématique d'intro du niveau 5 jouée par un trigger réel (2281 frames), retour au jeu ; caméra et image identiques 32/64 pendant la lecture |
 | Couverture tests | **4191 tests PASS** |
 
 ## Comment lancer
@@ -44,6 +44,7 @@ Variables utiles :
 | `TOMB5_FORCE_CUT=n` | force une cinématique in-engine (cut `n`) |
 | `TOMB5_CUTDBG=1` | trace `[CUT]`, `[CUTL]`, `[CUTF]`, `[CUTPOS]` |
 | `TOMB5_START_POS="x,y,z,room,rot"` | place Lara au premier frame (32 et 64 bits) |
+| `TOMB5_TELEPORT_AT="frame,x,y,z,room,rot"` | téléporte Lara à une frame précise (recettes de campagne) |
 | `TOMB5_FMV_DIR=<dir>` | joue les intros `FMV<n>.avi` avec `ffplay` (voir `scripts/porting/prepare_fmvs.py`) |
 | `TOMB5_FMV_SECONDS=n` | borne la lecture d'une FMV (tests) |
 | `TOMB5_FMVDBG=1` | trace `[FMVREQ]`, `[FMV]`, `[GFMV]` |

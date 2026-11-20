@@ -2106,3 +2106,34 @@ du fichier. Une FMV qui n'est pas jouée ne touche plus à l'état PSX.
 Après correction : `63041e5c…` de nouveau dans les deux builds, et la
 lecture FMV fonctionne toujours (`TOMB5_FMV_SECONDS=2` : `FMV0` puis
 `FMV1`, `rc=0`, retour au jeu).
+
+## 66. Campagne : une cinématique déclenchée par un vrai trigger (niveau 5)
+
+Le harnais `TOMB5_TELEPORT_AT="frame,x,y,z,room,rot"` place Lara à une frame
+précise (utile pour les recettes de campagne). En chargeant le niveau 5,
+la cinématique d'intro se déclenche **sans** `TOMB5_FORCE_CUT` : c'est le
+`GF_CUT 18` du script de niveau (`SCRIPT.DAT`), recopié dans `gfCutNumber`
+puis `cutseq_num` (`GAMEFLOW.C`). L'instrumentation `[TOCT]` ajoutée dans
+`case TO_CUTSCENE` confirme qu'aucun trigger de sol n'est en cause ici :
+
+```
+[CUTL] num=18 resident=(nil)
+[CUTF] frame=1 numframes=2281 playing=1 trig=2
+...
+[CUT] name=5 num=0 trig=0 frame=2281 nframes=2281 play=0
+```
+
+Soit 2281 frames jouées, puis retour au jeu dans le niveau 5 (`lvl=5
+room=23`). C'est la validation du chemin complet `TO_TRIGGER` →
+`NeatAndTidyTriggerCutscene` → `handle_cutseq_triggering` →
+`Load_and_Init_Cutseq` (lecture de `CUTSEQ.JIZ`) → contrôle → fin, avec de
+vraies données de niveau, et non plus seulement le forçage de diagnostic.
+
+Le trigger de fin de niveau 5 reste à localiser : le décodage des 195
+salles (dump gdb de l'arène, layout `room_info` LP64 = 104 octets) ne
+montre **aucune cible `FINISH`** dans les 1718 mots de `floor_data` ; les
+seuls triggers `TO_CUTSCENE` sont les valeurs 15 et 2, et la fin de niveau
+passe donc par un objet/une condition de gameplay (ou une cinématique dont
+la routine de fin appelle `gfLevelComplete`). Le contournement par
+téléport ne suffit pas : la cinématique d'intro déjà jouée est marquée
+comme vue (`CheckCutPlayed`) et n'est pas rejouée.

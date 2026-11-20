@@ -167,6 +167,36 @@ long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 		}
 	}
 
+	{
+		/* Teleport deterministe pour les recettes de campagne :
+		 * TOMB5_TELEPORT_AT="frame,x,y,z,room,rot". */
+		static int port_teleport_at_done = 0;
+		const char* ta = getenv("TOMB5_TELEPORT_AT");
+		extern int port_replay_frame;
+
+		if (ta != NULL && !port_teleport_at_done)
+		{
+			int fr, px, py, pz, pr, prot;
+			if (sscanf(ta, "%d,%d,%d,%d,%d,%d", &fr, &px, &py, &pz, &pr, &prot) == 6 &&
+			    port_replay_frame == fr)
+			{
+				lara_item->pos.x_pos = px;
+				lara_item->pos.y_pos = py;
+				lara_item->pos.z_pos = pz;
+				lara_item->pos.y_rot = (short)prot;
+				lara_item->room_number = (short)pr;
+				lara_item->speed = 0;
+				lara_item->fallspeed = 0;
+				extern void InitialiseCamera();
+				InitialiseCamera();
+				port_teleport_at_done = 1;
+				fprintf(stderr, "[TPAT] f=%d x=%d y=%d z=%d room=%d rot=%d\n",
+				        port_replay_frame, px, py, pz, pr, prot);
+				fflush(stderr);
+			}
+		}
+	}
+
 	short scalarx = 0;
 	short scalary = 0;
 	short scalarz = 0;

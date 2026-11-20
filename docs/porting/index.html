@@ -3,6 +3,16 @@
 
 PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-20T23:59:00+01:00. Linux32 provisoire.
 
+Campagne : cinematique naturelle validee au niveau 5. Le chargement declenche un TO_CUTSCENE reel (sans FORCE_CUT) : [CUTL] num=18, 2281 frames, retour au jeu lvl=5 room=23. Le chemin trigger -&gt; Load_and_Init_Cutseq -&gt; controle -&gt; fin fonctionne avec les donnees du niveau. Harnais TOMB5_TELEPORT_AT ajoute. La sortie du niveau 5 reste a identifier : aucune cible FINISH dans les 1718 mots de floor_data ; triggers CUTSCENE 15/2 et actions OBJECT/CD/CAMERA/FLIPMAP seulement. Le teleport ne rejoue pas la cinematique d&#x27;intro (CheckCutPlayed).
+
+Détails : [scène et parcours runtime](runtime-level.md).
+
+Aucun Done attribué. Les blocs suivants sont historiques ; leurs tests documentaires ne constituent pas une validation du jeu.
+
+</pre><a href="runtime-level.md">Scène et parcours runtime</a></aside><aside class="runtime-milestone"><pre>## Progression vérifiée du 2026-11-20
+
+PORT-008 — **In progress**. Autorisation bornée jusqu’au 2026-11-20T23:59:00+01:00. Linux32 provisoire.
+
 Cinematiques in-engine : le chemin PSX de handle_cutseq_triggering etait bien implemente ; deux bugs LP64 l&#x27;empechaient de fonctionner. (1) headerbuf etait un long* : en LP64 la table {offset,taille} de CUTSEQ.JIZ etait lue sur 8 octets, d&#x27;ou une taille fausse (1 556 480 au lieu de 84 068) et DEL_CDFS_Read(NULL). (2) actor_pnodes etait alloue avec la constante 84 (sizeof(PACKNODE) 32 bits) au lieu de sizeof (96 en LP64), debordant de 12 octets par noeud dans camera_pnodes et faisant diverger la camera des la frame 2. Apres correction, positions camera identiques 32/64 et capture a 600 frames byte-identique. Harness TOMB5_FORCE_CUT (attend la fin du fondu) ; TOMB5_START_POS rendu commun 32/64. Cut 8 au niveau 2 : 1538 frames, trig 2-&gt;4-&gt;0, retour au jeu sans crash. Decouverte annexe : divergence de decor dans la salle 194 du niveau 2 (lampe et relief absents en 64), reproduite sans cutscene -&gt; nouveau ticket RMIG-024. Parite de reference niveau 3 conservee.
 
 Détails : [scène et parcours runtime](runtime-level.md).

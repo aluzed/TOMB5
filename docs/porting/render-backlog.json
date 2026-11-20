@@ -1117,6 +1117,10 @@
         {
           "date": "2026-11-20",
           "note": "FMV : la reference etait passee de 63041e5c a 5aecb72d apres l'activation de PLAY_FMVS. Cause : S_PlayFMV appelait FMV_InitialiseVRAM() avant de tester TOMB5_FMV_DIR, donc les deux intros du boot effacaient la VRAM meme sans lecture ; l'icone d'arme du niveau 3 differait (x 505-611, y 38-115, 2443 px). Le bloc VRAM/DispEnv est maintenant dans la branche de lecture, apres le test du fichier. Reference 63041e5c restauree dans les deux builds ; lecture FMV toujours OK."
+        },
+        {
+          "date": "2026-11-20",
+          "note": "Cinematique naturelle validee au niveau 5 : au chargement, un trigger TO_CUTSCENE lance le cut 18 sans TOMB5_FORCE_CUT ([CUTL] num=18, 2281 frames, retour au jeu lvl=5 room=23). Le chemin TRIGGER -> NeatAndTidyTriggerCutscene -> handle_cutseq_triggering -> Load_and_Init_Cutseq est donc valide avec de vraies donnees de niveau. Fin de niveau 5 non localisee : le floor_data (1718 mots) ne contient aucune cible FINISH ; seuls des triggers CUTSCENE (valeurs 15 et 2) et des actions OBJECT/CD/CAMERA/FLIPMAP. Nouveau harnais TOMB5_TELEPORT_AT."
         }
       ]
     },

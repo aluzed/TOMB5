@@ -4183,6 +4183,12 @@ void _TestTriggers(short* data, int heavy, int HeavyFlags)//1E9FC(<), 1EC10(<) (
 		{
 			//loc_1F708
 			globoncuttrig = 1;
+			if (getenv("TOMB5_CUTDBG") != NULL)
+			{
+				extern int port_replay_frame;
+				fprintf(stderr, "[TOCT] f=%d value=%d timer=%d\n",
+				        port_replay_frame, (int)value, (int)timer);
+			}
 			NeatAndTidyTriggerCutscene(value, timer);
 			break;
 		}

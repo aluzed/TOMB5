@@ -2863,6 +2863,15 @@
       ],
       "status": "In progress",
       "summary": "Cinematiques in-engine : le chemin PSX de handle_cutseq_triggering etait bien implemente ; deux bugs LP64 l'empechaient de fonctionner. (1) headerbuf etait un long* : en LP64 la table {offset,taille} de CUTSEQ.JIZ etait lue sur 8 octets, d'ou une taille fausse (1 556 480 au lieu de 84 068) et DEL_CDFS_Read(NULL). (2) actor_pnodes etait alloue avec la constante 84 (sizeof(PACKNODE) 32 bits) au lieu de sizeof (96 en LP64), debordant de 12 octets par noeud dans camera_pnodes et faisant diverger la camera des la frame 2. Apres correction, positions camera identiques 32/64 et capture a 600 frames byte-identique. Harness TOMB5_FORCE_CUT (attend la fin du fondu) ; TOMB5_START_POS rendu commun 32/64. Cut 8 au niveau 2 : 1538 frames, trig 2->4->0, retour au jeu sans crash. Decouverte annexe : divergence de decor dans la salle 194 du niveau 2 (lampe et relief absents en 64), reproduite sans cutscene -> nouveau ticket RMIG-024. Parite de reference niveau 3 conservee."
+    },
+    {
+      "date": "2026-11-20",
+      "authorization_until": "2026-11-20T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Campagne : cinematique naturelle validee au niveau 5. Le chargement declenche un TO_CUTSCENE reel (sans FORCE_CUT) : [CUTL] num=18, 2281 frames, retour au jeu lvl=5 room=23. Le chemin trigger -> Load_and_Init_Cutseq -> controle -> fin fonctionne avec les donnees du niveau. Harnais TOMB5_TELEPORT_AT ajoute. La sortie du niveau 5 reste a identifier : aucune cible FINISH dans les 1718 mots de floor_data ; triggers CUTSCENE 15/2 et actions OBJECT/CD/CAMERA/FLIPMAP seulement. Le teleport ne rejoue pas la cinematique d'intro (CheckCutPlayed)."
     }
   ]
 }
