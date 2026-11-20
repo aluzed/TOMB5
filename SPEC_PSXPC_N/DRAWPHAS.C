@@ -120,6 +120,7 @@ long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 		}
 	}
 
+
 	if (port_lara_meshbits_override != 0)
 	{
 		lara_item->mesh_bits = port_lara_meshbits_override;
@@ -137,6 +138,7 @@ long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 		FadeScreenHeight = 0;
 		DestFadeScreenHeight = 0;
 	}
+#endif
 
 	if (getenv("TOMB5_START_POS") != NULL)
 	{
@@ -158,11 +160,13 @@ long DrawPhaseGame()//63F04(<), 645E0(<) (F)
 				lara_item->pos.z_pos = pz;
 				lara_item->pos.y_rot = (short)prot;
 				lara_item->room_number = (short)pr;
+				extern void InitialiseCamera();
+				InitialiseCamera();
 			}
 			port_force_pos++;
 		}
 	}
-#endif
+
 	short scalarx = 0;
 	short scalary = 0;
 	short scalarz = 0;

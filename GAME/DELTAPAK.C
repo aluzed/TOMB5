@@ -3156,7 +3156,7 @@ void init_cutseq_actors(char* data, int resident)//2D944(<), 2DBD4 (F)
 			else
 			{
 				//loc_2D9F4
-				actor_pnodes[n] = (struct PACKNODE*)cutseq_malloc(((pda_nodes + 1) * 84));
+				actor_pnodes[n] = (struct PACKNODE*)cutseq_malloc((pda_nodes + 1) * sizeof(struct PACKNODE));
 				//v0 = actor_pnodes
 				a3 = pda_nodes + 1;
 			}
@@ -3257,7 +3257,11 @@ int Load_and_Init_Cutseq(int num)//2D7D0, 2DAB8
 	init_cutseq_actors((char*)cut, FALSE);
 #else
 	int file;
-	long* headerbuf;
+	/* Les entrees de CUTSEQ.JIZ sont deux mots 32 bits {offset, taille}
+	 * lus a travers struct TSV. `long` fait 8 octets en LP64 : il lisait
+	 * la paire entiere (offset + taille << 32) puis l'entree suivante,
+	 * d'ou un seek/taille faux et un cutseq_malloc geant. */
+	int* headerbuf;
 	int len;
 	char* packed;
 
@@ -3286,7 +3290,7 @@ int Load_and_Init_Cutseq(int num)//2D7D0, 2DAB8
 #if DISC_VERSION
 	DEL_CDFS_OpenFile(1);
 	DEL_CDFS_Read((char*)&tsv_buffer[0], 0x800);
-	headerbuf = (long*)&tsv_buffer[num];
+	headerbuf = (int*)&tsv_buffer[num];
 	DEL_CDFS_Seek(headerbuf[0]);
 	packed = (char*)cutseq_malloc(headerbuf[1]);
 	DEL_CDFS_Read(packed, headerbuf[1]);
@@ -3297,7 +3301,7 @@ int Load_and_Init_Cutseq(int num)//2D7D0, 2DAB8
 		fprintf(stderr, "[CUTP] PCopen %s -> %p\n", "CUTSEQ.JIZ", (void*)file);
 	}
 	FILE_Read((char*)&tsv_buffer[0], 1, 0x800, file);
-	headerbuf = (long*)&tsv_buffer[num];
+	headerbuf = (int*)&tsv_buffer[num];
 	PClseek(file, headerbuf[0], 0);
 	packed = (char*)cutseq_malloc(headerbuf[1]);
 	FILE_Read(packed, 1, headerbuf[1], file);
@@ -3701,6 +3705,18 @@ void do_new_cutscene_camera()//2CA68(<), 2CD88 (F)
 	camera.pos.x += GLOBAL_cutme->orgx;
 	camera.pos.y += GLOBAL_cutme->orgy;
 	camera.pos.z += GLOBAL_cutme->orgz;
+
+	if (getenv("TOMB5_CUTDBG") != NULL &&
+	    (GLOBAL_cutseq_frame <= 3 || (GLOBAL_cutseq_frame % 60) == 0))
+	{
+		fprintf(stderr, "[CUTPOS] f=%d cam=(%d,%d,%d) tgt=(%d,%d,%d) lara=(%d,%d,%d) rot=%d\n",
+		        GLOBAL_cutseq_frame,
+		        (int)camera.pos.x, (int)camera.pos.y, (int)camera.pos.z,
+		        (int)camera.target.x, (int)camera.target.y, (int)camera.target.z,
+		        (int)lara_item->pos.x_pos, (int)lara_item->pos.y_pos, (int)lara_item->pos.z_pos,
+		        cutrot);
+		fflush(stderr);
+	}
 	IsRoomOutsideNo = -1;
 	IsRoomOutside(camera.pos.x, camera.pos.y, camera.pos.z);
 
@@ -3774,6 +3790,33 @@ void do_new_cutscene_camera()//2CA68(<), 2CD88 (F)
 
 void handle_cutseq_triggering(int name)//2C3C4(<), 2C6EC(<) (F)
 {
+#if !PC_VERSION
+	/*
+	 * Harnais de diagnostic : force le declenchement d'une cinematique
+	 * in-engine (TOMB5_FORCE_CUT=<numero>) une seule fois par session.
+	 * Permet de valider Load_and_Init_Cutseq et la lecture de CUTSEQ.JIZ
+	 * sans devoir atteindre le trigger TO_CUTSCENE correspondant.
+	 */
+	{
+		static int port_forced_cut = -1;
+		const char* force = getenv("TOMB5_FORCE_CUT");
+
+		/* Attendre la fin du fondu de chargement : SetScreenFadeOut est
+		 * ignore si un fondu est deja en cours, et le declencheur resterait
+		 * bloque en attente de ScreenFadedOut. */
+		if (force != NULL && port_forced_cut == -1 && ScreenFading == 0)
+		{
+			port_forced_cut = atoi(force);
+			if (cutseq_num == 0)
+			{
+				cutseq_num = port_forced_cut;
+				fprintf(stderr, "[CUTFORCE] cutseq_num=%d\n", cutseq_num);
+				fflush(stderr);
+			}
+		}
+	}
+#endif
+
 #if PC_VERSION
 	if (cutseq_num == CUT_NULL)
 		return;
@@ -4017,12 +4060,15 @@ void handle_cutseq_triggering(int name)//2C3C4(<), 2C6EC(<) (F)
 	int goin; // $a1
 	int fuck; // $a0
 
-	printf("Handle cutseq triggering name: %d\n", name);
+	if (getenv("TOMB5_CUTDBG") != NULL)
+	{
+		printf("Handle cutseq triggering name: %d\n", name);
+	}
 
-	/* Le lecteur de cinematique n'est pas porte : quand la demande vient du
-	 * harness (TOMB5_SKIP_CUTSCENE), on ignore le declenchement au lieu de
-	 * lancer une sequence dont l'etat diverge selon la largeur de pointeur
-	 * (RMIG-023 : la camera partait en cinematique en 32 bits seulement). */
+	/* Echappatoire pour les parcours automatises. Le chemin normal est
+	 * fonctionnel : l'ancien contournement compensait deux bugs LP64
+	 * (entrees de CUTSEQ.JIZ lues en `long`, PACKNODE alloue sur 84 octets
+	 * au lieu de sizeof). */
 	if (getenv("TOMB5_SKIP_CUTSCENE") != NULL)
 	{
 		cutseq_num = 0;

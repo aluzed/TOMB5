@@ -1036,7 +1036,7 @@
           "note": "SubDiv/div tables"
         }
       ],
-      "progress": "Colosseum terminé, transition → niveau 4 re-validée, niveaux 4 et 5 rendus, costume 6 conforme. FMV : chaîne complète vérifiée — les deux intros (FMV0 copyright, FMV1 jeu) sont déclenchées au démarrage et jouées via ffplay après décodage hors ligne (jpsxdec). Le script SCRIPT.DAT du disque ne contient aucune commande GF_FMV : il n’y a pas de film par niveau. Le « module LARA6 » n’existe pas côté PSX. Reste : cinématiques in-engine (data-ready, trigger à armer) et décodeur MDEC natif avec audio XA.",
+      "progress": "Colosseum termine, transition vers le niveau 4 re-validee, niveaux 4 et 5 rendus, costume 6 conforme. Cinematiques in-engine : fonctionnelles apres correction de deux bugs LP64 (table CUTSEQ lue en long, allocation PACKNODE a 84 octets). Cut 8 joue ses 1538 frames au niveau 2 et rend la main au jeu. FMV : les deux intros sont jouees via ffplay apres decodage hors ligne. Reste : decodeur MDEC natif, et la divergence de decor du niveau 2 (RMIG-024).",
       "evidence": [
         {
           "date": "2026-11-17",
@@ -1109,6 +1109,14 @@
         {
           "date": "2026-11-20",
           "note": "FMV vérifiées de bout en bout : PLAY_FMVS réellement compilé (-DPLAY_FMVS=1), S_PlayFMV vérifie l’existence du fichier et accepte FMV<n>.avi comme FMV<n>.STR[0].avi. Au démarrage : [FMVREQ] seq=0 puis seq=1, [FMV] lecture/fin pour les deux, captures écran du logo Eidos et de l’intro du jeu, puis retour au titre et sortie propre. SCRIPT.DAT parsé (18 niveaux, 1195 octets) : aucune commande GF_FMV, donc pas de film par niveau. Outil reproductible scripts/porting/prepare_fmvs.py + 3 tests. Parité 32/64 toujours byte-identique (63041e5c…)."
+        },
+        {
+          "date": "2026-11-20",
+          "note": "Cinematiques in-engine validees : harness TOMB5_FORCE_CUT (apres ScreenFading==0). Bug 1 : headerbuf en `long` lisait {offset,taille} en 8 octets -> taille fausse (1 556 480 au lieu de 84 068) et DEL_CDFS_Read(NULL). Bug 2 : actor_pnodes alloue (pda_nodes+1)*84 au lieu de sizeof(PACKNODE) (96 en LP64) -> debordement de 12 octets/noeud dans camera_pnodes, camera divergente des la frame 2. Apres correction, positions camera 32/64 identiques et capture a 600 frames byte-identique. Cut 8 au niveau 2 : frame=1538, trig 2->4->0, retour au jeu sans crash. Divergence residuelle de decor (salle 194) reproduite sans cutscene -> RMIG-024."
+        },
+        {
+          "date": "2026-11-20",
+          "note": "FMV : la reference etait passee de 63041e5c a 5aecb72d apres l'activation de PLAY_FMVS. Cause : S_PlayFMV appelait FMV_InitialiseVRAM() avant de tester TOMB5_FMV_DIR, donc les deux intros du boot effacaient la VRAM meme sans lecture ; l'icone d'arme du niveau 3 differait (x 505-611, y 38-115, 2443 px). Le bloc VRAM/DispEnv est maintenant dans la branche de lecture, apres le test du fichier. Reference 63041e5c restauree dans les deux builds ; lecture FMV toujours OK."
         }
       ]
     },
@@ -1230,6 +1238,57 @@
         {
           "date": "2026-11-19",
           "note": "Dernier correctif : mesh LARA_SKIN_JOINTS indexé via `s1 += 4` sur un short* (2 pointeurs sur PSX, 1 en LP64) → 28 triangles manquants (14 nœuds × 2). Après correctif : histogramme identique (nv=3519 34=627(L229) 3C=273(L82)), captures 32 et 64 bits identiques octet pour octet (sha256 63041e5c…, mean_abs_diff=0.000, 100 % de pixels identiques). Série complète : MULFP (8c3263ba), natte+holsters (f57726cf), joints de peau (ce commit)."
+        }
+      ]
+    },
+    {
+      "id": "RMIG-024",
+      "title": "Parite niveau 2 : objets de decor manquants en 64 bits (salle 194)",
+      "status": "In progress",
+      "priority": "P2",
+      "goal": "Retrouver l'image identique 32/64 sur la vue de la salle 194 du niveau 2 (Trajan's Markets), ou une lampe suspendue et un relief de dragon manquent au build 64 bits.",
+      "facts": "Avec TOMB5_START_POS=55808,0,30208,117,-32768 (sans aucune cinematique), 300 frames : mean_abs_diff=0.268, 3379 pixels differents dont 2872 a plus de 8. Le build 64 bits ne dessine pas une lampe suspendue ni un relief de dragon visibles en 32 bits. Les 151 items sont identiques (objet, status, flags, anim, frame, room, position), la camera est identique (55808,-769,31538), room=194, ndraw=16, draw0=194. [PH] montre toutefois que le 32 bits emet ~2x plus de vertices (7323 vs 3951) et des primitives 0x26/0x2E absentes en 64 bits ; a verifier s'il s'agit d'un double draw du backend GL ou des objets manquants.",
+      "scope": "DRAWPHAS.C / LIBGPU.C / ROOMLETB.C : liste des meshes de room, ordering table et profondeur par bucket.",
+      "exclusions": "Cinematiques (validees separement), Vulkan/RT.",
+      "tasks": [
+        "Comparer les listes de meshes de room 194 (et voisines) entre 32 et 64 bits.",
+        "Determiner si les primitives 0x26/0x2E et le surplus de vertices du 32 bits sont un double draw ou du decor reel.",
+        "Corriger le chemin de dessin des meshes/objets manquants en 64 bits.",
+        "Verifier la parite byte-identique sur cette vue et sur la scene de reference."
+      ],
+      "acceptance": [
+        "Capture 32/64 identique sur TOMB5_START_POS=55808,0,30208,117,-32768.",
+        "Aucune regression sur la scene de reference (niveau 3, 63041e5c...)."
+      ],
+      "validation": "check_parity.sh + captures ciblees avec TOMB5_START_POS + [PH]/[DRAW].",
+      "unknowns": "Les objets manquants peuvent etre des meshes statiques de room, des ANIMATING items ou un probleme d'ordering/depth.",
+      "estimate": "1 a 2 jours-personne.",
+      "confidence": "Medium",
+      "dependencies": [
+        "RMIG-007"
+      ],
+      "references": [
+        {
+          "path": "SPEC_PSXPC_N/DRAWPHAS.C",
+          "line": 352,
+          "note": "[DRAW] camera/room/ndraw"
+        },
+        {
+          "path": "EMULATOR/LIBGPU.C",
+          "line": 570,
+          "note": "[PH] histogramme de primitives"
+        },
+        {
+          "path": "scripts/porting/check_parity.sh",
+          "line": 1,
+          "note": "parite 32/64"
+        }
+      ],
+      "progress": "Ouvert pendant la validation des cinematiques : la divergence se reproduit sans cutscene, donc elle est independante du declencheur. Etats d'items et camera identiques ; piste principale : dessin des meshes de room / ordering.",
+      "evidence": [
+        {
+          "date": "2026-11-20",
+          "note": "Reproduction : TOMB5_START_POS=55808,0,30208,117,-32768, niveau 2, 300 frames, sans cutscene. 64 bits : mean_abs_diff=0.268 vs 32 bits, 3379 pixels differents (2872 > 8). La lampe et le relief de dragon sont absents en 64. [DRAW] identique (room=194, ndraw=16, draw0=194) ; items identiques sur les 151 entrees. [PH] : 7323 vertices en 32 contre 3951 en 64, plus 0x26=30 et 0x2E=16 seulement en 32."
         }
       ]
     }

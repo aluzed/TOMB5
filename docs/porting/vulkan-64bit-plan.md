@@ -2001,3 +2001,108 @@ suivis. Trois tests unitaires construisent une image ISO synthétique
 Limites : le lecteur reste un pont externe (`ffplay`), pas un décodeur MDEC
 natif ; les `FMV*.STR` sont vidéo seule (sous-en-tête CD-XA `0x48`, aucun
 canal audio), l'audio des films n'est donc pas couvert.
+
+## 64. Cinématiques in-engine : deux bugs LP64, et elles jouent
+
+Le §60 concluait que le déclencheur n'était jamais armé. En forçant
+`cutseq_num` (`TOMB5_FORCE_CUT`), le chemin PSX de
+`handle_cutseq_triggering` s'est révélé **implémenté** (fade, chargement,
+`Load_and_Init_Cutseq`, contrôle, fin), mais il tombait sur deux bugs LP64.
+
+### Bug 1 : table de `CUTSEQ.JIZ` lue en `long`
+
+```c
+long* headerbuf = (long*)&tsv_buffer[num];
+DEL_CDFS_Seek(headerbuf[0]);
+packed = cutseq_malloc(headerbuf[1]);
+```
+
+`struct TSV` fait 8 octets (`{offset, taille}`, deux mots 32 bits). En
+LP64, `headerbuf[1]` lit l'entrée **suivante** (et `headerbuf[0]` mélange
+les deux mots) : pour le cut 7, la taille devenait 1 556 480 au lieu de
+84 068, `cutseq_malloc` renvoyait `NULL` et `DEL_CDFS_Read(NULL, …)`
+provoquait un SIGSEGV (`CdReadSync`, `DEL_CDFS_Read`, `Load_and_Init_Cutseq`).
+
+Correctif : `int* headerbuf` (les deux branches `DISC_VERSION` et
+`PC_VERSION`).
+
+### Bug 2 : `PACKNODE` alloué avec la taille 32 bits
+
+```c
+actor_pnodes[n] = cutseq_malloc((pda_nodes + 1) * 84);
+```
+
+`84` est `sizeof(struct PACKNODE)` en 32 bits ; en LP64 la structure fait
+96 octets (trois pointeurs de 8 octets). Chaque `InitPackNodes` écrivait
+donc 12 octets au-delà de chaque nœud, dans l'allocation suivante — et
+`camera_pnodes` est alloué juste après les nœuds d'acteurs. La caméra de
+cinématique se corrompait dès la frame 2 :
+
+```
+f=0  cam=(54134,-646,29938)   (32 et 64 identiques)
+f=60 64 bits cam=(57830,1264,31902)   <- divergence
+f=60 32 bits cam=(55096,-734,29654)
+```
+
+Après `sizeof(struct PACKNODE)`, les positions 32/64 sont identiques à
+chaque frame et la capture à 600 frames est **byte-identique**
+(`mean_abs_diff=0.000`).
+
+### Harnais
+
+- `TOMB5_FORCE_CUT=<n>` : arme `cutseq_num` une fois, après la fin du
+  fondu de chargement (`ScreenFading == 0`) ; sinon `SetScreenFadeOut`
+  est ignoré et le déclencheur reste bloqué.
+- `TOMB5_CUTDBG=1` : `[CUT]`, `[CUTL]`, `[CUTP]`, `[CUTI]`, `[CUTF]`,
+  `[CUTPOS]` (caméra/cible/Lara pendant la cinématique).
+- `TOMB5_START_POS="x,y,z,room,rot"` : désormais commun aux builds 32 et
+  64 (il était sous `#if defined(__LP64__)`), avec `InitialiseCamera()`
+  pour un cadrage déterministe. Utile pour rejouer une vue sans cutscene.
+
+### Validation
+
+Cut 8 (« ANDREA3 », Larson) forcé au niveau 2, où Larson existe :
+
+```
+[CUTF] frame=1531 numframes=1538 playing=1 trig=2
+[CUT]  name=2 num=8 trig=4 frame=1538 nframes=1538 play=1
+[CUT]  name=2 num=0 trig=0 frame=1538 nframes=1538 play=0
+```
+
+La cinématique joue ses 1538 frames, le fade de fin s'exécute, puis le
+contrôle revient au jeu sans crash. Forcer le même cut au niveau 3 (le
+Colosseum, où Larson **n'est pas** un item du niveau) plante dans
+`andrea3_end` : c'est un forçage hors contexte, pas un bug du lecteur.
+
+Après la cinématique, les états d'items (151), la caméra, la salle (194),
+`ndraw=16` et `draw0` sont identiques entre 32 et 64. Il reste une
+divergence de **décor** dans cette vue (lampe suspendue et relief de
+dragon absents en 64 bits), mais elle se reproduit **sans cutscene** avec
+`TOMB5_START_POS=55808,0,30208,117,-32768` : `mean_abs_diff=0.268`,
+3 379 pixels. C'est un bug de rendu du niveau 2, ouvert en RMIG-024, sans
+lien avec les cinématiques.
+
+## 65. FMV : un effet de bord VRAM corrigé (retour à 63041e5c)
+
+En activant `PLAY_FMVS`, le boot appelle `S_PlayFMV(FMV_COPYRIGHT_INTRO)`
+puis `S_PlayFMV(FMV_GAME_INTRO)`. Même sans `TOMB5_FMV_DIR` (donc sans
+lecture), ces appels exécutaient `FMV_InitialiseVRAM()` **avant** le test
+du fichier : la VRAM était effacée sur `(0,0,512,256)` et `(0,240)`. Le
+chargement du niveau ne réuploadait pas l'icône d'arme, d'où :
+
+- référence niveau 3 : `63041e5c…` → `5aecb72d…` ;
+- écart localisé à `x∈[505,611]`, `y∈[38,115]` (icône pistolets),
+  2 443 pixels à plus de 8 ;
+- **les deux builds identiques** (5aecb72d), donc pas une régression 32/64.
+
+Diagnostic : rebuild avec les changements cinématique remisés → toujours
+`5aecb72d` ; rebuild avec les deux appels d'intro désactivés → retour à
+`63041e5c`. C'était donc bien l'effet de bord de `S_PlayFMV`.
+
+Correctif : le bloc `FMV_InitialiseVRAM()` / `VSync(0)` / `DispEnv` est
+déplacé **dans** la branche de lecture, après la vérification d'existence
+du fichier. Une FMV qui n'est pas jouée ne touche plus à l'état PSX.
+
+Après correction : `63041e5c…` de nouveau dans les deux builds, et la
+lecture FMV fonctionne toujours (`TOMB5_FMV_SECONDS=2` : `FMV0` puis
+`FMV1`, `rc=0`, retour au jeu).

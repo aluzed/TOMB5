@@ -21,6 +21,7 @@ Le jeu tourne en **64 bits**, rendu **exclusivement en Vulkan** (OpenGL a
 | Reflets écran à presets | aucun / faible / moyen / fort, preset « aucun » = image de référence exacte |
 | Campagne | Streets of Rome → Colosseum terminés, transition vers le niveau 4 re-validée, niveaux 4 et 5 rendus |
 | FMV (intros) | lecture vérifiée : extraction + décodage hors ligne, `TOMB5_FMV_DIR` → `ffplay` (vidéo seule) |
+| Cinématiques in-engine | cut 8 joué en entier (1538 frames) puis retour au jeu ; caméra et image identiques 32/64 pendant la lecture |
 | Couverture tests | **4191 tests PASS** |
 
 ## Comment lancer
@@ -40,6 +41,9 @@ Variables utiles :
 | --- | --- |
 | `TOMB5_START_LEVEL=n` | sauter le menu, charger le niveau `n` |
 | `TOMB5_SKIP_CUTSCENE=1` | ne pas déclencher les cinématiques in-engine |
+| `TOMB5_FORCE_CUT=n` | force une cinématique in-engine (cut `n`) |
+| `TOMB5_CUTDBG=1` | trace `[CUT]`, `[CUTL]`, `[CUTF]`, `[CUTPOS]` |
+| `TOMB5_START_POS="x,y,z,room,rot"` | place Lara au premier frame (32 et 64 bits) |
 | `TOMB5_FMV_DIR=<dir>` | joue les intros `FMV<n>.avi` avec `ffplay` (voir `scripts/porting/prepare_fmvs.py`) |
 | `TOMB5_FMV_SECONDS=n` | borne la lecture d'une FMV (tests) |
 | `TOMB5_FMVDBG=1` | trace `[FMVREQ]`, `[FMV]`, `[GFMV]` |
@@ -96,11 +100,11 @@ tableau de pointeurs est faux en LP64** ; il faut raisonner en entrées.
 
 ## Limites connues
 
-- **Cinématiques in-engine** : la donnée est disponible — `CUTSEQ.JIZ` est
-  l'entrée 1 de `GAMEWAD.OBJ` (extraite, signature `(C) DEL!`). Le chemin
-  `Load_and_Init_Cutseq` est instrumenté (`TOMB5_CUTDBG`), mais aucun trigger
-  `TO_CUTSCENE` n'est armé au spawn (`cutseq_num` reste à 0). En attendant :
-  `TOMB5_SKIP_CUTSCENE=1`.
+- **Cinématiques in-engine** : fonctionnelles. Deux bugs LP64 corrigés —
+  la table de `CUTSEQ.JIZ` était lue en `long` (8 octets) et les `PACKNODE`
+  des acteurs étaient alloués sur 84 octets au lieu de `sizeof` (96). Le cut 8
+  joue ses 1538 frames au niveau 2 et rend la main au jeu ; `TOMB5_FORCE_CUT`
+  permet de le rejouer. La caméra est identique 32/64.
 - **FMV** : les intros sont jouées via `ffplay` (dépendance externe), pas par
   un décodeur MDEC natif ; les `FMV*.STR` sont **vidéo seule** (sous-en-tête
   CD-XA `0x48`), l'audio éventuel vient des pistes XA et n'est pas couvert.
@@ -112,6 +116,9 @@ tableau de pointeurs est faux en LP64** ; il faut raisonner en entrées.
   livrés sont des reflets écran stylisés.
 - **Résidu 8 bits (RMIG-011)** : 662 pixels en mode forcé, hors des shaders
   de texture (bande à droite de l'image, chemin 2D/blit).
+- **Décor niveau 2 (RMIG-024)** : sur la salle 194, une lampe suspendue et un
+  relief de dragon manquent en 64 bits (`mean_abs_diff=0.268`, 3 379 pixels).
+  Reproduit sans cinématique via `TOMB5_START_POS` ; items et caméra identiques.
 - **Sauvegardes 32 ↔ 64** : incompatibles (checksum), chaque binaire crée
   la sienne.
 - **Comparaison 32/64 limitée au niveau 3** : sur le niveau 5 (195 salles),
@@ -126,8 +133,7 @@ tableau de pointeurs est faux en LP64** ; il faut raisonner en entrées.
 
 ## Prochaines étapes utiles
 
-1. Armer les cinématiques in-engine (trigger `TO_CUTSCENE`) et vérifier
-   `Load_and_Init_Cutseq` avec `CUTSEQ.JIZ` en place.
+1. Corriger la divergence de décor du niveau 2 (RMIG-024).
 2. Remplacer le pont `ffplay` par un décodeur MDEC natif et couvrir l'audio
    XA des FMV.
 3. Instruire la bande 2D du résidu 8 bits (RMIG-011).

@@ -42,16 +42,6 @@ int S_PlayFMV(int sequence, int flag)//*, (<)5E7A0
 		FmvSceneTriggered |= (1 << sequence);
 	}
 
-	//5E7F8
-	FMV_InitialiseVRAM();
-
-	VSync(0);
-
-	//__asm__ volatile ("addiu	$2, 0xF0");
-	//__asm__ volatile ("sw	$2, 0x10($sp)");
-	disp.screen.x = 0xF0;
-	SetDefDispEnv(&disp, 0, 0, 480, 0);//BUG: v0 (0xF0, 240) is not written to $sp+0x10, $sp+0x10 gets 0 written to it, maybe custom sdk is used.
-
 
 #if 0
 
@@ -134,6 +124,16 @@ int S_PlayFMV(int sequence, int flag)//*, (<)5E7A0
 				         "ffplay -autoexit -loglevel quiet -x 640 -y 480 '%s'"
 				         " >/dev/null 2>&1", path);
 			}
+
+			/* La VRAM n'est touchee que si la video est effectivement jouee.
+			 * Sans TOMB5_FMV_DIR (ou si le fichier manque), S_PlayFMV ne doit
+			 * pas modifier l'etat PSX : l'ancien FMV_InitialiseVRAM()
+			 * s'executait avant le test et changeait le rendu du niveau
+			 * charge ensuite (icone d'arme, reference 63041e5c). */
+			FMV_InitialiseVRAM();
+			VSync(0);
+			disp.screen.x = 0xF0;
+			SetDefDispEnv(&disp, 0, 0, 480, 0);//BUG: v0 (0xF0, 240) is not written to $sp+0x10, $sp+0x10 gets 0 written to it, maybe custom sdk is used.
 
 			fprintf(stderr, "[FMV] lecture de FMV%d (%s)\n", sequence, path);
 			fflush(stderr);
