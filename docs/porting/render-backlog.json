@@ -1284,11 +1284,15 @@
           "note": "parite 32/64"
         }
       ],
-      "progress": "Ouvert pendant la validation des cinematiques : la divergence se reproduit sans cutscene, donc elle est independante du declencheur. Etats d'items et camera identiques ; piste principale : dessin des meshes de room / ordering.",
+      "progress": "Divergence reproduite sans cinematique. L'instrumentation montre que le jeu soumet exactement les memes primitives, dans le meme ordre et avec les memes octets (355 prims de roomlets, hashes identiques) ; la VRAM (page 0x3b et CLUT 0x59fc de la lampe) est identique. Le backend 32 bits (OpenGL) affiche la lampe et le relief, le backend Vulkan non. La desactivation du discard `color_16 == 0` du shader 4 bits ne les fait pas reapparaitre : ce n'est pas un simple probleme de CLUT noire. Prochaine etape : capture GPU (RenderDoc) ou trace des draw calls/splits Vulkan pour ces prims.",
       "evidence": [
         {
           "date": "2026-11-20",
           "note": "Reproduction : TOMB5_START_POS=55808,0,30208,117,-32768, niveau 2, 300 frames, sans cutscene. 64 bits : mean_abs_diff=0.268 vs 32 bits, 3379 pixels differents (2872 > 8). La lampe et le relief de dragon sont absents en 64. [DRAW] identique (room=194, ndraw=16, draw0=194) ; items identiques sur les 151 entrees. [PH] : 7323 vertices en 32 contre 3951 en 64, plus 0x26=30 et 0x2E=16 seulement en 32."
+        },
+        {
+          "date": "2026-11-20",
+          "note": "Instrumentation poussee (temporaire, retiree) : a la frame 299 avec START_POS, les 355 prims de roomlets sont ajoutees dans le meme ordre, avec les meme types et les memes hashes d'octets en 32 et 64 bits. La VRAM aux coordonnees de la lampe (page 0x3b = (704,256), CLUT 0x59fc = (960,359)) est identique dans les deux dumps. Un test en retirant le `discard` sur color_16==0 du shader psx4 ne restaure pas les objets. Donc le jeu et la VRAM sont identiques : la difference est dans le chemin de rendu Vulkan (draw/ordering). Scene de reference niveau 3 non affectee (63041e5c)."
         }
       ]
     }
