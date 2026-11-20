@@ -16,7 +16,7 @@ Le jeu tourne en **64 bits**, rendu **exclusivement en Vulkan** (OpenGL a
 | --- | --- |
 | Chargement, niveau, sauvegardes F5/F6 | 64 bits |
 | Rendu Vulkan (pipeline PSX complet) | 4/8/16 bits, CLUT, dither, blends, ordering tables, blit VRAM |
-| Parité 32 ↔ 64 bits | **captures byte-identiques** (`63041e5c…`) |
+| Parité 32 ↔ 64 bits | **captures byte-identiques** sur deux scènes : niveau 3 (`63041e5c…`) et niveau 4 (`5793e2e1…`, costume 6) |
 | Overlay debug F12 (ImGui) | stats, profilage GPU par passe, budget, dithering, formats, reflets, capture BMP, aperçu VRAM |
 | Reflets écran à presets | aucun / faible / moyen / fort, preset « aucun » = image de référence exacte |
 | Campagne | Streets of Rome → Colosseum terminés, transition vers le niveau 4 re-validée, niveaux 4 et 5 rendus |
@@ -53,8 +53,9 @@ ouvert.
 ## Vérifier la parité en une commande
 
 ```bash
-./scripts/porting/check_parity.sh          # 1800 frames (référence officielle)
-./scripts/porting/check_parity.sh 300      # contrôle rapide
+./scripts/porting/check_parity.sh          # 1800 frames, niveau 3 (référence)
+./scripts/porting/check_parity.sh 300      # contrôle rapide, niveau 3
+./scripts/porting/check_parity.sh 300 4    # seconde scène (niveau 4, costume 6)
 ```
 
 Le script lance le build 64 bits (Vulkan) puis le 32 bits (OpenGL) sur la

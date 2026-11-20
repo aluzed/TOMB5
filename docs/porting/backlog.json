@@ -2809,6 +2809,15 @@
       ],
       "status": "In progress",
       "summary": "Niveau 5 en 32 bits : piste des registres GTE LG2/LG3 écartée (le pointeur cdb est reconstruit correctement, a3/s0 valides). Le surplus de quads du build 32 bits (3C=1008 vs 335) reste à instruire côté liste de salles (number_draw_rooms / draw_rooms[]) ; instrumentation TOMB5_RL2DBG=1 ajoutée. Aucun impact sur le build 64 bits, qui rend le niveau correctement. 4188 tests PASS, builds 32/64 verts."
+    },
+    {
+      "date": "2026-11-20",
+      "authorization_until": "2026-11-20T23:59:00+01:00",
+      "tickets": [
+        "PORT-008"
+      ],
+      "status": "In progress",
+      "summary": "Parité 32/64 confirmée sur une SECONDE scène : niveau 4 (The Great Wall, 169 salles, LaraDrawType=6 donc chemin du repli L1) → captures identiques octet pour octet (sha256 5793e2e1…, cmp sans différence, 307200/307200 pixels). Le script check_parity.sh accepte désormais un numéro de niveau (ex. `check_parity.sh 300 4`). La parité couvre donc deux scènes et deux chemins de rendu de Lara (costume 1 et costume 6)."
     }
   ]
 }

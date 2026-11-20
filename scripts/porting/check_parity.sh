@@ -2,10 +2,11 @@
 # Verifie la parite 32 bits (OpenGL) / 64 bits (Vulkan) sur la scene de
 # reference RMIG-007 : les deux builds doivent produire le meme BMP.
 #
-#   scripts/porting/check_parity.sh [frames]
+#   scripts/porting/check_parity.sh [frames] [level]
 #
-# Sans argument : 1800 frames (scene de reference officielle).
-# Pour un controle rapide : scripts/porting/check_parity.sh 300
+# Sans argument : 1800 frames, niveau 3 (scene de reference officielle).
+# Pour un controle rapide : scripts/porting/check_parity.sh 300 3
+# Autre scene verifiee    : scripts/porting/check_parity.sh 300 4
 #
 # Sortie : 0 si les captures sont identiques, 1 sinon.
 
@@ -16,6 +17,7 @@ DATA="$ROOT/build/porting/data-ntsc"
 B64="$ROOT/build/porting/build64/SPEC_PSXPC_N/MAIN"
 B32="$ROOT/build/porting/build32-check/SPEC_PSXPC_N/MAIN"
 FRAMES="${1:-1800}"
+LEVEL="${2:-3}"
 TMP="${TMPDIR:-/tmp}/tomb5_parity.$$"
 
 for f in "$B64" "$B32" "$DATA"; do
@@ -33,7 +35,7 @@ run() {
     pgrep -x MAIN >/dev/null 2>&1 && pgrep -x MAIN | xargs -r kill -9
     sleep 1
     ( cd "$DATA" && setsid env DISPLAY="${DISPLAY:-:1}" SDL_AUDIODRIVER=dummy \
-        TOMB5_AUTOLOAD=1 TOMB5_START_LEVEL=3 TOMB5_FRAMES="$FRAMES" \
+        TOMB5_AUTOLOAD=1 TOMB5_START_LEVEL="$LEVEL" TOMB5_FRAMES="$FRAMES" \
         TOMB5_CAPTURE="$out" "$bin" >"$log" 2>&1 </dev/null & )
     # attente de la fin du harnais (le jeu quitte seul apres la capture)
     local waited=0
@@ -49,7 +51,7 @@ run() {
     [ -s "$out" ]
 }
 
-echo "== scene de reference : niveau 3, $FRAMES frames"
+echo "== scene de reference : niveau $LEVEL, $FRAMES frames"
 run "$B64" "$TMP/vk.bmp" "$TMP/vk.log" || { echo "echec 64 bits"; exit 1; }
 echo "64 bits : $(sha256sum "$TMP/vk.bmp" | cut -d' ' -f1)"
 run "$B32" "$TMP/gl.bmp" "$TMP/gl.log" || { echo "echec 32 bits"; exit 1; }

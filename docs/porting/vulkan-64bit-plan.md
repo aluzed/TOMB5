@@ -1817,3 +1817,25 @@ place : `TOMB5_RL2DBG=1` imprime `[RL2] cdb/a1/a3/s0`.
 
 Ce défaut n'affecte que le binaire 32 bits de référence ; le 64 bits rend le
 niveau correctement.
+
+## 59. Parité confirmée sur une seconde scène (niveau 4)
+
+La parité 32/64 ne se limite pas au niveau 3. Sur le **niveau 4**
+(The Great Wall, 169 salles, `LaraDrawType=6`, c'est-à-dire le chemin du
+repli L1 pour le costume 6) :
+
+```
+32 bits : 5793e2e1b0997bfdbf61e77c7879f940f763b48849c33418216976f5ffde79e0
+64 bits : 5793e2e1b0997bfdbf61e77c7879f940f763b48849c33418216976f5ffde79e0
+cmp     : identiques octet pour octet
+```
+
+Le script `check_parity.sh` accepte maintenant un niveau en second argument :
+
+```bash
+./scripts/porting/check_parity.sh 300 4    # niveau 4
+```
+
+Résultat : `PARITE OK : captures identiques octet pour octet`. La parité
+couvre donc deux scènes et deux chemins de rendu de Lara (costume 1 et
+costume 6 via le repli L1).
